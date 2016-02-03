@@ -1,3 +1,5 @@
+/* Standard libraries */
+
 #ifndef STDLIB
 #define STDLIB
     #include <stdlib.h>
@@ -13,19 +15,31 @@
     #include <assert.h>
 #endif
 
-typedef int boolean;
+
+/* Definitions */
+
 #define false 0
 #define true  1
+#define EMPTYLIST NULL
 
+
+/* New datatype */
+
+typedef int boolean ;
 typedef int element;
 
-typedef struct elementList{
-    element el;
-    struct elementList *next;
-}list;
+typedef struct elementList {
+    element el ;
+    struct elementList * next ;
+} list;
 
-boolean null( list * head );
-list * cons (element e, list * head );
-element car ( list * head );
-list * cdr( list * head ); 
-void printList ( list * head );
+
+/* Function Prototypes */
+
+boolean null( list * head ) ;
+list * cons (element el, list * head ) ;
+element car ( list * head ) ;
+list * cdr( list * head ) ; 
+list * makeList ( element el );
+int length ( list * head );
+void printList ( list * head ) ;

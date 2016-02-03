@@ -13,24 +13,19 @@
 int main ( int argc, char ** argv ) {
 
     list * l;
-    l = NULL;
+    l = makeList( 0 );
 
-    l = ( list * ) malloc( sizeof( list ) );
-    if ( null( l ) ) {
-        fprintf( stderr, "Malloc Failed, call your Mom\n" );
-        exit( EXIT_FAILURE );
+    
+
+    int i;
+
+    for (i = 1; i< 100; i++){
+        l = cons( i, l);
     }
-
-    l->el = 28;
-    l->next = NULL;
-
-    l = cons(10, l);
-
-    l = NULL;
-    element e;
-    e = car( l );
-
+    int len = length( l );
     printList( l );
+
+    printf("Lunghezza: %d\n", len);
 
     return 0;
 }
