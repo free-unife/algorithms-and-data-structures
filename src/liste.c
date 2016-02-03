@@ -1,32 +1,41 @@
-#include "liste.h"
-
-/* Checks if a list is empty. 
- * If the head pointer is NULL, than the list is empty */
-
-boolean null( list * head ) {
-    return( head == NULL ) ;       
-}
+/* Copyright © 2016 Franco Masotti <franco.masotti@student.unife.it>
+ *                  Danny Lessio
+ * This work is free. You can redistribute it and/or modify it under the
+ * terms of the Do What The Fuck You Want To Public License, Version 2,
+ * as published by Sam Hocevar. See the LICENSE file for more details.
+ */
 
 
-/* It adds an element e in the head of the list.
- * Changes the head of the list to the new element. */
+#ifndef LISTE_H
+#define LISTE_H
+    #include "liste.h"
+#endif
 
+
+/* Checks if a list is empty.
+ * If the head pointer is NULL, the list is empty */
+boolean null ( list * head ) { return ( head == NULL ); }
+
+/* It adds an element e in the head of the list,
+ * changing the head of the list to the new node that holds the new element.
+ */
 list * cons (element el, list * head ) {
     list * t;
-    
+
     t = ( list * ) malloc( sizeof( list ));
 
     if ( null( t ) ) {
         fprintf( stderr, "Malloc Failed, call your Mom\n" );
         exit( EXIT_FAILURE );
     }
-    
+
     t -> next = head;
     t -> el = el;
 
     return t;
 }
 
+/* */
 element car ( list * head ) {
     assert( ! null( head ));
 
@@ -37,7 +46,7 @@ list * cdr( list * head ) {
     assert( ! null( head ));
 
     return head -> next;
-} 
+}
 
 list * makeList ( element el ) {
 
@@ -51,10 +60,12 @@ int length ( list * head ) {
 }
 
 
-void printList ( list * head ) {
-    
+void printList ( list * head )
+{
+
     list * this;
     int index = 0;
+
 
     this = head;
     while ( this != NULL ) {
