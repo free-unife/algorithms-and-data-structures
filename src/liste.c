@@ -74,8 +74,11 @@ void printList (list *head, int index)
 {
 
 	if (null (head))
+        {
+		printf("EMPTYLIST\n");
 		return;
-	else
+        }
+        else
 	{
 		printf ("List [%d] -> el == %d\n", index, car (head));
 		index ++;
@@ -84,13 +87,13 @@ void printList (list *head, int index)
 }
 
 /* Free the list.  */
-void freeList ( list * head )
+list * freeList ( list * head )
 {
 
 	list *tmp;
 
 	if (null (head))
-		return;
+		return NULL;
 
 	tmp = head;
 	head = cdr (head);
