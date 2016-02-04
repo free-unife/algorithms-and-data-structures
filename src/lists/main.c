@@ -16,19 +16,18 @@ int main ( void )
 {
 
     list *l;
-    int len, index = 0;
+    int len;
+
+
+    l = NULL;
     l = populateList ( l );
     len = length ( l );
-	(void) l;
 
 
     printf ("List length =  %d\n", len);
 
-    printList ( l, index );
     
     l = freeList ( l );
-    index = 0;
-    //printList ( l, index );
 
 
     return 0;
@@ -40,11 +39,20 @@ int main ( void )
 list *populateList ( list *head )
 {
     int i;
+    list * newList;
+    int index = 0;
 
     head = makeList(0);
 
     for (i = 1; i<100; ++i)
         head = cons ( i, head );
+
+    newList = cons (101, head);
+
+    index = 0;
+    printList (newList, index);
+    index = 0;
+    printList ( head , index );
 
     return head;
 

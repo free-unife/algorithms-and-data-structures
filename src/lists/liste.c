@@ -17,7 +17,7 @@
 
 /* Checks if a list is empty.
  * If the head pointer is NULL, the list is empty */
-boolean null ( list * head ) { return ( head == NULL ); }
+boolean null ( list * head ) { return ( head == EMPTYLIST ); }
 
 /* It adds an element e in the head of the list,
  * changing the head of the list to the new node that holds the new element.
@@ -73,31 +73,31 @@ int length ( list * head ) {
 void printList (list *head, int index)
 {
 
-	if (null (head))
-        {
-		printf("EMPTYLIST\n");
-		return;
-        }
-        else
-	{
-		printf ("List [%d] -> el == %d\n", index, car (head));
-		index ++;
-		printList (cdr (head), index);
-	}
+    if (null (head))
+    {
+        printf("EMPTYLIST\n");
+        return;
+    }
+    else
+    {
+        printf ("List [%d] -> el == %d\n", index, car (head));
+        index ++;
+        printList (cdr (head), index);
+    }
 }
 
 /* Free the list.  */
 list * freeList ( list * head )
 {
 
-	list *tmp;
+    list *tmp;
 
-	if (null (head))
-		return NULL;
+    if (null (head))
+        return EMPTYLIST;
 
-	tmp = head;
-	head = cdr (head);
-	tmp -> next = NULL;
-	free (tmp);
-	freeList (head);
+    tmp = head;
+    head = cdr (head);
+    tmp -> next = NULL;
+    free (tmp);
+    return freeList (head);
 }
