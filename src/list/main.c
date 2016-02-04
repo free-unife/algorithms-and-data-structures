@@ -16,43 +16,40 @@ int main ( void )
 {
 
     list *l;
-    int len;
 
 
     l = NULL;
     l = populateList ( l );
-    len = length ( l );
 
+    printf ("List length =  %d\n", length ( l ));
 
-    printf ("List length =  %d\n", len);
-
-    
     l = freeList ( l );
 
+    printf ("List length after free =  %d\n", length ( l ));
 
     return 0;
 
 }
 
 
-/* Fill the list with some elements.  */
+/* Fill the list with some elements.
+ * Since we are working with C to make functional programs (as in functional
+ * programming), the input to a function is not modified but only read. The
+ * following example show how this is done.  */
 list *populateList ( list *head )
 {
     int i;
     list * newList;
-    int index = 0;
 
     head = makeList(0);
 
-    for (i = 1; i<100; ++i)
+    for (i = 1; i<5; ++i)
         head = cons ( i, head );
 
-    newList = cons (101, head);
+    newList = cons (5, head);
 
-    index = 0;
-    printList (newList, index);
-    index = 0;
-    printList ( head , index );
+    printList (newList, 0);
+    printList (head , 0);
 
     return head;
 

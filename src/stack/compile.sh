@@ -9,9 +9,7 @@
 #
 
 
-paths="main.c liste.c"
-output="list.o"
+paths="../list/liste.c main.c stack.c"
+output="stack.o"
 
-
-gcc $paths -Wall -Wextra -Wpedantic -Werror \
--march=native -O0 -std=c90 -D_DEFAULT_SOURCE -o "$output"
+../mainCompile.sh "$paths" "$output"

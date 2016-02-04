@@ -9,17 +9,20 @@ This repository is a collection of C functions you can freely use.
 What you need is a compilant C compiler and preferibily `bash` to run the 
 compile script like this:
 ```
-$ cd src && ./compile.sh
+$ cd src/<directory> &&./compile.sh
 ```
-An executable file called `list.o` will be created in the `src` directory.
+An executable file called `<directory>.o` will be created in the 
+`src/<directory>` directory.
 
 Fell free to contribute to this repository.
 
 ##Covered arguments
 
 - Lists
-  - as ADT (Abstract Data Types)
-  - Implementation.
+  - List as ADT (Abstract Data Types - functional programming).
+  - List Implementation of ADT and related operations.
+- Stacks
+  - Lists' ADT and implementations to create new operations.
 
 ##Function file structure
 

@@ -31,10 +31,11 @@
 #define EMPTYLIST NULL
 
 
-/* New datatype.  */
+/* New data types.  */
 typedef int boolean ;
 typedef int element;
 
+/* Node structure.  */
 typedef struct elementList {
     element el ;
     struct elementList * next ;

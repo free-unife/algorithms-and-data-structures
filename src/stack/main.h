@@ -7,7 +7,12 @@
  
 #ifndef LISTE_H
 #define LISTE_H
-    #include "liste.h"
+    #include "../list/liste.h"
+#endif
+
+#ifndef STACK_H
+#define STACK_H
+    #include "stack.h"
 #endif
 
 #ifndef STDLIB

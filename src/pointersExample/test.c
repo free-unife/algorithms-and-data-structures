@@ -6,21 +6,27 @@
  */
 
 
+/*COMMENTS TODO TODO TODO*/
 #include <stdio.h>
 
+/* Static variable.  */
 int *anExternalStaticPointer;
 
 int main ( void )
 {
 
     static int *aStaticPointer;
-    int anInteger = 31;
+    /**/
+    int anAutomaticInteger;
+    int aStaticInteger;
+
     int *anAutomaticPointer;
 
     if (aStaticPointer == NULL)
         printf("aStaticPointer is NULL.\n");
 
-    printf ("anInteger = %d\n", anInteger);
+    if (aStaticInteger == 0)
+    printf ("aStaticInteger is %d\n", aStaticInteger);
 
     if (anAutomaticPointer == NULL)
         printf("anAutomaticPointer is NULL.\n");

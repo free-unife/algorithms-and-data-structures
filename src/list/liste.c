@@ -28,7 +28,7 @@ list * cons (element el, list * head ) {
     t = malloc (sizeof (list));
 
     if (null (t)) {
-        fprintf( stderr, "Malloc Failed, call your Mom\n" );
+        fprintf( stderr, "The new node cannot be allocated.\n" );
         exit( EXIT_FAILURE );
     }
 
@@ -75,12 +75,12 @@ void printList (list *head, int index)
 
     if (null (head))
     {
-        printf("EMPTYLIST\n");
+        printf("No more elements in struct.\n");
         return;
     }
     else
     {
-        printf ("List [%d] -> el == %d\n", index, car (head));
+        printf ("Struct [%d] -> el == %d\n", index, car (head));
         index ++;
         printList (cdr (head), index);
     }
