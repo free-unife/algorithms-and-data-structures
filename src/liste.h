@@ -48,4 +48,5 @@ element car ( list * head ) ;
 list * cdr( list * head ) ;
 list * makeList ( element el );
 int length ( list * head );
-void printList ( list * head ) ;
+void printList (list *head, int index);
+void freeList ( list * head );

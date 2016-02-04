@@ -12,6 +12,9 @@
 #endif
 
 
+/* NATIVE FUNCTIONS.  */
+
+
 /* Checks if a list is empty.
  * If the head pointer is NULL, the list is empty */
 boolean null ( list * head ) { return ( head == NULL ); }
@@ -20,11 +23,11 @@ boolean null ( list * head ) { return ( head == NULL ); }
  * changing the head of the list to the new node that holds the new element.
  */
 list * cons (element el, list * head ) {
-    list * t;
+    list *t;
 
-    t = ( list * ) malloc( sizeof( list ));
+    t = malloc (sizeof (list));
 
-    if ( null( t ) ) {
+    if (null (t)) {
         fprintf( stderr, "Malloc Failed, call your Mom\n" );
         exit( EXIT_FAILURE );
     }
@@ -35,42 +38,63 @@ list * cons (element el, list * head ) {
     return t;
 }
 
-/* */
+/* Get value of the first node's element field.  */
 element car ( list * head ) {
     assert( ! null( head ));
 
     return head -> el;
 }
 
+/* Get all the list except the first node.  */
 list * cdr( list * head ) {
-    assert( ! null( head ));
+    assert (! null( head ));
 
     return head -> next;
 }
 
+/* Make a new list with the element el in the first node.  */
 list * makeList ( element el ) {
 
-    return ( cons( el, EMPTYLIST ) ) ;
+    return ( cons ( el, EMPTYLIST ) ) ;
 }
 
+
+/* END OF NATIVE FUNCTIONS.  */
+
+
+/* Calculate the length of the list using the native functions.  */
 int length ( list * head ) {
 
     return ( null( head ) ? 0
-                       : 1 + length( cdr( head )) ) ;
+                       : 1 + length ( cdr ( head )) ) ;
 }
 
 
-void printList ( list * head )
+void printList (list *head, int index)
 {
 
-    list * this;
-    int index = 0;
+	if (null (head))
+		return;
+	else
+	{
+		printf ("List [%d] -> el == %d\n", index, car (head));
+		index ++;
+		printList (cdr (head), index);
+	}
+}
 
+/* Free the list.  */
+void freeList ( list * head )
+{
 
-    this = head;
-    while ( this != NULL ) {
-        printf( "List[%d] -> el ==  %d\n", index, this -> el );
-        this = this -> next;
-        index = index + 1;
-    }
+	list *tmp;
+
+	if (null (head))
+		return;
+
+	tmp = head;
+	head = cdr (head);
+	tmp -> next = NULL;
+	free (tmp);
+	freeList (head);
 }

@@ -12,22 +12,28 @@
 #endif
 
 
-int main ( int argc, char ** argv )
+int main ( void )
 {
 
     list *l;
-    int len;
+    int len, index = 0;
 
-
-    (void) argv;
-    (void) argc;
 
     l = makeList ( 0 );
     l = populateList ( l );
     len = length ( l );
-    printList ( l );
+	printf ("%p\n", (void *) l);
 
     printf ("List length =  %d\n", len);
+
+    printList ( l, index );
+
+	freeList ( l );
+
+	index = 0;
+    printList ( l, index );
+
+	printf ("%p\n", (void *) l);
 
     return 0;
 
@@ -40,7 +46,7 @@ list *populateList ( list *head )
     int i;
 
 
-    for (i = 1; i< 100; i++)
+    for (i = 99; i>= 0; i--)
         head = cons ( i, head );
 
     return head;
