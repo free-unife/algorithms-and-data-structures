@@ -8,46 +8,50 @@
 
 #include "queue.h"
 
-void initQueue( first f, last l ) {
-  init( f );
-  init( l );
-  return;
+void initQueue( first f, last l )
+{
+    init( f );
+    init( l );
+    return;
 }
 
 
-boolean isQueueEmpty( first f ){
-  return null( f );
+boolean isQueueEmpty( first f )
+{
+    return null( f );
 }
 
 
-void insertQueue ( element el, first f, last l ) {
-  tailCons( el, l );
-  if( isQueueEmpty( f ) ) {
-      *f = *l;
-  }
-  else {
-    *l = (*l)->next;
-  }
+void insertQueue( element el, first f, last l )
+{
+    tailCons( el, l );
+    if ( isQueueEmpty( f ) )
+        *f = *l;
+    else
+        *l = ( *l )->next;
 
-  return;
+    return;
 }
 
 
-element extractQueue ( first f ) {
-  element el = car( f );
-  nodePointer toDelete = *f;
-  *f = ( *f )->next;
-  free( toDelete );
-  return el;
+element extractQueue( first f )
+{
+    element el = car( f );
+    nodePointer toDelete = *f;
+    *f = ( *f )->next;
+    free( toDelete );
+    return el;
 }
 
 
-void printQueue( first f ) {
-  printAll( f );
-  return;
+void printQueue( first f )
+{
+    printAll( f );
+    return;
 }
 
 
-first freeQueue( first f ) {
-  return freeAll( f );
+first freeQueue( first f )
+{
+    return freeAll( f );
 }

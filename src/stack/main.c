@@ -8,38 +8,39 @@
 
 #ifndef MAIN_H
 #define MAIN_H
-    #include "main.h"
+#include "main.h"
 #endif
 
-int main ( void ) {
+int main( void )
+{
 
-  stackPointer stack = malloc ( sizeof ( nodePointer * ) );
-  initStack( stack );
+    stackPointer stack = malloc( sizeof( nodePointer * ) );
+    initStack( stack );
 
-  pushStack(10, stack);
-  pushStack(20, stack);
-  pushStack(30, stack);
-
-  printStack( stack );
-
-    printf("%d\n", popStack( stack ));
-    printf ("POP\n");
+    pushStack( 10, stack );
+    pushStack( 20, stack );
+    pushStack( 30, stack );
 
     printStack( stack );
 
-    printf("%d\n", popStack( stack ));
-    printf ("POP\n");
+    printf( "%d\n", popStack( stack ) );
+    printf( "POP\n" );
 
-  printStack( stack );
+    printStack( stack );
 
-  printf("%d\n", popStack( stack ));
-  printf ("POP\n");
+    printf( "%d\n", popStack( stack ) );
+    printf( "POP\n" );
 
-  printStack( stack );
+    printStack( stack );
 
-  stack = freeStack( stack );
-  printStack( stack );
+    printf( "%d\n", popStack( stack ) );
+    printf( "POP\n" );
 
-  return 0;
+    printStack( stack );
+
+    stack = freeStack( stack );
+    printStack( stack );
+
+    return 0;
 
 }

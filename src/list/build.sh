@@ -9,9 +9,7 @@
 #
 
 
-paths="$1"
-output="$2"
+paths="main.c liste.c ../adt/adt.c"
+output="list.o"
 
-
-gcc $paths -Wall -Wextra -Wpedantic -Werror \
--march=native -O0 -std=c90 -D_DEFAULT_SOURCE -o "$output"
+../mainBuild.sh "$paths" "$output"

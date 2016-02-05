@@ -8,25 +8,26 @@
 
 #ifndef MAIN_H
 #define MAIN_H
-    #include "main.h"
+#include "main.h"
 #endif
 
-int main ( void ) {
+int main( void )
+{
 
-  first f = malloc( sizeof( nodePointer * ) );
-  last l = malloc( sizeof( nodePointer * ) );
-  initQueue( f, l );
+    first f = malloc( sizeof( nodePointer * ) );
+    last l = malloc( sizeof( nodePointer * ) );
+    initQueue( f, l );
 
-  insertQueue( 10, f, l );
-  insertQueue( 20, f, l );
-  insertQueue( 30, f, l );
+    insertQueue( 10, f, l );
+    insertQueue( 20, f, l );
+    insertQueue( 30, f, l );
 
-  printQueue( f );
-  printf("--------\n");
-  extractQueue( f );
+    printQueue( f );
+    printf( "--------\n" );
+    extractQueue( f );
 
-  printQueue( f );
+    printQueue( f );
 
-  return 0;
+    return 0;
 
 }

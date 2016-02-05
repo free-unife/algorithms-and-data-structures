@@ -23,11 +23,11 @@ typedef pointerToNode nodePointer;
 typedef referenceToNodePointer headPointer;
 
 /* Function Prototypes.  */
-boolean null( headPointer hp ) ;
-void cons (element el, headPointer hp ) ;
-element car ( headPointer hp ) ;
-headPointer cdr( headPointer hp ) ;
-void initList ( headPointer hp );
-int length ( headPointer hp );
-void printList ( headPointer hp );
-headPointer freeList ( headPointer hp );
+boolean null( headPointer hp );
+void cons( element el, headPointer hp );
+element car( headPointer hp );
+headPointer cdr( headPointer hp );
+void initList( headPointer hp );
+int length( headPointer hp );
+void printList( headPointer hp );
+headPointer freeList( headPointer hp );

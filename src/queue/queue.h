@@ -12,8 +12,8 @@ typedef pointerToNode nodePointer;
 typedef referenceToNodePointer first;
 typedef referenceToNodePointer last;
 
-void insertQueue ( element el, first f, last l );
-element extractQueue ( first f );
+void insertQueue( element el, first f, last l );
+element extractQueue( first f );
 boolean isQueueEmpty( first f );
 void initQueue( first f, last l );
 void printQueue( first f );

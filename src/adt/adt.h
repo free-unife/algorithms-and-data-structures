@@ -10,17 +10,17 @@
 
 #ifndef STDLIB
 #define STDLIB
-    #include <stdlib.h>
+#include <stdlib.h>
 #endif
 
 #ifndef STDIO
 #define STDIO
-    #include <stdio.h>
+#include <stdio.h>
 #endif
 
 #ifndef ASSERT
 #define ASSERT
-    #include <assert.h>
+#include <assert.h>
 #endif
 
 
@@ -32,13 +32,13 @@
 
 
 /* New datatype.  */
-typedef int boolean ;
+typedef int boolean;
 typedef int element;
 
 /* This struct contains a physical node rappresentation */
 struct node {
-    element el ;
-    struct node *next ;
+    element el;
+    struct node *next;
 };
 
 /* nodePointer is a pointer to struct physicalNode */
@@ -48,12 +48,12 @@ typedef struct node *pointerToNode;
 typedef pointerToNode *referenceToNodePointer;
 
 /* Function Prototypes.  */
-boolean null( referenceToNodePointer ref ) ;
-void cons (element el, referenceToNodePointer ref ) ;
-void tailCons (element el, referenceToNodePointer ref ) ;
-element car ( referenceToNodePointer ref ) ;
-referenceToNodePointer cdr( referenceToNodePointer ref ) ;
-void init ( referenceToNodePointer ref );
-int length ( referenceToNodePointer ref );
-void printAll ( referenceToNodePointer ref );
-referenceToNodePointer freeAll ( referenceToNodePointer ref );
+boolean null( referenceToNodePointer ref );
+void cons( element el, referenceToNodePointer ref );
+void tailCons( element el, referenceToNodePointer ref );
+element car( referenceToNodePointer ref );
+referenceToNodePointer cdr( referenceToNodePointer ref );
+void init( referenceToNodePointer ref );
+int length( referenceToNodePointer ref );
+void printAll( referenceToNodePointer ref );
+referenceToNodePointer freeAll( referenceToNodePointer ref );

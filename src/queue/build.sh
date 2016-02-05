@@ -9,7 +9,7 @@
 #
 
 
-paths="../adt/adt.c main.c stack.c"
-output="stack.o"
+paths="../adt/adt.c main.c queue.c"
+output="queue.o"
 
-../mainCompile.sh "$paths" "$output"
+../mainBuild.sh "$paths" "$output"

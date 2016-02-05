@@ -9,20 +9,27 @@ This repository is a collection of C functions you can freely use.
 What you need is a compilant C compiler and preferibily `bash` to run the 
 compile script like this:
 ```
-$ cd src/<directory> &&./compile.sh
+$ cd src/<directory> && ./build.sh
 ```
 An executable file called `<directory>.o` will be created in the 
 `src/<directory>` directory.
+
+If you have the program `indent` installed in your system, the files called by 
+every `build.sh` will automatically be indented (and changed) with the options
+specified by the `indentOptions` variable in `src/mainBuild.sh`.
 
 Fell free to contribute to this repository.
 
 ##Covered arguments
 
+- Differences between staic, automatic and dynamic variables.
+- ADT (Abstract Data Types - functional programming).
 - Lists
-  - List as ADT (Abstract Data Types - functional programming).
   - List Implementation of ADT and related operations.
 - Stacks
-  - Lists' ADT and implementations to create new operations.
+  - Stack implementation of ADT and related operations.
+- Queues
+  - Queues implementation of ADT and related operations.
 
 ##Function file structure
 

@@ -8,26 +8,29 @@
 
 #ifndef LISTE_H
 #define LISTE_H
-    #include "liste.h"
+#include "liste.h"
 #endif
 
 
 /* NATIVE FUNCTIONS.  */
 
 /* Init with an EMPTYLIST as a nodePointer */
-void initList ( headPointer hp ) {
-  init( hp );
-  return;
+void initList( headPointer hp )
+{
+    init( hp );
+    return;
 }
 
 
 /* Prints the whole list */
-void printList ( headPointer hp ) {
-  printAll( hp );
-  return;
+void printList( headPointer hp )
+{
+    printAll( hp );
+    return;
 }
 
 /* Free the list.*/
-headPointer freeList ( headPointer hp ) {
-  return freeAll( hp );
+headPointer freeList( headPointer hp )
+{
+    return freeAll( hp );
 }

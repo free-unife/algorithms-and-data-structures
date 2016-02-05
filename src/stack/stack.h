@@ -11,8 +11,8 @@
 typedef pointerToNode nodePointer;
 typedef referenceToNodePointer stackPointer;
 
-void pushStack ( element el, stackPointer sp);
-element popStack ( stackPointer sp );
+void pushStack( element el, stackPointer sp );
+element popStack( stackPointer sp );
 boolean isStackEmpty( stackPointer sp );
 void initStack( stackPointer sp );
 void printStack( stackPointer sp );

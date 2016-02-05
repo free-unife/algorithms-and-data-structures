@@ -8,22 +8,23 @@
 
 #ifndef MAIN_H
 #define MAIN_H
-    #include "main.h"
+#include "main.h"
 #endif
 
-int main ( void ) {
-  int i = 0;
+int main( void )
+{
+    int i = 0;
 
-  headPointer head = malloc ( sizeof ( nodePointer * ) );
-  initList( head );
+    headPointer head = malloc( sizeof( nodePointer * ) );
+    initList( head );
 
-  for( i = 0; i<100; ++i ) {
-    cons( i, head );
-  }
+    for ( i = 0; i < 100; ++i ) {
+        cons( i, head );
+    }
 
-  printList( head );
-  head = freeList( head );
-  printList( head );
-  return 0;
+    printList( head );
+    head = freeList( head );
+    printList( head );
+    return 0;
 
 }

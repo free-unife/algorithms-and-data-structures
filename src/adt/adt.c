@@ -8,7 +8,7 @@
 
 #ifndef ADT_H
 #define ADT_H
-    #include "adt.h"
+#include "adt.h"
 #endif
 
 
@@ -16,93 +16,99 @@
 
 /* Checks if a list is empty.
  * If the head pointer is NULL, the list is empty */
-boolean null( referenceToNodePointer ref ) {
-  return *ref == EMPTY;
+boolean null( referenceToNodePointer ref )
+{
+    return *ref == EMPTY;
 }
 
 
 /* It adds an element e in the head of the list,
  * changing the head of the list to the new node that holds the new element.
  */
-void cons (element el, referenceToNodePointer ref ) {
-  pointerToNode np = malloc( sizeof( struct node ) );
-  np->el = el;
-  np->next = *ref;
-  * ref = np;
-  return;
+void cons( element el, referenceToNodePointer ref )
+{
+    pointerToNode np = malloc( sizeof( struct node ) );
+    np->el = el;
+    np->next = *ref;
+    *ref = np;
+    return;
 }
 
-void tailCons (element el, referenceToNodePointer ref ) {
-  referenceToNodePointer refNew;
+void tailCons( element el, referenceToNodePointer ref )
+{
+    referenceToNodePointer refNew;
 
-  if ( null( ref ) ) {
-    cons( el, ref );
-  }
-  else {
-    while( length( ref ) > 1 ){
-      ref = cdr( ref );
+    if ( null( ref ) ) {
+        cons( el, ref );
+    } else {
+        while ( length( ref ) > 1 ) {
+            ref = cdr( ref );
+        }
+        refNew = malloc( sizeof( pointerToNode * ) );
+        cons( el, refNew );
+        ( *ref )->next = *refNew;
     }
-    refNew = malloc(sizeof( pointerToNode * ));
-    cons(el, refNew );
-    (*ref)->next = *refNew;
-  }
-  return;
+    return;
 }
 
 /* Get value of the first node's element field.  */
-element car ( referenceToNodePointer ref ) {
-  assert( ! null( ref ) );
-  return ( * ref )->el;
+element car( referenceToNodePointer ref )
+{
+    assert( !null( ref ) );
+    return ( *ref )->el;
 }
 
 
 /* Changes the referenceToNodePointer one step over */
-referenceToNodePointer cdr( referenceToNodePointer ref ) {
-  assert ( ! null( ref ) );
-  return &(( *ref )->next);
+referenceToNodePointer cdr( referenceToNodePointer ref )
+{
+    assert( !null( ref ) );
+    return &( ( *ref )->next );
 }
 
 
 /* Init with an EMPTY as a nodePointer */
-void init ( referenceToNodePointer ref ) {
-  *ref = malloc( sizeof( pointerToNode ) );
-  *ref = EMPTY;
-  return;
+void init( referenceToNodePointer ref )
+{
+    *ref = malloc( sizeof( pointerToNode ) );
+    *ref = EMPTY;
+    return;
 }
 
 
 /* Calculate the length of the list using the native functions.  */
-int length ( referenceToNodePointer ref ) {
-  return ( null( ref ) ? 0
-                      : 1 + length( cdr ( ref ) ) );
+int length( referenceToNodePointer ref )
+{
+    return ( null( ref ) ? 0 : 1 + length( cdr( ref ) ) );
 }
 
 
 /* Prints the whole list */
-void printAll ( referenceToNodePointer ref ) {
-  int index = 0;
+void printAll( referenceToNodePointer ref )
+{
+    int index = 0;
 
-  if( null( ref ) ){
-    printf("EMPTY\n");
-  }
-  else{
-    while( length( ref ) > 0 ){
-      printf ("Node [%d] -> el == %d\n", index, car( ref ) );
-      index = index + 1;
-      ref = cdr(ref);
+    if ( null( ref ) ) {
+        printf( "EMPTY\n" );
+    } else {
+        while ( length( ref ) > 0 ) {
+            printf( "Node [%d] -> el == %d\n", index, car( ref ) );
+            index = index + 1;
+            ref = cdr( ref );
+        }
     }
-  }
 
-  return;
+    return;
 }
 
 
 /* Free the list.*/
-referenceToNodePointer freeAll ( referenceToNodePointer ref ) {
-  while( ! null( ref ) ) {
-    pointerToNode toDelete = *ref;
-    ref = cdr( ref );
-    free( toDelete );
-  }
-  return ref;
+referenceToNodePointer freeAll( referenceToNodePointer ref )
+{
+    while ( !null( ref ) ) {
+        pointerToNode toDelete = *ref;
+        ref = cdr( ref );
+        free( toDelete );
+    }
+    return ref;
 }

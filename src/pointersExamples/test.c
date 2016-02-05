@@ -12,29 +12,29 @@
 /* Static variable.  */
 int *anExternalStaticPointer;
 
-int main ( void )
+int
+main ( void )
 {
 
-    static int *aStaticPointer;
-    /**/
-    int anAutomaticInteger;
-    int aStaticInteger;
+  static int *aStaticPointer;
+   /**/ int anAutomaticInteger;
+  int aStaticInteger;
 
-    int *anAutomaticPointer;
+  int *anAutomaticPointer;
 
-    if (aStaticPointer == NULL)
-        printf("aStaticPointer is NULL.\n");
+  if ( aStaticPointer == NULL )
+    printf ( "aStaticPointer is NULL.\n" );
 
-    if (aStaticInteger == 0)
-    printf ("aStaticInteger is %d\n", aStaticInteger);
+  if ( aStaticInteger == 0 )
+    printf ( "aStaticInteger is %d\n", aStaticInteger );
 
-    if (anAutomaticPointer == NULL)
-        printf("anAutomaticPointer is NULL.\n");
+  if ( anAutomaticPointer == NULL )
+    printf ( "anAutomaticPointer is NULL.\n" );
 
-    if (anExternalStaticPointer == NULL)
-        printf("anExternalStaticPointer is NULL.\n");
+  if ( anExternalStaticPointer == NULL )
+    printf ( "anExternalStaticPointer is NULL.\n" );
 
 
-    return 0;
+  return 0;
 
 }

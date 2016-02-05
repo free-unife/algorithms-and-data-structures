@@ -8,37 +8,43 @@
 
 #include "stack.h"
 
-void pushStack ( element el, stackPointer sp ) {
-  cons( el, sp );
+void pushStack( element el, stackPointer sp )
+{
+    cons( el, sp );
 }
 
-element popStack ( stackPointer sp ) {
-  element el = car( sp );
-  nodePointer toDelete = *sp;
-  *sp = ( *sp )->next;
-  free( toDelete );
-  return el;
+element popStack( stackPointer sp )
+{
+    element el = car( sp );
+    nodePointer toDelete = *sp;
+    *sp = ( *sp )->next;
+    free( toDelete );
+    return el;
 }
 
 
-boolean isStackEmpty( stackPointer sp ) {
-  return null( sp );
+boolean isStackEmpty( stackPointer sp )
+{
+    return null( sp );
 }
 
 
 /* Initializes the stackPointer to NULL node ( EMPTYLIST )*/
-void initStack( stackPointer sp ) {
-  init( sp );
-  return;
+void initStack( stackPointer sp )
+{
+    init( sp );
+    return;
 }
 
 
-void printStack( stackPointer sp ) {
-  printAll( sp );
-  return;
+void printStack( stackPointer sp )
+{
+    printAll( sp );
+    return;
 }
 
 
-stackPointer freeStack( stackPointer sp ) {
-  return freeAll( sp );
+stackPointer freeStack( stackPointer sp )
+{
+    return freeAll( sp );
 }

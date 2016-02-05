@@ -7,15 +7,15 @@
 
 #ifndef STACK_H
 #define STACK_H
-    #include "queue.h"
+#include "queue.h"
 #endif
 
 #ifndef STDLIB
 #define STDLIB
-    #include <stdlib.h>
+#include <stdlib.h>
 #endif
 
 #ifndef STDIO
 #define STDIO
-    #include <stdio.h>
+#include <stdio.h>
 #endif

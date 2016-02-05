@@ -8,15 +8,15 @@
 
 #ifndef LISTE_H
 #define LISTE_H
-    #include "liste.h"
+#include "liste.h"
 #endif
 
 #ifndef STDLIB
 #define STDLIB
-    #include <stdlib.h>
+#include <stdlib.h>
 #endif
 
 #ifndef STDIO
 #define STDIO
-    #include <stdio.h>
+#include <stdio.h>
 #endif
