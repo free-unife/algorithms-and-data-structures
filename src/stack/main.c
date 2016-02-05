@@ -5,13 +5,13 @@
  * as published by Sam Hocevar. See the LICENSE file for more details.
  */
 
+
 #ifndef MAIN_H
 #define MAIN_H
     #include "main.h"
 #endif
 
 int main ( void ) {
-  int i = 0;
 
   stackPointer stack = malloc ( sizeof ( nodePointer * ) );
   initStack( stack );
@@ -22,17 +22,24 @@ int main ( void ) {
 
   printStack( stack );
 
-  printf("%d\n", popStack( stack ));
+    printf("%d\n", popStack( stack ));
+    printf ("POP\n");
+
+    printStack( stack );
+
+    printf("%d\n", popStack( stack ));
+    printf ("POP\n");
+
   printStack( stack );
 
   printf("%d\n", popStack( stack ));
-  printStack( stack );
+  printf ("POP\n");
 
-  printf("%d\n", popStack( stack ));
   printStack( stack );
 
   stack = freeStack( stack );
   printStack( stack );
+
   return 0;
 
 }
