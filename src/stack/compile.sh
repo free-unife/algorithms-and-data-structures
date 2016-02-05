@@ -9,8 +9,7 @@
 #
 
 
-paths="../list/liste.c main.c stack.c"
+paths="../adt/adt.c main.c stack.c"
 output="stack.o"
 
 ../mainCompile.sh "$paths" "$output"
-

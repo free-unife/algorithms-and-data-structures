@@ -28,17 +28,17 @@ boolean isStackEmpty( stackPointer sp ) {
 
 /* Initializes the stackPointer to NULL node ( EMPTYLIST )*/
 void initStack( stackPointer sp ) {
-  initList( sp );
+  init( sp );
   return;
 }
 
 
 void printStack( stackPointer sp ) {
-  printList( sp );
+  printAll( sp );
   return;
 }
 
 
 stackPointer freeStack( stackPointer sp ) {
-  return freeList( sp );
+  return freeAll( sp );
 }

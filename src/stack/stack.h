@@ -6,9 +6,10 @@
  */
 
 
-#include "../list/liste.h"
+#include "../adt/adt.h"
 
-typedef headPointer stackPointer;
+typedef pointerToNode nodePointer;
+typedef referenceToNodePointer stackPointer;
 
 void pushStack ( element el, stackPointer sp);
 element popStack ( stackPointer sp );
