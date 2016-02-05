@@ -32,6 +32,22 @@ void cons (element el, referenceToNodePointer ref ) {
   return;
 }
 
+void tailCons (element el, referenceToNodePointer ref ) {
+  referenceToNodePointer refNew;
+
+  if ( null( ref ) ) {
+    cons( el, ref );
+  }
+  else {
+    while( length( ref ) > 1 ){
+      ref = cdr( ref );
+    }
+    refNew = malloc(sizeof( pointerToNode * ));
+    cons(el, refNew );
+    (*ref)->next = *refNew;
+  }
+  return;
+}
 
 /* Get value of the first node's element field.  */
 element car ( referenceToNodePointer ref ) {

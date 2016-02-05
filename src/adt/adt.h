@@ -50,6 +50,7 @@ typedef pointerToNode *referenceToNodePointer;
 /* Function Prototypes.  */
 boolean null( referenceToNodePointer ref ) ;
 void cons (element el, referenceToNodePointer ref ) ;
+void tailCons (element el, referenceToNodePointer ref ) ;
 element car ( referenceToNodePointer ref ) ;
 referenceToNodePointer cdr( referenceToNodePointer ref ) ;
 void init ( referenceToNodePointer ref );
