@@ -9,7 +9,7 @@
 #
 
 
-paths="main.c liste.c ../adt/adt.c"
-output="list.o"
+paths="adt.c"
+output="adt.o"
 
 ../mainCompile.sh "$paths" "$output"

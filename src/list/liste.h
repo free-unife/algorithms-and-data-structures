@@ -5,47 +5,22 @@
  * as published by Sam Hocevar. See the LICENSE file for more details.
  */
 
-
-/* Standard libraries.  */
-
-#ifndef STDLIB
-#define STDLIB
-    #include <stdlib.h>
-#endif
-
-#ifndef STDIO
-#define STDIO
-    #include <stdio.h>
-#endif
-
-#ifndef ASSERT
-#define ASSERT
-    #include <assert.h>
-#endif
-
+#include "../adt/adt.h"
 
 /* Definitions.  */
 
-#define false 0
-#define true  1
-#define EMPTYLIST NULL
-
+#define EMPTYLIST EMPTY
 
 /* New datatype.  */
-typedef int boolean ;
-typedef int element;
 
 /* This struct contains a physical node rappresentation */
-struct physicalNode {
-    element el ;
-    struct physicalNode *next ;
-};
+typedef struct node physicalNode;
 
 /* nodePointer is a pointer to struct physicalNode */
-typedef struct physicalNode *nodePointer;
+typedef pointerToNode nodePointer;
 
 /* headPointer is a pointer to type nodePointer */
-typedef nodePointer *headPointer;
+typedef referenceToNodePointer headPointer;
 
 /* Function Prototypes.  */
 boolean null( headPointer hp ) ;
