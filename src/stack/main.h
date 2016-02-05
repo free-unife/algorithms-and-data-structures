@@ -4,11 +4,6 @@
  * terms of the Do What The Fuck You Want To Public License, Version 2,
  * as published by Sam Hocevar. See the LICENSE file for more details.
  */
- 
-#ifndef LISTE_H
-#define LISTE_H
-    #include "../list/liste.h"
-#endif
 
 #ifndef STACK_H
 #define STACK_H

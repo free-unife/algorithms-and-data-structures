@@ -5,6 +5,7 @@
  * as published by Sam Hocevar. See the LICENSE file for more details.
  */
 
+
 #ifndef MAIN_H
 #define MAIN_H
     #include "main.h"
@@ -13,26 +14,16 @@
 int main ( void ) {
   int i = 0;
 
-  stackPointer stack = malloc ( sizeof ( nodePointer * ) );
-  initStack( stack );
+  headPointer head = malloc ( sizeof ( nodePointer * ) );
+  initList( head );
 
-  pushStack(10, stack);
-  pushStack(20, stack);
-  pushStack(30, stack);
+  for( i = 0; i<100; ++i ) {
+    cons( i, head );
+  }
 
-  printStack( stack );
-
-  printf("%d\n", popStack( stack ));
-  printStack( stack );
-
-  printf("%d\n", popStack( stack ));
-  printStack( stack );
-
-  printf("%d\n", popStack( stack ));
-  printStack( stack );
-
-  stack = freeStack( stack );
-  printStack( stack );
+  printList( head );
+  head = freeList( head );
+  printList( head );
   return 0;
 
 }

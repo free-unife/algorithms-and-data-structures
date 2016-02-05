@@ -1,50 +1,36 @@
-/* Copyright © 2016 Franco Masotti <franco.masotti@student.unife.it>
- *                  Danny Lessio
- * This work is free. You can redistribute it and/or modify it under the
- * terms of the Do What The Fuck You Want To Public License, Version 2,
- * as published by Sam Hocevar. See the LICENSE file for more details.
- */
+#include "stack.h"
 
-
-#ifndef STACK_H
-#define STACK_H
-    #include "stack.h"
-#endif
-
-
-stack * push ( element el, stack * head ) {
-    return cons( el, head );
+void pushStack ( element el, stackPointer sp ) {
+  cons( el, sp );
 }
 
-/* The following is still functional programming because **head corresponds to
- * &s, so the input value is not modified alike what it points to. */
-element pop ( stack **head )
-{
-    element e;
-
-
-    printf ("Pop operation\n");
-    e = car( *head );
-    *head = cdr( *head );
-
-    return e;
+element popStack ( stackPointer sp ) {
+  element el = car( sp );
+  nodePointer toDelete = *sp;
+  *sp = ( *sp )->next;
+  free( toDelete );
+  return el;
 }
 
-boolean isStackEmpty( stack * head ) {
-    return null( head );
+
+boolean isStackEmpty( stackPointer sp ) {
+  return null( sp );
 }
 
-stack * initStack( element el ){
-    return makeList( el );
+
+/* Initializes the stackPointer to NULL node ( EMPTYLIST )*/
+void initStack( stackPointer sp ) {
+  initList( sp );
+  return;
 }
 
-int getStackHeight (stack * head)
-{
-    return length ( head );
 
+void printStack( stackPointer sp ) {
+  printList( sp );
+  return;
 }
 
-void printStack (stack *head, int index)
-{
-    printList (head, index);
+
+stackPointer freeStack( stackPointer sp ) {
+  return freeList( sp );
 }

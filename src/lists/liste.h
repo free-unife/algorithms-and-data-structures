@@ -31,23 +31,28 @@
 #define EMPTYLIST NULL
 
 
-/* New data types.  */
+/* New datatype.  */
 typedef int boolean ;
 typedef int element;
 
-/* Node structure.  */
-typedef struct elementList {
+/* This struct contains a physical node rappresentation */
+struct physicalNode {
     element el ;
-    struct elementList * next ;
-} list;
+    struct physicalNode *next ;
+};
 
+/* nodePointer is a pointer to struct physicalNode */
+typedef struct physicalNode *nodePointer;
+
+/* headPointer is a pointer to type nodePointer */
+typedef nodePointer *headPointer;
 
 /* Function Prototypes.  */
-boolean null( list * head ) ;
-list * cons (element el, list * head ) ;
-element car ( list * head ) ;
-list * cdr( list * head ) ;
-list * makeList ( element el );
-int length ( list * head );
-void printList (list *head, int index);
-list * freeList ( list * head );
+boolean null( headPointer hp ) ;
+void cons (element el, headPointer hp ) ;
+element car ( headPointer hp ) ;
+headPointer cdr( headPointer hp ) ;
+void initList ( headPointer hp );
+int length ( headPointer hp );
+void printList ( headPointer hp );
+headPointer freeList ( headPointer hp );

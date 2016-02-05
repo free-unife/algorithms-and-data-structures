@@ -1,13 +1,10 @@
-#ifndef LISTE_H
-#define LISTE_H
-    #include "../list/liste.h"
-#endif
+#include "../lists/liste.h"
 
-typedef list stack;
+typedef headPointer stackPointer;
 
-stack * push ( element el, stack * head );
-element pop ( stack ** head );
-boolean isStackEmpty( stack * head );
-stack * initStack( element el );
-int getStackHeight (stack * head);
-void printStack (stack *head, int index);
+void pushStack ( element el, stackPointer sp);
+element popStack ( stackPointer sp );
+boolean isStackEmpty( stackPointer sp );
+void initStack( stackPointer sp );
+void printStack( stackPointer sp );
+stackPointer freeStack( stackPointer sp );
