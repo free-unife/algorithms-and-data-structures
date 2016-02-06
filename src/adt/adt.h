@@ -37,8 +37,9 @@ typedef int element;
 
 /* This struct contains a physical node rappresentation */
 struct node {
-    element el;
     struct node *next;
+    element el;
+    struct node *prev;
 };
 
 /* nodePointer is a pointer to struct physicalNode */

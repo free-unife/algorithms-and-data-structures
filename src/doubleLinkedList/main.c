@@ -13,18 +13,5 @@
 
 int main( void )
 {
-    int i = 0;
-
-    headPointer head = malloc( sizeof( nodePointer * ) );
-    initList( head );
-
-    for ( i = 0; i < 100; ++i ) {
-        cons( i, head );
-    }
-
-    printList( head );
-    head = freeList( head );
-    printList( head );
     return 0;
-
 }

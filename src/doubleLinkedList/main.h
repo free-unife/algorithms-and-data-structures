@@ -8,7 +8,7 @@
 
 #ifndef LISTE_H
 #define LISTE_H
-#include "liste.h"
+#include "doubleLinkedList.h"
 #endif
 
 #ifndef STDLIB

@@ -13,14 +13,6 @@
 
 /* New datatype.  */
 
-/* "Overriding" of the default struct node adding a prev node.
- * doing this, all the previous functions can access to this new struct */
-struct node {
-  struct node *next;
-  element el;
-  struct node *prev;
-};
-
 typedef struct node physicalNode;
 
 /* nodePointer is a pointer to struct physicalNode */
@@ -32,13 +24,13 @@ typedef referenceToNodePointer headPointer;
 /* Function Prototypes.  */
 void initDoubleLinkedList( headPointer hp );
 
-// all this function have to consider the dummy node.
+/* all this function have to consider the dummy node. */
 void insertNodeInHead( headPointer hp );
 void insertNodeInQueue( headPointer hp );
 element extractNodeInHead( headPointer hp );
 element extractNodeInQueue( headPointer hp );
-element extractNodeInMiddle( headPointer hp, nodePointer np);
+element extractNodeInMiddle( headPointer hp, nodePointer np );
 boolean isDoubleLinkedListEmpty( headPointer hp );
 void printDoubleLinkedList( headPointer hp );
-first freeDoubleLinkedList( headPointer hp );
+headPointer freeDoubleLinkedList( headPointer hp );
 int length( referenceToNodePointer ref );

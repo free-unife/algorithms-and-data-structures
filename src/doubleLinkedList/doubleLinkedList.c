@@ -23,7 +23,7 @@ void initDoubleLinkedList( headPointer hp )
 
     /* setup his next and prec pointers to itself */
     ( *hp )->next = ( *hp );
-    ( *ho )->prec = ( *hp );
+    ( *hp )->prev = ( *hp );
 
     return;
 }
