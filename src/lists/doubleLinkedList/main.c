@@ -17,7 +17,7 @@ int main( void )
     initDoubleLinkedList( head );
 
 
-    /* Italian traduction:
+    /* Italian translation:
      * Se il campo next di dummy punta a se stesso e
      * se il campo prev di dummy punta a se stesso e
      * se il campo prev e next di dummy coincidono e

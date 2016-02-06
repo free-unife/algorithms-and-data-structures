@@ -14,8 +14,15 @@
 int main( void )
 {
 
-    first f = malloc( sizeof( nodePointer * ) );
-    last l = malloc( sizeof( nodePointer * ) );
+    first f;
+    last l;
+
+
+    if ( ( f = malloc( sizeof( referenceToNodePointer ) ) ) == NULL )
+        exit( EXIT_FAILURE );
+    if ( ( l = malloc( sizeof( referenceToNodePointer ) ) ) == NULL )
+        exit( EXIT_FAILURE );
+
     initQueue( f, l );
 
     insertQueue( 10, f, l );
@@ -23,7 +30,7 @@ int main( void )
     insertQueue( 30, f, l );
 
     printQueue( f );
-    printf( "--------\n" );
+    printf( "------\n\n" );
     extractQueue( f );
 
     printQueue( f );

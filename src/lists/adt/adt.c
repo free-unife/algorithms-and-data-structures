@@ -22,18 +22,22 @@ boolean null( referenceToNodePointer ref )
 }
 
 
-/* It adds an element e in the head of the list,
- * changing the head of the list to the new node that holds the new element.
+/* This function adds an element e in the head of the list, and
+ * changes the head of the list to the new node that holds e.
  */
 void cons( element el, referenceToNodePointer ref )
 {
-    pointerToNode np = malloc( sizeof( struct node ) );
+    pointerToNode np;
+
+    if ( ( np = malloc( sizeof( struct node ) ) ) == NULL )
+        exit( EXIT_FAILURE );
     np->el = el;
     np->next = *ref;
     *ref = np;
     return;
 }
 
+/* Same as cons, except that the node is added on the tail of the list.  */
 void tailCons( element el, referenceToNodePointer ref )
 {
     referenceToNodePointer refNew;
@@ -44,7 +48,8 @@ void tailCons( element el, referenceToNodePointer ref )
         while ( length( ref ) > 1 ) {
             ref = cdr( ref );
         }
-        refNew = malloc( sizeof( pointerToNode * ) );
+        if ( ( refNew = malloc( sizeof( pointerToNode * ) ) ) == NULL )
+            exit( EXIT_FAILURE );
         cons( el, refNew );
         ( *ref )->next = *refNew;
     }
@@ -59,7 +64,9 @@ element car( referenceToNodePointer ref )
 }
 
 
-/* Changes the referenceToNodePointer one step over */
+/* Changes the referenceToNodePointer one step ahead in the list (i.e: the
+ * function returns a new head corresponding to the address of the second node.
+ */
 referenceToNodePointer cdr( referenceToNodePointer ref )
 {
     assert( !null( ref ) );
@@ -67,19 +74,10 @@ referenceToNodePointer cdr( referenceToNodePointer ref )
 }
 
 
-/* Init with EMPTY as a nodePointer */
-/* Create a pointerToNode variable.  */
+/* Initialize a nodePointer variable with EMPTY.  */
 void init( referenceToNodePointer ref )
 {
-
-/*    *ref = malloc( sizeof( pointerToNode ) ):*/
-
-    *ref = malloc( sizeof( short int ) );
-/*    *ref = EMPTY;*/
-    printf( "andref = %p\n", ( void * ) &ref );
-    printf( "ref = %p\n", ( void * ) ref );
-    printf( "starref = %p\n", ( void * ) *ref );
-    /**ref = EMPTY;*/
+    *ref = EMPTY;
     return;
 }
 
@@ -91,7 +89,7 @@ int length( referenceToNodePointer ref )
 }
 
 
-/* Prints the whole list */
+/* Print the whole list.  */
 void printAll( referenceToNodePointer ref )
 {
     int index = 0;
@@ -109,7 +107,7 @@ void printAll( referenceToNodePointer ref )
 }
 
 
-/* Free the list.*/
+/* Free the list.  */
 referenceToNodePointer freeAll( referenceToNodePointer ref )
 {
     while ( !null( ref ) ) {

@@ -14,29 +14,53 @@
 int main( void )
 {
 
-    stackPointer stack = malloc( sizeof( nodePointer * ) );
-/*    initStack( stack );*/
+    stackPointer stack;
+
+
+    if ( ( stack = malloc( sizeof( stackPointer ) ) ) == NULL )
+        exit( EXIT_FAILURE );
+
+    initStack( stack );
+
+    if ( isStackEmpty( stack ) )
+        printf( "The stack is empty.\n" );
 
     pushStack( 10, stack );
+    printf( "PUSH\n" );
+    printf( "Stack pointer = %p\n", ( void * ) *stack );
+
     pushStack( 20, stack );
+    printf( "PUSH\n" );
+    printf( "Stack pointer = %p\n", ( void * ) *stack );
+
     pushStack( 30, stack );
+    printf( "PUSH\n" );
+    printf( "Stack pointer = %p\n", ( void * ) *stack );
 
     printStack( stack );
+    printf( "------\n\n" );
 
     printf( "%d\n", popStack( stack ) );
     printf( "POP\n" );
+    printf( "Stack pointer = %p\n", ( void * ) *stack );
 
     printStack( stack );
+    printf( "------\n\n" );
 
     printf( "%d\n", popStack( stack ) );
     printf( "POP\n" );
+    printf( "Stack pointer = %p\n", ( void * ) *stack );
 
     printStack( stack );
+    printf( "------\n\n" );
+
 
     printf( "%d\n", popStack( stack ) );
     printf( "POP\n" );
+    printf( "Stack pointer = %p\n", ( void * ) *stack );
 
     printStack( stack );
+    printf( "------\n\n" );
 
     stack = freeStack( stack );
     printStack( stack );

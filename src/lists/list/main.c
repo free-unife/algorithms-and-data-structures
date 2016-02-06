@@ -16,19 +16,11 @@ int main( void )
     int i = 0;
     headPointer head;
 
-
     /* Get the correct amount of space for the headPointer variable. */
-    head = malloc( sizeof( headPointer ) );
+    if ( ( head = malloc( sizeof( headPointer ) ) ) == NULL )
+        exit( EXIT_FAILURE );
 
     initList( head );
-    if ( null( head ) )
-        printf( "List is null\n" );
-
-    if ( sizeof( **head ) == sizeof( struct node ) )
-        printf( "SAME SIZES %lu\n", sizeof( struct node ) );
-
-    printf( "%p\n", ( void * ) *head );
-    ( **head ).el = 500;
 
     for ( i = 0; i < 100; ++i ) {
         cons( i, head );
