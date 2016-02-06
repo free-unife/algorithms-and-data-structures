@@ -13,5 +13,21 @@
 
 int main( void )
 {
+    headPointer head = malloc( sizeof( nodePointer * ) );
+    initDoubleLinkedList( head );
+
+
+    /* Italian traduction:
+     * Se il campo next di dummy punta a se stesso e
+     * se il campo prev di dummy punta a se stesso e
+     * se il campo prev e next di dummy coincidono e
+     * se il campo elemento vale 0
+     * allora initDoubleLinked list FUNZIONA!
+     */
+    if ( ( *head == ( *head )->next ) && ( *head == ( *head )->prev )
+         && ( ( *head )->next == ( *head )->prev ) && ( *head )->el == 0 ) {
+        printf( "initDoubleLinkedList WORKS\n" );
+    }
+
     return 0;
 }
