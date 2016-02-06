@@ -15,7 +15,7 @@ int main( void )
 {
 
     stackPointer stack = malloc( sizeof( nodePointer * ) );
-    initStack( stack );
+/*    initStack( stack );*/
 
     pushStack( 10, stack );
     pushStack( 20, stack );

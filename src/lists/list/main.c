@@ -14,9 +14,21 @@
 int main( void )
 {
     int i = 0;
+    headPointer head;
 
-    headPointer head = malloc( sizeof( nodePointer * ) );
+
+    /* Get the correct amount of space for the headPointer variable. */
+    head = malloc( sizeof( headPointer ) );
+
     initList( head );
+    if ( null( head ) )
+        printf( "List is null\n" );
+
+    if ( sizeof( **head ) == sizeof( struct node ) )
+        printf( "SAME SIZES %lu\n", sizeof( struct node ) );
+
+    printf( "%p\n", ( void * ) *head );
+    ( **head ).el = 500;
 
     for ( i = 0; i < 100; ++i ) {
         cons( i, head );
@@ -25,6 +37,7 @@ int main( void )
     printList( head );
     head = freeList( head );
     printList( head );
+
     return 0;
 
 }

@@ -67,11 +67,19 @@ referenceToNodePointer cdr( referenceToNodePointer ref )
 }
 
 
-/* Init with an EMPTY as a nodePointer */
+/* Init with EMPTY as a nodePointer */
+/* Create a pointerToNode variable.  */
 void init( referenceToNodePointer ref )
 {
-    *ref = malloc( sizeof( pointerToNode ) );
-    *ref = EMPTY;
+
+/*    *ref = malloc( sizeof( pointerToNode ) ):*/
+
+    *ref = malloc( sizeof( short int ) );
+/*    *ref = EMPTY;*/
+    printf( "andref = %p\n", ( void * ) &ref );
+    printf( "ref = %p\n", ( void * ) ref );
+    printf( "starref = %p\n", ( void * ) *ref );
+    /**ref = EMPTY;*/
     return;
 }
 
@@ -87,7 +95,6 @@ int length( referenceToNodePointer ref )
 void printAll( referenceToNodePointer ref )
 {
     int index = 0;
-
     if ( null( ref ) ) {
         printf( "EMPTY\n" );
     } else {

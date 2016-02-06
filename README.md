@@ -30,6 +30,8 @@ Fell free to contribute to this repository.
   - Stack implementation of ADT and related operations.
 - Queues
   - Queues implementation of ADT and related operations.
+- Graphs
+  - ADT implementation.
 
 ##Function file structure
 
