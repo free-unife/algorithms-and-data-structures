@@ -22,6 +22,8 @@ typedef pointerToNode nodePointer;
 typedef referenceToNodePointer headPointer;
 
 /* Function Prototypes.  */
+/* all this function have to consider the dummy node. */
+
 void initDoubleLinkedList( headPointer hp );
 int lengthDoubleLinkedList( headPointer hp );
 boolean isDoubleLinkedListEmpty( headPointer hp );
@@ -30,9 +32,6 @@ void insertNodeInQueue( element el, headPointer hp );
 void printDoubleLinkedList( headPointer hp );
 element extractNodeInHead( headPointer hp );
 element extractNodeInQueue( headPointer hp );
-
-/* all this function have to consider the dummy node. */
-
-
-element extractNodeInMiddle( headPointer hp, nodePointer np );
+nodePointer *searchForElement( element toSearch, headPointer hp );
+element extractNodeInMiddle( nodePointer np );
 headPointer freeDoubleLinkedList( headPointer hp );

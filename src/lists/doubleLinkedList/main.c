@@ -14,52 +14,82 @@
 int main( void )
 {
     headPointer head = malloc( sizeof( nodePointer * ) );
+    nodePointer *foundedNodes;
+    int i;
     initDoubleLinkedList( head );
 
     insertNodeInHead( 10, head );
     insertNodeInHead( 20, head );
     insertNodeInQueue( 99, head );
-    insertNodeInQueue( 45, head );
+    insertNodeInQueue( 20, head );
     insertNodeInHead( 28, head );
     printDoubleLinkedList( head );
     printf( "length: %d\n", lengthDoubleLinkedList( head ) );
 
+    /* Testing search for an element */
+
+    foundedNodes = searchForElement( 10, head );
+
+    i = 0;
+    while ( foundedNodes[i] != EMPTY ) {
+        printf( "Node found! -> %i\n", foundedNodes[i]->el );
+        i = i + 1;
+    }
+
     printf( "-----\n" );
-    printf( "Extracted from head --> %d\n", extractNodeInHead( head ) );
+    printf( "Extracted from middle --> %d\n",
+            extractNodeInMiddle( foundedNodes[0] ) );
     printf( "-----\n" );
     printDoubleLinkedList( head );
     printf( "length: %d\n", lengthDoubleLinkedList( head ) );
 
-    printf( "-----\n" );
-    printf( "Extracted from queue --> %d\n", extractNodeInQueue( head ) );
-    printf( "-----\n" );
-    printDoubleLinkedList( head );
-    printf( "length: %d\n", lengthDoubleLinkedList( head ) );
+    /* Testing extraction from head / queue */
+    /*
+       printf( "-----\n" );
+       printf( "Extracted from head --> %d\n", extractNodeInHead( head ) );
+       printf( "-----\n" );
+       printDoubleLinkedList( head );
+       printf( "length: %d\n", lengthDoubleLinkedList( head ) );
 
-    printf( "-----\n" );
-    printf( "Extracted from head --> %d\n", extractNodeInHead( head ) );
-    printf( "-----\n" );
-    printDoubleLinkedList( head );
-    printf( "length: %d\n", lengthDoubleLinkedList( head ) );
+       printf( "-----\n" );
+       printf( "Extracted from queue --> %d\n", extractNodeInQueue( head ) );
+       printf( "-----\n" );
+       printDoubleLinkedList( head );
+       printf( "length: %d\n", lengthDoubleLinkedList( head ) );
 
-    printf( "-----\n" );
-    printf( "Extracted from queue --> %d\n", extractNodeInQueue( head ) );
-    printf( "-----\n" );
-    printDoubleLinkedList( head );
-    printf( "length: %d\n", lengthDoubleLinkedList( head ) );
+       printf( "-----\n" );
+       printf( "Extracted from head --> %d\n", extractNodeInHead( head ) );
+       printf( "-----\n" );
+       printDoubleLinkedList( head );
+       printf( "length: %d\n", lengthDoubleLinkedList( head ) );
 
-    printf( "-----\n" );
-    printf( "Extracted from head --> %d\n", extractNodeInHead( head ) );
-    printf( "-----\n" );
-    printDoubleLinkedList( head );
-    printf( "length: %d\n", lengthDoubleLinkedList( head ) );
+       printf( "-----\n" );
+       printf( "Extracted from queue --> %d\n", extractNodeInQueue( head ) );
+       printf( "-----\n" );
+       printDoubleLinkedList( head );
+       printf( "length: %d\n", lengthDoubleLinkedList( head ) );
 
+       printf( "-----\n" );
+       printf( "Extracted from head --> %d\n", extractNodeInHead( head ) );
+       printf( "-----\n" );
+       printDoubleLinkedList( head );
+       printf( "length: %d\n", lengthDoubleLinkedList( head ) );
+     */
 
     if ( isDoubleLinkedListEmpty( head ) == true ) {
         printf( "The list is empty!\n" );
     } else {
-        printf( "The list is not empty!" );
+        printf( "The list is not empty!\n" );
     }
 
+    /* Testing freeDoubleLinkedList() */
+    /*
+    freeDoubleLinkedList( head );
+
+    if ( null( head ) )
+        printf( "free is correct!" );
+    else
+        printf( "free is not correct!" );
+    */
     return 0;
 }
