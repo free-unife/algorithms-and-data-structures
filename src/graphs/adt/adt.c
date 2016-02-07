@@ -50,6 +50,7 @@ void newNode( referenceToNodePointer refN, char *nodeName )
 
         ( tmp )->next = newNode;
         ( tmp )->prev = tmpp;
+        ( newNode )->prev = tmp;
 
     }
 

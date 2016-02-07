@@ -29,8 +29,12 @@ int main( void )
     newNode( pNode, "toast" );
     newNode( pNode, "a toast to the good ones" );
 
-    printf( "%s\n%ss\n%s\n", ( *pNode )->name, ( ( *pNode )->next )->name,
+    printf( "%s\n%s\n%s\n", ( *pNode )->name, ( ( *pNode )->next )->name,
             ( ( ( *pNode )->next )->next )->name );
+
+
+    printf( "%s\n",
+            ( ( ( ( ( *pNode )->next )->next )->prev )->prev )->name );
 
 
 /*    newEdge( pEdge );*/
