@@ -23,14 +23,15 @@ typedef referenceToNodePointer headPointer;
 
 /* Function Prototypes.  */
 void initDoubleLinkedList( headPointer hp );
+int lengthDoubleLinkedList( headPointer hp );
+boolean isDoubleLinkedListEmpty( headPointer hp );
+void insertNodeInHead( element el, headPointer hp );
+void insertNodeInQueue( element el, headPointer hp );
+void printDoubleLinkedList( headPointer hp );
+
 
 /* all this function have to consider the dummy node. */
-void insertNodeInHead( headPointer hp );
-void insertNodeInQueue( headPointer hp );
 element extractNodeInHead( headPointer hp );
 element extractNodeInQueue( headPointer hp );
 element extractNodeInMiddle( headPointer hp, nodePointer np );
-boolean isDoubleLinkedListEmpty( headPointer hp );
-void printDoubleLinkedList( headPointer hp );
 headPointer freeDoubleLinkedList( headPointer hp );
-int length( referenceToNodePointer ref );

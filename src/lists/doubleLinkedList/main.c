@@ -16,17 +16,19 @@ int main( void )
     headPointer head = malloc( sizeof( nodePointer * ) );
     initDoubleLinkedList( head );
 
+    insertNodeInHead( 10, head );
+    insertNodeInHead( 20, head );
+    insertNodeInQueue( 99, head );
+    insertNodeInQueue( 45, head );
+    insertNodeInHead( 28, head );
+    printDoubleLinkedList( head );
 
-    /* Italian translation:
-     * Se il campo next di dummy punta a se stesso e
-     * se il campo prev di dummy punta a se stesso e
-     * se il campo prev e next di dummy coincidono e
-     * se il campo elemento vale 0
-     * allora initDoubleLinked list FUNZIONA!
-     */
-    if ( ( *head == ( *head )->next ) && ( *head == ( *head )->prev )
-         && ( ( *head )->next == ( *head )->prev ) && ( *head )->el == 0 ) {
-        printf( "initDoubleLinkedList WORKS\n" );
+    printf( "length: %d\n", lengthDoubleLinkedList( head ) );
+
+    if ( isDoubleLinkedListEmpty( head ) == true ) {
+        printf( "The list is empty!\n" );
+    } else {
+        printf( "The list is not empty!" );
     }
 
     return 0;
