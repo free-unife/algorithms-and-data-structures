@@ -34,10 +34,16 @@
 /* New datatype.  */
 typedef int boolean;
 typedef int element;
+typedef int weight;
 
-/* Pre-definition of structures.  */
-struct node;
-struct edge;
+/* nodePointer is a pointer to struct physicalNode */
+typedef struct node *pointerToNode;
+typedef struct edge *pointerToEdge;
+
+/* pointerToNode is a pointer to type nodePointer */
+typedef pointerToNode *referenceToNodePointer;
+typedef pointerToEdge *referenceToEdgePointer;
+
 
 /* This struct contains a physical node rappresentation */
 struct node {
@@ -56,7 +62,7 @@ struct node {
 struct edge {
     /* Usually an edge weight is positive, but in some cases it can be
      * negative.  */
-    int weight;
+    weight w;
 
     /* Addresses of the starting and the arrival node.  */
     struct node *fromNode;
@@ -72,21 +78,14 @@ struct edge {
     /* Just like the nodes, the edges are in a double linked list.  */
     struct edge *prev;
     struct edge *next;
-}
-
-/* nodePointer is a pointer to struct physicalNode */
-typedef struct node *pointerToNode;
-typedef struct edge *pointerToEdge;
-
-/* pointerToNode is a pointer to type nodePointer */
-typedef pointerToNode *referenceToNodePointer;
-typedef pointerToEdge *referenceToEdgePointer;
-
+};
 
 /* Function Prototypes.  */
+boolean isEmptyNodeList( pointerToNode ptn );
+void newNodeList( referenceToNodePointer refN );
+void newNode( referenceToNodePointer refN, char *nodeName );
 
-void initNode( referenceToNodePointer refN );
-void initEdge( referenceToEdgePointer refE );
+void newEdge( referenceToEdgePointer refE );
 
 
 /* boolean null( referenceToNodePointer ref );
