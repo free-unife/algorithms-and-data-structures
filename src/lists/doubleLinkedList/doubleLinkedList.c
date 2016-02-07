@@ -59,49 +59,41 @@ void insertNodeInHead( element el, headPointer hp )
     nodePointer dummy = *hp;
     nodePointer newNode;
 
+    /* allocate memory for the node */
     if ( ( newNode = malloc( sizeof( struct node ) ) ) == NULL )
         exit( EXIT_FAILURE );
 
+    /* insert his element */
     newNode->el = el;
-    if ( isDoubleLinkedListEmpty( hp ) ) {
-        dummy->next = newNode;
-        dummy->prev = newNode;
-        newNode->next = dummy;
-        newNode->prev = dummy;
-    }
 
-    else {
-        newNode->next = dummy->next;
-        dummy->next = newNode;
-        newNode->prev = dummy;
-        dummy->prev->prev = newNode;
-    }
+    /* fix list pointers */
+    newNode->next = dummy->next;
+    dummy->next = newNode;
+    newNode->prev = dummy;
+    dummy->prev->prev = newNode;
 
     return;
 }
 
+/* Insert a node before the dummy node */
 void insertNodeInQueue( element el, headPointer hp )
 {
     nodePointer dummy = *hp;
     nodePointer newNode;
 
+    /* allocate memory for the node */
     if ( ( newNode = malloc( sizeof( struct node ) ) ) == NULL )
         exit( EXIT_FAILURE );
 
+    /* insert his element */
     newNode->el = el;
-    if ( isDoubleLinkedListEmpty( hp ) ) {
-        dummy->next = newNode;
-        dummy->prev = newNode;
-        newNode->next = dummy;
-        newNode->prev = dummy;
-    }
 
-    else {
-        dummy->prev->next = newNode;
-        newNode->next = dummy;
-        newNode->prev = dummy->prev;
-        dummy->prev = newNode;
-    }
+    /* fix list pointers */
+    dummy->prev->next = newNode;
+    newNode->next = dummy;
+    newNode->prev = dummy->prev;
+    dummy->prev = newNode;
+
 
     return;
 }
