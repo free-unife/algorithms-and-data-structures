@@ -128,8 +128,10 @@ element extractNodeInHead( headPointer hp )
     nodePointer dummy = *hp;
     nodePointer toDelete = dummy->next;
 
+    /* Extract the element */
     extracted = toDelete->el;
 
+    /* Fix pointers */
     dummy->next = toDelete->next;
     toDelete->next->prev = dummy;
 
@@ -145,12 +147,90 @@ element extractNodeInQueue( headPointer hp )
     nodePointer dummy = *hp;
     nodePointer toDelete = dummy->prev;
 
+    /* Extract the element */
     extracted = toDelete->el;
 
+    /* Fix pointers */
     dummy->prev = toDelete->prev;
     toDelete->prev->next = dummy;
 
     free( toDelete );
 
     return extracted;
+}
+
+/* This function returns an array that have the same size of the input list,
+ * every array's element is a reference to a founded node.
+ * if no element is found, all the array elements have EMPTY as default value.
+ * example:
+ * node[0]->el = 3  -  node[2]->el = 2  -  node[3]->el = 1
+ * toSearch = 2
+ * will return --> foundedNodes[3] = { &node[2], EMPTY, EMPTY }
+ */
+nodePointer *searchForElement( element toSearch, headPointer hp )
+{
+
+    /* save the reference of dummy node */
+    nodePointer refToDummy = *hp;
+    nodePointer succNode = ( *hp )->next;
+    nodePointer *foundedNodes;
+    nodePointer **toReturn;
+
+    int lenghOfList = lengthDoubleLinkedList( hp );
+    int i;
+
+    /* Initialize the array */
+    if ( ( foundedNodes =
+           malloc( sizeof( lenghOfList * sizeof( nodePointer ) ) ) ) ==
+         NULL )
+        exit( EXIT_FAILURE );
+
+    for ( i = 0; i < lenghOfList; ++i ) {
+        foundedNodes[i] = EMPTY;
+    }
+
+    toReturn = &foundedNodes;
+
+    /* Begin scan */
+    i = 0;
+    while ( succNode != refToDummy ) {
+        if ( succNode->el == toSearch ) {
+            foundedNodes[i] = succNode;
+            i = i + 1;
+        }
+        succNode = succNode->next;
+    }
+
+    return *toReturn;
+}
+
+/* Extract a node given his reference. */
+element extractNodeInMiddle( nodePointer np )
+{
+    element extracted;
+    nodePointer toDelete = np;
+
+    /* Extract element */
+    extracted = toDelete->el;
+
+    /* Fix pointers */
+    toDelete->prev->next = toDelete->next;
+    toDelete->next->prev = toDelete->prev;
+
+    free( toDelete );
+
+    return extracted;
+}
+
+/* Free all the element of the list.
+ * It also deletes the dummy node.
+ * Must recall initDoubleLinkedList() to reuse the list. */
+headPointer freeDoubleLinkedList( headPointer hp )
+{
+    while ( lengthDoubleLinkedList( hp ) > 0 ) {
+        extractNodeInHead( hp );
+    }
+    free( *hp );
+    *hp = EMPTY;
+    return hp;
 }
