@@ -68,9 +68,11 @@ void insertNodeInHead( element el, headPointer hp )
 
     /* fix list pointers */
     newNode->next = dummy->next;
-    dummy->next = newNode;
     newNode->prev = dummy;
-    dummy->prev->prev = newNode;
+    dummy->next->prev = newNode;
+    dummy->next = newNode;
+
+
 
     return;
 }
@@ -89,9 +91,9 @@ void insertNodeInQueue( element el, headPointer hp )
     newNode->el = el;
 
     /* fix list pointers */
-    dummy->prev->next = newNode;
     newNode->next = dummy;
     newNode->prev = dummy->prev;
+    dummy->prev->next = newNode;
     dummy->prev = newNode;
 
 
@@ -117,4 +119,38 @@ void printDoubleLinkedList( headPointer hp )
         succNode = succNode->next;
         index = index + 1;
     }
+}
+
+/* Extract the node after dummy  */
+element extractNodeInHead( headPointer hp )
+{
+    element extracted;
+    nodePointer dummy = *hp;
+    nodePointer toDelete = dummy->next;
+
+    extracted = toDelete->el;
+
+    dummy->next = toDelete->next;
+    toDelete->next->prev = dummy;
+
+    free( toDelete );
+
+    return extracted;
+}
+
+/* Extract the node before dummy  */
+element extractNodeInQueue( headPointer hp )
+{
+    element extracted;
+    nodePointer dummy = *hp;
+    nodePointer toDelete = dummy->prev;
+
+    extracted = toDelete->el;
+
+    dummy->prev = toDelete->prev;
+    toDelete->prev->next = dummy;
+
+    free( toDelete );
+
+    return extracted;
 }

@@ -22,8 +22,38 @@ int main( void )
     insertNodeInQueue( 45, head );
     insertNodeInHead( 28, head );
     printDoubleLinkedList( head );
-
     printf( "length: %d\n", lengthDoubleLinkedList( head ) );
+
+    printf( "-----\n" );
+    printf( "Extracted from head --> %d\n", extractNodeInHead( head ) );
+    printf( "-----\n" );
+    printDoubleLinkedList( head );
+    printf( "length: %d\n", lengthDoubleLinkedList( head ) );
+
+    printf( "-----\n" );
+    printf( "Extracted from queue --> %d\n", extractNodeInQueue( head ) );
+    printf( "-----\n" );
+    printDoubleLinkedList( head );
+    printf( "length: %d\n", lengthDoubleLinkedList( head ) );
+
+    printf( "-----\n" );
+    printf( "Extracted from head --> %d\n", extractNodeInHead( head ) );
+    printf( "-----\n" );
+    printDoubleLinkedList( head );
+    printf( "length: %d\n", lengthDoubleLinkedList( head ) );
+
+    printf( "-----\n" );
+    printf( "Extracted from queue --> %d\n", extractNodeInQueue( head ) );
+    printf( "-----\n" );
+    printDoubleLinkedList( head );
+    printf( "length: %d\n", lengthDoubleLinkedList( head ) );
+
+    printf( "-----\n" );
+    printf( "Extracted from head --> %d\n", extractNodeInHead( head ) );
+    printf( "-----\n" );
+    printDoubleLinkedList( head );
+    printf( "length: %d\n", lengthDoubleLinkedList( head ) );
+
 
     if ( isDoubleLinkedListEmpty( head ) == true ) {
         printf( "The list is empty!\n" );

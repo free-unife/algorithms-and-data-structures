@@ -28,10 +28,11 @@ boolean isDoubleLinkedListEmpty( headPointer hp );
 void insertNodeInHead( element el, headPointer hp );
 void insertNodeInQueue( element el, headPointer hp );
 void printDoubleLinkedList( headPointer hp );
-
-
-/* all this function have to consider the dummy node. */
 element extractNodeInHead( headPointer hp );
 element extractNodeInQueue( headPointer hp );
+
+/* all this function have to consider the dummy node. */
+
+
 element extractNodeInMiddle( headPointer hp, nodePointer np );
 headPointer freeDoubleLinkedList( headPointer hp );
