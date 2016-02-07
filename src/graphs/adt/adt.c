@@ -11,9 +11,15 @@
 #include "adt.h"
 #endif
 
+
 boolean isEmptyNodeList( pointerToNode ptn )
 {
     return ( ptn == EMPTY ? true : false );
+}
+
+boolean isEmptyEdgeList( pointerToEdge pte )
+{
+    return ( pte == EMPTY ? true : false );
 }
 
 void newNodeList( referenceToNodePointer refN )
@@ -22,8 +28,14 @@ void newNodeList( referenceToNodePointer refN )
     return;
 }
 
+void newEdgeList( referenceToEdgePointer refE )
+{
+    *refE = EMPTY;
+    return;
+}
+
 /* Create a new node.  */
-void newNode( referenceToNodePointer refN, char *nodeName )
+pointerToNode newNode( referenceToNodePointer refN, char *nodeName )
 {
     pointerToNode newNode, tmp, tmpp = NULL;
 
@@ -54,19 +66,75 @@ void newNode( referenceToNodePointer refN, char *nodeName )
 
     }
 
-    return;
+    return newNode;
 }
 
-/*
-void newEdge( referenceToEdgePointer refE, weight w )
+/* Create a new edge.  */
+/* This function should only be called from connectNodes function.  */
+pointerToEdge newEdge( referenceToEdgePointer refE, weight W )
 {
-    *refE = malloc( sizeof( struct edge ) );
-    return;
+    pointerToEdge newEdge, tmp, tmpp = NULL;
+
+
+    /* Go through node list until a NULL one is foud.  */
+    if ( ( newEdge = malloc( sizeof( struct edge ) ) ) == NULL )
+        exit( EXIT_FAILURE );
+
+    ( newEdge )->w = W;
+
+    ( newEdge )->fromNode = EMPTY;
+    ( newEdge )->toNode = EMPTY;
+
+    ( newEdge )->edgeOutListNext = EMPTY;
+    ( newEdge )->edgeOutListPrev = EMPTY;
+    ( newEdge )->edgeInListNext = EMPTY;
+    ( newEdge )->edgeInListPrev = EMPTY;
+
+    ( newEdge )->prev = NULL;
+    ( newEdge )->next = NULL;
+
+    if ( isEmptyEdgeList( *refE ) ) {
+        *refE = newEdge;
+
+    } else {
+        tmp = *refE;
+        while ( !isEmptyEdgeList( tmp->next ) ) {
+            tmpp = tmp;
+            tmp = ( tmp )->next;
+        }
+
+        ( tmp )->next = newEdge;
+        ( tmp )->prev = tmpp;
+        ( newEdge )->prev = tmp;
+
+    }
+
+    return newEdge;
 }
 
-*/
 
-/*
-connectNodes 
-    newEdge (weight 0, 
-*/
+/* Connect two nodes and return the new edge.  */
+pointerToEdge connectNodes( referenceToEdgePointer refE,
+                            referenceToNodePointer headOfNodeList,
+                            pointerToNode fromNode, pointerToNode toNode,
+                            weight W )
+{
+
+    pointerToEdge eP;
+
+    if ( isEmptyNodeList( *headOfNodeList ) ) {
+        printf( "Cannot connect 0 nodes.\n" );
+        exit( EXIT_FAILURE );
+    }
+
+    eP = newEdge( refE, W );
+
+    ( eP )->fromNode = fromNode;
+    ( eP )->toNode = toNode;
+
+    /* Update edge out and in proprieties */
+    /* TODO */
+
+
+    return eP;
+}

@@ -13,31 +13,56 @@
 
 int main( void )
 {
-    referenceToNodePointer pNode;
-    referenceToEdgePointer pEdge;
+    referenceToNodePointer headOfNodeList;
+    referenceToEdgePointer headOfEdgeList;
+    pointerToNode zero, one, two;
+    pointerToEdge firstEdge, secondEdge;
+
 
     /* Get the correct amount of space for the headPointer variable. */
-    if ( ( pNode = malloc( sizeof( referenceToNodePointer * ) ) ) == NULL )
+    if ( ( headOfNodeList =
+           malloc( sizeof( referenceToNodePointer * ) ) ) == NULL )
         exit( EXIT_FAILURE );
 
-    if ( ( pEdge = malloc( sizeof( referenceToEdgePointer * ) ) ) == NULL )
+    if ( ( headOfEdgeList =
+           malloc( sizeof( referenceToEdgePointer * ) ) ) == NULL )
         exit( EXIT_FAILURE );
 
+    /* Create node and edge lists.  */
+    newNodeList( headOfNodeList );
+    newEdgeList( headOfEdgeList );
 
-    newNodeList( pNode );
-    newNode( pNode, "test" );
-    newNode( pNode, "toast" );
-    newNode( pNode, "a toast to the good ones" );
+    /* Create three nodes.  */
+    zero = newNode( headOfNodeList, "zero" );
+    one = newNode( headOfNodeList, "one" );
+    two = newNode( headOfNodeList, "two" );
 
-    printf( "%s\n%s\n%s\n", ( *pNode )->name, ( ( *pNode )->next )->name,
-            ( ( ( *pNode )->next )->next )->name );
-
-
+    /* Pointer tests.  */
+    printf( "%s\n%s\n%s\n", ( *headOfNodeList )->name,
+            ( ( *headOfNodeList )->next )->name,
+            ( ( ( *headOfNodeList )->next )->next )->name );
     printf( "%s\n",
-            ( ( ( ( ( *pNode )->next )->next )->prev )->prev )->name );
+            ( ( ( ( ( *headOfNodeList )->next )->next )->prev )->prev )->
+            name );
 
 
-/*    newEdge( pEdge );*/
+    /* Create the first edge.  */
+    firstEdge = connectNodes( headOfEdgeList,
+                              headOfNodeList, one, zero, 10 );
+
+    printf( "firstEdge->weight = %d\n", ( firstEdge )->w );
+    printf( "firstEdge->fromNode = %s\n",
+            ( ( firstEdge )->fromNode )->name );
+
+    /* Create the second edge.  */
+    secondEdge = connectNodes( headOfEdgeList,
+                               headOfNodeList, zero, two, 3 );
+
+    printf( "secondEdge->weight = %d\n", ( secondEdge )->w );
+    printf( "secondEdge->fromNode = %s\n",
+            ( ( secondEdge )->fromNode )->name );
+    printf( "secondEdge->toNode = %s\n",
+            ( ( secondEdge )->toNode )->name );
 
     return 0;
 

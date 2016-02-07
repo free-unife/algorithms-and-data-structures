@@ -7,7 +7,6 @@
 
 
 /* Standard libraries.  */
-
 #ifndef STDLIB
 #define STDLIB
 #include <stdlib.h>
@@ -25,11 +24,9 @@
 
 
 /* Definitions.  */
-
 #define false 0
 #define true  1
 #define EMPTY NULL
-
 
 /* New datatype.  */
 typedef int boolean;
@@ -44,12 +41,11 @@ typedef struct edge *pointerToEdge;
 typedef pointerToNode *referenceToNodePointer;
 typedef pointerToEdge *referenceToEdgePointer;
 
-
 /* This struct contains a physical node rappresentation */
 struct node {
     char *name;
 
-    /* If fromTo == toFrom, then it's a non oriented graph. */
+    /* If edgeListIn == edgeListOut, then it's a non oriented graph. */
     struct edge *edgeListOut;
     struct edge *edgeListIn;
 
@@ -82,17 +78,15 @@ struct edge {
 
 /* Function Prototypes.  */
 boolean isEmptyNodeList( pointerToNode ptn );
+boolean isEmptyEdgeList( pointerToEdge pte );
+
 void newNodeList( referenceToNodePointer refN );
-void newNode( referenceToNodePointer refN, char *nodeName );
+void newEdgeList( referenceToEdgePointer refE );
 
-void newEdge( referenceToEdgePointer refE );
+pointerToNode newNode( referenceToNodePointer refN, char *nodeName );
+pointerToEdge newEdge( referenceToEdgePointer refE, weight W );
 
-
-/* boolean null( referenceToNodePointer ref );
-void cons( element el, referenceToNodePointer ref );
-void tailCons( element el, referenceToNodePointer ref );
-element car( referenceToNodePointer ref );
-referenceToNodePointer cdr( referenceToNodePointer ref );
-int length( referenceToNodePointer ref );
-void printAll( referenceToNodePointer ref );
-referenceToNodePointer freeAll( referenceToNodePointer ref ); */
+pointerToEdge connectNodes( referenceToEdgePointer refE,
+                            referenceToNodePointer headOfNodeList,
+                            pointerToNode fromNode, pointerToNode toNode,
+                            weight W );
