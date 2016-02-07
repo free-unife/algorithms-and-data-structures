@@ -27,3 +27,130 @@ void initDoubleLinkedList( headPointer hp )
 
     return;
 }
+
+/* Calculante list length, if only the dummy node is present,
+ * than length( head ) == 0;
+ */
+int lengthDoubleLinkedList( headPointer hp )
+{
+    /* save the reference of dummy node */
+    nodePointer refToDummy = *hp;
+    nodePointer succNode = ( *hp )->next;
+
+    int size = 0;
+
+    while ( succNode != refToDummy ) {
+        succNode = succNode->next;
+        size = size + 1;
+    }
+
+    return size;
+}
+
+/* Tells if the list is EMPTY using lenght() */
+boolean isDoubleLinkedListEmpty( headPointer hp )
+{
+    return lengthDoubleLinkedList( hp ) == 0 ? true : false;
+}
+
+/* Insert a node after the dummy node */
+void insertNodeInHead( element el, headPointer hp )
+{
+    nodePointer dummy = *hp;
+    nodePointer newNode;
+
+    /* allocate memory for the node */
+    if ( ( newNode = malloc( sizeof( struct node ) ) ) == NULL )
+        exit( EXIT_FAILURE );
+
+    /* insert his element */
+    newNode->el = el;
+
+    /* fix list pointers */
+    newNode->next = dummy->next;
+    newNode->prev = dummy;
+    dummy->next->prev = newNode;
+    dummy->next = newNode;
+
+
+
+    return;
+}
+
+/* Insert a node before the dummy node */
+void insertNodeInQueue( element el, headPointer hp )
+{
+    nodePointer dummy = *hp;
+    nodePointer newNode;
+
+    /* allocate memory for the node */
+    if ( ( newNode = malloc( sizeof( struct node ) ) ) == NULL )
+        exit( EXIT_FAILURE );
+
+    /* insert his element */
+    newNode->el = el;
+
+    /* fix list pointers */
+    newNode->next = dummy;
+    newNode->prev = dummy->prev;
+    dummy->prev->next = newNode;
+    dummy->prev = newNode;
+
+
+    return;
+}
+
+void printDoubleLinkedList( headPointer hp )
+{
+    /* save the reference of dummy node */
+    nodePointer refToDummy = *hp;
+    nodePointer succNode = ( *hp )->next;
+    int index;
+
+    if ( isDoubleLinkedListEmpty( hp ) ) {
+        printf( "EMPTYLIST\n" );
+        return;
+    }
+
+    index = 0;
+
+    while ( succNode != refToDummy ) {
+        printf( "Node [%d] -> el == %d\n", index, succNode->el );
+        succNode = succNode->next;
+        index = index + 1;
+    }
+}
+
+/* Extract the node after dummy  */
+element extractNodeInHead( headPointer hp )
+{
+    element extracted;
+    nodePointer dummy = *hp;
+    nodePointer toDelete = dummy->next;
+
+    extracted = toDelete->el;
+
+    dummy->next = toDelete->next;
+    toDelete->next->prev = dummy;
+
+    free( toDelete );
+
+    return extracted;
+}
+
+/* Extract the node before dummy  */
+element extractNodeInQueue( headPointer hp )
+{
+    element extracted;
+    nodePointer dummy = *hp;
+    nodePointer toDelete = dummy->prev;
+
+    extracted = toDelete->el;
+
+    dummy->prev = toDelete->prev;
+    toDelete->prev->next = dummy;
+
+    free( toDelete );
+
+    return extracted;
+}
