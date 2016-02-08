@@ -34,49 +34,55 @@ typedef int element;
 typedef int weight;
 
 /* nodePointer is a pointer to struct physicalNode */
-typedef struct node *pointerToNode;
-typedef struct edge *pointerToEdge;
+typedef struct graphElement *nodePointer;
 
 /* pointerToNode is a pointer to type nodePointer */
-typedef pointerToNode *referenceToNodePointer;
-typedef pointerToEdge *referenceToEdgePointer;
+typedef nodePointer *headPointer;
 
 /* This struct contains a physical node rappresentation */
-struct node {
+struct graphElement {
+    /* Vertex part */
     char *name;
 
     /* If edgeListIn == edgeListOut, then it's a non oriented graph. */
-    struct edge *edgeListOut;
-    struct edge *edgeListIn;
+    headPointer edgeListOut;
+    headPointer edgeListIn;
 
-    /* All the nodes are connected to each other by a double linked list.
-     * This makes adding and deleting new nodes less time consuming.  */
-    struct node *prev;
-    struct node *next;
-};
 
-struct edge {
+    /* Edge part */
+
     /* Usually an edge weight is positive, but in some cases it can be
      * negative.  */
     weight w;
 
     /* Addresses of the starting and the arrival node.  */
-    struct node *fromNode;
-    struct node *toNode;
+    nodePointer fromNode;
+    nodePointer toNode;
 
-    /* Given a node, the following pointer are able to tell the input and
-     * output edges of that node. */
-    struct edge *edgeOutListNext;
-    struct edge *edgeOutListPrev;
-    struct edge *edgeInListNext;
-    struct edge *edgeInListPrev;
+    /* Common part */
 
-    /* Just like the nodes, the edges are in a double linked list.  */
-    struct edge *prev;
-    struct edge *next;
+    /* All the nodes are connected to each other by a double linked list.
+     * This makes adding and deleting new nodes less time consuming.  */
+    struct graphElement *prev;
+    struct graphElement *next;
 };
 
-/* Function Prototypes.  */
+void initDoubleLinkedList( headPointer hp );
+int lengthDoubleLinkedList( headPointer hp );
+boolean isDoubleLinkedListEmpty( headPointer hp );
+void insertNodeInHead( element el, headPointer hp );
+void insertNodeInQueue( element el, headPointer hp );
+void printDoubleLinkedList( headPointer hp );
+element extractNodeInHead( headPointer hp );
+element extractNodeInQueue( headPointer hp );
+nodePointer *searchForElement( element toSearch, headPointer hp );
+element extractNodeInMiddle( nodePointer np );
+headPointer freeDoubleLinkedList( headPointer hp );
+
+nodePointer newEdge( weight w, nodePointer fromNode, nodePointer toNode,
+                     headPointer hp );
+nodePointer newVertex( char *name, headPointer hp );
+/* Function Prototypes.
 boolean isEmptyNodeList( pointerToNode ptn );
 boolean isEmptyEdgeList( pointerToEdge pte );
 
@@ -95,3 +101,4 @@ void updateEdgeOutList( pointerToNode fromNode,
                         referenceToEdgePointer refE, pointerToEdge pte );
 
 void printEdgeOutList( pointerToNode ptn );
+*/

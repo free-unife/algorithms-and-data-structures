@@ -12,186 +12,96 @@
 #endif
 
 
-boolean isEmptyNodeList( pointerToNode ptn )
+/* Init the list with a dummy node that points himself */
+void initDoubleLinkedList( headPointer hp )
 {
-    return ( ptn == EMPTY ? true : false );
-}
+    /* insert a dummy node */
+    *hp = malloc( sizeof( sizeof( struct graphElement ) ) );
 
-boolean isEmptyEdgeList( pointerToEdge pte )
-{
-    return ( pte == EMPTY ? true : false );
-}
+    /* setup his next and prec pointers to itself */
+    ( *hp )->next = ( *hp );
+    ( *hp )->prev = ( *hp );
 
-void newNodeList( referenceToNodePointer refN )
-{
-    *refN = EMPTY;
+    printf( "next = %p  prev = %p\n", ( void * ) ( *hp )->next,
+            ( void * ) ( *hp )->prev );
     return;
 }
 
-void newEdgeList( referenceToEdgePointer refE )
+/* Calculante list length, if only the dummy node is present,
+ * than length( head ) == 0;
+ */
+int lengthDoubleLinkedList( headPointer hp )
 {
-    *refE = EMPTY;
-    return;
+    /* save the reference of dummy node */
+    nodePointer refToDummy = *hp;
+    nodePointer succNode = ( *hp )->next;
+
+    int size = 0;
+
+    while ( succNode != refToDummy ) {
+        succNode = succNode->next;
+        size = size + 1;
+    }
+
+    return size;
 }
 
-/* Create a new node.  */
-pointerToNode newNode( referenceToNodePointer refN, char *nodeName )
+/* Tells if the list is EMPTY using lenght() */
+boolean isDoubleLinkedListEmpty( headPointer hp )
 {
-    pointerToNode newNode, tmp, tmpp = NULL;
+    return lengthDoubleLinkedList( hp ) == 0 ? true : false;
+}
 
+/* Insert a vertex before the dummy node */
+nodePointer newVertex( char *name, headPointer hp )
+{
+    nodePointer dummy = *hp;
+    nodePointer newNode;
 
-    /* Go through node list until a NULL one is foud.  */
-    if ( ( newNode = malloc( sizeof( struct node ) ) ) == NULL )
+    /* allocate memory for the node */
+    if ( ( newNode = malloc( sizeof( struct graphElement ) ) ) == NULL )
         exit( EXIT_FAILURE );
 
-    ( newNode )->name = nodeName;
-    ( newNode )->edgeListOut = EMPTY;
-    ( newNode )->edgeListIn = EMPTY;
-    ( newNode )->prev = NULL;
-    ( newNode )->next = NULL;
+    /* insert his element */
+    newNode->name = name;
+    newNode->edgeListOut = malloc( sizeof( nodePointer * ) );
+    initDoubleLinkedList( newNode->edgeListOut );
+    printf( "\n\nnext = %p  prev = %p\n\n",
+            ( void * ) ( *( newNode->edgeListOut ) )->next,
+            ( void * ) ( *( newNode->edgeListOut ) )->prev );
+    newNode->edgeListIn = malloc( sizeof( nodePointer * ) );
+    initDoubleLinkedList( newNode->edgeListIn );
 
-    if ( isEmptyNodeList( *refN ) ) {
-        *refN = newNode;
-
-    } else {
-        tmp = *refN;
-        while ( !isEmptyNodeList( tmp->next ) ) {
-            tmpp = tmp;
-            tmp = ( tmp )->next;
-        }
-
-        ( tmp )->next = newNode;
-        ( tmp )->prev = tmpp;
-        ( newNode )->prev = tmp;
-
-    }
+    /* fix list pointers */
+    newNode->prev = dummy->prev;
+    newNode->next = dummy;
+    dummy->prev->next = newNode;
+    dummy->prev = newNode;
 
     return newNode;
 }
 
-/* Create a new edge.  */
-/* This function should only be called from connectNodes function.  */
-pointerToEdge newEdge( referenceToEdgePointer refE, weight W )
+/* Insert a vertex before the dummy node */
+nodePointer newEdge( weight w, nodePointer fromNode, nodePointer toNode,
+                     headPointer hp )
 {
-    pointerToEdge newEdge, tmp, tmpp = NULL;
+    nodePointer dummy = *hp;
+    nodePointer newNode;
 
-
-    /* Go through node list until a NULL one is foud.  */
-    if ( ( newEdge = malloc( sizeof( struct edge ) ) ) == NULL )
+    /* allocate memory for the node */
+    if ( ( newNode = malloc( sizeof( struct graphElement ) ) ) == NULL )
         exit( EXIT_FAILURE );
 
-    ( newEdge )->w = W;
+    /* insert his element */
+    newNode->w = w;
+    newNode->fromNode = fromNode;
+    newNode->toNode = toNode;
 
-    ( newEdge )->fromNode = EMPTY;
-    ( newEdge )->toNode = EMPTY;
+    /* fix list pointers */
+    newNode->prev = dummy->prev;
+    newNode->next = dummy;
+    dummy->prev->next = newNode;
+    dummy->prev = newNode;
 
-    ( newEdge )->edgeOutListNext = EMPTY;
-    ( newEdge )->edgeOutListPrev = EMPTY;
-    ( newEdge )->edgeInListNext = EMPTY;
-    ( newEdge )->edgeInListPrev = EMPTY;
-
-    ( newEdge )->prev = NULL;
-    ( newEdge )->next = NULL;
-
-    if ( isEmptyEdgeList( *refE ) ) {
-        *refE = newEdge;
-
-    } else {
-        tmp = *refE;
-        while ( !isEmptyEdgeList( tmp->next ) ) {
-            tmpp = tmp;
-            tmp = ( tmp )->next;
-        }
-
-        ( tmp )->next = newEdge;
-        ( tmp )->prev = tmpp;
-        ( newEdge )->prev = tmp;
-
-    }
-
-    return newEdge;
+    return newNode;
 }
-
-
-/* Connect two nodes and return the new edge.  */
-pointerToEdge connectNodes( referenceToEdgePointer refE,
-                            referenceToNodePointer headOfNodeList,
-                            pointerToNode fromNode, pointerToNode toNode,
-                            weight W )
-{
-
-    pointerToEdge eP;
-
-    if ( isEmptyNodeList( *headOfNodeList ) ) {
-        printf
-            ( "At least two nodes must exist in order to connect them.\n" );
-        exit( EXIT_FAILURE );
-    }
-
-    eP = newEdge( refE, W );
-
-    ( eP )->fromNode = fromNode;
-    ( eP )->toNode = toNode;
-
-    /* Update edge out and in proprieties */
-    updateEdgeOutList( fromNode, refE, eP );
-
-
-    /* Update fromNode -> listOut */
-    ( fromNode )->edgeListOut = eP;
-    /* Update toNode -> listIn */
-    ( toNode )->edgeListIn = eP;
-
-    return eP;
-
-}
-
-/* There can be n edgeOut and edgeIn lists.  */
-
-/* Find edges in the edge list which have the same value in the fromNode
- * field. The next Edge in that list is the pointerToEdge variable passed to
- * the function. */
-/* edgeOutList.  */
-void updateEdgeOutList( pointerToNode fromNode,
-                        referenceToEdgePointer refE, pointerToEdge pte )
-{
-    /* tmpp is the last valid edge.  */
-    pointerToEdge tmp, tmpp = EMPTY;
-
-    tmp = *refE;
-
-    /* This needs to be corrected.  */
-    if ( tmp == NULL );
-    else {
-        while ( !isEmptyEdgeList( tmp->next ) ) {
-
-            /* If address of node == address stored in currentEdge -> fromNode.  */
-            if ( fromNode == ( tmp )->fromNode )
-                tmpp = tmp;
-
-            tmp = ( tmp )->next;
-        }
-    }
-    ( tmp )->edgeOutListNext = pte;
-    ( tmp )->edgeOutListPrev = tmpp;
-    ( pte )->edgeOutListNext = EMPTY;
-
-    return;
-
-}
-
-void printEdgeOutList( pointerToNode ptn )
-{
-    pointerToEdge tmp;
-
-    tmp = ( ptn )->edgeListOut;
-    while ( !isEmptyEdgeList( tmp ) ) {
-        printf( "Weight of edges coming out from node %s = %d\n",
-                ( ptn )->name, ( tmp )->w );
-
-        tmp = ( tmp )->edgeOutListNext;
-    }
-
-}
-
-/* edgeInList.  */

@@ -20,7 +20,7 @@ int main( void )
 
     insertNodeInHead( 10, head );
     insertNodeInHead( 20, head );
-    insertNodeInQueue( 99, head );
+    insertNodeInQueue( 10, head );
     insertNodeInQueue( 20, head );
     insertNodeInHead( 28, head );
     printDoubleLinkedList( head );
@@ -32,7 +32,7 @@ int main( void )
 
     i = 0;
     while ( foundedNodes[i] != EMPTY ) {
-        printf( "Node found! -> %i\n", foundedNodes[i]->el );
+        xtractNodeInMiddle( foundedNodes[i] ) );
         i = i + 1;
     }
 

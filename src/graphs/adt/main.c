@@ -13,76 +13,61 @@
 
 int main( void )
 {
-    referenceToNodePointer headOfNodeList;
-    referenceToEdgePointer headOfEdgeList;
-    pointerToNode zero, one, two;
-    pointerToEdge firstEdge, secondEdge, thirdEdge;
+    headPointer headOfNodeList;
+    headPointer headOfEdgeList;
+    nodePointer referenceToVertexNodes[10];
+    /*nodePointer referenceToEdgeNodes[10]; */
 
 
-    /* Get the correct amount of space for the headPointer variable. */
-    if ( ( headOfNodeList =
-           malloc( sizeof( referenceToNodePointer * ) ) ) == NULL )
+    if ( ( headOfNodeList = malloc( sizeof( nodePointer * ) ) ) == NULL )
         exit( EXIT_FAILURE );
 
-    if ( ( headOfEdgeList =
-           malloc( sizeof( referenceToEdgePointer * ) ) ) == NULL )
+    if ( ( headOfEdgeList = malloc( sizeof( nodePointer * ) ) ) == NULL )
         exit( EXIT_FAILURE );
 
-    /* Create node and edge lists.  */
-    newNodeList( headOfNodeList );
-    newEdgeList( headOfEdgeList );
 
-    /* Create three nodes.  */
-    zero = newNode( headOfNodeList, "zero" );
-    one = newNode( headOfNodeList, "one" );
-    two = newNode( headOfNodeList, "two" );
-
-    /* Pointer tests.  */
-    printf( "%s\n%s\n%s\n", ( *headOfNodeList )->name,
-            ( ( *headOfNodeList )->next )->name,
-            ( ( ( *headOfNodeList )->next )->next )->name );
-    printf( "%s\n",
-            ( ( ( ( ( *headOfNodeList )->next )->next )->prev )->
-              prev )->name );
+    initDoubleLinkedList( headOfNodeList );
+    initDoubleLinkedList( headOfEdgeList );
 
 
-    /* Create the first edge.  */
-    firstEdge = connectNodes( headOfEdgeList,
-                              headOfNodeList, one, zero, 10 );
+    referenceToVertexNodes[0] = newVertex( "zero", headOfNodeList );
+    /*referenceToVertexNodes[1] = newVertex( "one", headOfNodeList );
+       referenceToVertexNodes[2] = newVertex( "two", headOfNodeList ); */
 
-    printf( "firstEdge->weight = %d\n", ( firstEdge )->w );
-    printf( "firstEdge->fromNode = %s\n",
-            ( ( firstEdge )->fromNode )->name );
+    printf( "%s", referenceToVertexNodes[0]->name );
 
-
-    /* Create the second edge.  */
-    secondEdge = connectNodes( headOfEdgeList,
-                               headOfNodeList, zero, two, 3 );
-
-    printf( "secondEdge->weight = %d\n", ( secondEdge )->w );
-    printf( "secondEdge->fromNode = %s\n",
-            ( ( secondEdge )->fromNode )->name );
-    printf( "secondEdge->toNode = %s\n",
-            ( ( secondEdge )->toNode )->name );
+    /*printf( "lenght--> %d",
+       lengthDoubleLinkedList( referenceToVertexNodes
+       [0]->edgeListOut ) );
+       ( void ) referenceToVertexNodes;
+     */
+    /*
+       referenceToEdgeNodes[0] = connectNodes( headOfEdgeList,
+       headOfNodeList, referenceToVertexNodes[0] , referenceToVertexNodes[1], 10 );
 
 
-    /* Create the third edge.  */
-    thirdEdge = connectNodes( headOfEdgeList,
-                              headOfNodeList, two, one, 8 );
+       printf( "firstEdge->weight = %d\n", ( firstEdge )->w );
+       printf( "firstEdge->fromNode = %s\n",
+       ( ( firstEdge )->fromNode )->name );
 
-    ( void ) thirdEdge;
-    printf( "two->edgeListOut->weight = %d must be equal to 8\n",
-            ( ( two )->edgeListOut )->w );
 
-    printf( "twoAddr = %p\n", ( void * ) two->edgeListOut );
-    /* Create the fourth edge.  */
-    connectNodes( headOfEdgeList, headOfNodeList, two, zero, 5 );
-    printf( "twoAddr = %p\n", ( void * ) two->edgeListOut );
 
-    printEdgeOutList( zero );
-    printEdgeOutList( one );
-    printEdgeOutList( two );
+       referenceToEdgeNodes[1] = connectNodes( headOfEdgeList,
+       headOfNodeList, referenceToVertexNodes[0], referenceToVertexNodes[2], 3 );
 
+       printf( "secondEdge->weight = %d\n", ( secondEdge )->w );
+       printf( "secondEdge->fromNode = %s\n",
+       ( ( secondEdge )->fromNode )->name );
+       printf( "secondEdge->toNode = %s\n",
+       ( ( secondEdge )->toNode )->name );
+
+
+
+       referenceToEdgeNodes[2] = connectNodes( headOfEdgeList,
+       headOfNodeList, referenceToVertexNodes[2], referenceToVertexNodes[1], 8 );
+
+
+     */
     return 0;
 
 }

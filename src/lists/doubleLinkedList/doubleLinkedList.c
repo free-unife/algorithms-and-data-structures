@@ -72,8 +72,6 @@ void insertNodeInHead( element el, headPointer hp )
     dummy->next->prev = newNode;
     dummy->next = newNode;
 
-
-
     return;
 }
 
@@ -91,11 +89,10 @@ void insertNodeInQueue( element el, headPointer hp )
     newNode->el = el;
 
     /* fix list pointers */
-    newNode->next = dummy;
     newNode->prev = dummy->prev;
+    newNode->next = dummy;
     dummy->prev->next = newNode;
     dummy->prev = newNode;
-
 
     return;
 }
