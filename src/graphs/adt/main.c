@@ -16,7 +16,7 @@ int main( void )
     referenceToNodePointer headOfNodeList;
     referenceToEdgePointer headOfEdgeList;
     pointerToNode zero, one, two;
-    pointerToEdge firstEdge, secondEdge;
+    pointerToEdge firstEdge, secondEdge, thirdEdge;
 
 
     /* Get the correct amount of space for the headPointer variable. */
@@ -54,6 +54,7 @@ int main( void )
     printf( "firstEdge->fromNode = %s\n",
             ( ( firstEdge )->fromNode )->name );
 
+
     /* Create the second edge.  */
     secondEdge = connectNodes( headOfEdgeList,
                                headOfNodeList, zero, two, 3 );
@@ -63,6 +64,15 @@ int main( void )
             ( ( secondEdge )->fromNode )->name );
     printf( "secondEdge->toNode = %s\n",
             ( ( secondEdge )->toNode )->name );
+
+
+    /* Create the third edge.  */
+    thirdEdge = connectNodes( headOfEdgeList,
+                              headOfNodeList, two, one, 8 );
+
+    ( void ) thirdEdge;
+    printf( "two->edgeListOut->weight = %d must be equal to 8\n",
+            ( ( two )->edgeListOut )->w );
 
     return 0;
 

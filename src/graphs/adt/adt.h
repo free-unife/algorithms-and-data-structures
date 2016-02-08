@@ -90,3 +90,6 @@ pointerToEdge connectNodes( referenceToEdgePointer refE,
                             referenceToNodePointer headOfNodeList,
                             pointerToNode fromNode, pointerToNode toNode,
                             weight W );
+
+void updateEdgeOutList( pointerToNode fromNode,
+                        referenceToEdgePointer refE, pointerToEdge pte );

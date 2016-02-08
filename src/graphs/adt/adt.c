@@ -123,7 +123,8 @@ pointerToEdge connectNodes( referenceToEdgePointer refE,
     pointerToEdge eP;
 
     if ( isEmptyNodeList( *headOfNodeList ) ) {
-        printf( "Cannot connect 0 nodes.\n" );
+        printf
+            ( "At least two nodes must exist in order to connect them.\n" );
         exit( EXIT_FAILURE );
     }
 
@@ -133,8 +134,47 @@ pointerToEdge connectNodes( referenceToEdgePointer refE,
     ( eP )->toNode = toNode;
 
     /* Update edge out and in proprieties */
-    /* TODO */
+    updateEdgeOutList( fromNode, refE, eP );
 
+
+    /* Update fromNode -> listOut */
+    ( fromNode )->edgeListOut = eP;
+    /* Update toNode -> listIn */
+    ( toNode )->edgeListIn = eP;
 
     return eP;
+
 }
+
+/* There can be n edgeOut and edgeIn lists.  */
+
+/* Find edges in the edge list which have the same value in the fromNode
+ * field. The next Edge in that list is the pointerToEdge variable passed to
+ * the function. */
+/* edgeOutList.  */
+void updateEdgeOutList( pointerToNode fromNode,
+                        referenceToEdgePointer refE, pointerToEdge pte )
+{
+    /* tmpp is the last valid edge.  */
+    pointerToEdge tmp, tmpp = EMPTY;
+
+    tmp = *refE;
+    while ( !isEmptyEdgeList( tmp->next ) ) {
+
+        /* If address of node == address stored in currentEdge -> fromNode.  */
+        if ( fromNode == ( tmp )->fromNode )
+            tmpp = tmp;
+
+        tmp = ( tmp )->next;
+    }
+
+    ( tmp )->edgeOutListNext = pte;
+    ( tmp )->edgeOutListPrev = tmpp;
+    ( pte )->edgeOutListNext = EMPTY;
+
+    return;
+
+}
+
+
+/* edgeInList.  */
