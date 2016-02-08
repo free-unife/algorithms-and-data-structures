@@ -42,8 +42,8 @@ int main( void )
             ( ( *headOfNodeList )->next )->name,
             ( ( ( *headOfNodeList )->next )->next )->name );
     printf( "%s\n",
-            ( ( ( ( ( *headOfNodeList )->next )->next )->prev )->prev )->
-            name );
+            ( ( ( ( ( *headOfNodeList )->next )->next )->prev )->
+              prev )->name );
 
 
     /* Create the first edge.  */
@@ -73,6 +73,15 @@ int main( void )
     ( void ) thirdEdge;
     printf( "two->edgeListOut->weight = %d must be equal to 8\n",
             ( ( two )->edgeListOut )->w );
+
+    printf( "twoAddr = %p\n", ( void * ) two->edgeListOut );
+    /* Create the fourth edge.  */
+    connectNodes( headOfEdgeList, headOfNodeList, two, zero, 5 );
+    printf( "twoAddr = %p\n", ( void * ) two->edgeListOut );
+
+    printEdgeOutList( zero );
+    printEdgeOutList( one );
+    printEdgeOutList( two );
 
     return 0;
 

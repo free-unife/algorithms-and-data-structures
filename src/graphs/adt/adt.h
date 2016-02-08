@@ -93,3 +93,5 @@ pointerToEdge connectNodes( referenceToEdgePointer refE,
 
 void updateEdgeOutList( pointerToNode fromNode,
                         referenceToEdgePointer refE, pointerToEdge pte );
+
+void printEdgeOutList( pointerToNode ptn );

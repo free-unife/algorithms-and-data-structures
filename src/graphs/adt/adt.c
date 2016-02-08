@@ -159,15 +159,19 @@ void updateEdgeOutList( pointerToNode fromNode,
     pointerToEdge tmp, tmpp = EMPTY;
 
     tmp = *refE;
-    while ( !isEmptyEdgeList( tmp->next ) ) {
 
-        /* If address of node == address stored in currentEdge -> fromNode.  */
-        if ( fromNode == ( tmp )->fromNode )
-            tmpp = tmp;
+    /* This needs to be corrected.  */
+    if ( tmp == NULL );
+    else {
+        while ( !isEmptyEdgeList( tmp->next ) ) {
 
-        tmp = ( tmp )->next;
+            /* If address of node == address stored in currentEdge -> fromNode.  */
+            if ( fromNode == ( tmp )->fromNode )
+                tmpp = tmp;
+
+            tmp = ( tmp )->next;
+        }
     }
-
     ( tmp )->edgeOutListNext = pte;
     ( tmp )->edgeOutListPrev = tmpp;
     ( pte )->edgeOutListNext = EMPTY;
@@ -176,5 +180,18 @@ void updateEdgeOutList( pointerToNode fromNode,
 
 }
 
+void printEdgeOutList( pointerToNode ptn )
+{
+    pointerToEdge tmp;
+
+    tmp = ( ptn )->edgeListOut;
+    while ( !isEmptyEdgeList( tmp ) ) {
+        printf( "Weight of edges coming out from node %s = %d\n",
+                ( ptn )->name, ( tmp )->w );
+
+        tmp = ( tmp )->edgeOutListNext;
+    }
+
+}
 
 /* edgeInList.  */
