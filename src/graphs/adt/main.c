@@ -16,7 +16,7 @@ int main( void )
     headPointer headOfNodeList;
     headPointer headOfEdgeList;
     nodePointer referenceToVertexNodes[10];
-    /*nodePointer referenceToEdgeNodes[10]; */
+    nodePointer referenceToEdgeNodes[10];
 
 
     if ( ( headOfNodeList = malloc( sizeof( nodePointer * ) ) ) == NULL )
@@ -31,20 +31,29 @@ int main( void )
 
 
     referenceToVertexNodes[0] = newVertex( "zero", headOfNodeList );
-    /*referenceToVertexNodes[1] = newVertex( "one", headOfNodeList );
-       referenceToVertexNodes[2] = newVertex( "two", headOfNodeList ); */
+    referenceToVertexNodes[1] = newVertex( "one", headOfNodeList );
+    referenceToVertexNodes[2] = newVertex( "two", headOfNodeList );
 
-    printf( "%s", referenceToVertexNodes[0]->name );
 
-    /*printf( "lenght--> %d",
-       lengthDoubleLinkedList( referenceToVertexNodes
-       [0]->edgeListOut ) );
-       ( void ) referenceToVertexNodes;
-     */
-    /*
-       referenceToEdgeNodes[0] = connectNodes( headOfEdgeList,
-       headOfNodeList, referenceToVertexNodes[0] , referenceToVertexNodes[1], 10 );
+    ( void ) referenceToVertexNodes;
 
+    referenceToEdgeNodes[0] = connectNodes( headOfEdgeList,
+                                            referenceToVertexNodes[0],
+                                            referenceToVertexNodes[1],
+                                            10 );
+
+    printf( "lenght of outEdgeList[0] = %d\n",
+            lengthDoubleLinkedList( referenceToVertexNodes
+                                    [0]->edgeListOut ) );
+
+/*    printf( "lenght of inEdgeList[0] = %d\n",
+            lengthDoubleLinkedList( referenceToVertexNodes
+                                    [0]->edgeListIn ) );
+*/
+
+    ( void ) referenceToEdgeNodes;
+
+/*
 
        printf( "firstEdge->weight = %d\n", ( firstEdge )->w );
        printf( "firstEdge->fromNode = %s\n",

@@ -59,6 +59,8 @@ struct graphElement {
     nodePointer fromNode;
     nodePointer toNode;
 
+    nodePointer nextEdge;
+    nodePointer prevEdge;
     /* Common part */
 
     /* All the nodes are connected to each other by a double linked list.
@@ -67,11 +69,10 @@ struct graphElement {
     struct graphElement *next;
 };
 
+
 void initDoubleLinkedList( headPointer hp );
 int lengthDoubleLinkedList( headPointer hp );
 boolean isDoubleLinkedListEmpty( headPointer hp );
-void insertNodeInHead( element el, headPointer hp );
-void insertNodeInQueue( element el, headPointer hp );
 void printDoubleLinkedList( headPointer hp );
 element extractNodeInHead( headPointer hp );
 element extractNodeInQueue( headPointer hp );
@@ -81,7 +82,14 @@ headPointer freeDoubleLinkedList( headPointer hp );
 
 nodePointer newEdge( weight w, nodePointer fromNode, nodePointer toNode,
                      headPointer hp );
+
 nodePointer newVertex( char *name, headPointer hp );
+
+nodePointer connectNodes( headPointer edgehp,
+                          nodePointer fromNode, nodePointer toNode,
+                          weight w );
+
+void insertNodeInQueue( headPointer hp, nodePointer np );
 /* Function Prototypes.
 boolean isEmptyNodeList( pointerToNode ptn );
 boolean isEmptyEdgeList( pointerToEdge pte );
@@ -92,10 +100,6 @@ void newEdgeList( referenceToEdgePointer refE );
 pointerToNode newNode( referenceToNodePointer refN, char *nodeName );
 pointerToEdge newEdge( referenceToEdgePointer refE, weight W );
 
-pointerToEdge connectNodes( referenceToEdgePointer refE,
-                            referenceToNodePointer headOfNodeList,
-                            pointerToNode fromNode, pointerToNode toNode,
-                            weight W );
 
 void updateEdgeOutList( pointerToNode fromNode,
                         referenceToEdgePointer refE, pointerToEdge pte );

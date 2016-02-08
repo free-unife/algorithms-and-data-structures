@@ -16,14 +16,12 @@
 void initDoubleLinkedList( headPointer hp )
 {
     /* insert a dummy node */
-    *hp = malloc( sizeof( sizeof( struct graphElement ) ) );
+    *hp = malloc( sizeof( struct graphElement ) );
 
     /* setup his next and prec pointers to itself */
     ( *hp )->next = ( *hp );
     ( *hp )->prev = ( *hp );
 
-    printf( "next = %p  prev = %p\n", ( void * ) ( *hp )->next,
-            ( void * ) ( *hp )->prev );
     return;
 }
 
@@ -41,6 +39,7 @@ int lengthDoubleLinkedList( headPointer hp )
     while ( succNode != refToDummy ) {
         succNode = succNode->next;
         size = size + 1;
+        printf( "In In\n" );
     }
 
     return size;
@@ -62,17 +61,16 @@ nodePointer newVertex( char *name, headPointer hp )
     if ( ( newNode = malloc( sizeof( struct graphElement ) ) ) == NULL )
         exit( EXIT_FAILURE );
 
-    /* insert his element */
+    /* Insert vetex name.  */
     newNode->name = name;
+
     newNode->edgeListOut = malloc( sizeof( nodePointer * ) );
     initDoubleLinkedList( newNode->edgeListOut );
-    printf( "\n\nnext = %p  prev = %p\n\n",
-            ( void * ) ( *( newNode->edgeListOut ) )->next,
-            ( void * ) ( *( newNode->edgeListOut ) )->prev );
+
     newNode->edgeListIn = malloc( sizeof( nodePointer * ) );
     initDoubleLinkedList( newNode->edgeListIn );
 
-    /* fix list pointers */
+    /* Fix list pointers.  */
     newNode->prev = dummy->prev;
     newNode->next = dummy;
     dummy->prev->next = newNode;
@@ -81,7 +79,7 @@ nodePointer newVertex( char *name, headPointer hp )
     return newNode;
 }
 
-/* Insert a vertex before the dummy node */
+/* Insert an edge before the dummy node */
 nodePointer newEdge( weight w, nodePointer fromNode, nodePointer toNode,
                      headPointer hp )
 {
@@ -92,16 +90,45 @@ nodePointer newEdge( weight w, nodePointer fromNode, nodePointer toNode,
     if ( ( newNode = malloc( sizeof( struct graphElement ) ) ) == NULL )
         exit( EXIT_FAILURE );
 
-    /* insert his element */
+    /* Insert edge info.  */
     newNode->w = w;
     newNode->fromNode = fromNode;
     newNode->toNode = toNode;
 
-    /* fix list pointers */
+    /* Fix list pointers.  */
     newNode->prev = dummy->prev;
     newNode->next = dummy;
     dummy->prev->next = newNode;
     dummy->prev = newNode;
 
     return newNode;
+}
+
+nodePointer connectNodes( headPointer edgehp,
+                          nodePointer fromNode, nodePointer toNode,
+                          weight w )
+{
+    nodePointer edgeP;
+
+    edgeP = newEdge( w, fromNode, toNode, edgehp );
+
+    /* from -> out && to -> In.  */
+    insertNodeInQueue( fromNode->edgeListOut, edgeP );
+    insertNodeInQueue( toNode->edgeListIn, edgeP );
+
+    return edgeP;
+}
+
+void insertNodeInQueue( headPointer hp, nodePointer np )
+{
+    nodePointer dummy = *hp;
+
+
+    /* fix list pointers */
+    np->prev = dummy->prev;
+    np->next = dummy;
+    dummy->prev->next = np;
+    dummy->prev = np;
+
+    return;
 }
