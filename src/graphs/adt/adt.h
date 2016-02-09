@@ -59,9 +59,9 @@ struct graphElement {
     nodePointer fromNode;
     nodePointer toNode;
 
-    nodePointer nextEdge;
-    nodePointer prevEdge;
     /* Common part */
+
+    nodePointer edgeAddr;
 
     /* All the nodes are connected to each other by a double linked list.
      * This makes adding and deleting new nodes less time consuming.  */

@@ -39,7 +39,6 @@ int lengthDoubleLinkedList( headPointer hp )
     while ( succNode != refToDummy ) {
         succNode = succNode->next;
         size = size + 1;
-        printf( "In In\n" );
     }
 
     return size;
@@ -122,13 +121,19 @@ nodePointer connectNodes( headPointer edgehp,
 void insertNodeInQueue( headPointer hp, nodePointer np )
 {
     nodePointer dummy = *hp;
+    nodePointer newNode;
 
+
+    if ( ( newNode = malloc( sizeof( struct graphElement ) ) ) == NULL )
+        exit( EXIT_FAILURE );
+
+    newNode->edgeAddr = np;
 
     /* fix list pointers */
-    np->prev = dummy->prev;
-    np->next = dummy;
-    dummy->prev->next = np;
-    dummy->prev = np;
+    newNode->prev = dummy->prev;
+    newNode->next = dummy;
+    dummy->prev->next = newNode;
+    dummy->prev = newNode;
 
     return;
 }
