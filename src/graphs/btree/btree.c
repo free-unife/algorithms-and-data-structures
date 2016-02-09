@@ -12,24 +12,26 @@
 #endif
 
 
-/* TODO */
-
 boolean emptyTree( tRoot t )
 {
     return ( t == EMPTY );
 }
 
-
-/* DO ALL THE CASES! */
 tRoot constree( element e, tRoot leftTree, tRoot rightTree )
 {
 
-    tRoot root;
+    tRoot root = EMPTYTREE;
 
     /* if there's no left and right three, make a new tree */
-    if ( ( leftTree == EMPTYTREE ) && ( rightTree == EMPTYTREE ) ) {
-
+    if ( emptyTree (leftTree ) && emptyTree ( rightTree) ) {
         root = newVertex( e, EMPTY );
+    }
+    else if ( emptyTree (rightTree) ) {
+        root = newVertex (e, leftTree->pointerToVertexHead);
+        connectVertex (leftTree->pointerToEdgeHead, root, leftTree, 0);
+    }
+    else if (emptyTree (leftTree)) {
+        printf ("Left tree cannot be empty if right tree is not empty!\n");
     }
     /* otherwise make new vertex as root and two trees as son  */
     else {
