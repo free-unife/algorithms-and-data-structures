@@ -13,25 +13,31 @@
 
 int main( void )
 {
+    tRoot test = EMPTYTREE;
+
+    test = constree( "CIAO", EMPTYTREE, EMPTYTREE );
+
+    printf( "test = %p\n", ( void * ) test );
+    ( void ) test;
     /*
-    headPointer headOfVertexList;
-    headPointer headOfEdgeList;
-    nodePointer referenceToVertexNodes[10];
-    nodePointer referenceToEdgeNodes[10];
-    tPointer tp;
+       headPointer headOfVertexList;
+       headPointer headOfEdgeList;
+       nodePointer referenceToVertexNodes[10];
+       nodePointer referenceToEdgeNodes[10];
+       tPointer tp;
 
-    if ( ( headOfVertexList = malloc( sizeof( nodePointer * ) ) ) == NULL )
-        exit( EXIT_FAILURE );
+       if ( ( headOfVertexList = malloc( sizeof( nodePointer * ) ) ) == NULL )
+       exit( EXIT_FAILURE );
 
-    if ( ( headOfEdgeList = malloc( sizeof( nodePointer * ) ) ) == NULL )
-        exit( EXIT_FAILURE );
+       if ( ( headOfEdgeList = malloc( sizeof( nodePointer * ) ) ) == NULL )
+       exit( EXIT_FAILURE );
 
 
-    initTree (tp);
+       initTree (tp);
 
-    initDoubleLinkedList( headOfVertexList );
-    initDoubleLinkedList( headOfEdgeList );
-    */
+       initDoubleLinkedList( headOfVertexList );
+       initDoubleLinkedList( headOfEdgeList );
+     */
 
     /*  Dummy example: */
     /*  printf( "w = %d\n", ( ( ( *( referenceToVertexNodes[1]->edgeListIn ) ) ->next )->edgeAddr )->w );  */

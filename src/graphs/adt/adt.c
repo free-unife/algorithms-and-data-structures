@@ -98,14 +98,12 @@ nodePointer newVertex( char *name, headPointer hp )
     nodePointer dummy;
     nodePointer newNode;
 
-    if( hp == EMPTY ){
+    if ( hp == EMPTY ) {
         if ( ( hp = malloc( sizeof( nodePointer * ) ) ) == NULL )
-        exit( EXIT_FAILURE );
-    
+            exit( EXIT_FAILURE );
+
         initDoubleLinkedList( hp );
     }
-
-
 
     dummy = *hp;
 
@@ -148,10 +146,10 @@ nodePointer newEdge( weight w, nodePointer fromNode, nodePointer toNode,
     nodePointer dummy;
     nodePointer newNode;
 
-    if( hp == EMPTY ){
+    if ( hp == EMPTY ) {
         if ( ( hp = malloc( sizeof( nodePointer * ) ) ) == NULL )
-        exit( EXIT_FAILURE );
-    
+            exit( EXIT_FAILURE );
+
         initDoubleLinkedList( hp );
     }
 

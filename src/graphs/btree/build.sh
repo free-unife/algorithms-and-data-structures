@@ -9,7 +9,7 @@
 #
 
 
-paths="btree.c ../adt/adt.c"
+paths="btree.c main.c ../adt/adt.c"
 output="btree.o"
 
 ../mainBuild.sh "$paths" "$output"
