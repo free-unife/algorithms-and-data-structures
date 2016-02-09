@@ -52,6 +52,8 @@ struct graphElement {
     headPointer edgeListIn;
 
 
+    headPointer pointerToVertexHead;
+
     /* Edge part */
 
     /* Usually an edge weight is positive, but in some cases it can be
@@ -66,6 +68,9 @@ struct graphElement {
 
     /* Element of edgeListOut or edgeListIn */
     nodePointer edgeAddr;
+
+
+    headPointer pointerToEdgeHead;
 
     /* All the nodes are connected to each other by a double linked list.
      * This makes adding and deleting new nodes less time consuming.  */

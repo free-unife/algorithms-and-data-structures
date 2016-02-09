@@ -112,6 +112,7 @@ nodePointer newVertex( char *name, headPointer hp )
 
     /* Insert vetex name.  */
     newNode->name = name;
+    newNode->pointerToVertexHead = hp;
 
     newNode->edgeListOut = malloc( sizeof( nodePointer * ) );
     initDoubleLinkedList( newNode->edgeListOut );
@@ -154,6 +155,8 @@ nodePointer newEdge( weight w, nodePointer fromNode, nodePointer toNode,
     newNode->w = w;
     newNode->fromNode = fromNode;
     newNode->toNode = toNode;
+
+    newNode->pointerToEdgeHead = hp;
 
     /* Fix list pointers.  */
     newNode->prev = dummy->prev;

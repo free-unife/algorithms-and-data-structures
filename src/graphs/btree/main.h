@@ -6,24 +6,17 @@
  */
 
 
-#ifndef TREE_H
-#define TREE_H
-#include "btree.h"
+#ifndef LISTE_H
+#define LISTE_H
+#include "adt.h"
 #endif
 
+#ifndef STDLIB
+#define STDLIB
+#include <stdlib.h>
+#endif
 
-/* TODO */
-
-boolean emptyTree( tRoot t )
-{
-    return ( t == EMPTY );
-}
-
-tRoot constree( element e, tRoot leftTree, tRoot rightTree )
-{
-
-    newNode = newVertex( e, ? );
-    connectVertex( ?, newNode, leftTree, 0 )
-        connectVertex( ?, newNode, rightTree, 0 )
-
-}
+#ifndef STDIO
+#define STDIO
+#include <stdio.h>
+#endif
