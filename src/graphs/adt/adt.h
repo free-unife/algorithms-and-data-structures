@@ -22,6 +22,10 @@
 #include <assert.h>
 #endif
 
+#ifndef STRING
+#define STRING
+#include <string.h>
+#endif
 
 /* Definitions.  */
 #define false 0
@@ -61,6 +65,7 @@ struct graphElement {
 
     /* Common part */
 
+    /* Element of edgeListOut or edgeListIn */
     nodePointer edgeAddr;
 
     /* All the nodes are connected to each other by a double linked list.
@@ -86,10 +91,16 @@ nodePointer newEdge( weight w, nodePointer fromNode, nodePointer toNode,
 
 nodePointer newVertex( char *name, headPointer hp );
 
-nodePointer connectNodes( headPointer edgehp,
+nodePointer connectVertex( headPointer edgehp,
                           nodePointer fromNode, nodePointer toNode,
                           weight w );
 
+
+void insertEdgeInList( nodePointer np, headPointer hp );
+nodePointer *searchEdge( nodePointer fromNode, nodePointer toNode, headPointer hp );
+nodePointer *searchVertex( char * nameToSearch, headPointer hp );
+
 void insertNodeInQueue( headPointer hp, nodePointer np );
+
 
 void printNodeEdges( headPointer hp );

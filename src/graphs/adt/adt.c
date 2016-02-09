@@ -50,11 +50,95 @@ boolean isDoubleLinkedListEmpty( headPointer hp )
     return lengthDoubleLinkedList( hp ) == 0 ? true : false;
 }
 
+nodePointer *searchVertex( char * nameToSearch, headPointer hp )
+{
+
+    /* save the reference of dummy node */
+    nodePointer refToDummy = *hp;
+    nodePointer succNode = ( *hp )->next;
+    nodePointer *foundedNodes;
+    nodePointer **toReturn;
+
+    int lenghOfList = lengthDoubleLinkedList( hp );
+    int i;
+
+    /* Initialize the array */
+    if ( ( foundedNodes =
+           malloc( lenghOfList * sizeof( struct graphElement ) )  ) ==
+         NULL )
+        exit( EXIT_FAILURE );
+
+    for ( i = 0; i < lenghOfList; ++i ) {
+        foundedNodes[i] = EMPTY;
+    }
+
+    toReturn = &foundedNodes;
+
+    /* Begin scan */
+    i = 0;
+    while ( succNode != refToDummy ) {
+        if ( strcmp(succNode->name, nameToSearch ) == 0 ) {
+            foundedNodes[i] = succNode;
+            i = i + 1;
+        }
+        succNode = succNode->next;
+    }
+
+    return *toReturn;
+}
+
+nodePointer *searchEdge( nodePointer fromNode, nodePointer toNode, headPointer hp )
+{
+
+    /* save the reference of dummy node */
+    nodePointer refToDummy = *hp;
+    nodePointer succNode = ( *hp )->next;
+    nodePointer *foundedNodes;
+    nodePointer **toReturn;
+
+    int lenghOfList = lengthDoubleLinkedList( hp );
+    int i;
+
+    /* Initialize the array */
+    if ( ( foundedNodes =
+           malloc( lenghOfList * sizeof( struct graphElement ) ) ) ==
+         NULL )
+        exit( EXIT_FAILURE );
+
+    for ( i = 0; i < lenghOfList; ++i ) {
+        foundedNodes[i] = EMPTY;
+    }
+
+    toReturn = &foundedNodes;
+
+    /* Begin scan */
+    i = 0;
+    while ( succNode != refToDummy ) {
+        if ( (succNode->fromNode == fromNode) && (succNode->toNode == toNode)) {
+            foundedNodes[i] = succNode;
+            i = i + 1;
+        }
+        succNode = succNode->next;
+    }
+
+    return *toReturn;
+}
+
 /* Insert a vertex before the dummy node */
 nodePointer newVertex( char *name, headPointer hp )
 {
+    nodePointer *foundedVertex;
     nodePointer dummy = *hp;
     nodePointer newNode;
+
+
+
+    /* every edge node in list must have an atomic value  */
+    foundedVertex = searchVertex( name , hp );
+    if( foundedVertex[0] != EMPTY ){
+        printf("This vertex already exist! Pay Attention!\n\n");
+        return foundedVertex[0];
+    }
 
     /* allocate memory for the node */
     if ( ( newNode = malloc( sizeof( struct graphElement ) ) ) == NULL )
@@ -82,8 +166,17 @@ nodePointer newVertex( char *name, headPointer hp )
 nodePointer newEdge( weight w, nodePointer fromNode, nodePointer toNode,
                      headPointer hp )
 {
+    nodePointer *foundedEgde;
     nodePointer dummy = *hp;
     nodePointer newNode;
+
+    /* every edge node in list must have an atomic value */
+    foundedEgde = searchEdge( fromNode,toNode, hp );
+    if( foundedEgde[0] != EMPTY ){
+        printf("This edge already exist! Pay Attention!\n\n");
+        return foundedEgde[0];
+    }
+    
 
     /* allocate memory for the node */
     if ( ( newNode = malloc( sizeof( struct graphElement ) ) ) == NULL )
@@ -103,7 +196,7 @@ nodePointer newEdge( weight w, nodePointer fromNode, nodePointer toNode,
     return newNode;
 }
 
-nodePointer connectNodes( headPointer edgehp,
+nodePointer connectVertex( headPointer edgehp,
                           nodePointer fromNode, nodePointer toNode,
                           weight w )
 {
@@ -112,13 +205,13 @@ nodePointer connectNodes( headPointer edgehp,
     edgeP = newEdge( w, fromNode, toNode, edgehp );
 
     /* from -> out && to -> In.  */
-    insertNodeInQueue( fromNode->edgeListOut, edgeP );
-    insertNodeInQueue( toNode->edgeListIn, edgeP );
+    insertEdgeInList( edgeP, fromNode->edgeListOut );
+    insertEdgeInList(  edgeP , toNode->edgeListIn);
 
     return edgeP;
 }
 
-void insertNodeInQueue( headPointer hp, nodePointer np )
+void insertEdgeInList(  nodePointer np ,headPointer hp )
 {
     nodePointer dummy = *hp;
     nodePointer newNode;

@@ -35,35 +35,46 @@ int main( void )
     referenceToVertexNodes[2] = newVertex( "Rovigo", headOfVertexList );
     referenceToVertexNodes[3] = newVertex( "Ravenna", headOfVertexList );
     referenceToVertexNodes[4] = newVertex( "Mantova", headOfVertexList );
+    referenceToVertexNodes[4] = newVertex( "Mantova", headOfVertexList );
 
 
-    referenceToEdgeNodes[0] = connectNodes( headOfEdgeList,
+    referenceToEdgeNodes[0] = connectVertex( headOfEdgeList,
                                             referenceToVertexNodes[0],
                                             referenceToVertexNodes[1],
                                             47 );
 
-    referenceToEdgeNodes[1] = connectNodes( headOfEdgeList,
+    referenceToEdgeNodes[1] = connectVertex( headOfEdgeList,
                                             referenceToVertexNodes[0],
                                             referenceToVertexNodes[2],
                                             33 );
 
-    referenceToEdgeNodes[2] = connectNodes( headOfEdgeList,
+    referenceToEdgeNodes[2] = connectVertex( headOfEdgeList,
                                             referenceToVertexNodes[0],
                                             referenceToVertexNodes[3],
                                             75 );
 
-    referenceToEdgeNodes[3] = connectNodes( headOfEdgeList,
+
+    referenceToEdgeNodes[3] = connectVertex( headOfEdgeList,
                                             referenceToVertexNodes[0],
                                             referenceToVertexNodes[4],
                                             93 );
 
-    referenceToEdgeNodes[4] = connectNodes( headOfEdgeList,
+    referenceToEdgeNodes[4] = connectVertex( headOfEdgeList,
                                             referenceToVertexNodes[4],
                                             referenceToVertexNodes[2],
                                             50 );
 
+    referenceToEdgeNodes[4] = connectVertex( headOfEdgeList,
+                                            referenceToVertexNodes[4],
+                                            referenceToVertexNodes[2],
+                                            50 );
+
+
     printf( "lenght of vertexList = %d\n",
             lengthDoubleLinkedList( headOfVertexList ) );
+
+     printf( "lenght of edgeList = %d\n",
+            lengthDoubleLinkedList( headOfEdgeList ) );
 
     printf( "lenght of outEdgeList[0] = %d\n",
             lengthDoubleLinkedList( referenceToVertexNodes
