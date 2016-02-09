@@ -98,8 +98,6 @@ nodePointer newVertex( char *name, headPointer hp )
     nodePointer dummy = *hp;
     nodePointer newNode;
 
-
-
     /* every edge node in list must have an atomic value  */
     foundVertex = searchVertex( name, hp );
     if ( foundVertex != EMPTY ) {
@@ -243,23 +241,24 @@ void freeDoubleLinkedList( headPointer hp )
     }
     free( *hp );
     *hp = EMPTY;
-    
+
     return;
 }
 
 /* Free all the graph given the vertex list */
-void freeGraph( headPointer headVertexList, headPointer headEdgeList ){
+void freeGraph( headPointer headVertexList, headPointer headEdgeList )
+{
 
     nodePointer dummyVertex = *headVertexList;
     nodePointer thisVertex = dummyVertex->next;
 
-    /* free all the Edge List*/
+    /* free all the Edge List */
     freeDoubleLinkedList( headEdgeList );
 
     /* free all in and out edge list for each node */
-    while( thisVertex != dummyVertex ) {
+    while ( thisVertex != dummyVertex ) {
 
-        freeDoubleLinkedList( thisVertex->edgeListOut);
+        freeDoubleLinkedList( thisVertex->edgeListOut );
         freeDoubleLinkedList( thisVertex->edgeListIn );
 
         thisVertex = thisVertex->next;

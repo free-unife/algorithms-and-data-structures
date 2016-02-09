@@ -34,7 +34,6 @@
 
 /* New datatype.  */
 typedef int boolean;
-typedef int element;
 typedef int weight;
 
 /* nodePointer is a pointer to struct physicalNode */

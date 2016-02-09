@@ -98,7 +98,7 @@ int main( void )
     printNodeEdges( referenceToVertexNodes[1]->edgeListIn );
     printNodeEdges( referenceToVertexNodes[4]->edgeListOut );
 
-    freeGraph( headOfVertexList, headOfEdgeList);
+    freeGraph( headOfVertexList, headOfEdgeList );
     /*  Dummy example: */
     /*  printf( "w = %d\n", ( ( ( *( referenceToVertexNodes[1]->edgeListIn ) ) ->next )->edgeAddr )->w );  */
 
