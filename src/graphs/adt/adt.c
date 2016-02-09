@@ -220,3 +220,53 @@ void printNodeEdges( headPointer hp )
 
     return;
 }
+
+/* free the node after dummy  */
+void freeNodeInHead( headPointer hp )
+{
+    nodePointer dummy = *hp;
+    nodePointer toDelete = dummy->next;
+
+    /* Fix pointers */
+    dummy->next = toDelete->next;
+    toDelete->next->prev = dummy;
+
+    free( toDelete );
+
+    return;
+}
+
+void freeDoubleLinkedList( headPointer hp )
+{
+    while ( lengthDoubleLinkedList( hp ) > 0 ) {
+        freeNodeInHead( hp );
+    }
+    free( *hp );
+    *hp = EMPTY;
+    
+    return;
+}
+
+/* Free all the graph given the vertex list */
+void freeGraph( headPointer headVertexList, headPointer headEdgeList ){
+
+    nodePointer dummyVertex = *headVertexList;
+    nodePointer thisVertex = dummyVertex->next;
+
+    /* free all the Edge List*/
+    freeDoubleLinkedList( headEdgeList );
+
+    /* free all in and out edge list for each node */
+    while( thisVertex != dummyVertex ) {
+
+        freeDoubleLinkedList( thisVertex->edgeListOut);
+        freeDoubleLinkedList( thisVertex->edgeListIn );
+
+        thisVertex = thisVertex->next;
+    }
+
+    /* free all the Vertex List */
+    freeDoubleLinkedList( headVertexList );
+
+    return;
+}

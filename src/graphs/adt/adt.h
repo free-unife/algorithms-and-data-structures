@@ -105,5 +105,10 @@ nodePointer searchVertex( char *nameToSearch, headPointer hp );
 
 void insertNodeInQueue( headPointer hp, nodePointer np );
 
-
 void printNodeEdges( headPointer hp );
+
+void freeNodeInHead( headPointer hp );
+
+void freeDoubleLinkedList( headPointer hp );
+
+void freeGraph( headPointer headVertexList, headPointer headEdgeList );
