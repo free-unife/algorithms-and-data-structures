@@ -13,6 +13,7 @@
 
 int main( void )
 {
+    /*
     headPointer headOfVertexList;
     headPointer headOfEdgeList;
     nodePointer referenceToVertexNodes[10];
@@ -30,7 +31,7 @@ int main( void )
 
     initDoubleLinkedList( headOfVertexList );
     initDoubleLinkedList( headOfEdgeList );
-
+    */
 
     /*  Dummy example: */
     /*  printf( "w = %d\n", ( ( ( *( referenceToVertexNodes[1]->edgeListIn ) ) ->next )->edgeAddr )->w );  */

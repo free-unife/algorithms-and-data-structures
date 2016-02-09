@@ -6,9 +6,9 @@
  */
 
 
-#ifndef LISTE_H
-#define LISTE_H
-#include "adt.h"
+#ifndef BTREE_H
+#define BTREE_H
+#include "btree.h"
 #endif
 
 #ifndef STDLIB

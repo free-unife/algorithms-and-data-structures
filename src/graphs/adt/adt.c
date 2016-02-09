@@ -95,8 +95,19 @@ nodePointer searchEdge( nodePointer fromNode, nodePointer toNode,
 nodePointer newVertex( char *name, headPointer hp )
 {
     nodePointer foundVertex;
-    nodePointer dummy = *hp;
+    nodePointer dummy;
     nodePointer newNode;
+
+    if( hp == EMPTY ){
+        if ( ( hp = malloc( sizeof( nodePointer * ) ) ) == NULL )
+        exit( EXIT_FAILURE );
+    
+        initDoubleLinkedList( hp );
+    }
+
+
+
+    dummy = *hp;
 
     /* every edge node in list must have an atomic value  */
     foundVertex = searchVertex( name, hp );
@@ -134,8 +145,17 @@ nodePointer newEdge( weight w, nodePointer fromNode, nodePointer toNode,
                      headPointer hp )
 {
     nodePointer foundEgde;
-    nodePointer dummy = *hp;
+    nodePointer dummy;
     nodePointer newNode;
+
+    if( hp == EMPTY ){
+        if ( ( hp = malloc( sizeof( nodePointer * ) ) ) == NULL )
+        exit( EXIT_FAILURE );
+    
+        initDoubleLinkedList( hp );
+    }
+
+    dummy = *hp;
 
     /* every edge node in list must have an atomic value */
     foundEgde = searchEdge( fromNode, toNode, hp );

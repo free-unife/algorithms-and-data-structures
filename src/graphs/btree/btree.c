@@ -22,8 +22,15 @@ boolean emptyTree( tRoot t )
 tRoot constree( element e, tRoot leftTree, tRoot rightTree )
 {
 
-    newNode = newVertex( e, ? );
-    connectVertex( ?, newNode, leftTree, 0 )
-        connectVertex( ?, newNode, rightTree, 0 )
+    if( (leftTree == EMPTYTREE) && (rightTree == EMPTYTREE) ){
 
+    	tRoot root;
+
+    	root = newVertex(e, EMPTY);
+
+
+    	return root;
+    }
+
+    return NULL;
 }
