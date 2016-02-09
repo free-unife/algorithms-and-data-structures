@@ -50,7 +50,6 @@ typedef headPointer tPointer;
 
 /* Check if a tree is empty.  */
 boolean emptyTree( tRoot t );
-/*boolean isDoubleLinkedListEmpty( headPointer hp )*/
 
 /* Add node as new root of left and right tree.  */
 tRoot constree( element e, tRoot leftTree, tRoot rightTree );

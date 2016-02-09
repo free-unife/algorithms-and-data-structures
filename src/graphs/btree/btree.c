@@ -23,15 +23,17 @@ tRoot constree( element e, tRoot leftTree, tRoot rightTree )
     tRoot root = EMPTYTREE;
 
     /* if there's no left and right three, make a new tree */
-    if ( emptyTree (leftTree ) && emptyTree ( rightTree) ) {
+    if ( emptyTree( leftTree ) && emptyTree( rightTree ) ) {
         root = newVertex( e, EMPTY );
-    }
-    else if ( emptyTree (rightTree) ) {
-        root = newVertex (e, leftTree->pointerToVertexHead);
-        connectVertex (leftTree->pointerToEdgeHead, root, leftTree, 0);
-    }
-    else if (emptyTree (leftTree)) {
-        printf ("Left tree cannot be empty if right tree is not empty!\n");
+
+    } else if ( emptyTree( rightTree ) ) {
+        root = newVertex( e, leftTree->pointerToVertexHead );
+        connectVertex( leftTree->pointerToEdgeHead, root, leftTree, 0 );
+
+    } else if ( emptyTree( leftTree ) ) {
+        printf
+            ( "Left tree cannot be empty if right tree is not empty!\n" );
+
     }
     /* otherwise make new vertex as root and two trees as son  */
     else {
@@ -46,8 +48,14 @@ tRoot constree( element e, tRoot leftTree, tRoot rightTree )
 /* return left subtree, it assumes that left node is the first edge in list */
 tRoot left( tRoot t )
 {
-    nodePointer dummy = ( *( t->edgeListOut ) );
-    nodePointer thisEdge = dummy->next;
+    nodePointer dummy;
+    nodePointer thisEdge;
+
+
+    assert( !emptyTree( t ) );
+
+    dummy = ( *( t->edgeListOut ) );
+    thisEdge = dummy->next;
 
     if ( dummy == thisEdge ) {
         return EMPTYTREE;
@@ -59,8 +67,14 @@ tRoot left( tRoot t )
 /* return right subtree, it assumes that left node is the second edge in list */
 tRoot right( tRoot t )
 {
-    nodePointer dummy = ( *( t->edgeListOut ) );
-    nodePointer thisEdge = dummy->next;
+    nodePointer dummy;
+    nodePointer thisEdge;
+
+
+    assert( !emptyTree( t ) );
+
+    dummy = ( *( t->edgeListOut ) );
+    thisEdge = dummy->next;
 
     if ( dummy == thisEdge ) {
         return EMPTYTREE;
@@ -73,5 +87,7 @@ tRoot right( tRoot t )
 /* this is the equivalent function to car, as view inside lists */
 element root( tRoot t )
 {
+    assert( !emptyTree( t ) );
+
     return t->name;
 }
