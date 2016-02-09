@@ -13,16 +13,16 @@
 
 int main( void )
 {
-    tRoot treeRoot = EMPTYTREE;
-    tPointer treePointer = EMPTY;
+    tRoot lefti = EMPTYTREE;
+    tRoot righti = EMPTYTREE;
+    tRoot rooti = EMPTYTREE;
 
+    lefti = constree( "sono il left!", EMPTYTREE, EMPTYTREE );
+    righti = constree( "sono il right!", EMPTYTREE, EMPTYTREE );
+    rooti = constree( "SONO LA RADICE!!", lefti, righti );
 
-    treeRoot = constree( "zero", EMPTYTREE, EMPTYTREE );
-    treePointer = treeRoot->pointerToVertexHead;
-
-    printf( "%p\n", ( void * ) treePointer );
-    printf( "%s\n", treeRoot->name );
-
+    printf( "%s\n", root( rooti ) );
+    printf( "%s\n", root( left( rooti ) ) );
+    printf( "%s\n", root( right( rooti ) ) );
     return 0;
-
 }

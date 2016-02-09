@@ -35,8 +35,7 @@
 
 /* Definitions.  */
 #define EMPTYTREE EMPTY
-#define left fromNode
-#define right toNode
+
 
 /* New datatype.  */
 typedef char *element;
