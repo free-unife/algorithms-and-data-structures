@@ -92,13 +92,16 @@ nodePointer newEdge( weight w, nodePointer fromNode, nodePointer toNode,
 nodePointer newVertex( char *name, headPointer hp );
 
 nodePointer connectVertex( headPointer edgehp,
-                          nodePointer fromNode, nodePointer toNode,
-                          weight w );
+                           nodePointer fromNode, nodePointer toNode,
+                           weight w );
 
 
 void insertEdgeInList( nodePointer np, headPointer hp );
-nodePointer *searchEdge( nodePointer fromNode, nodePointer toNode, headPointer hp );
-nodePointer *searchVertex( char * nameToSearch, headPointer hp );
+
+nodePointer searchEdge( nodePointer fromNode, nodePointer toNode,
+                        headPointer hp );
+
+nodePointer searchVertex( char *nameToSearch, headPointer hp );
 
 void insertNodeInQueue( headPointer hp, nodePointer np );
 
