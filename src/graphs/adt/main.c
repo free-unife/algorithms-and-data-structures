@@ -52,11 +52,16 @@ int main( void )
                                             referenceToVertexNodes[3],
                                             75 );
 
-/*    referenceToEdgeNodes[3] = connectNodes( headOfEdgeList,
+    referenceToEdgeNodes[3] = connectNodes( headOfEdgeList,
                                             referenceToVertexNodes[0],
                                             referenceToVertexNodes[4],
                                             93 );
-*/
+
+    referenceToEdgeNodes[4] = connectNodes( headOfEdgeList,
+                                            referenceToVertexNodes[4],
+                                            referenceToVertexNodes[2],
+                                            50 );
+
     printf( "lenght of vertexList = %d\n",
             lengthDoubleLinkedList( headOfVertexList ) );
 
@@ -71,8 +76,12 @@ int main( void )
     printf( "referenceToEdgeNodes[2]->weight = %d should be equal to 75\n",
             referenceToEdgeNodes[2]->w );
 
-    printf( "ep = %p\n", ( void * )
-            ( ( referenceToVertexNodes[2] )->edgeListIn ) );
+    printNodeEdges( referenceToVertexNodes[0]->edgeListOut );
+    printNodeEdges( referenceToVertexNodes[1]->edgeListIn );
+    printNodeEdges( referenceToVertexNodes[4]->edgeListOut );
+
+    /*  Dummy example: */
+    /*  printf( "w = %d\n", ( ( ( *( referenceToVertexNodes[1]->edgeListIn ) ) ->next )->edgeAddr )->w );  */
 
     return 0;
 

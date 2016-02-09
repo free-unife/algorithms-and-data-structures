@@ -137,3 +137,21 @@ void insertNodeInQueue( headPointer hp, nodePointer np )
 
     return;
 }
+
+void printNodeEdges( headPointer hp )
+{
+    /* save the reference of dummy node */
+    nodePointer refToDummy = *hp;
+    nodePointer succNode = ( *hp )->next;
+
+    if ( isDoubleLinkedListEmpty( hp ) ) {
+        printf( "No edges\n" );
+        return;
+    }
+
+    while ( succNode != refToDummy ) {
+        printf( "%d ", ( succNode->edgeAddr )->w );
+        succNode = succNode->next;
+    }
+    printf( "\n" );
+}

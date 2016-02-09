@@ -70,15 +70,16 @@ struct graphElement {
 };
 
 
-void initDoubleLinkedList( headPointer hp );
-int lengthDoubleLinkedList( headPointer hp );
-boolean isDoubleLinkedListEmpty( headPointer hp );
-void printDoubleLinkedList( headPointer hp );
-element extractNodeInHead( headPointer hp );
+/* TODO */
+/* element extractNodeInHead( headPointer hp );
 element extractNodeInQueue( headPointer hp );
 nodePointer *searchForElement( element toSearch, headPointer hp );
 element extractNodeInMiddle( nodePointer np );
-headPointer freeDoubleLinkedList( headPointer hp );
+headPointer freeDoubleLinkedList( headPointer hp ); */
+
+boolean isDoubleLinkedListEmpty( headPointer hp );
+void initDoubleLinkedList( headPointer hp );
+int lengthDoubleLinkedList( headPointer hp );
 
 nodePointer newEdge( weight w, nodePointer fromNode, nodePointer toNode,
                      headPointer hp );
@@ -90,19 +91,5 @@ nodePointer connectNodes( headPointer edgehp,
                           weight w );
 
 void insertNodeInQueue( headPointer hp, nodePointer np );
-/* Function Prototypes.
-boolean isEmptyNodeList( pointerToNode ptn );
-boolean isEmptyEdgeList( pointerToEdge pte );
 
-void newNodeList( referenceToNodePointer refN );
-void newEdgeList( referenceToEdgePointer refE );
-
-pointerToNode newNode( referenceToNodePointer refN, char *nodeName );
-pointerToEdge newEdge( referenceToEdgePointer refE, weight W );
-
-
-void updateEdgeOutList( pointerToNode fromNode,
-                        referenceToEdgePointer refE, pointerToEdge pte );
-
-void printEdgeOutList( pointerToNode ptn );
-*/
+void printNodeEdges( headPointer hp );
