@@ -13,75 +13,58 @@
 
 int main( void )
 {
-/*{
-    headPointer headOfVertexList = NULL;
-    headPointer headOfEdgeList = NULL;*/
+
     nodePointer referenceToVertexNodes[10];
-
-/*    nodePointer referenceToEdgeNodes[10];*/
-
-
-/*    if ( ( headOfVertexList = malloc( sizeof( nodePointer * ) ) ) == NULL )
-        exit( EXIT_FAILURE );
-
-    if ( ( headOfEdgeList = malloc( sizeof( nodePointer * ) ) ) == NULL )
-        exit( EXIT_FAILURE );
-
-    initDoubleLinkedList( headOfVertexList );
-    initDoubleLinkedList( headOfEdgeList );*/
+    nodePointer referenceToEdgeNodes[10];
+    headPointer headOfVertexList = EMPTY;
+    headPointer headOfEdgeList = EMPTY;
 
 
-    referenceToVertexNodes[0] = newVertex( "Ferrara", NULL );
-    referenceToVertexNodes[1] =
-        newVertex( "Bologna",
-                   referenceToVertexNodes[0]->pointerToVertexHead );
-    printf( "%p\n",
-            ( void * ) referenceToVertexNodes[0]->pointerToVertexHead );
-    printf( "\n%p\n",
-            ( void * ) referenceToVertexNodes[1]->pointerToVertexHead );
-/*    referenceToVertexNodes[2] = newVertex( "Rovigo", headOfVertexList );
+    referenceToVertexNodes[0] = newVertex( "Ferrara", EMPTY );
+    headOfVertexList = referenceToVertexNodes[0]->pointerToVertexHead;
+    referenceToVertexNodes[1] = newVertex( "Bologna", headOfVertexList );
+    referenceToVertexNodes[2] = newVertex( "Rovigo", headOfVertexList );
     referenceToVertexNodes[3] = newVertex( "Ravenna", headOfVertexList );
     referenceToVertexNodes[4] = newVertex( "Mantova", headOfVertexList );
     referenceToVertexNodes[5] = newVertex( "Mantova", headOfVertexList );
     referenceToVertexNodes[6] = newVertex( "Torino", headOfVertexList );
-*/
-
-    ( void ) referenceToVertexNodes;
 
 
-    /*   referenceToEdgeNodes[0] = connectVertex( headOfEdgeList,
-       referenceToVertexNodes[0],
-       referenceToVertexNodes[1],
-       47 );
+    referenceToEdgeNodes[0] = connectVertex( NULL,
+                                             referenceToVertexNodes[0],
+                                             referenceToVertexNodes[1],
+                                             47 );
 
-       referenceToEdgeNodes[1] = connectVertex( headOfEdgeList,
-       referenceToVertexNodes[0],
-       referenceToVertexNodes[2],
-       33 );
+    headOfEdgeList = referenceToEdgeNodes[0]->pointerToEdgeHead;
 
-       referenceToEdgeNodes[2] = connectVertex( headOfEdgeList,
-       referenceToVertexNodes[0],
-       referenceToVertexNodes[3],
-       75 );
+    referenceToEdgeNodes[1] = connectVertex( headOfEdgeList,
+                                             referenceToVertexNodes[0],
+                                             referenceToVertexNodes[2],
+                                             33 );
+
+    referenceToEdgeNodes[2] = connectVertex( headOfEdgeList,
+                                             referenceToVertexNodes[0],
+                                             referenceToVertexNodes[3],
+                                             75 );
 
 
-       referenceToEdgeNodes[3] = connectVertex( headOfEdgeList,
-       referenceToVertexNodes[0],
-       referenceToVertexNodes[4],
-       93 );
+    referenceToEdgeNodes[3] = connectVertex( headOfEdgeList,
+                                             referenceToVertexNodes[0],
+                                             referenceToVertexNodes[4],
+                                             93 );
 
-       referenceToEdgeNodes[4] = connectVertex( headOfEdgeList,
-       referenceToVertexNodes[4],
-       referenceToVertexNodes[2],
-       50 );
+    referenceToEdgeNodes[4] = connectVertex( headOfEdgeList,
+                                             referenceToVertexNodes[4],
+                                             referenceToVertexNodes[2],
+                                             50 );
 
-       referenceToEdgeNodes[5] = connectVertex( headOfEdgeList,
-       referenceToVertexNodes[4],
-       referenceToVertexNodes[2],
-       50 );
-     */
-    /* Loope edge is permitted.  */
-/*    referenceToEdgeNodes[6] = connectVertex( headOfEdgeList,
+    referenceToEdgeNodes[5] = connectVertex( headOfEdgeList,
+                                             referenceToVertexNodes[4],
+                                             referenceToVertexNodes[2],
+                                             50 );
+
+    /* Loop edge is permitted.  */
+    referenceToEdgeNodes[6] = connectVertex( headOfEdgeList,
                                              referenceToVertexNodes[6],
                                              referenceToVertexNodes[6],
                                              0 );
@@ -109,7 +92,7 @@ int main( void )
     printNodeEdges( referenceToVertexNodes[4]->edgeListOut );
 
     freeGraph( headOfVertexList, headOfEdgeList );
-*/
+
     /*  Dummy example: */
     /*  printf( "w = %d\n", ( ( ( *( referenceToVertexNodes[1]->edgeListIn ) ) ->next )->edgeAddr )->w );  */
 

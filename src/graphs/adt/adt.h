@@ -45,16 +45,21 @@ typedef nodePointer *headPointer;
 /* This struct contains a physical node rappresentation */
 struct graphElement {
     /* Vertex part */
+
+    /* Global pointer to the whole list of vertices.  */
+    headPointer pointerToVertexHead;
+
     char *name;
 
     /* If edgeListIn == edgeListOut, then it's a non oriented graph. */
     headPointer edgeListOut;
     headPointer edgeListIn;
 
-
-    headPointer pointerToVertexHead;
-
+    /* ------------------------------------- */
     /* Edge part */
+
+    /* Global pointer to the whole list of edges.  */
+    headPointer pointerToEdgeHead;
 
     /* Usually an edge weight is positive, but in some cases it can be
      * negative.  */
@@ -69,22 +74,12 @@ struct graphElement {
     /* Element of edgeListOut or edgeListIn */
     nodePointer edgeAddr;
 
-
-    headPointer pointerToEdgeHead;
-
     /* All the nodes are connected to each other by a double linked list.
      * This makes adding and deleting new nodes less time consuming.  */
     struct graphElement *prev;
     struct graphElement *next;
 };
 
-
-/* TODO */
-/* element extractNodeInHead( headPointer hp );
-element extractNodeInQueue( headPointer hp );
-nodePointer *searchForElement( element toSearch, headPointer hp );
-element extractNodeInMiddle( nodePointer np );
-headPointer freeDoubleLinkedList( headPointer hp ); */
 
 boolean isDoubleLinkedListEmpty( headPointer hp );
 void initDoubleLinkedList( headPointer hp );
