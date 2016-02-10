@@ -12,15 +12,20 @@
 #endif
 
 
-boolean emptyTree( tRoot t )
+boolean emptyTree( tree t )
 {
     return ( t == EMPTY );
 }
 
-tRoot constree( element e, tRoot leftTree, tRoot rightTree )
+tree consTree( element e, tree leftTree, tree rightTree )
 {
 
-    tRoot root = EMPTYTREE;
+    tree root = EMPTYTREE;
+
+    /*
+    char stringElement[10];
+    sprintf(stringElement, "%d", e);
+    */
 
     /* if there's no left and right three, make a new tree */
     if ( emptyTree( leftTree ) && emptyTree( rightTree ) ) {
@@ -37,7 +42,7 @@ tRoot constree( element e, tRoot leftTree, tRoot rightTree )
     }
     /* otherwise make new vertex as root and two trees as son  */
     else {
-        root = newVertex( e, leftTree->pointerToVertexHead );
+        root = newVertex(e, leftTree->pointerToVertexHead );
         connectVertex( leftTree->pointerToEdgeHead, root, leftTree, 0 );
         connectVertex( leftTree->pointerToEdgeHead, root, rightTree, 0 );
     }
@@ -46,7 +51,7 @@ tRoot constree( element e, tRoot leftTree, tRoot rightTree )
 }
 
 /* return left subtree, it assumes that left node is the first edge in list */
-tRoot left( tRoot t )
+tree left( tree t )
 {
     nodePointer dummy;
     nodePointer thisEdge;
@@ -65,7 +70,7 @@ tRoot left( tRoot t )
 }
 
 /* return right subtree, it assumes that left node is the second edge in list */
-tRoot right( tRoot t )
+tree right( tree t )
 {
     nodePointer dummy;
     nodePointer thisEdge;
@@ -85,9 +90,36 @@ tRoot right( tRoot t )
 
 
 /* this is the equivalent function to car, as view inside lists */
-element root( tRoot t )
+element root( tree t )
 {
     assert( !emptyTree( t ) );
 
     return t->name;
+    /*return atoi(t->name)*/
+}
+
+/* Max number of nodes inside a tree */
+int findWeight(tree t) {
+    return( emptyTree(t) ? 0
+                         : 1 + findWeight(left( t )) + findWeight(right(t )));
+}
+
+/* In-order insert */
+tree insOrd(element el, tree t){
+/* P = { el ∉ t } */
+if (emptyTree(t)){
+    printf("Almeno la testa dovrebbe esserci eh.. \n");
+    return consTree(el, EMPTYTREE, EMPTYTREE);
+}
+    
+
+else if ( el < root(t) ){
+    return consTree( root(t), insOrd( el, left(t) ), right(t));
+}
+/* greaterThan(el, root(t)) */
+else{
+    return consTree(root(t), left(t), insOrd( el, right(t)));
+}
+  
+    
 }

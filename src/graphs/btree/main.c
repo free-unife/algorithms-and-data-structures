@@ -13,22 +13,23 @@
 
 int main( void )
 {
-    tRoot lefti = EMPTYTREE;
-    tRoot righti = EMPTYTREE;
-    tRoot rooti = EMPTYTREE;
-    tRoot anotherNode = EMPTYTREE;
+    
+    
+    tree aTree, lTree, rTree;
+    
 
+    lTree = consTree("leftor", EMPTYTREE, EMPTYTREE);
+    rTree = consTree("rightscim", EMPTYTREE, EMPTYTREE);
+    aTree = consTree("PANZE!", lTree, rTree);
+    
+    /*aTree = insOrd( 100, aTree);*/
+    
 
-    lefti = constree( "sono il left!", EMPTYTREE, EMPTYTREE );
-    righti = constree( "sono il right!", EMPTYTREE, EMPTYTREE );
-    rooti = constree( "SONO LA RADICE!!", lefti, righti );
-
-    anotherNode = constree( "SONO LA RADICE!!", EMPTYTREE, righti );
-
-    printf( "%s\n", root( rooti ) );
-    printf( "%s\n", root( left( rooti ) ) );
-    printf( "%s\n", root( right( rooti ) ) );
-    printf( "%s\n", root( right( anotherNode ) ) );
-
+    printf("Weight of aTree: %d\n", findWeight(aTree));
+    
+    printf("His root: %s\n", root(aTree));
+    printf("His left: %s\n", root(left(aTree)));
+    printf("His right: %s\n", root(right(aTree)));
+    
     return 0;
 }

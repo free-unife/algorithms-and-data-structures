@@ -38,45 +38,33 @@
 
 
 /* New datatype.  */
-typedef char *element;
+
+ /* We always return an integer as a vertex value (we use weight)*/
+typedef char* element;
 
 /* The recursive definition states that each node can be a root of a bin tree.
  */
-typedef nodePointer tRoot;
-typedef headPointer tPointer;
-
+typedef nodePointer tree;
 
 /* Prototypes. */
 
 /* Check if a tree is empty.  */
-boolean emptyTree( tRoot t );
+boolean emptyTree( tree t );
 
 /* Add node as new root of left and right tree.  */
-tRoot constree( element e, tRoot leftTree, tRoot rightTree );
-/*
-    newNode = newVertex (e, ?);
-    connectVertex (? ,newNode, leftTree, 0)
-    connectVertex (? ,newNode, rightTree, 0)
- */
-
-/* root () = car (), preconditions: assert (!emptyTree (t))  */
-element root( tRoot t );
-/*
-    assert (!emptyTree (t));
-    return t->name;
-*/
+tree consTree( element e, tree leftTree, tree rightTree );
 
 /* Get the left tree. precondition: assert (!emptyTree (t))  */
-tRoot left( tRoot t );
-/*
-    assert (!emptyTree (t);
-    return t->left;
-*/
-
+tree left( tree t );
 
 /* Get the right tree. precondition: assert (!emptyTree (t))  */
-tRoot right( tRoot t );
-/*
-    assert (!emptyTree (t);
-    return t->right;
-*/
+tree right( tree t );
+
+/* root () = car (), preconditions: assert (!emptyTree (t))  */
+element root( tree t );
+
+/* Max number of nodes inside a tree */
+int findWeight(tree t);
+
+/* In-order insert */
+tree insOrd(element el, tree t);
