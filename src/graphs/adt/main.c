@@ -26,8 +26,7 @@ int main( void )
     referenceToVertexNodes[2] = newVertex( "Rovigo", headOfVertexList );
     referenceToVertexNodes[3] = newVertex( "Ravenna", headOfVertexList );
     referenceToVertexNodes[4] = newVertex( "Mantova", headOfVertexList );
-    referenceToVertexNodes[5] = newVertex( "Mantova", headOfVertexList );
-    referenceToVertexNodes[6] = newVertex( "Torino", headOfVertexList );
+    referenceToVertexNodes[5] = newVertex( "Torino", headOfVertexList );
 
 
     referenceToEdgeNodes[0] = connectVertex( NULL,
@@ -65,8 +64,8 @@ int main( void )
 
     /* Loop edge is permitted.  */
     referenceToEdgeNodes[6] = connectVertex( headOfEdgeList,
-                                             referenceToVertexNodes[6],
-                                             referenceToVertexNodes[6],
+                                             referenceToVertexNodes[5],
+                                             referenceToVertexNodes[5],
                                              0 );
 
 

@@ -382,7 +382,7 @@ void breadthFirstSearch( headPointer hp, nodePointer root )
     int *h, *t;
     nodePointer currentNode;
     /* Address of adjacent nodes.  */
-    nodePointer adjNode, adjNodeStart;
+    nodePointer adjRef, adjNode, adjNodeDummy;
 
     t = &tail;
     h = &head;
@@ -395,6 +395,8 @@ void breadthFirstSearch( headPointer hp, nodePointer root )
 
         succNode = succNode->next;
     }
+
+    printf( "%p\n", ( void * ) root );
 
     nodeListLen =
         lengthDoubleLinkedList( ( succNode->next )->pointerToVertexHead );
@@ -411,16 +413,15 @@ void breadthFirstSearch( headPointer hp, nodePointer root )
         printf( "%p\n", ( void * ) currentNode );
 
         /* Get adjacent nodes to current node.  */
-        adjNode =
-            ( *( currentNode->edgeListOut ) )->next->edgeAddr->toNode;
-
-        printf( "%p\n", ( void * ) adjNode );
+        adjRef = ( *( currentNode->edgeListOut ) )->next;
 
         /* Dummy.  */
-        adjNodeStart = adjNode->prev;
+        adjNodeDummy = adjRef->prev;
 
         /* for each node n that is adjacent to current: */
-        while ( adjNode != adjNodeStart ) {
+        while ( adjRef->edgeAddr->toNode != adjNodeDummy ) {
+
+            adjNode = adjRef->edgeAddr->toNode;
 
             if ( ( ( adjNode )->distance ) == INT_MAX ) {
                 ( adjNode )->distance = ( ( currentNode )->distance ) + 1;
@@ -430,8 +431,11 @@ void breadthFirstSearch( headPointer hp, nodePointer root )
 
             printf( "Adjacent node to %s = %s\n", currentNode->name,
                     adjNode->name );
+            printf( "----------\n" );
 
-            adjNode = adjNode->next;
+            printf( "---- %p\n", ( void * ) adjRef );
+            adjRef = adjRef->next;
+            printf( "---- %p\n", ( void * ) adjRef );
         }
     }
 
