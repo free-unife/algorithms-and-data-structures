@@ -27,6 +27,11 @@
 #include <string.h>
 #endif
 
+#ifndef MATH
+#define MATH
+#include <math.h>
+#endif
+
 #ifndef ADT_H
 #define ADT_H
 #include "../adt/adt.h"
@@ -71,3 +76,7 @@ boolean lessThan( element newEl, element rootEl );
 
 /* In-order insert */
 tree insOrd( element el, tree t );
+
+void printAllNodes( tree t );
+
+tree printRoot( tree t, char direction );

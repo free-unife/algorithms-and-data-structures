@@ -25,15 +25,17 @@ int main( void )
     aTree = insOrd( "25", aTree );
     aTree = insOrd( "35", aTree );
 
-    printf( "Weight of aTree: %d\n", findWeight( aTree ) );
-    printf( "Root have to be 0 : --> %s\n", root( aTree ) );
-    printf( "Right son of root --> %s\n", root( right( aTree ) ) );
-    printf( "Left son of root --> %s\n", root( left( aTree ) ) );
-    printf( " son of root --> %s\n", root( left( left( aTree ) ) ) );
-    printf( " son of root --> %s\n", root( right( left( aTree ) ) ) );
-    printf( " son of root --> %s\n", root( left( right( aTree ) ) ) );
-    printf( " son of root --> %s\n", root( right( right( aTree ) ) ) );
-
+    /*
+       printf( "Weight of aTree: %d\n", findWeight( aTree ) );
+       printf( "Root have to be 0 : --> %s\n", root( aTree ) );
+       printf( "Right son of root --> %s\n", root( right( aTree ) ) );
+       printf( "Left son of root --> %s\n", root( left( aTree ) ) );
+       printf( " son of root --> %s\n", root( left( left( aTree ) ) ) );
+       printf( " son of root --> %s\n", root( right( left( aTree ) ) ) );
+       printf( " son of root --> %s\n", root( left( right( aTree ) ) ) );
+       printf( " son of root --> %s\n", root( right( right( aTree ) ) ) );
+     */
+    printAllNodes( aTree );
     ( void ) aTree;
 
 
