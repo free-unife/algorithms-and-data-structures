@@ -110,8 +110,17 @@ nodePointer newVertex( char *name, headPointer hp )
     /* every edge node in list must have an atomic value  */
     foundVertex = searchVertex( name, hp );
     if ( foundVertex != EMPTY ) {
-        printf( "The vertex \"%s\" already exists! Pay Attention!\n\n",
-                name );
+        printf
+            ( "The vertex \"%s\" already exists! His connection will be deleted!\n\n",
+              name );
+        freeDoubleLinkedList( foundVertex->edgeListOut );
+        freeDoubleLinkedList( foundVertex->edgeListIn );
+
+        foundVertex->edgeListOut = malloc( sizeof( nodePointer * ) );
+        initDoubleLinkedList( foundVertex->edgeListOut );
+
+        foundVertex->edgeListIn = malloc( sizeof( nodePointer * ) );
+        initDoubleLinkedList( foundVertex->edgeListIn );
         return foundVertex;
     }
 
@@ -161,6 +170,7 @@ nodePointer newEdge( weight w, nodePointer fromNode, nodePointer toNode,
         printf
             ( "The edge from \"%s\" to \"%s\" already exists! Pay Attention!\n\n",
               fromNode->name, toNode->name );
+
         return foundEgde;
     }
 
@@ -239,6 +249,22 @@ void printNodeEdges( headPointer hp )
 
     return;
 }
+
+void printVertex( headPointer hp )
+{
+
+    nodePointer dummy = *hp;
+    nodePointer thisVertex = dummy->next;
+    int index = 0;
+
+    while ( thisVertex != dummy ) {
+        printf( "Vertex[%d]->name = %s\n", index, thisVertex->name );
+        index = index + 1;
+        thisVertex = thisVertex->next;
+    }
+    return;
+}
+
 
 /* free the node after dummy  */
 void freeNodeInHead( headPointer hp )

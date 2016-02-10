@@ -106,6 +106,8 @@ void insertNodeInQueue( headPointer hp, nodePointer np );
 
 void printNodeEdges( headPointer hp );
 
+void printVertex( headPointer hp );
+
 void freeNodeInHead( headPointer hp );
 
 void freeDoubleLinkedList( headPointer hp );

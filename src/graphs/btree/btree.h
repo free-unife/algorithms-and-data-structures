@@ -39,8 +39,8 @@
 
 /* New datatype.  */
 
- /* We always return an integer as a vertex value (we use weight)*/
-typedef char* element;
+ /* We always return an integer as a vertex value (we use weight) */
+typedef char *element;
 
 /* The recursive definition states that each node can be a root of a bin tree.
  */
@@ -64,7 +64,10 @@ tree right( tree t );
 element root( tree t );
 
 /* Max number of nodes inside a tree */
-int findWeight(tree t);
+int findWeight( tree t );
+
+/* Check if newEl is less than rootEl */
+boolean lessThan( element newEl, element rootEl );
 
 /* In-order insert */
-tree insOrd(element el, tree t);
+tree insOrd( element el, tree t );
