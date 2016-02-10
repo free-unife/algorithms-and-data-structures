@@ -27,6 +27,12 @@
 #include <string.h>
 #endif
 
+#ifndef LIMITS
+#define LIMITS
+#include <limits.h>
+#endif
+
+
 /* Definitions.  */
 #define false 0
 #define true  1
@@ -49,7 +55,12 @@ struct graphElement {
     /* Global pointer to the whole list of vertices.  */
     headPointer pointerToVertexHead;
 
+    /* Main vertex value.  */
     char *name;
+
+    /* New stuff.  */
+    int distance;
+    nodePointer parent;
 
     /* If edgeListIn == edgeListOut, then it's a non oriented graph. */
     headPointer edgeListOut;
@@ -113,3 +124,15 @@ void freeNodeInHead( headPointer hp );
 void freeDoubleLinkedList( headPointer hp );
 
 void freeGraph( headPointer headVertexList, headPointer headEdgeList );
+
+boolean isQueueEmpty( int *head, int *tail );
+
+nodePointer *initNodeQueue( int nodeListLen );
+
+void enqueue( int *head, int *tail, int nodeListLen, nodePointer * queue,
+              nodePointer toEnqueue );
+
+nodePointer dequeue( int *head, int *tail, int nodeListLen,
+                     nodePointer * queue );
+
+void breadthFirstSearch( headPointer hp, nodePointer root );

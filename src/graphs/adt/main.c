@@ -91,6 +91,8 @@ int main( void )
     printNodeEdges( referenceToVertexNodes[1]->edgeListIn );
     printNodeEdges( referenceToVertexNodes[4]->edgeListOut );
 
+    breadthFirstSearch( headOfVertexList, referenceToVertexNodes[0] );
+
     freeGraph( headOfVertexList, headOfEdgeList );
 
     /*  Dummy example: */

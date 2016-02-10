@@ -115,8 +115,8 @@ nodePointer newVertex( char *name, headPointer hp )
            ( "The vertex \"%s\" already exists! His in/out connection will be deleted!\n",
            name );
          */
-        /* free his in/out connection and reinit those lists */
 
+        /* Free its in/out connection and re-init those lists.  */
         freeDoubleLinkedList( foundVertex->edgeListOut );
         freeDoubleLinkedList( foundVertex->edgeListIn );
 
@@ -125,6 +125,7 @@ nodePointer newVertex( char *name, headPointer hp )
 
         foundVertex->edgeListIn = malloc( sizeof( nodePointer * ) );
         initDoubleLinkedList( foundVertex->edgeListIn );
+
         return foundVertex;
     }
 
@@ -319,4 +320,104 @@ void freeGraph( headPointer headVertexList, headPointer headEdgeList )
     freeDoubleLinkedList( headVertexList );
 
     return;
+}
+
+
+/* K.I.S.S queue functions. The queue has been implemented as an array of
+ * pointer to nodes. */
+boolean isQueueEmpty( int *head, int *tail )
+{
+    return ( *head == *tail );
+}
+
+/*
+boolean isQueueFull (int *head, int *tail, int nodeListLen)
+{
+    return ((*tail + 1) % nodeListLen == *head)
+
+}
+
+*/
+
+nodePointer *initNodeQueue( int nodeListLen )
+{
+    nodePointer *queue;
+
+    queue = malloc( sizeof( nodePointer ) * nodeListLen );
+
+    return queue;
+}
+
+void enqueue( int *head, int *tail, int nodeListLen,
+              nodePointer * queue, nodePointer toEnqueue )
+{
+    ( void ) *head;
+    queue[*tail] = toEnqueue;
+
+    *tail = ( *tail + 1 ) % nodeListLen;
+    return;
+}
+
+nodePointer dequeue( int *head, int *tail, int nodeListLen,
+                     nodePointer * queue )
+{
+    nodePointer toDequeue;
+
+    ( void ) tail;
+
+    toDequeue = queue[*head];
+
+    *head = ( *head + 1 ) % nodeListLen;
+
+    return toDequeue;
+}
+
+void breadthFirstSearch( headPointer hp, nodePointer root )
+{
+    nodePointer refToDummy = *hp;
+    nodePointer succNode = ( *hp )->next;
+    nodePointer *queue = NULL;
+    int head = 0, tail = 0, nodeListLen;
+    int *h, *t;
+    nodePointer currentEl;
+
+    t = &tail;
+    h = &head;
+
+
+    while ( succNode != refToDummy ) {
+        succNode->distance = INT_MAX;
+        succNode->parent = EMPTY;
+        succNode = succNode->next;
+    }
+
+    nodeListLen =
+        lengthDoubleLinkedList( ( succNode->next )->pointerToVertexHead );
+
+    /* Create a new queue (implemented as array of pointers). */
+    queue = initNodeQueue( nodeListLen );
+    enqueue( h, t, nodeListLen, queue, root );
+    root->distance = 0;
+
+    while ( !isQueueEmpty( h, t ) ) {
+        currentEl = dequeue( h, t, nodeListLen, queue );
+        printf( "%p\n", ( void * ) currentEl );
+
+        /* for each node n that is adjacent to current: */
+
+    }
+
+    ( void ) currentEl;
+/*
+11 
+15     
+16         for each node n that is adjacent to current:
+17             if n.distance == INFINITY:
+18                 n.distance = current.distance + 1
+19                 n.parent = current
+20                 Q.enqueue(n)
+
+*/
+/*    printQueue( f );
+    freeQueue( f );*/
 }
