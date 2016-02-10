@@ -110,9 +110,13 @@ nodePointer newVertex( char *name, headPointer hp )
     /* every edge node in list must have an atomic value  */
     foundVertex = searchVertex( name, hp );
     if ( foundVertex != EMPTY ) {
-        printf
-            ( "The vertex \"%s\" already exists! His connection will be deleted!\n\n",
-              name );
+        /*
+           printf
+           ( "The vertex \"%s\" already exists! His in/out connection will be deleted!\n",
+           name );
+         */
+        /* free his in/out connection and reinit those lists */
+
         freeDoubleLinkedList( foundVertex->edgeListOut );
         freeDoubleLinkedList( foundVertex->edgeListIn );
 

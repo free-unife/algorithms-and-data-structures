@@ -111,7 +111,7 @@ int findWeight( tree t )
 
 boolean lessThan( element newEl, element rootEl )
 {
-    if ( strcmp( newEl, rootEl ) < 0 ) {
+    if ( atoi( newEl ) < atoi( rootEl ) ) {
         return true;
     } else {
         return false;

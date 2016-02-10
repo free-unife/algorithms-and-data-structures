@@ -13,25 +13,31 @@
 
 int main( void )
 {
+
     tree aTree = EMPTYTREE;
 
-    aTree = insOrd( "4", aTree );
-    aTree = insOrd( "2", aTree );
-    aTree = insOrd( "6", aTree );
+    aTree = insOrd( "20", aTree );
+    aTree = insOrd( "10", aTree );
+    aTree = insOrd( "30", aTree );
 
-    aTree = insOrd( "0", aTree );
-    aTree = insOrd( "1", aTree );
     aTree = insOrd( "5", aTree );
-    aTree = insOrd( "7", aTree );
+    aTree = insOrd( "15", aTree );
+    aTree = insOrd( "25", aTree );
+    aTree = insOrd( "35", aTree );
 
     printf( "Weight of aTree: %d\n", findWeight( aTree ) );
     printf( "Root have to be 0 : --> %s\n", root( aTree ) );
     printf( "Right son of root --> %s\n", root( right( aTree ) ) );
-    printf( "Left son of root --> %s\n", root( right( right( aTree ) ) ) );
-    printf( "Right son of right --> %s\n",
-            root( right( right( right( aTree ) ) ) ) );
+    printf( "Left son of root --> %s\n", root( left( aTree ) ) );
+    printf( " son of root --> %s\n", root( left( left( aTree ) ) ) );
+    printf( " son of root --> %s\n", root( right( left( aTree ) ) ) );
+    printf( " son of root --> %s\n", root( left( right( aTree ) ) ) );
+    printf( " son of root --> %s\n", root( right( right( aTree ) ) ) );
 
     ( void ) aTree;
+
+
+
 
     return 0;
 }
