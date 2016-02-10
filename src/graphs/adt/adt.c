@@ -372,6 +372,7 @@ nodePointer dequeue( int *head, int *tail, int nodeListLen,
     return toDequeue;
 }
 
+
 void breadthFirstSearch( headPointer hp, nodePointer root )
 {
     nodePointer refToDummy = *hp;
@@ -379,15 +380,19 @@ void breadthFirstSearch( headPointer hp, nodePointer root )
     nodePointer *queue = NULL;
     int head = 0, tail = 0, nodeListLen;
     int *h, *t;
-    nodePointer currentEl;
+    nodePointer currentNode;
+    /* Address of adjacent nodes.  */
+    nodePointer adjNode, adjNodeStart;
 
     t = &tail;
     h = &head;
 
 
     while ( succNode != refToDummy ) {
+        /* Set distance to of all nodes to infinity.  */
         succNode->distance = INT_MAX;
         succNode->parent = EMPTY;
+
         succNode = succNode->next;
     }
 
@@ -396,28 +401,43 @@ void breadthFirstSearch( headPointer hp, nodePointer root )
 
     /* Create a new queue (implemented as array of pointers). */
     queue = initNodeQueue( nodeListLen );
-    enqueue( h, t, nodeListLen, queue, root );
+
     root->distance = 0;
+    enqueue( h, t, nodeListLen, queue, root );
 
     while ( !isQueueEmpty( h, t ) ) {
-        currentEl = dequeue( h, t, nodeListLen, queue );
-        printf( "%p\n", ( void * ) currentEl );
+
+        currentNode = dequeue( h, t, nodeListLen, queue );
+        printf( "%p\n", ( void * ) currentNode );
+
+        /* Get adjacent nodes to current node.  */
+        adjNode =
+            ( *( currentNode->edgeListOut ) )->next->edgeAddr->toNode;
+
+        printf( "%p\n", ( void * ) adjNode );
+
+        /* Dummy.  */
+        adjNodeStart = adjNode->prev;
 
         /* for each node n that is adjacent to current: */
+        while ( adjNode != adjNodeStart ) {
 
+            if ( ( ( adjNode )->distance ) == INT_MAX ) {
+                ( adjNode )->distance = ( ( currentNode )->distance ) + 1;
+                ( adjNode )->parent = currentNode;
+                enqueue( h, t, nodeListLen, queue, adjNode );
+            }
+
+            printf( "Adjacent node to %s = %s\n", currentNode->name,
+                    adjNode->name );
+
+            adjNode = adjNode->next;
+        }
     }
 
-    ( void ) currentEl;
-/*
-11 
-15     
-16         for each node n that is adjacent to current:
-17             if n.distance == INFINITY:
-18                 n.distance = current.distance + 1
-19                 n.parent = current
-20                 Q.enqueue(n)
+/*    printQueue( f );*/
 
-*/
-/*    printQueue( f );
-    freeQueue( f );*/
+    free( queue );
+
+    return;
 }
