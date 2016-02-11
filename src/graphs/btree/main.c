@@ -34,11 +34,11 @@ int main( void )
     breadthFirstSearch( root->pointerToVertexHead, root );
     printVertexDistancesFromRootNode( root->pointerToVertexHead, root );
 
-    nodeNum = preOrder( root, 50 );
+    nodeNum = preOrder( root, 0 );
     printf( "\n\n" );
-    nodeNum = inOrder( root, 50 );
+    nodeNum = inOrder( root, 0 );
     printf( "\n\n" );
-    nodeNum = postOrder( root, 50 );
+    nodeNum = postOrder( root, 0 );
     printf( "\n\n" );
 
     printf( "nn = %d\n", nodeNum );

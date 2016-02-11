@@ -136,9 +136,17 @@ tree insOrd( element el, tree t )
 }
 
 
-/* Binary tree visit functions.  */
+/* Binary tree visit functions.
+ * These functions assign a progressive weight ((*graphElelement) -> w) (with
+ * the first one given by input) to each vertex, depending on the order of the
+ * visit. This weight is useful to know whether any vertex is a descendent of a
+ * given vertex (preOrder and postOrder) or to know whether any node is the
+ * left (w <) or right (w >) child of a parent (inOrder).
+ * Each one of the three functions returns the number of nodes in the (sub)tree
+ * root.
+ */
 
-/* The number of right, left kids and the root is returned.  */
+/* Visit root, left and right.  */
 int preOrder( tree root, int number )
 {
 
@@ -163,7 +171,7 @@ int preOrder( tree root, int number )
     return root->size;
 }
 
-/* The number of right, left kids and the root is returned.  */
+/* Visit left, root and right.  */
 int inOrder( tree root, int number )
 {
 
@@ -189,7 +197,7 @@ int inOrder( tree root, int number )
     return root->size;
 }
 
-/* The number of right, left kids and the root is returned.  */
+/* Visit left, right and root.  */
 int postOrder( tree root, int number )
 {
 
