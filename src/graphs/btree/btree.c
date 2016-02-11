@@ -28,11 +28,15 @@ tree consTree( element e, tree leftTree, tree rightTree )
         root = newVertex( e, EMPTY, EMPTY );
 
     } else if ( emptyTree( rightTree ) ) {
-        root = newVertex( e, leftTree->pointerToVertexHead, leftTree->pointerToEdgeHead );
+        root =
+            newVertex( e, leftTree->pointerToVertexHead,
+                       leftTree->pointerToEdgeHead );
         connectVertex( leftTree->pointerToEdgeHead, root, leftTree, 'l' );
 
     } else if ( emptyTree( leftTree ) ) {
-        root = newVertex( e, rightTree->pointerToVertexHead, rightTree->pointerToEdgeHead);
+        root =
+            newVertex( e, rightTree->pointerToVertexHead,
+                       rightTree->pointerToEdgeHead );
         connectVertex( rightTree->pointerToEdgeHead, root, rightTree,
                        'r' );
     }

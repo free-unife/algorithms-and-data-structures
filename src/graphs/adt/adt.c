@@ -92,15 +92,16 @@ nodePointer searchEdge( nodePointer fromNode, nodePointer toNode,
 }
 
 /* Free in/out connection and re-init those lists.  */
-void reinitConnections( nodePointer vertex ){
+void reinitConnections( nodePointer vertex )
+{
     freeDoubleLinkedList( vertex->edgeListOut );
-        freeDoubleLinkedList( vertex->edgeListIn );
+    freeDoubleLinkedList( vertex->edgeListIn );
 
-        vertex->edgeListOut = malloc( sizeof( nodePointer * ) );
-        initDoubleLinkedList( vertex->edgeListOut );
+    vertex->edgeListOut = malloc( sizeof( nodePointer * ) );
+    initDoubleLinkedList( vertex->edgeListOut );
 
-        vertex->edgeListIn = malloc( sizeof( nodePointer * ) );
-        initDoubleLinkedList( vertex->edgeListIn );
+    vertex->edgeListIn = malloc( sizeof( nodePointer * ) );
+    initDoubleLinkedList( vertex->edgeListIn );
 
 }
 
@@ -113,27 +114,29 @@ void reinitConnections( nodePointer vertex ){
  * If a vertex is insered twice, we reset his in/out edge list.
  * So every vertex in list have an atomic value (name).
 */
-nodePointer newVertex( char *name, vertexListPointer vlp, edgeListPointer elp)
+nodePointer newVertex( char *name, vertexListPointer vlp,
+                       edgeListPointer elp )
 {
     nodePointer foundVertex;
     nodePointer dummyVertex;
     nodePointer newVertex;
 
     /* if are null together, init the graph */
-    if ( vlp == EMPTY && elp == EMPTY ){
+    if ( vlp == EMPTY && elp == EMPTY ) {
         if ( ( vlp = malloc( sizeof( nodePointer * ) ) ) == NULL )
             exit( EXIT_FAILURE );
 
         if ( ( elp = malloc( sizeof( nodePointer * ) ) ) == NULL )
             exit( EXIT_FAILURE );
-        
+
         initDoubleLinkedList( vlp );
         initDoubleLinkedList( elp );
     }
 
     /* no sense */
-    else if ((vlp != EMPTY && elp == EMPTY) || (vlp == EMPTY && elp != EMPTY)){
-        printf("newVertex() function error. -> Nonsense operation\n");
+    else if ( ( vlp != EMPTY && elp == EMPTY )
+              || ( vlp == EMPTY && elp != EMPTY ) ) {
+        printf( "newVertex() function error. -> Nonsense operation\n" );
         exit( EXIT_FAILURE );
     }
 
@@ -143,10 +146,10 @@ nodePointer newVertex( char *name, vertexListPointer vlp, edgeListPointer elp)
     foundVertex = searchVertex( name, vlp );
     if ( foundVertex != EMPTY ) {
         reinitConnections( foundVertex );
-    
+
         return foundVertex;
     }
-    
+
 
     /* allocate memory for the vertex */
     if ( ( newVertex = malloc( sizeof( struct graphElement ) ) ) == NULL )
@@ -155,7 +158,7 @@ nodePointer newVertex( char *name, vertexListPointer vlp, edgeListPointer elp)
     /* Insert vetex name.  */
     newVertex->name = name;
 
-    /* Insert vlp and elp wich are the same for all vertex in a graph*/
+    /* Insert vlp and elp wich are the same for all vertex in a graph */
     newVertex->pointerToVertexHead = vlp;
     newVertex->pointerToEdgeHead = elp;
 
@@ -185,7 +188,7 @@ nodePointer newEdge( weight w, nodePointer fromNode, nodePointer toNode,
     nodePointer dummy;
     nodePointer newNode;
 
-   
+
 
     /* every edge node in list must have an atomic value */
     foundEgde = searchEdge( fromNode, toNode, hp );

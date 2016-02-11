@@ -25,12 +25,18 @@ int main( void )
     headOfVertexList = referenceToVertexNodes[0]->pointerToVertexHead;
     headOfEdgeList = referenceToVertexNodes[0]->pointerToEdgeHead;
 
-    referenceToVertexNodes[1] = newVertex( "Bologna", headOfVertexList , headOfEdgeList);
-    referenceToVertexNodes[2] = newVertex( "Rovigo", headOfVertexList  , headOfEdgeList);
-    referenceToVertexNodes[3] = newVertex( "Ravenna", headOfVertexList , headOfEdgeList);
-    referenceToVertexNodes[4] = newVertex( "Mantova", headOfVertexList , headOfEdgeList);
-    referenceToVertexNodes[5] = newVertex( "Torino", headOfVertexList  , headOfEdgeList);
-    referenceToVertexNodes[6] = newVertex( "Vaduz", headOfVertexList   , headOfEdgeList);
+    referenceToVertexNodes[1] =
+        newVertex( "Bologna", headOfVertexList, headOfEdgeList );
+    referenceToVertexNodes[2] =
+        newVertex( "Rovigo", headOfVertexList, headOfEdgeList );
+    referenceToVertexNodes[3] =
+        newVertex( "Ravenna", headOfVertexList, headOfEdgeList );
+    referenceToVertexNodes[4] =
+        newVertex( "Mantova", headOfVertexList, headOfEdgeList );
+    referenceToVertexNodes[5] =
+        newVertex( "Torino", headOfVertexList, headOfEdgeList );
+    referenceToVertexNodes[6] =
+        newVertex( "Vaduz", headOfVertexList, headOfEdgeList );
 
 
     referenceToEdgeNodes[0] = connectVertex( headOfEdgeList,

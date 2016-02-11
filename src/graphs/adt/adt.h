@@ -107,7 +107,8 @@ nodePointer newEdge( weight w, nodePointer fromNode, nodePointer toNode,
 
 void reinitConnections( nodePointer vertex );
 
-nodePointer newVertex( char *name, vertexListPointer vlp, edgeListPointer elp);
+nodePointer newVertex( char *name, vertexListPointer vlp,
+                       edgeListPointer elp );
 
 nodePointer connectVertex( headPointer edgehp,
                            nodePointer fromNode, nodePointer toNode,
