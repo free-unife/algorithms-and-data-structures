@@ -18,6 +18,7 @@ int main( void )
     tree root;
     int nodeNum;
 
+
     aTree = insOrd( "20", aTree );
 
     aTree = insOrd( "10", aTree );
@@ -34,14 +35,15 @@ int main( void )
     breadthFirstSearch( root->pointerToVertexHead, root );
     printVertexDistancesFromRootNode( root->pointerToVertexHead, root );
 
-    nodeNum = preOrder( root, 0 );
+    preOrder( root, 0 );
     printf( "\n\n" );
-    nodeNum = inOrder( root, 0 );
+    inOrder( root, 0 );
     printf( "\n\n" );
     nodeNum = postOrder( root, 0 );
     printf( "\n\n" );
 
-    printf( "nn = %d\n", nodeNum );
+    printf( "Number of nodes of the imput tree = %d\n", nodeNum );
+
     /*
        printf( "Weight of aTree: %d\n", findWeight( aTree ) );
        printf( "Root have to be 0 : --> %s\n", root( aTree ) );
@@ -52,10 +54,6 @@ int main( void )
        printf( " son of root --> %s\n", root( left( right( aTree ) ) ) );
        printf( " son of root --> %s\n", root( right( right( aTree ) ) ) );
      */
-
-    ( void ) aTree;
-
-
 
     return 0;
 }

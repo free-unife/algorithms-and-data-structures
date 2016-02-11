@@ -105,7 +105,7 @@ void reinitConnections( nodePointer vertex )
 
 }
 
-/* Create a new vertex. 
+/* Create a new vertex.
  * If vertexListPointer and edgeListPointer are:
  * null together -> all list are intialized. new vertex is created.
  * exist toghether -> a new vertex is created, vlp & elp are copied in his structure.
@@ -121,7 +121,7 @@ nodePointer newVertex( char *name, vertexListPointer vlp,
     nodePointer dummyVertex;
     nodePointer newVertex;
 
-    /* if are null together, init the graph */
+    /* if the are both NULL, init the graph.  */
     if ( vlp == EMPTY && elp == EMPTY ) {
         if ( ( vlp = malloc( sizeof( nodePointer * ) ) ) == NULL )
             exit( EXIT_FAILURE );
@@ -133,16 +133,16 @@ nodePointer newVertex( char *name, vertexListPointer vlp,
         initDoubleLinkedList( elp );
     }
 
-    /* no sense */
+    /* Nonsense.  */
     else if ( ( vlp != EMPTY && elp == EMPTY )
               || ( vlp == EMPTY && elp != EMPTY ) ) {
-        printf( "newVertex() function error. -> Nonsense operation\n" );
+        printf( "newVertex() function error. Operation not valid.\n" );
         exit( EXIT_FAILURE );
     }
 
-    /* here vlp & elp are not empty together */
+    /* Both vlp and elp are not empty here.  */
 
-    /* every edge node in list must have an atomic value */
+    /* Every node in the node list must be unique.  */
     foundVertex = searchVertex( name, vlp );
     if ( foundVertex != EMPTY ) {
         reinitConnections( foundVertex );
@@ -178,6 +178,7 @@ nodePointer newVertex( char *name, vertexListPointer vlp,
     dummyVertex->prev = newVertex;
 
     return newVertex;
+
 }
 
 /* Insert an edge before the dummy node */
@@ -356,7 +357,9 @@ nodePointer *initNodeQueue( int nodeListLen )
 {
     nodePointer *queue;
 
-    queue = malloc( sizeof( nodePointer ) * nodeListLen );
+    if ( ( queue =
+           malloc( sizeof( nodePointer ) * nodeListLen ) ) == NULL )
+        exit( EXIT_FAILURE );
 
     return queue;
 }
@@ -397,8 +400,8 @@ void printVertexDistancesFromRootNode( headPointer hp, nodePointer root )
 }
 
 /* This functions visits the graph and sets the distance filed of each vertex
- * to the number of steps required to reach that vertec to the designated root
- * of the graph.  */
+ * to the number of steps required to reach that vertex from the designated
+ * root of the graph.  */
 void breadthFirstSearch( headPointer hp, nodePointer root )
 {
     nodePointer refToDummy = *hp;

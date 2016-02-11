@@ -22,9 +22,9 @@ tree consTree( element e, tree leftTree, tree rightTree )
 
     tree root = EMPTYTREE;
 
-    /* if there's no left and right three, make a new tree */
+    /* If there's no left and right three, make a new tree.  */
     if ( emptyTree( leftTree ) && emptyTree( rightTree ) ) {
-        /* after this call a new graph will be initialized */
+        /* After this call a new graph will be initialized.  */
         root = newVertex( e, EMPTY, EMPTY );
 
     } else if ( emptyTree( rightTree ) ) {
@@ -42,7 +42,7 @@ tree consTree( element e, tree leftTree, tree rightTree )
     }
     /* otherwise make new vertex as root and two trees as son  */
     else {
-        root = newVertex( e, NULL, NULL );
+        root = newVertex( e, EMPTY, EMPTY );
         connectVertex( root->pointerToEdgeHead, root, leftTree, 'l' );
         connectVertex( root->pointerToEdgeHead, root, rightTree, 'r' );
     }
