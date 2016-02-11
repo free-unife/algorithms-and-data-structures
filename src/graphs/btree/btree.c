@@ -65,7 +65,7 @@ tree left( tree t )
         thisEdge = thisEdge->next;
     }
 
-    return EMPTY;
+    return EMPTYTREE;
 }
 
 /* return right subtree, it assumes that left node is the second edge in list */
@@ -89,7 +89,7 @@ tree right( tree t )
         thisEdge = thisEdge->next;
     }
 
-    return EMPTY;
+    return EMPTYTREE;
 }
 
 
@@ -133,78 +133,4 @@ tree insOrd( element el, tree t )
     else {
         return consTree( root( t ), left( t ), insOrd( el, right( t ) ) );
     }
-}
-
-tree printRoot( tree t, char direction )
-{
-    if ( emptyTree( t ) ) {
-        printf( "EMPTYTREE\n" );
-        return EMPTY;
-    }
-    if ( direction == 'l' ) {
-        if ( !emptyTree( left( t ) ) ) {
-            printf( "Left son of [%s] -> %s\n", root( t ),
-               root( left( t ) ) );
-        }
-        return left( t );
-    } else {
-        if ( !emptyTree( right( t ) ) ) {
-            printf( "Right son of [%s] -> %s\n", root( t ),
-               root( right( t ) ) );
-        }
-        return right( t );
-    }
-}
-
-void printAllNodes( tree t )
-{
-    int n = findWeight( t );
-    int i, k, j;
-    tree *rootToPrint;
-    tree backup;
-
-
-    if ( emptyTree( t ) ) {
-        printf( "The tree is empty\n" );
-    }
-
-    rootToPrint = malloc( n * sizeof( tree ) );
-
-    rootToPrint[0] = t;
-
-    k = 1;
-    while ( k != 5 ) {
-        printf( "------------------------------------------------\n" );
-        j = 0;
-
-        for ( i = 0; i < pow( 2, ( double ) (k-1) ); ++i ) {
-            backup = rootToPrint[i];
-            rootToPrint[j] = printRoot( backup, 'l' );
-            rootToPrint[j + 1] = printRoot( backup, 'r' );
-            j += 2;
-        }
-
-        k++;
-    }
-
-    /*
-       rootToPrint[0] = printRoot(rootToPrint[0], 'l');
-       rootToPrint[1] = printRoot(rootToPrint[0], 'r');
-
-       rootToPrint[0] = rootToPrint[0]->left;
-       rootToPrint[1] = rootToPrint[0]->right;
-       rootToPrint[2] = rootToPrint[1]->left;
-       rootToPrint[3] = rootToPrint[1]->right;
-
-       rootToPrint[0] = rootToPrint[0]->left;
-       rootToPrint[1] = rootToPrint[0]->right;
-       rootToPrint[2] = rootToPrint[1]->left;
-       rootToPrint[3] = rootToPrint[1]->right;
-       rootToPrint[4] = rootToPrint[2]->left;
-       rootToPrint[5] = rootToPrint[2]->right;
-       rootToPrint[6] = rootToPrint[3]->left;
-       rootToPrint[7] = rootToPrint[3]->right;
-     */
-
-    return;
 }

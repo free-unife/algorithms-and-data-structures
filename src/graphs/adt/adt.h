@@ -37,6 +37,7 @@
 #define false 0
 #define true  1
 #define EMPTY NULL
+#define INF INT_MAX
 
 /* New datatype.  */
 typedef int boolean;

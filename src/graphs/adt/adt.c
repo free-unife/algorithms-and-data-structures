@@ -373,7 +373,9 @@ void printVertexDistancesFromRootNode( headPointer hp, nodePointer root )
     return;
 }
 
-
+/* This functions visits the graph and sets the distance filed of each vertex
+ * to the number of steps required to reach that vertec to the designated root
+ * of the graph.  */
 void breadthFirstSearch( headPointer hp, nodePointer root )
 {
     nodePointer refToDummy = *hp;
@@ -385,23 +387,24 @@ void breadthFirstSearch( headPointer hp, nodePointer root )
     /* Address of adjacent nodes.  */
     nodePointer adjRef, adjNode, adjNodeDummy;
 
-    t = &tail;
-    h = &head;
-
 
     while ( succNode != refToDummy ) {
         /* Set distance to of all nodes to infinity.  */
-        succNode->distance = INT_MAX;
+        succNode->distance = INF;
         succNode->parent = EMPTY;
 
         succNode = succNode->next;
     }
 
+    /* Get length of node list.  */
     nodeListLen =
         lengthDoubleLinkedList( ( succNode->next )->pointerToVertexHead );
 
-    /* Create a new queue (implemented as array of pointers). */
+    /* Create a new queue (implemented as a traditional array of pointers). */
     queue = initNodeQueue( nodeListLen );
+    /* Assign addresses of queue's head and tail indices to its pointers.  */
+    t = &tail;
+    h = &head;
 
     root->distance = 0;
     enqueue( t, nodeListLen, queue, root );
@@ -421,7 +424,7 @@ void breadthFirstSearch( headPointer hp, nodePointer root )
 
             adjNode = adjRef->edgeAddr->toNode;
 
-            if ( ( ( adjNode )->distance ) == INT_MAX ) {
+            if ( ( ( adjNode )->distance ) == INF ) {
                 ( adjNode )->distance = ( ( currentNode )->distance ) + 1;
                 ( adjNode )->parent = currentNode;
                 enqueue( t, nodeListLen, queue, adjNode );
