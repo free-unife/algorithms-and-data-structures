@@ -91,65 +91,90 @@ nodePointer searchEdge( nodePointer fromNode, nodePointer toNode,
     return foundNode;
 }
 
-/* Insert a vertex before the dummy node */
-nodePointer newVertex( char *name, headPointer hp )
+/* Free in/out connection and re-init those lists.  */
+void reinitConnections( nodePointer vertex ){
+    freeDoubleLinkedList( vertex->edgeListOut );
+        freeDoubleLinkedList( vertex->edgeListIn );
+
+        vertex->edgeListOut = malloc( sizeof( nodePointer * ) );
+        initDoubleLinkedList( vertex->edgeListOut );
+
+        vertex->edgeListIn = malloc( sizeof( nodePointer * ) );
+        initDoubleLinkedList( vertex->edgeListIn );
+
+}
+
+/* Create a new vertex. 
+ * If vertexListPointer and edgeListPointer are:
+ * null together -> all list are intialized. new vertex is created.
+ * exist toghether -> a new vertex is created, vlp & elp are copied in his structure.
+ * one null one not -> error!
+ *
+ * If a vertex is insered twice, we reset his in/out edge list.
+ * So every vertex in list have an atomic value (name).
+*/
+nodePointer newVertex( char *name, vertexListPointer vlp, edgeListPointer elp)
 {
     nodePointer foundVertex;
-    nodePointer dummy;
-    nodePointer newNode;
+    nodePointer dummyVertex;
+    nodePointer newVertex;
 
-    if ( hp == EMPTY ) {
-        if ( ( hp = malloc( sizeof( nodePointer * ) ) ) == NULL )
+    /* if are null together, init the graph */
+    if ( vlp == EMPTY && elp == EMPTY ){
+        if ( ( vlp = malloc( sizeof( nodePointer * ) ) ) == NULL )
             exit( EXIT_FAILURE );
 
-        initDoubleLinkedList( hp );
+        if ( ( elp = malloc( sizeof( nodePointer * ) ) ) == NULL )
+            exit( EXIT_FAILURE );
+        
+        initDoubleLinkedList( vlp );
+        initDoubleLinkedList( elp );
     }
 
-    dummy = *hp;
+    /* no sense */
+    else if ((vlp != EMPTY && elp == EMPTY) || (vlp == EMPTY && elp != EMPTY)){
+        printf("newVertex() function error. -> Nonsense operation\n");
+        exit( EXIT_FAILURE );
+    }
 
-    /* every edge node in list must have an atomic value  */
-    foundVertex = searchVertex( name, hp );
+    /* here vlp & elp are not empty together */
+
+    /* every edge node in list must have an atomic value */
+    foundVertex = searchVertex( name, vlp );
     if ( foundVertex != EMPTY ) {
-        /*
-           printf
-           ( "The vertex \"%s\" already exists! His in/out connection will be deleted!\n",
-           name );
-         */
-
-        /* Free its in/out connection and re-init those lists.  */
-        freeDoubleLinkedList( foundVertex->edgeListOut );
-        freeDoubleLinkedList( foundVertex->edgeListIn );
-
-        foundVertex->edgeListOut = malloc( sizeof( nodePointer * ) );
-        initDoubleLinkedList( foundVertex->edgeListOut );
-
-        foundVertex->edgeListIn = malloc( sizeof( nodePointer * ) );
-        initDoubleLinkedList( foundVertex->edgeListIn );
-
+        reinitConnections( foundVertex );
+    
         return foundVertex;
     }
+    
 
-    /* allocate memory for the node */
-    if ( ( newNode = malloc( sizeof( struct graphElement ) ) ) == NULL )
+    /* allocate memory for the vertex */
+    if ( ( newVertex = malloc( sizeof( struct graphElement ) ) ) == NULL )
         exit( EXIT_FAILURE );
 
     /* Insert vetex name.  */
-    newNode->name = name;
-    newNode->pointerToVertexHead = hp;
+    newVertex->name = name;
 
-    newNode->edgeListOut = malloc( sizeof( nodePointer * ) );
-    initDoubleLinkedList( newNode->edgeListOut );
+    /* Insert vlp and elp wich are the same for all vertex in a graph*/
+    newVertex->pointerToVertexHead = vlp;
+    newVertex->pointerToEdgeHead = elp;
 
-    newNode->edgeListIn = malloc( sizeof( nodePointer * ) );
-    initDoubleLinkedList( newNode->edgeListIn );
+    /* Init his in/out list */
+    newVertex->edgeListOut = malloc( sizeof( nodePointer * ) );
+    initDoubleLinkedList( newVertex->edgeListOut );
+
+    newVertex->edgeListIn = malloc( sizeof( nodePointer * ) );
+    initDoubleLinkedList( newVertex->edgeListIn );
 
     /* Fix list pointers.  */
-    newNode->prev = dummy->prev;
-    newNode->next = dummy;
-    dummy->prev->next = newNode;
-    dummy->prev = newNode;
+    dummyVertex = *vlp;
 
-    return newNode;
+    newVertex->prev = dummyVertex->prev;
+    newVertex->next = dummyVertex;
+    dummyVertex->prev->next = newVertex;
+    dummyVertex->prev = newVertex;
+
+    return newVertex;
 }
 
 /* Insert an edge before the dummy node */
@@ -160,14 +185,7 @@ nodePointer newEdge( weight w, nodePointer fromNode, nodePointer toNode,
     nodePointer dummy;
     nodePointer newNode;
 
-    if ( hp == EMPTY ) {
-        if ( ( hp = malloc( sizeof( nodePointer * ) ) ) == NULL )
-            exit( EXIT_FAILURE );
-
-        initDoubleLinkedList( hp );
-    }
-
-    dummy = *hp;
+   
 
     /* every edge node in list must have an atomic value */
     foundEgde = searchEdge( fromNode, toNode, hp );
@@ -192,6 +210,8 @@ nodePointer newEdge( weight w, nodePointer fromNode, nodePointer toNode,
     newNode->pointerToEdgeHead = hp;
 
     /* Fix list pointers.  */
+    dummy = *hp;
+
     newNode->prev = dummy->prev;
     newNode->next = dummy;
     dummy->prev->next = newNode;

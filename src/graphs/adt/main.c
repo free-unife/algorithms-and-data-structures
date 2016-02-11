@@ -21,22 +21,22 @@ int main( void )
     nodePointer rootVertex;
 
 
-    referenceToVertexNodes[0] = newVertex( "Ferrara", EMPTY );
+    referenceToVertexNodes[0] = newVertex( "Ferrara", EMPTY, EMPTY );
     headOfVertexList = referenceToVertexNodes[0]->pointerToVertexHead;
-    referenceToVertexNodes[1] = newVertex( "Bologna", headOfVertexList );
-    referenceToVertexNodes[2] = newVertex( "Rovigo", headOfVertexList );
-    referenceToVertexNodes[3] = newVertex( "Ravenna", headOfVertexList );
-    referenceToVertexNodes[4] = newVertex( "Mantova", headOfVertexList );
-    referenceToVertexNodes[5] = newVertex( "Torino", headOfVertexList );
-    referenceToVertexNodes[6] = newVertex( "Vaduz", headOfVertexList );
+    headOfEdgeList = referenceToVertexNodes[0]->pointerToEdgeHead;
+
+    referenceToVertexNodes[1] = newVertex( "Bologna", headOfVertexList , headOfEdgeList);
+    referenceToVertexNodes[2] = newVertex( "Rovigo", headOfVertexList  , headOfEdgeList);
+    referenceToVertexNodes[3] = newVertex( "Ravenna", headOfVertexList , headOfEdgeList);
+    referenceToVertexNodes[4] = newVertex( "Mantova", headOfVertexList , headOfEdgeList);
+    referenceToVertexNodes[5] = newVertex( "Torino", headOfVertexList  , headOfEdgeList);
+    referenceToVertexNodes[6] = newVertex( "Vaduz", headOfVertexList   , headOfEdgeList);
 
 
-    referenceToEdgeNodes[0] = connectVertex( NULL,
+    referenceToEdgeNodes[0] = connectVertex( headOfEdgeList,
                                              referenceToVertexNodes[0],
                                              referenceToVertexNodes[1],
                                              47 );
-
-    headOfEdgeList = referenceToEdgeNodes[0]->pointerToEdgeHead;
 
     referenceToEdgeNodes[1] = connectVertex( headOfEdgeList,
                                              referenceToVertexNodes[0],
@@ -69,12 +69,7 @@ int main( void )
                                              referenceToVertexNodes[6],
                                              200 );
 
-/*
-    referenceToEdgeNodes[6] = connectVertex( headOfEdgeList,
-                                             referenceToVertexNodes[0],
-                                             referenceToVertexNodes[6],
-                                             350 );
-*/
+
 
     printf( "lenght of vertexList = %d\n",
             lengthDoubleLinkedList( headOfVertexList ) );

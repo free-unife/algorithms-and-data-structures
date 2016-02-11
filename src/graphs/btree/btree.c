@@ -24,22 +24,23 @@ tree consTree( element e, tree leftTree, tree rightTree )
 
     /* if there's no left and right three, make a new tree */
     if ( emptyTree( leftTree ) && emptyTree( rightTree ) ) {
-        root = newVertex( e, EMPTY );
+        /* after this call a new graph will be initialized */
+        root = newVertex( e, EMPTY, EMPTY );
 
     } else if ( emptyTree( rightTree ) ) {
-        root = newVertex( e, leftTree->pointerToVertexHead );
+        root = newVertex( e, leftTree->pointerToVertexHead, leftTree->pointerToEdgeHead );
         connectVertex( leftTree->pointerToEdgeHead, root, leftTree, 'l' );
 
     } else if ( emptyTree( leftTree ) ) {
-        root = newVertex( e, rightTree->pointerToVertexHead );
+        root = newVertex( e, rightTree->pointerToVertexHead, rightTree->pointerToEdgeHead);
         connectVertex( rightTree->pointerToEdgeHead, root, rightTree,
                        'r' );
     }
     /* otherwise make new vertex as root and two trees as son  */
     else {
-        root = newVertex( e, leftTree->pointerToVertexHead );
-        connectVertex( leftTree->pointerToEdgeHead, root, leftTree, 'l' );
-        connectVertex( leftTree->pointerToEdgeHead, root, rightTree, 'r' );
+        root = newVertex( e, NULL, NULL );
+        connectVertex( root->pointerToEdgeHead, root, leftTree, 'l' );
+        connectVertex( root->pointerToEdgeHead, root, rightTree, 'r' );
     }
 
     return root;
