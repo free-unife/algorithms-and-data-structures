@@ -44,7 +44,7 @@
 
 /* New datatype.  */
 
- /* We always return an integer as a vertex value (we use weight) */
+ /* We always return a string as a vertex value (we use name) */
 typedef char *element;
 
 /* The recursive definition states that each node can be a root of a bin tree.
@@ -80,3 +80,7 @@ tree insOrd( element el, tree t );
 void printAllNodes( tree t );
 
 tree printRoot( tree t, char direction );
+
+int preOrder( tree root, int number );
+int inOrder( tree root, int number );
+int postOrder( tree root, int number );

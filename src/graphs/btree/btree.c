@@ -134,3 +134,83 @@ tree insOrd( element el, tree t )
         return consTree( root( t ), left( t ), insOrd( el, right( t ) ) );
     }
 }
+
+
+/* Binary tree visit functions.  */
+
+/* The number of right, left kids and the root is returned.  */
+int preOrder( tree root, int number )
+{
+
+    int leftKids, rightKids;
+
+
+    assert( !emptyTree( root ) );
+
+    printf( "Visiting %s\n", root->name );
+    /* givenNo = weight w. */
+    root->w = number;
+
+    leftKids =
+        ( !emptyTree( left( root ) ) ? preOrder( left( root ), number + 1 )
+          : 0 );
+    rightKids =
+        ( !emptyTree( right( root ) ) ?
+          preOrder( right( root ), number + 1 + leftKids ) : 0 );
+
+    root->size = leftKids + rightKids + 1;
+
+    return root->size;
+}
+
+/* The number of right, left kids and the root is returned.  */
+int inOrder( tree root, int number )
+{
+
+    int leftKids, rightKids;
+
+
+    assert( !emptyTree( root ) );
+
+    leftKids =
+        ( !emptyTree( left( root ) ) ? inOrder( left( root ), number )
+          : 0 );
+
+    printf( "Visiting %s\n", root->name );
+    /* givenNo = weight w. */
+    root->w = number + leftKids;
+
+    rightKids =
+        ( !emptyTree( right( root ) ) ?
+          inOrder( right( root ), number + leftKids + 1 ) : 0 );
+
+    root->size = leftKids + 1 + rightKids;
+
+    return root->size;
+}
+
+/* The number of right, left kids and the root is returned.  */
+int postOrder( tree root, int number )
+{
+
+    int leftKids, rightKids;
+
+
+    assert( !emptyTree( root ) );
+
+    leftKids =
+        ( !emptyTree( left( root ) ) ? postOrder( left( root ), number )
+          : 0 );
+
+    rightKids =
+        ( !emptyTree( right( root ) ) ?
+          inOrder( right( root ), number + leftKids ) : 0 );
+
+    printf( "Visiting %s\n", root->name );
+    /* givenNo = weight w. */
+    root->w = number + leftKids + rightKids;
+
+    root->size = leftKids + rightKids + 1;
+
+    return root->size;
+}

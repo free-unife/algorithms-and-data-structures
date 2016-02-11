@@ -16,6 +16,7 @@ int main( void )
 
     tree aTree = EMPTYTREE;
     tree root;
+    int nodeNum;
 
     aTree = insOrd( "20", aTree );
 
@@ -33,6 +34,14 @@ int main( void )
     breadthFirstSearch( root->pointerToVertexHead, root );
     printVertexDistancesFromRootNode( root->pointerToVertexHead, root );
 
+    nodeNum = preOrder( root, 50 );
+    printf( "\n\n" );
+    nodeNum = inOrder( root, 50 );
+    printf( "\n\n" );
+    nodeNum = postOrder( root, 50 );
+    printf( "\n\n" );
+
+    printf( "nn = %d\n", nodeNum );
     /*
        printf( "Weight of aTree: %d\n", findWeight( aTree ) );
        printf( "Root have to be 0 : --> %s\n", root( aTree ) );

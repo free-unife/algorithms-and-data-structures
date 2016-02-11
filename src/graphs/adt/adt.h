@@ -59,9 +59,12 @@ struct graphElement {
     /* Main vertex value.  */
     char *name;
 
-    /* New stuff.  */
+    /* New stuff for BFS.  */
     int distance;
     nodePointer parent;
+
+    /* New stuff for btree.  */
+    int size;
 
     /* If edgeListIn == edgeListOut, then it's a non oriented graph. */
     headPointer edgeListOut;
