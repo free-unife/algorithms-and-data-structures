@@ -48,6 +48,8 @@ typedef struct graphElement *nodePointer;
 
 /* pointerToNode is a pointer to type nodePointer */
 typedef nodePointer *headPointer;
+typedef nodePointer *vertexListPointer;
+typedef nodePointer *edgeListPointer;
 
 /* This struct contains a physical node rappresentation */
 struct graphElement {
@@ -103,7 +105,9 @@ int lengthDoubleLinkedList( headPointer hp );
 nodePointer newEdge( weight w, nodePointer fromNode, nodePointer toNode,
                      headPointer hp );
 
-nodePointer newVertex( char *name, headPointer hp );
+void reinitConnections( nodePointer vertex );
+
+nodePointer newVertex( char *name, vertexListPointer vlp, edgeListPointer elp);
 
 nodePointer connectVertex( headPointer edgehp,
                            nodePointer fromNode, nodePointer toNode,
