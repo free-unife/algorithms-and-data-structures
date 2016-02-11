@@ -129,10 +129,11 @@ boolean isQueueEmpty( int *head, int *tail );
 
 nodePointer *initNodeQueue( int nodeListLen );
 
-void enqueue( int *head, int *tail, int nodeListLen, nodePointer * queue,
-              nodePointer toEnqueue );
+void enqueue( int *tail, int nodeListLen, nodePointer * queue, nodePointer
+              toEnqueue );
 
-nodePointer dequeue( int *head, int *tail, int nodeListLen,
-                     nodePointer * queue );
+nodePointer dequeue( int *head, int nodeListLen, nodePointer * queue );
+
+void printVertexDistancesFromRootNode( headPointer hp, nodePointer root );
 
 void breadthFirstSearch( headPointer hp, nodePointer root );

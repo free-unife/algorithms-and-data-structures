@@ -18,6 +18,7 @@ int main( void )
     nodePointer referenceToEdgeNodes[10];
     headPointer headOfVertexList = EMPTY;
     headPointer headOfEdgeList = EMPTY;
+    nodePointer rootVertex;
 
 
     referenceToVertexNodes[0] = newVertex( "Ferrara", EMPTY );
@@ -27,6 +28,7 @@ int main( void )
     referenceToVertexNodes[3] = newVertex( "Ravenna", headOfVertexList );
     referenceToVertexNodes[4] = newVertex( "Mantova", headOfVertexList );
     referenceToVertexNodes[5] = newVertex( "Torino", headOfVertexList );
+    referenceToVertexNodes[6] = newVertex( "Vaduz", headOfVertexList );
 
 
     referenceToEdgeNodes[0] = connectVertex( NULL,
@@ -59,15 +61,20 @@ int main( void )
 
     referenceToEdgeNodes[5] = connectVertex( headOfEdgeList,
                                              referenceToVertexNodes[4],
-                                             referenceToVertexNodes[2],
-                                             50 );
+                                             referenceToVertexNodes[5],
+                                             100 );
 
-    /* Loop edge is permitted.  */
     referenceToEdgeNodes[6] = connectVertex( headOfEdgeList,
                                              referenceToVertexNodes[5],
-                                             referenceToVertexNodes[5],
-                                             0 );
+                                             referenceToVertexNodes[6],
+                                             200 );
 
+/*
+    referenceToEdgeNodes[6] = connectVertex( headOfEdgeList,
+                                             referenceToVertexNodes[0],
+                                             referenceToVertexNodes[6],
+                                             350 );
+*/
 
     printf( "lenght of vertexList = %d\n",
             lengthDoubleLinkedList( headOfVertexList ) );
@@ -90,7 +97,9 @@ int main( void )
     printNodeEdges( referenceToVertexNodes[1]->edgeListIn );
     printNodeEdges( referenceToVertexNodes[4]->edgeListOut );
 
-    breadthFirstSearch( headOfVertexList, referenceToVertexNodes[0] );
+    rootVertex = referenceToVertexNodes[0];
+    breadthFirstSearch( headOfVertexList, rootVertex );
+    printVertexDistancesFromRootNode( headOfVertexList, rootVertex );
 
     freeGraph( headOfVertexList, headOfEdgeList );
 

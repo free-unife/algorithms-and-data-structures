@@ -270,7 +270,6 @@ void printVertex( headPointer hp )
     return;
 }
 
-
 /* free the node after dummy  */
 void freeNodeInHead( headPointer hp )
 {
@@ -330,15 +329,6 @@ boolean isQueueEmpty( int *head, int *tail )
     return ( *head == *tail );
 }
 
-/*
-boolean isQueueFull (int *head, int *tail, int nodeListLen)
-{
-    return ((*tail + 1) % nodeListLen == *head)
-
-}
-
-*/
-
 nodePointer *initNodeQueue( int nodeListLen )
 {
     nodePointer *queue;
@@ -348,28 +338,39 @@ nodePointer *initNodeQueue( int nodeListLen )
     return queue;
 }
 
-void enqueue( int *head, int *tail, int nodeListLen,
+void enqueue( int *tail, int nodeListLen,
               nodePointer * queue, nodePointer toEnqueue )
 {
-    ( void ) *head;
     queue[*tail] = toEnqueue;
 
     *tail = ( *tail + 1 ) % nodeListLen;
+
     return;
 }
 
-nodePointer dequeue( int *head, int *tail, int nodeListLen,
-                     nodePointer * queue )
+nodePointer dequeue( int *head, int nodeListLen, nodePointer * queue )
 {
     nodePointer toDequeue;
 
-    ( void ) tail;
-
     toDequeue = queue[*head];
-
     *head = ( *head + 1 ) % nodeListLen;
 
     return toDequeue;
+}
+
+
+void printVertexDistancesFromRootNode( headPointer hp, nodePointer root )
+{
+
+    nodePointer dummy = *hp;
+    nodePointer thisVertex = dummy->next;
+
+    while ( thisVertex != dummy ) {
+        printf( "Distance of %s from %s = %d\n", root->name,
+                thisVertex->name, thisVertex->distance );
+        thisVertex = thisVertex->next;
+    }
+    return;
 }
 
 
@@ -396,8 +397,6 @@ void breadthFirstSearch( headPointer hp, nodePointer root )
         succNode = succNode->next;
     }
 
-    printf( "%p\n", ( void * ) root );
-
     nodeListLen =
         lengthDoubleLinkedList( ( succNode->next )->pointerToVertexHead );
 
@@ -405,12 +404,11 @@ void breadthFirstSearch( headPointer hp, nodePointer root )
     queue = initNodeQueue( nodeListLen );
 
     root->distance = 0;
-    enqueue( h, t, nodeListLen, queue, root );
+    enqueue( t, nodeListLen, queue, root );
 
     while ( !isQueueEmpty( h, t ) ) {
 
-        currentNode = dequeue( h, t, nodeListLen, queue );
-        printf( "%p\n", ( void * ) currentNode );
+        currentNode = dequeue( h, nodeListLen, queue );
 
         /* Get adjacent nodes to current node.  */
         adjRef = ( *( currentNode->edgeListOut ) )->next;
@@ -419,29 +417,22 @@ void breadthFirstSearch( headPointer hp, nodePointer root )
         adjNodeDummy = adjRef->prev;
 
         /* for each node n that is adjacent to current: */
-        while ( adjRef->edgeAddr->toNode != adjNodeDummy ) {
+        while ( adjRef != adjNodeDummy ) {
 
             adjNode = adjRef->edgeAddr->toNode;
 
             if ( ( ( adjNode )->distance ) == INT_MAX ) {
                 ( adjNode )->distance = ( ( currentNode )->distance ) + 1;
                 ( adjNode )->parent = currentNode;
-                enqueue( h, t, nodeListLen, queue, adjNode );
+                enqueue( t, nodeListLen, queue, adjNode );
             }
 
-            printf( "Adjacent node to %s = %s\n", currentNode->name,
-                    adjNode->name );
-            printf( "----------\n" );
-
-            printf( "---- %p\n", ( void * ) adjRef );
             adjRef = adjRef->next;
-            printf( "---- %p\n", ( void * ) adjRef );
         }
     }
-
-/*    printQueue( f );*/
 
     free( queue );
 
     return;
+
 }
