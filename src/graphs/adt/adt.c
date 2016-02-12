@@ -392,8 +392,14 @@ void printVertexDistancesFromRootNode( headPointer hp, nodePointer root )
     nodePointer thisVertex = dummy->next;
 
     while ( thisVertex != dummy ) {
-        printf( "Distance of %s from %s = %d\n", root->name,
-                thisVertex->name, thisVertex->distance );
+
+        if ( thisVertex->distance == INF )
+            printf( "Distance of %s from %s = %s\n", root->name,
+                    thisVertex->name, "INF" );
+        else
+            printf( "Distance of %s from %s = %d\n", root->name,
+                    thisVertex->name, thisVertex->distance );
+
         thisVertex = thisVertex->next;
     }
     return;

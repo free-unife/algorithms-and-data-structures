@@ -37,6 +37,8 @@ int main( void )
         newVertex( "Torino", headOfVertexList, headOfEdgeList );
     referenceToVertexNodes[6] =
         newVertex( "Vaduz", headOfVertexList, headOfEdgeList );
+    referenceToVertexNodes[7] =
+        newVertex( "Balzers", headOfVertexList, headOfEdgeList );
 
 
     referenceToEdgeNodes[0] = connectVertex( headOfEdgeList,
