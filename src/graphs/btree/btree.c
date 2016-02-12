@@ -12,9 +12,23 @@
 #endif
 
 
+static headPointer globalPointerToVertexHead;
+static headPointer globalPointerToEdgeHead;
+
 boolean emptyTree( tree t )
 {
     return ( t == EMPTY );
+}
+
+void initTree (void)
+{
+    globalPointerToVertexHead = malloc( sizeof( nodePointer * ) );
+    globalPointerToEdgeHead = malloc( sizeof( nodePointer * ) );
+
+    initDoubleLinkedList (globalPointerToVertexHead);
+    initDoubleLinkedList (globalPointerToEdgeHead);
+
+    return;
 }
 
 tree consTree( element e, tree leftTree, tree rightTree )
@@ -25,26 +39,23 @@ tree consTree( element e, tree leftTree, tree rightTree )
     /* If there's no left and right three, make a new tree.  */
     if ( emptyTree( leftTree ) && emptyTree( rightTree ) ) {
         /* After this call a new graph will be initialized.  */
-        root = newVertex( e, EMPTY, EMPTY );
+        root = newVertex( e, globalPointerToVertexHead, globalPointerToEdgeHead);
 
     } else if ( emptyTree( rightTree ) ) {
         root =
-            newVertex( e, leftTree->pointerToVertexHead,
-                       leftTree->pointerToEdgeHead );
-        connectVertex( leftTree->pointerToEdgeHead, root, leftTree, 'l' );
+            newVertex( e, globalPointerToVertexHead, globalPointerToEdgeHead );
+        connectVertex( globalPointerToEdgeHead, root, leftTree, 'l' );
 
     } else if ( emptyTree( leftTree ) ) {
         root =
-            newVertex( e, rightTree->pointerToVertexHead,
-                       rightTree->pointerToEdgeHead );
-        connectVertex( rightTree->pointerToEdgeHead, root, rightTree,
-                       'r' );
+            newVertex( e, globalPointerToVertexHead ,globalPointerToEdgeHead  );
+        connectVertex( globalPointerToEdgeHead , root, rightTree, 'r' );
     }
     /* otherwise make new vertex as root and two trees as son  */
     else {
-        root = newVertex( e, EMPTY, EMPTY );
-        connectVertex( root->pointerToEdgeHead, root, leftTree, 'l' );
-        connectVertex( root->pointerToEdgeHead, root, rightTree, 'r' );
+        root = newVertex( e, globalPointerToVertexHead, globalPointerToEdgeHead );
+        connectVertex( globalPointerToEdgeHead , root, leftTree, 'l' );
+        connectVertex( globalPointerToEdgeHead , root, rightTree, 'r' );
     }
 
     return root;

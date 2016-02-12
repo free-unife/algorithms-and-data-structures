@@ -41,7 +41,6 @@
 /* Definitions.  */
 #define EMPTYTREE EMPTY
 
-
 /* New datatype.  */
 
  /* We always return a string as a vertex value (we use name) */
@@ -55,6 +54,8 @@ typedef nodePointer tree;
 
 /* Check if a tree is empty.  */
 boolean emptyTree( tree t );
+
+void initTree (void);
 
 /* Add node as new root of left and right tree.  */
 tree consTree( element e, tree leftTree, tree rightTree );

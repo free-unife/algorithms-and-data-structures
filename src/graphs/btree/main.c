@@ -17,43 +17,8 @@ int main( void )
     tree aTree = EMPTYTREE, root;
     int nodeNum;
 
-    nodePointer referenceToVertexNodes[10];
-    nodePointer referenceToEdgeNodes[10];
-    headPointer headOfVertexList = EMPTY;
-    headPointer headOfEdgeList = EMPTY;
-
-
-    /* Create a btree with the graph functions.  */
-
-    referenceToVertexNodes[0] = newVertex( "root", EMPTY, EMPTY );
-    headOfVertexList = referenceToVertexNodes[0]->pointerToVertexHead;
-    headOfEdgeList = referenceToVertexNodes[0]->pointerToEdgeHead;
-
-    referenceToVertexNodes[1] =
-        newVertex( "left", headOfVertexList, headOfEdgeList );
-
-    referenceToVertexNodes[2] =
-        newVertex( "right", headOfVertexList, headOfEdgeList );
-
-
-    referenceToEdgeNodes[0] = connectVertex( headOfEdgeList,
-                                             referenceToVertexNodes[0],
-                                             referenceToVertexNodes[1],
-                                             'l' );
-
-    referenceToEdgeNodes[1] = connectVertex( headOfEdgeList,
-                                             referenceToVertexNodes[0],
-                                             referenceToVertexNodes[2],
-                                             'r' );
-
-    ( void ) referenceToEdgeNodes;
-
-    printVertex( headOfVertexList );
-    breadthFirstSearch( headOfVertexList, referenceToVertexNodes[0] );
-    printVertexDistancesFromRootNode( headOfVertexList,
-                                      referenceToVertexNodes[0] );
-
-    /* Create a btree tree with the btree functions.  */
+    /* Create the lists.  */
+    initTree ();
 
     aTree = insOrd( "20", aTree );
 
