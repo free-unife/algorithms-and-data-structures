@@ -14,76 +14,70 @@ vector createEmptyVector( void )
     return v;
 }
 
-vector createInitializedVector( int numEl, element e )
-{
+
+vector createInitializedVector( int numEl, element e ){
     vector head;
-    node headNode, newNode, hn;
-    int i = 1;
+    int i;
 
+    /* allocate an array of pointer to struct list */
+    node *nodes = malloc(numEl * sizeof(node));
 
-    assert( numEl > 0 );
-
-    headNode = malloc( sizeof( struct list ) );
-    headNode->el = e;
-    headNode->next = NULL;
-
-    hn = headNode;
-
-    while ( i < numEl ) {
-        newNode = malloc( sizeof( struct list ) );
-        newNode->el = e + i;
-        hn->next = newNode;
-        newNode->next = NULL;
-        hn = hn->next;
-
-        i++;
+    /* allocate one struct for each array element */
+    for( i = 0; i<numEl; ++i){
+        nodes[i] = malloc( sizeof(struct list));
     }
 
-    hn->next = NULL;
-    head = &headNode;
-
+    /* the head must have the address of the first node */
+    head = &(nodes[0]);
+    
+    /* fix the first node */  
+    nodes[0]->next = NULL;
+    nodes[0]->el = e;
+    
+    /* fix other nodes */
+    for(i = 1; i<numEl; ++i){
+        nodes[i-1]->next = nodes[i];
+        nodes[i]->el = e;
+        nodes[i]->next = NULL;
+    }
+    
     return head;
 }
-
 
 
 
 int vectorLength( vector v )
 {
     int i = 0;
-    node tmpp = ( *( v ) );
-    node tmp = ( tmpp );
+    node thisNode = *v;
 
-    printf( "%p\n", ( void * ) tmp );
-
-    while ( tmp != NULL ) {
-        printf( "el %d\n", tmp->el );
+    while ( thisNode != NULL ) {
         i++;
-        tmp = tmp->next;
+        thisNode = thisNode->next;
     }
 
     return i;
 }
 
-/*
+
 element getElementValue( vector v, int index )
 {
     int i = 0;
-    node no = *v;
-    printf( "v inside getElement %p\n", ( void * ) *v );
-
+    node thisNode = *v;
+    
     assert( *v != NULL );
+    assert(index < vectorLength(v));
 
-    while ( no != NULL ) {
+    while ( thisNode != NULL ) {
         if ( i == index ) {
-            return no->el;
+            return thisNode->el;
         }
         i++;
-        no = no->next;
+        thisNode = thisNode->next;
     }
     return 0;
 }
-*/
+
 /*
 vector setElementValue(vector v, int index, element val){
 
