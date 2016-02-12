@@ -55,7 +55,7 @@ typedef nodePointer tree;
 /* Check if a tree is empty.  */
 boolean emptyTree( tree t );
 
-void initTree (void);
+void initTree( void );
 
 /* Add node as new root of left and right tree.  */
 tree consTree( element e, tree leftTree, tree rightTree );

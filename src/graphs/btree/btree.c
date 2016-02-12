@@ -20,13 +20,13 @@ boolean emptyTree( tree t )
     return ( t == EMPTY );
 }
 
-void initTree (void)
+void initTree( void )
 {
     globalPointerToVertexHead = malloc( sizeof( nodePointer * ) );
     globalPointerToEdgeHead = malloc( sizeof( nodePointer * ) );
 
-    initDoubleLinkedList (globalPointerToVertexHead);
-    initDoubleLinkedList (globalPointerToEdgeHead);
+    initDoubleLinkedList( globalPointerToVertexHead );
+    initDoubleLinkedList( globalPointerToEdgeHead );
 
     return;
 }
@@ -39,23 +39,29 @@ tree consTree( element e, tree leftTree, tree rightTree )
     /* If there's no left and right three, make a new tree.  */
     if ( emptyTree( leftTree ) && emptyTree( rightTree ) ) {
         /* After this call a new graph will be initialized.  */
-        root = newVertex( e, globalPointerToVertexHead, globalPointerToEdgeHead);
+        root =
+            newVertex( e, globalPointerToVertexHead,
+                       globalPointerToEdgeHead );
 
     } else if ( emptyTree( rightTree ) ) {
         root =
-            newVertex( e, globalPointerToVertexHead, globalPointerToEdgeHead );
+            newVertex( e, globalPointerToVertexHead,
+                       globalPointerToEdgeHead );
         connectVertex( globalPointerToEdgeHead, root, leftTree, 'l' );
 
     } else if ( emptyTree( leftTree ) ) {
         root =
-            newVertex( e, globalPointerToVertexHead ,globalPointerToEdgeHead  );
-        connectVertex( globalPointerToEdgeHead , root, rightTree, 'r' );
+            newVertex( e, globalPointerToVertexHead,
+                       globalPointerToEdgeHead );
+        connectVertex( globalPointerToEdgeHead, root, rightTree, 'r' );
     }
     /* otherwise make new vertex as root and two trees as son  */
     else {
-        root = newVertex( e, globalPointerToVertexHead, globalPointerToEdgeHead );
-        connectVertex( globalPointerToEdgeHead , root, leftTree, 'l' );
-        connectVertex( globalPointerToEdgeHead , root, rightTree, 'r' );
+        root =
+            newVertex( e, globalPointerToVertexHead,
+                       globalPointerToEdgeHead );
+        connectVertex( globalPointerToEdgeHead, root, leftTree, 'l' );
+        connectVertex( globalPointerToEdgeHead, root, rightTree, 'r' );
     }
 
     return root;
@@ -228,7 +234,7 @@ int postOrder( tree root, int number )
 
     rightKids =
         ( !emptyTree( right( root ) ) ?
-          inOrder( right( root ), number + leftKids ) : 0 );
+          postOrder( right( root ), number + leftKids ) : 0 );
 
     printf( "Visiting %s\n", root->name );
     /* givenNo = weight w. */

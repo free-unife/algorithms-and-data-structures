@@ -142,14 +142,13 @@ nodePointer newVertex( char *name, vertexListPointer vlp,
 
     /* Both vlp and elp are not empty here.  */
 
-    /* Every node in the node list must be unique.  */
+    /* Every node in the node list must be unique. */
     foundVertex = searchVertex( name, vlp );
     if ( foundVertex != EMPTY ) {
         reinitConnections( foundVertex );
 
         return foundVertex;
     }
-
 
     /* allocate memory for the vertex */
     if ( ( newVertex = malloc( sizeof( struct graphElement ) ) ) == NULL )
@@ -194,9 +193,9 @@ nodePointer newEdge( weight w, nodePointer fromNode, nodePointer toNode,
     /* every edge node in list must have an atomic value */
     foundEgde = searchEdge( fromNode, toNode, hp );
     if ( foundEgde != EMPTY ) {
-        printf
-            ( "The edge from \"%s\" to \"%s\" already exists! Pay Attention!\n\n",
-              fromNode->name, toNode->name );
+        /*printf
+           ( "The edge from \"%s\" to \"%s\" already exists! Pay Attention!\n\n",
+           fromNode->name, toNode->name ); */
 
         return foundEgde;
     }

@@ -18,7 +18,7 @@ int main( void )
     int nodeNum;
 
     /* Create the lists.  */
-    initTree ();
+    initTree(  );
 
     aTree = insOrd( "20", aTree );
 
@@ -32,14 +32,19 @@ int main( void )
 
     root = aTree;
 
+    printf( "Vertex inside global vertex list:\n" );
     printVertex( root->pointerToVertexHead );
     breadthFirstSearch( root->pointerToVertexHead, root );
+    printf( "\nDistance from root node, after BFS:\n" );
     printVertexDistancesFromRootNode( root->pointerToVertexHead, root );
 
+    printf( "\nPre-order visit:\n" );
     preOrder( root, 0 );
     printf( "\n\n" );
+    printf( "In-order visit:\n" );
     inOrder( root, 0 );
     printf( "\n\n" );
+    printf( "Post-order visit:\n" );
     nodeNum = postOrder( root, 0 );
     printf( "\n\n" );
 
