@@ -15,7 +15,10 @@
 #include <stdio.h>
 #endif
 
+#ifndef ASSERT
+#define ASSERT
 #include <assert.h>
+#endif
 
 typedef int element;
 
@@ -31,7 +34,7 @@ vector createEmptyVector( void );
 
 vector createInitializedVector( int numEl, element e );
 
-int vectorLength( node no );
+int vectorLength( vector v );
 
 element getElementValue( vector v, int index );
 

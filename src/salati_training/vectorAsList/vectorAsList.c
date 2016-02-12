@@ -17,51 +17,61 @@ vector createEmptyVector( void )
 vector createInitializedVector( int numEl, element e )
 {
     vector head;
-    node nprec, tmp;
-    node ncurr;
-    int i;
+    node headNode, newNode, hn;
+    int i = 1;
 
-    nprec = malloc( sizeof( struct list ) );
-    tmp = nprec;
-    head = &tmp;
 
-    nprec->el = e;
-    nprec->next = NULL;
+    assert( numEl > 0 );
 
-    for ( i = 0; i < numEl - 1; ++i ) {
-        ncurr = malloc( sizeof( struct list ) );
-        nprec->next = ncurr;
-        ncurr->el = e + ( i + 1 );
-        ncurr->next = NULL;
-        nprec = ncurr;
+    headNode = malloc( sizeof( struct list ) );
+    headNode->el = e;
+    headNode->next = NULL;
+
+    hn = headNode;
+
+    while ( i < numEl ) {
+        newNode = malloc( sizeof( struct list ) );
+        newNode->el = e + i;
+        hn->next = newNode;
+        newNode->next = NULL;
+        hn = hn->next;
+
+        i++;
     }
+
+    hn->next = NULL;
+    head = &headNode;
 
     return head;
 }
 
 
-int vectorLength( node head )
+
+
+int vectorLength( vector v )
 {
     int i = 0;
-    node no = head;
-    printf( "no inside vectorLength %p\n", ( void * ) no );
-    while ( no != NULL ) {
-        /*printf( "v inside vectorLength %p\n", ( void * ) *v ); */
-        printf( "el %d\n", no->el );
+    node tmpp = ( *( v ) );
+    node tmp = ( tmpp );
+
+    printf( "%p\n", ( void * ) tmp );
+
+    while ( tmp != NULL ) {
+        printf( "el %d\n", tmp->el );
         i++;
-        no = no->next;
+        tmp = tmp->next;
     }
 
     return i;
 }
 
+/*
 element getElementValue( vector v, int index )
 {
     int i = 0;
     node no = *v;
     printf( "v inside getElement %p\n", ( void * ) *v );
 
-    /*assert( index < vectorLength( v ) ); */
     assert( *v != NULL );
 
     while ( no != NULL ) {
@@ -73,7 +83,7 @@ element getElementValue( vector v, int index )
     }
     return 0;
 }
-
+*/
 /*
 vector setElementValue(vector v, int index, element val){
 

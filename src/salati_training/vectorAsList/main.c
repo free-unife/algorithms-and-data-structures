@@ -14,14 +14,33 @@
 int main( void )
 {
     vector newVector;
+    node tmpp = NULL, tmp;
+
+    newVector = createInitializedVector( 2, 5 );
+    ( void ) newVector;
+
+    tmpp = *( newVector );
+    tmp = tmpp;
+
+    while ( tmp != NULL ) {
+        printf( "%d\n", tmp->el );
+        tmp = tmp->next;
+    }
+
+    tmp = tmpp;
+    while ( tmp != NULL ) {
+        printf( "%d\n", tmp->el );
+        tmp = tmp->next;
+    }
 
 
-    newVector = createInitializedVector( 3, 5 );
+/*    printf( "%d", ( *( newVector ) )->next->el );*/
 
-    printf( "%d", vectorLength( *newVector ) );
-    printf( "%d", vectorLength( *newVector ) );
 
-    printf( "%d", getElementValue( newVector, 3 ) );
+/*    printf( "%d\n", vectorLength( newVector ) );
+    printf( "%d\n", vectorLength( newVector ) );
+*/
+/*    printf( "%d", getElementValue( newVector, 3 ) );*/
 
 
     return 0;
