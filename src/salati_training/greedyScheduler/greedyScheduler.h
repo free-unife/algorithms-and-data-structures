@@ -25,5 +25,13 @@
 #define false 0
 
 typedef int boolean;
+typedef int time;
 
-int belongs( int el, int *v, int low, int high );
+struct task {
+    char *name;
+    time taskTime;
+    /* Deadline must be counted from the time the first task j[0] starts.  */
+    time deadline;
+};
+
+boolean isSchedulingPossible( struct task *j, int numberOfTasks );

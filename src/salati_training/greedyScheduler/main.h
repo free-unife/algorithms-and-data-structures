@@ -5,6 +5,11 @@
  * as published by Sam Hocevar. See the LICENSE file for more details.
  */
 
+#ifndef GREEDYSCHEDULER_H
+#define GREEDYSCHEDULER_H
+#include "greedyScheduler.h"
+#endif
+
 #ifndef STDLIB
 #define STDLIB
 #include <stdlib.h>
@@ -14,16 +19,3 @@
 #define STDIO
 #include <stdio.h>
 #endif
-
-#ifndef ASSERT
-#define ASSERT
-#include <assert.h>
-#endif
-
-
-#define true 1
-#define false 0
-
-typedef int boolean;
-
-int belongs( int el, int *v, int low, int high );
