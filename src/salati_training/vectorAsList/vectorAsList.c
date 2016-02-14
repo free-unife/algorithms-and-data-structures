@@ -156,9 +156,104 @@ vector tailTrimVector(vector v){
     return v;
 }
 
-/* What we have to do with these? */
-/*
-vector insertElement(vector v, int index, element e){}
 
-vector removeElement(vector v, int index){}
-*/
+
+vector insertElement(vector v, int index, element e){
+    int length;
+    int i;
+    node aNode;
+    node newNode;
+    node *vectorNodes;
+
+    length = vectorLength(v);
+    
+    /* ex: can't insert in pos 1 if pos 0 does not exist */
+    assert(index <= length);
+
+    /* if there's no element put in head */
+    if( length == 0 ){
+        v = tailExtendVector(v, e);
+        return v;
+    }
+
+    /* if there's more than one element */
+
+    /* first put all nodes in a vector, just for easily manipulate them */
+    vectorNodes = malloc(length * sizeof(node));
+
+    aNode = *v;
+    for( i = 0; i<length; ++i){
+        vectorNodes[i] = aNode;
+        aNode = aNode->next;
+    }
+
+    /* first, create the new node and initialize it */
+    newNode = malloc( sizeof(struct list));
+    newNode->el = e;
+    newNode->next = NULL;
+
+
+    /* if the element is to insert in head */
+    if( index == 0 ){
+        newNode->next = vectorNodes[0];
+        *v = newNode;
+    }
+
+    /* if the element is to insert in the middle */
+    else if( index > 0 && index < length){
+        vectorNodes[index-1]->next = newNode;
+        newNode->next = vectorNodes[index];
+    }
+
+    /* if the element is to insert in the queue */
+    else if( index == length){
+        vectorNodes[index-1]->next = newNode;
+    }
+
+    return v;
+}
+
+
+vector removeElement(vector v, int index){
+    int length;
+    int i;
+    node aNode;
+    node *vectorNodes;
+
+    length = vectorLength(v);
+
+    /* at least one node must exist */
+    assert(length != 0);
+
+    /* if there's only one element */
+    if(length == 1){
+        free(*v);
+        *v = NULL;
+        return v;
+    }
+
+    /* if there's more than one element */
+
+    /* first put all nodes in a vector, just for easily manipulate them */
+    vectorNodes = malloc(length * sizeof(node));
+
+    aNode = *v;
+    for( i = 0; i<length; ++i){
+        vectorNodes[i] = aNode;
+        aNode = aNode->next;
+    }
+
+    /* remove from head*/
+    if(index == 0){
+        *v = vectorNodes[index + 1];
+    }
+    
+    else{
+        vectorNodes[index-1]->next = vectorNodes[index]->next;
+    }
+
+    free(vectorNodes[index]);
+
+    return v;
+}
+

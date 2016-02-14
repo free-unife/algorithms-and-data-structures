@@ -39,6 +39,62 @@ int main( void )
     	printf( "Length: %d\n", vectorLength( newVector ) );
     }
 
+
+    printf("\n\nCalling insertElement:\n");
+    
+    length = vectorLength(newVector);
+    
+    for(i = 0; i < 10; ++i ){
+        newVector = insertElement(newVector, i, i*10);
+        printf( "Length: %d\n", vectorLength( newVector ) );
+    }
+
+
+    newVector = insertElement(newVector, 5, 9999);
+    printf( "Length: %d\n", vectorLength( newVector ) );
+
+    printf("\n\nCalling getElementValue:\n");
+    for(i = 0; i < vectorLength( newVector ); ++i ){
+        printf( "vector[%d] -> %d\n", i, getElementValue( newVector, i ) );
+    }   
+    
+
+
+    printf("\n\nCalling removeElement -> head:\n");
+    
+    length = vectorLength(newVector);
+    
+    newVector = removeElement(newVector, 0);
+   
+    printf("\n\nCalling getElementValue:\n");
+    for(i = 0; i < vectorLength( newVector ); ++i ){
+        printf( "vector[%d] -> %d\n", i, getElementValue( newVector, i ) );
+    }
+
+
+    printf("\n\nCalling removeElement -> middle:\n");
+    
+    length = vectorLength(newVector);
+    
+    newVector = removeElement(newVector, 4);
+   
+    printf("\n\nCalling getElementValue:\n");
+    for(i = 0; i < vectorLength( newVector ); ++i ){
+        printf( "vector[%d] -> %d\n", i, getElementValue( newVector, i ) );
+    }
+
+
+    printf("\n\nCalling removeElement -> queue:\n");
+    
+    length = vectorLength(newVector);
+    
+    newVector = removeElement(newVector, length-1);
+   
+    printf("\n\nCalling getElementValue:\n");
+    for(i = 0; i < vectorLength( newVector ); ++i ){
+        printf( "vector[%d] -> %d\n", i, getElementValue( newVector, i ) );
+    }
+    
     /*
     newVector = createInitializedVector( 2, 5 );
 
