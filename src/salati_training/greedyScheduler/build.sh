@@ -12,4 +12,4 @@
 paths="main.c greedyScheduler.c"
 output="greedyScheduler.o"
 
-../mainBuild.sh "$paths" "$output"
+../mainBuild.sh "$paths" "$output" "$1"

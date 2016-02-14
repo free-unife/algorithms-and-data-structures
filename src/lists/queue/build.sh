@@ -12,4 +12,4 @@
 paths="../adt/adt.c main.c queue.c"
 output="queue.o"
 
-../mainBuild.sh "$paths" "$output"
+../mainBuild.sh "$paths" "$output" "$1"

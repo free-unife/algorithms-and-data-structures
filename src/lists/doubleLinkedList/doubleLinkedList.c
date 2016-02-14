@@ -204,17 +204,22 @@ nodePointer *searchForElement( element toSearch, headPointer hp )
 /* Extract a node given his reference. */
 element extractNodeInMiddle( nodePointer np )
 {
+
     element extracted;
     nodePointer toDelete = np;
 
-    /* Extract element */
-    extracted = toDelete->el;
 
-    /* Fix pointers */
-    toDelete->prev->next = toDelete->next;
-    toDelete->next->prev = toDelete->prev;
+    if ( np != EMPTY ) {
 
-    free( toDelete );
+        /* Extract element */
+        extracted = toDelete->el;
+
+        /* Fix pointers */
+        toDelete->prev->next = toDelete->next;
+        toDelete->next->prev = toDelete->prev;
+
+        free( toDelete );
+    }
 
     return extracted;
 }

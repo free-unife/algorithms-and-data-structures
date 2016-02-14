@@ -11,11 +11,15 @@
 #include "main.h"
 #endif
 
+
 int main( void )
 {
+
     headPointer head = malloc( sizeof( nodePointer * ) );
     nodePointer *foundedNodes;
     int i;
+
+
     initDoubleLinkedList( head );
 
     insertNodeInHead( 10, head );
@@ -23,6 +27,7 @@ int main( void )
     insertNodeInQueue( 10, head );
     insertNodeInQueue( 20, head );
     insertNodeInHead( 28, head );
+
     printDoubleLinkedList( head );
     printf( "length: %d\n", lengthDoubleLinkedList( head ) );
 
@@ -30,15 +35,15 @@ int main( void )
 
     foundedNodes = searchForElement( 10, head );
 
+    printf( "-----\n" );
+
     i = 0;
     while ( foundedNodes[i] != EMPTY ) {
-        xtractNodeInMiddle( foundedNodes[i] ) );
+        printf( "Extracted from middle --> %d\n",
+                extractNodeInMiddle( foundedNodes[i] ) );
         i = i + 1;
     }
 
-    printf( "-----\n" );
-    printf( "Extracted from middle --> %d\n",
-            extractNodeInMiddle( foundedNodes[0] ) );
     printf( "-----\n" );
     printDoubleLinkedList( head );
     printf( "length: %d\n", lengthDoubleLinkedList( head ) );
@@ -84,12 +89,14 @@ int main( void )
 
     /* Testing freeDoubleLinkedList() */
     /*
-    freeDoubleLinkedList( head );
+       freeDoubleLinkedList( head );
 
-    if ( null( head ) )
-        printf( "free is correct!" );
-    else
-        printf( "free is not correct!" );
-    */
+       if ( null( head ) )
+       printf( "free is correct!" );
+       else
+       printf( "free is not correct!" );
+     */
+
     return 0;
+
 }

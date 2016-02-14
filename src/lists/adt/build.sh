@@ -12,4 +12,4 @@
 paths="adt.c"
 output="adt.o"
 
-../mainBuild.sh "$paths" "$output"
+../mainBuild.sh "$paths" "$output" "$1"

@@ -12,4 +12,4 @@
 paths="main.c belongs.c"
 output="belongs.o"
 
-../mainBuild.sh "$paths" "$output"
+../mainBuild.sh "$paths" "$output" "$1"

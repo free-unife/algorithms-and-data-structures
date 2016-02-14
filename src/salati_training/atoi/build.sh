@@ -12,4 +12,4 @@
 paths="main.c atoi.c"
 output="atoi.o"
 
-../mainBuild.sh "$paths" "$output"
+../mainBuild.sh "$paths" "$output" "$1"

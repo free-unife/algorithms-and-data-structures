@@ -12,4 +12,4 @@
 paths="btree.c main.c ../adt/adt.c"
 output="btree.o"
 
-../mainBuild.sh "$paths" "$output"
+../mainBuild.sh "$paths" "$output" "$1"

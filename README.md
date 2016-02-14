@@ -16,7 +16,11 @@ An executable file called `<directory>.o` will be created in the
 
 If you have the program `indent` installed in your system, the files called by 
 every `build.sh` will automatically be indented (and changed) with the options
-specified by the `indentOptions` variable in `src/mainBuild.sh`.
+specified by the `indentOptions` variable in `src/mainBuild.sh` if, and only if 
+you add `-i` option after issuing `build.sh`, like this:
+```
+$ ./build.sh -i
+``` 
 
 Fell free to contribute to this repository.
 

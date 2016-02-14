@@ -13,16 +13,18 @@
 
 paths="$1"
 output="$2"
+indentOn="$3"
 
 # Set indent backup suffix.
 export SIMPLE_BACKUP_SUFFIX=".indent.bak"
 indentOptions="-kr -prs -nut"
-
+cCompiler="gcc"
+cCompilerOpts="-Wall -Wextra -Wpedantic -Werror -march=native -O0 -std=c90 -D_DEFAULT_SOURCE"
 
 # Check if indent executable exists.
 which indent 1>/dev/null 2>/dev/null
 
-if [ $? -eq 0 ]; then
+if [ $? -eq 0 ] && [ -n "$indentOn" ]; then
     for file in $paths; do
         indent $indentOptions "$file"
         # Remove indent backup files.
@@ -37,5 +39,4 @@ if [ $? -eq 0 ]; then
 fi
 
 # Compile.
-gcc $paths -Wall -Wextra -Wpedantic -Werror \
--march=native -O0 -std=c90 -D_DEFAULT_SOURCE -o "$output"
+$cCompiler $paths $cCompilerOpts -o "$output"

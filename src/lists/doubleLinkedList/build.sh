@@ -12,4 +12,4 @@
 paths="main.c doubleLinkedList.c ../adt/adt.c"
 output="doubleLinkedList.o"
 
-../mainBuild.sh "$paths" "$output"
+../mainBuild.sh "$paths" "$output" "$1"

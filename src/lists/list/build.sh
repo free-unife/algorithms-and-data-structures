@@ -12,4 +12,4 @@
 paths="main.c liste.c ../adt/adt.c"
 output="list.o"
 
-../mainBuild.sh "$paths" "$output"
+../mainBuild.sh "$paths" "$output" "$1"
