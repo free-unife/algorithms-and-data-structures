@@ -11,27 +11,32 @@
 #include "main.h"
 #endif
 
+
 int main( void )
 {
     struct task j[4];
     int isPossible;
 
 
-    j[0].name = "start";
-    j[0].taskTime = 1;
-    j[0].deadline = 5;
+    j[0].name = "grind coffe";
+    j[0].taskTime = 15;
+    j[0].deadline = 65;
 
-    j[1].name = "heat up";
-    j[1].taskTime = 30;
-    j[1].deadline = 45;
+    /* T0 = 0 = start time.  */
+    j[1].name = "start";
+    j[1].taskTime = 1;
+    j[1].deadline = 4;
 
-    j[2].name = "make coffe";
-    j[2].taskTime = 15;
-    j[2].deadline = 60;
+    j[2].name = "heat up";
+    j[2].taskTime = 30;
+    j[2].deadline = 40;
 
+    j[3].name = "deliver coffe";
+    j[3].taskTime = 10;
+    j[3].deadline = 80;
 
-    isPossible = isSchedulingPossible( j, 3 );
-    printf( "is possible = %d\n", isPossible );
+    isPossible = isSchedulingPossible( j, 4 );
+    printf( "Is scheduling possible = %d\n", isPossible );
 
     return 0;
 

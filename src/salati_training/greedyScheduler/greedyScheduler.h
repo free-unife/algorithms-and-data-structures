@@ -30,8 +30,11 @@ typedef int time;
 struct task {
     char *name;
     time taskTime;
-    /* Deadline must be counted from the time the first task j[0] starts.  */
+    /* Deadline must be counted from the time the first task starts.
+     * The first task is assumed to be the one with the nearest deadline.  */
     time deadline;
 };
 
+int partition( struct task *j, int from, int to );
+void sortByNearestDeadlineFirst( struct task *j, int from, int to );
 boolean isSchedulingPossible( struct task *j, int numberOfTasks );
