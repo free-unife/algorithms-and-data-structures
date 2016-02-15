@@ -26,4 +26,4 @@
 
 typedef int boolean;
 
-void straightInsertion(int *v, int n );
+void straightInsertion( int *v, int n );

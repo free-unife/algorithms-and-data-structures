@@ -16,14 +16,14 @@ int main( void )
 {
 
     int n = 7, i;
-    int v[7] = { 9, 2, 7, 4, 0, 5, 6};
+    int v[7] = { 9, 2, 7, 4, 0, 5, 6 };
 
-    straightInsertion (v, n);
+    straightInsertion( v, n );
 
-    for (i=0; i<n; i++)
-        printf ("%d ", v[i]);
+    for ( i = 0; i < n; i++ )
+        printf( "%d ", v[i] );
 
-    printf ("\n");
+    printf( "\n" );
 
     return 0;
 
