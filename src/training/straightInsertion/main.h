@@ -5,6 +5,12 @@
  * as published by Sam Hocevar. See the LICENSE file for more details.
  */
 
+
+#ifndef PRINTARRAY_H
+#define PRINTARRAY_H
+#include "../printArray/printArray.h"
+#endif
+
 #ifndef STRAIGHTINSERTION_H
 #define STRAIGHTINSERTION_H
 #include "straightInsertion.h"

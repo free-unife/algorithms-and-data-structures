@@ -17,16 +17,14 @@
 void straightInsertion( int *v, int n )
 {
 
-    int i, j, k, scan, toInsert, tmp;
+    int i, j, scan, toInsert, tmp;
 
 
     i = 1;
 
     while ( i <= n - 1 ) {
 
-        for ( k = 0; k < n; k++ )
-            printf( "%d ", v[k] );
-        printf( "\n" );
+        printArray( v, n );
 
         /* Condition control.  */
         if ( i > 1 ) {

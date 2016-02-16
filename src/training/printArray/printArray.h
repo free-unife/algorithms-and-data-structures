@@ -5,26 +5,10 @@
  * as published by Sam Hocevar. See the LICENSE file for more details.
  */
 
-
-#ifndef MAIN_H
-#define MAIN_H
-#include "main.h"
+#ifndef STDIO
+#define STDIO
+#include <stdio.h>
 #endif
 
 
-int main( void )
-{
-
-    int n = 7, i;
-    int v[7] = { 9, 2, 7, 4, 0, 5, 6 };
-
-    straightInsertion( v, n );
-
-    for ( i = 0; i < n; i++ )
-        printf( "%d ", v[i] );
-
-    printf( "\n" );
-
-    return 0;
-
-}
+void printArray( int *v, int n );

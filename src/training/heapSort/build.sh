@@ -9,7 +9,7 @@
 #
 
 
-paths="main.c straightInsertion.c"
-output="straightInsertion.o"
+paths="main.c heapSort.c ../printArray/printArray.c"
+output="heapSort.o"
 
 ../mainBuild.sh "$paths" "$output" "$1"
