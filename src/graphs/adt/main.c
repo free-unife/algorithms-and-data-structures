@@ -104,6 +104,12 @@ int main( void )
     breadthFirstSearch( headOfVertexList, rootVertex );
     printVertexDistancesFromRootNode( headOfVertexList, rootVertex );
 
+    printf( "\n" );
+
+    singleSourceShortestPaths( headOfVertexList, rootVertex );
+    printVertexDistancesFromRootNode( headOfVertexList, rootVertex );
+
+
     freeGraph( headOfVertexList, headOfEdgeList );
 
     /*  Dummy example: */

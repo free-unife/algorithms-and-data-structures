@@ -146,3 +146,5 @@ nodePointer dequeue( int *head, int nodeListLen, nodePointer * queue );
 void printVertexDistancesFromRootNode( headPointer hp, nodePointer root );
 
 void breadthFirstSearch( headPointer hp, nodePointer root );
+
+void singleSourceShortestPaths( headPointer hp, nodePointer root );

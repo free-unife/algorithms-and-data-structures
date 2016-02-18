@@ -470,3 +470,55 @@ void breadthFirstSearch( headPointer hp, nodePointer root )
     return;
 
 }
+
+
+/* Dijstra's algorithm to find the shortest path from the designed root to all
+ * nodes. */
+/* Extended algorithm.  */
+void singleSourceShortestPaths( headPointer hp, nodePointer root )
+{
+    nodePointer refToDummy = *hp;
+    nodePointer succNode = ( *hp )->next;
+
+    nodePointer refToEdgeListScan;
+    nodePointer edgeListScan;
+
+
+
+    /* Create a new graph containing the solution... */
+    /* TODO  */
+    /* Maybe instead of returing a graph, it could be more easy to make a
+     * copy of the graph in main.c and modify the input graph directly (if
+     * possible and useful?).  */
+
+
+    while ( succNode != refToDummy ) {
+        succNode->distance = INF;
+        succNode->parent = root;
+
+        succNode = succNode->next;
+    }
+
+    /* Distance from root to itself is zero.  */
+    root->distance = 0;
+
+
+    /* Set cost for edges adjacent to root.  */
+    refToEdgeListScan = ( *( root->edgeListOut ) );
+    edgeListScan = ( *( root->edgeListOut ) )->next;
+
+    while ( edgeListScan != refToEdgeListScan ) {
+
+        ( ( edgeListScan->edgeAddr )->toNode )->distance =
+            ( edgeListScan->edgeAddr )->w;
+
+        edgeListScan = edgeListScan->next;
+
+    }
+
+
+    /* To be finished.  */
+
+    return;
+
+}
