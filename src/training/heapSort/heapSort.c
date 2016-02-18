@@ -95,7 +95,7 @@ void heapSort( int *v, int n )
 
         printArray( v, n );
 
-        /* With each iteration, sift is executed with a smaller problem whcih 
+        /* With each iteration, sift is executed with a smaller problem which
          * decreases its size lineary (k--).  */
         sift( v, 0, k - 1 );
 

@@ -10,5 +10,13 @@
 #include <stdio.h>
 #endif
 
+#ifndef ASSERT
+#define ASSERT
+#include <assert.h>
+#endif
+
 
 void printArray( int *v, int n );
+void printReverseArray( int *v, int n );
+void printArrayFromTo( int *v, int n, int from, int to );
+void printReverseArrayFromTo( int *v, int n, int from, int to );
