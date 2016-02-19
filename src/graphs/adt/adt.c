@@ -478,16 +478,15 @@ void breadthFirstSearch( headPointer hp, nodePointer root )
 void singleSourceShortestPaths( headPointer hp, nodePointer root )
 {
     nodePointer refToDummy = *hp;
-    nodePointer succNode = ( *hp )->next;
+    nodePointer succNode = ( *hp )->prev;
 
-    nodePointer refToEdgeListScan;
+    nodePointer dummyEdgeListScan;
     nodePointer edgeListScan;
 
     nodePointer tmp;
 
 
     /* Create a new graph containing the solution... */
-    /* TODO  */
     /* Maybe instead of returing a graph, it could be more easy to make a
      * copy of the graph in main.c and modify the input graph directly (if
      * possible and useful?).  */
@@ -501,18 +500,19 @@ void singleSourceShortestPaths( headPointer hp, nodePointer root )
         succNode->distance = INF;
         succNode->parent = root;
 
-        succNode = succNode->next;
+        succNode = succNode->prev;
     }
 
     /* Distance from root to itself is zero.  */
     root->distance = 0;
+    root->parent = root;
 
 
-    refToEdgeListScan = ( *( root->edgeListOut ) );
+    dummyEdgeListScan = ( *( root->edgeListOut ) );
     edgeListScan = ( *( root->edgeListOut ) )->next;
 
     /* Set cost for edges adjacent to root.  */
-    while ( edgeListScan != refToEdgeListScan ) {
+    while ( edgeListScan != dummyEdgeListScan ) {
 
         ( ( edgeListScan->edgeAddr )->toNode )->distance =
             ( edgeListScan->edgeAddr )->w;
@@ -521,6 +521,7 @@ void singleSourceShortestPaths( headPointer hp, nodePointer root )
 
     }
 
+    return;
 
     /* Iterating through each node.  */
     while (succNode -> prev != refToDummy)
@@ -540,13 +541,16 @@ void singleSourceShortestPaths( headPointer hp, nodePointer root )
         /* link (tmp, S) */
 
         edgeListScan = ( *(tmp -> edgeListOut));
-        while (edgeListScan != refToEdgeListScan)
+        while (edgeListScan != dummyEdgeListScan)
         {
+
+/*            printVertexDistancesFromRootNode( hp, root);*/
+
             if (((edgeListScan -> toNode) -> distance) > (tmp -> distance) + ((edgeListScan -> edgeAddr) -> w))
             {
                 (edgeListScan -> toNode) -> distance = (tmp -> distance) + ((edgeListScan -> edgeAddr) -> w);
                 /* NOT SURE: */
-                ((*((edgeListScan -> toNode) -> edgeListIn)) -> edgeAddr) -> fromNode = tmp;
+                ((*((edgeListScan -> toNode) -> edgeListIn)) -> edgeAddr) -> parent = tmp;
             }
 
             edgeListScan = edgeListScan -> next;

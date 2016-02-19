@@ -107,7 +107,7 @@ int main( void )
     printf( "\n" );
 
     singleSourceShortestPaths( headOfVertexList, rootVertex );
-    printVertexDistancesFromRootNode( headOfVertexList, rootVertex );
+/*    printVertexDistancesFromRootNode( headOfVertexList, rootVertex );*/
 
 
     freeGraph( headOfVertexList, headOfEdgeList );
