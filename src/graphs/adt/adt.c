@@ -483,6 +483,7 @@ void singleSourceShortestPaths( headPointer hp, nodePointer root )
     nodePointer refToEdgeListScan;
     nodePointer edgeListScan;
 
+    nodePointer tmp;
 
 
     /* Create a new graph containing the solution... */
@@ -491,6 +492,10 @@ void singleSourceShortestPaths( headPointer hp, nodePointer root )
      * copy of the graph in main.c and modify the input graph directly (if
      * possible and useful?).  */
 
+
+    /* new graph */
+    /* delink (root) */
+    /* link (root, S) */
 
     while ( succNode != refToDummy ) {
         succNode->distance = INF;
@@ -503,10 +508,10 @@ void singleSourceShortestPaths( headPointer hp, nodePointer root )
     root->distance = 0;
 
 
-    /* Set cost for edges adjacent to root.  */
     refToEdgeListScan = ( *( root->edgeListOut ) );
     edgeListScan = ( *( root->edgeListOut ) )->next;
 
+    /* Set cost for edges adjacent to root.  */
     while ( edgeListScan != refToEdgeListScan ) {
 
         ( ( edgeListScan->edgeAddr )->toNode )->distance =
@@ -517,8 +522,43 @@ void singleSourceShortestPaths( headPointer hp, nodePointer root )
     }
 
 
-    /* To be finished.  */
+    /* Iterating through each node.  */
+    while (succNode -> prev != refToDummy)
+    {
+        tmp = succNode -> prev;
+        succNode = tmp -> next;
+
+        while (succNode != refToDummy)
+        {
+            if ( succNode -> distance < tmp -> distance)
+                tmp = succNode;
+
+            succNode = succNode -> prev;
+        }
+
+        /* delink (tmp)*/
+        /* link (tmp, S) */
+
+        edgeListScan = ( *(tmp -> edgeListOut));
+        while (edgeListScan != refToEdgeListScan)
+        {
+            if (((edgeListScan -> toNode) -> distance) > (tmp -> distance) + ((edgeListScan -> edgeAddr) -> w))
+            {
+                (edgeListScan -> toNode) -> distance = (tmp -> distance) + ((edgeListScan -> edgeAddr) -> w);
+                /* NOT SURE: */
+                ((*((edgeListScan -> toNode) -> edgeListIn)) -> edgeAddr) -> fromNode = tmp;
+            }
+
+            edgeListScan = edgeListScan -> next;
+        }
+
+        /* free (succNode) */
+        /* return (S) */
+
+    }
+
 
     return;
 
 }
+
