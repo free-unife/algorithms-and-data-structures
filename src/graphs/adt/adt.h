@@ -147,4 +147,9 @@ void printVertexDistancesFromRootNode( headPointer hp, nodePointer root );
 
 void breadthFirstSearch( headPointer hp, nodePointer root );
 
+boolean isDijstraListEmpty( nodePointer * list, nodePointer np );
+boolean belongs( nodePointer * list, nodePointer np );
+void link( nodePointer * list, nodePointer np );
+void delink( nodePointer * list, nodePointer np );
+void createNodeList( headPointer hp, nodePointer * V );
 void singleSourceShortestPaths( headPointer hp, nodePointer root );

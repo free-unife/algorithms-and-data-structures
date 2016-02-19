@@ -77,6 +77,16 @@ int main( void )
                                              referenceToVertexNodes[6],
                                              200 );
 
+    referenceToEdgeNodes[7] = connectVertex( headOfEdgeList,
+                                             referenceToVertexNodes[5],
+                                             referenceToVertexNodes[1],
+                                             320 );
+
+/*    referenceToEdgeNodes[8] = connectVertex( headOfEdgeList,
+                                             referenceToVertexNodes[5],
+                                             referenceToVertexNodes[4],
+                                             100 );
+*/
 
 
     printf( "lenght of vertexList = %d\n",
@@ -100,14 +110,18 @@ int main( void )
     printNodeEdges( referenceToVertexNodes[1]->edgeListIn );
     printNodeEdges( referenceToVertexNodes[4]->edgeListOut );
 
+
     rootVertex = referenceToVertexNodes[0];
+
+    printf( "Distance in steps from node %s:\n", rootVertex->name );
     breadthFirstSearch( headOfVertexList, rootVertex );
     printVertexDistancesFromRootNode( headOfVertexList, rootVertex );
 
     printf( "\n" );
 
+    printf( "Distance in km from node %s:\n", rootVertex->name );
     singleSourceShortestPaths( headOfVertexList, rootVertex );
-/*    printVertexDistancesFromRootNode( headOfVertexList, rootVertex );*/
+    printVertexDistancesFromRootNode( headOfVertexList, rootVertex );
 
 
     freeGraph( headOfVertexList, headOfEdgeList );

@@ -472,40 +472,139 @@ void breadthFirstSearch( headPointer hp, nodePointer root )
 }
 
 
+/* Does np belong to list?  */
+boolean isDijstraListEmpty( nodePointer * list, nodePointer np )
+{
+
+    int i = 0;
+
+
+    while ( i < lengthDoubleLinkedList( np->pointerToVertexHead )
+            && list[i] == EMPTY )
+        i++;
+
+    if ( i == lengthDoubleLinkedList( np->pointerToVertexHead ) )
+        return true;
+    else
+        return false;
+
+
+    return false;
+
+}
+
+
+/* Does np belong to list?  */
+boolean belongs( nodePointer * list, nodePointer np )
+{
+
+    int i = 0;
+
+
+    while ( i < lengthDoubleLinkedList( np->pointerToVertexHead ) ) {
+        if ( list[i] == np )
+            return true;
+        i++;
+    }
+
+    return false;
+
+}
+
+
+/* Pseudo-queue implementation. */
+/* Remove np from list.  */
+void delink( nodePointer * list, nodePointer np )
+{
+
+    int i = 0;
+
+    while ( list[i] != np
+            && i < lengthDoubleLinkedList( np->pointerToVertexHead ) )
+        i++;
+
+    if ( i < lengthDoubleLinkedList( np->pointerToVertexHead )
+         && list[i] == np )
+        list[i] = EMPTY;
+
+    return;
+
+}
+
+/* Pseudo-queue implementation. */
+/* Ad np to list in the first free position.  */
+void link( nodePointer * list, nodePointer np )
+{
+
+    int i = 0;
+
+    while ( list[i] != EMPTY
+            && i < lengthDoubleLinkedList( np->pointerToVertexHead ) )
+        i++;
+
+    if ( i < lengthDoubleLinkedList( np->pointerToVertexHead ) )
+        list[i] = np;
+
+
+    return;
+
+}
+
+/* Fill up V with the pointers of all the nodes in the node list.  */
+void createNodeList( headPointer hp, nodePointer * V )
+{
+
+    nodePointer refToDummy = *hp;
+    nodePointer succNode = ( *hp )->next;
+    int i = 0;
+
+
+    while ( succNode != refToDummy ) {
+        /* Put address of current node int the array V.  */
+        V[i] = succNode;
+        i++;
+        succNode = succNode->next;
+    }
+
+    return;
+
+}
+
+
 /* Dijstra's algorithm to find the shortest path from the designed root to all
  * nodes. */
-/* Extended algorithm.  */
 void singleSourceShortestPaths( headPointer hp, nodePointer root )
 {
     nodePointer refToDummy = *hp;
     nodePointer succNode = ( *hp )->prev;
 
+    nodePointer *V = calloc( lengthDoubleLinkedList( hp ),
+                             sizeof( nodePointer * ) *
+                             lengthDoubleLinkedList( hp ) );
+    nodePointer *S = calloc( lengthDoubleLinkedList( hp ),
+                             sizeof( nodePointer * ) *
+                             lengthDoubleLinkedList( hp ) );
+
     nodePointer dummyEdgeListScan;
     nodePointer edgeListScan;
 
-    nodePointer tmp;
+    nodePointer w, nScan;
 
 
-    /* Create a new graph containing the solution... */
-    /* Maybe instead of returing a graph, it could be more easy to make a
-     * copy of the graph in main.c and modify the input graph directly (if
-     * possible and useful?).  */
 
+    createNodeList( hp, V );
+    delink( V, root );
+    link( S, root );
 
-    /* new graph */
-    /* delink (root) */
-    /* link (root, S) */
-
-    while ( succNode != refToDummy ) {
-        succNode->distance = INF;
-        succNode->parent = root;
-
-        succNode = succNode->prev;
-    }
 
     /* Distance from root to itself is zero.  */
     root->distance = 0;
-    root->parent = root;
+
+    while ( succNode != refToDummy ) {
+        if ( belongs( V, succNode ) )
+            succNode->distance = INF;
+        succNode = succNode->prev;
+    }
 
 
     dummyEdgeListScan = ( *( root->edgeListOut ) );
@@ -521,48 +620,56 @@ void singleSourceShortestPaths( headPointer hp, nodePointer root )
 
     }
 
-    return;
 
-    /* Iterating through each node.  */
-    while (succNode -> prev != refToDummy)
-    {
-        tmp = succNode -> prev;
-        succNode = tmp -> next;
+    succNode = ( *hp )->prev;
+    while ( !( isDijstraListEmpty( V, root ) ) ) {
+        while ( !belongs( V, succNode ) )
+            succNode = succNode->prev;
 
-        while (succNode != refToDummy)
-        {
-            if ( succNode -> distance < tmp -> distance)
-                tmp = succNode;
+        assert( belongs( V, succNode ) );
+        w = succNode;
 
-            succNode = succNode -> prev;
-        }
+        while ( !belongs( V, succNode ) )
+            succNode = succNode->prev;
 
-        /* delink (tmp)*/
-        /* link (tmp, S) */
+        assert( belongs( V, succNode ) );
+        nScan = succNode;
 
-        edgeListScan = ( *(tmp -> edgeListOut));
-        while (edgeListScan != dummyEdgeListScan)
-        {
-
-/*            printVertexDistancesFromRootNode( hp, root);*/
-
-            if (((edgeListScan -> toNode) -> distance) > (tmp -> distance) + ((edgeListScan -> edgeAddr) -> w))
-            {
-                (edgeListScan -> toNode) -> distance = (tmp -> distance) + ((edgeListScan -> edgeAddr) -> w);
-                /* NOT SURE: */
-                ((*((edgeListScan -> toNode) -> edgeListIn)) -> edgeAddr) -> parent = tmp;
+        while ( nScan != refToDummy ) {
+            if ( belongs( V, nScan ) && belongs( V, w ) ) {
+                if ( nScan->distance < w->distance ) {
+                    w = nScan;
+                }
             }
-
-            edgeListScan = edgeListScan -> next;
+            nScan = nScan->prev;
         }
 
-        /* free (succNode) */
-        /* return (S) */
+        delink( V, w );
+        link( S, w );
+
+        dummyEdgeListScan = ( *( w->edgeListOut ) );
+        /* eScan = w -> fromOf  */
+        edgeListScan = dummyEdgeListScan->next;
+
+        while ( edgeListScan != dummyEdgeListScan ) {
+            if ( belongs( V, edgeListScan->edgeAddr->toNode ) )
+                if ( ( ( edgeListScan->edgeAddr->toNode )->distance ) >
+                     ( w->distance ) + ( ( edgeListScan->edgeAddr )->w ) )
+                {
+
+                    ( ( edgeListScan->edgeAddr->toNode )->distance ) =
+                        ( w->distance ) +
+                        ( ( edgeListScan->edgeAddr )->w );
+                }
+
+            edgeListScan = edgeListScan->next;
+        }
 
     }
 
+    free( V );
+    free( S );
 
     return;
 
 }
-
