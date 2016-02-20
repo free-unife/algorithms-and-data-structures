@@ -393,11 +393,11 @@ void printVertexDistancesFromRootNode( headPointer hp, nodePointer root )
     while ( thisVertex != dummy ) {
 
         if ( thisVertex->distance == INF )
-            printf( "Distance of %s from %s = %s\n", root->name,
-                    thisVertex->name, "INF" );
+            printf( "Distance of %s from %s = %s\n", thisVertex->name,
+                    root->name, "INF" );
         else
-            printf( "Distance of %s from %s = %d\n", root->name,
-                    thisVertex->name, thisVertex->distance );
+            printf( "Distance of %s from %s = %d\n", thisVertex->name,
+                    root->name, thisVertex->distance );
 
         thisVertex = thisVertex->next;
     }
@@ -519,6 +519,7 @@ void delink( nodePointer * list, nodePointer np )
 
     int i = 0;
 
+
     while ( list[i] != np
             && i < lengthDoubleLinkedList( np->pointerToVertexHead ) )
         i++;
@@ -537,6 +538,7 @@ void link( nodePointer * list, nodePointer np )
 {
 
     int i = 0;
+
 
     while ( list[i] != EMPTY
             && i < lengthDoubleLinkedList( np->pointerToVertexHead ) )
@@ -575,27 +577,23 @@ void createNodeList( headPointer hp, nodePointer * V )
  * nodes. */
 void singleSourceShortestPaths( headPointer hp, nodePointer root )
 {
+
     nodePointer refToDummy = *hp;
     nodePointer succNode = ( *hp )->prev;
-
+    /* Set of vertices still to be examined.  */
     nodePointer *V = calloc( lengthDoubleLinkedList( hp ),
-                             sizeof( nodePointer * ) *
-                             lengthDoubleLinkedList( hp ) );
+                             sizeof( nodePointer * ) );
+    /* Solution set.  */
     nodePointer *S = calloc( lengthDoubleLinkedList( hp ),
-                             sizeof( nodePointer * ) *
-                             lengthDoubleLinkedList( hp ) );
-
+                             sizeof( nodePointer * ) );
     nodePointer dummyEdgeListScan;
     nodePointer edgeListScan;
-
     nodePointer w, nScan;
-
 
 
     createNodeList( hp, V );
     delink( V, root );
     link( S, root );
-
 
     /* Distance from root to itself is zero.  */
     root->distance = 0;
@@ -605,7 +603,6 @@ void singleSourceShortestPaths( headPointer hp, nodePointer root )
             succNode->distance = INF;
         succNode = succNode->prev;
     }
-
 
     dummyEdgeListScan = ( *( root->edgeListOut ) );
     edgeListScan = ( *( root->edgeListOut ) )->next;
@@ -620,9 +617,10 @@ void singleSourceShortestPaths( headPointer hp, nodePointer root )
 
     }
 
-
     succNode = ( *hp )->prev;
+
     while ( !( isDijstraListEmpty( V, root ) ) ) {
+
         while ( !belongs( V, succNode ) )
             succNode = succNode->prev;
 
@@ -644,6 +642,9 @@ void singleSourceShortestPaths( headPointer hp, nodePointer root )
             nScan = nScan->prev;
         }
 
+        /* assert (w -> distance == min (all nodes -> distance belonging to v)
+         */
+
         delink( V, w );
         link( S, w );
 
@@ -652,17 +653,29 @@ void singleSourceShortestPaths( headPointer hp, nodePointer root )
         edgeListScan = dummyEdgeListScan->next;
 
         while ( edgeListScan != dummyEdgeListScan ) {
-            if ( belongs( V, edgeListScan->edgeAddr->toNode ) )
-                if ( ( ( edgeListScan->edgeAddr->toNode )->distance ) >
-                     ( w->distance ) + ( ( edgeListScan->edgeAddr )->w ) )
-                {
 
+            if ( belongs( V, edgeListScan->edgeAddr->toNode ) ) {
+
+                /* Avoid integer overflow. If the following condition is true,
+                 * the next condition (else if) must not be done.  Distances
+                 * infact should only be positive integers. All this can
+                 * happens if: w->distance == INF.  */
+                if ( ( w->distance ) + ( ( edgeListScan->edgeAddr )->w ) < 0 ) {        /*No operation.  */
+                } else
+                    if ( ( ( edgeListScan->edgeAddr->toNode )->distance ) >
+                         ( w->distance ) +
+                         ( ( edgeListScan->edgeAddr )->w ) ) {
+
+                    /* Assign to the current node field distance the sum of all
+                     * previous distances.  */
                     ( ( edgeListScan->edgeAddr->toNode )->distance ) =
                         ( w->distance ) +
                         ( ( edgeListScan->edgeAddr )->w );
                 }
+            }
 
             edgeListScan = edgeListScan->next;
+
         }
 
     }

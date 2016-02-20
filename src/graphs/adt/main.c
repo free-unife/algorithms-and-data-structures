@@ -82,11 +82,11 @@ int main( void )
                                              referenceToVertexNodes[1],
                                              320 );
 
-/*    referenceToEdgeNodes[8] = connectVertex( headOfEdgeList,
+    referenceToEdgeNodes[8] = connectVertex( headOfEdgeList,
                                              referenceToVertexNodes[5],
                                              referenceToVertexNodes[4],
                                              100 );
-*/
+
 
 
     printf( "lenght of vertexList = %d\n",
