@@ -26,69 +26,89 @@ int main( void )
     headOfEdgeList = referenceToVertexNodes[0]->pointerToEdgeHead;
 
     referenceToVertexNodes[1] =
-        newVertex( "Bologna", headOfVertexList, headOfEdgeList );
+        newVertex( "Pontelagoscuro", headOfVertexList, headOfEdgeList );
+
     referenceToVertexNodes[2] =
         newVertex( "Rovigo", headOfVertexList, headOfEdgeList );
+
     referenceToVertexNodes[3] =
-        newVertex( "Ravenna", headOfVertexList, headOfEdgeList );
-    referenceToVertexNodes[4] =
         newVertex( "Mantova", headOfVertexList, headOfEdgeList );
+
+    referenceToVertexNodes[4] =
+        newVertex( "Vaduz", headOfVertexList, headOfEdgeList );
+
     referenceToVertexNodes[5] =
         newVertex( "Torino", headOfVertexList, headOfEdgeList );
+
     referenceToVertexNodes[6] =
-        newVertex( "Vaduz", headOfVertexList, headOfEdgeList );
+        newVertex( "Pontegradella", headOfVertexList, headOfEdgeList );
+
     referenceToVertexNodes[7] =
-        newVertex( "Balzers", headOfVertexList, headOfEdgeList );
+        newVertex( "Baura", headOfVertexList, headOfEdgeList );
+
+    referenceToVertexNodes[8] =
+        newVertex( "Contrapo'", headOfVertexList, headOfEdgeList );
+
+    referenceToVertexNodes[9] =
+        newVertex( "Cona", headOfVertexList, headOfEdgeList );
 
 
     referenceToEdgeNodes[0] = connectVertex( headOfEdgeList,
                                              referenceToVertexNodes[0],
                                              referenceToVertexNodes[1],
-                                             47 );
+                                             7 );
 
     referenceToEdgeNodes[1] = connectVertex( headOfEdgeList,
-                                             referenceToVertexNodes[0],
+                                             referenceToVertexNodes[1],
                                              referenceToVertexNodes[2],
                                              33 );
 
     referenceToEdgeNodes[2] = connectVertex( headOfEdgeList,
-                                             referenceToVertexNodes[0],
+                                             referenceToVertexNodes[2],
                                              referenceToVertexNodes[3],
-                                             75 );
-
+                                             94 );
 
     referenceToEdgeNodes[3] = connectVertex( headOfEdgeList,
-                                             referenceToVertexNodes[0],
+                                             referenceToVertexNodes[3],
                                              referenceToVertexNodes[4],
-                                             93 );
+                                             433 );
 
     referenceToEdgeNodes[4] = connectVertex( headOfEdgeList,
-                                             referenceToVertexNodes[4],
-                                             referenceToVertexNodes[2],
-                                             50 );
+                                             referenceToVertexNodes[3],
+                                             referenceToVertexNodes[5],
+                                             277 );
 
     referenceToEdgeNodes[5] = connectVertex( headOfEdgeList,
-                                             referenceToVertexNodes[4],
-                                             referenceToVertexNodes[5],
-                                             100 );
+                                             referenceToVertexNodes[0],
+                                             referenceToVertexNodes[6],
+                                             4 );
 
     referenceToEdgeNodes[6] = connectVertex( headOfEdgeList,
-                                             referenceToVertexNodes[5],
                                              referenceToVertexNodes[6],
-                                             200 );
+                                             referenceToVertexNodes[7],
+                                             5 );
 
     referenceToEdgeNodes[7] = connectVertex( headOfEdgeList,
-                                             referenceToVertexNodes[5],
-                                             referenceToVertexNodes[1],
-                                             320 );
+                                             referenceToVertexNodes[7],
+                                             referenceToVertexNodes[8],
+                                             2 );
 
     referenceToEdgeNodes[8] = connectVertex( headOfEdgeList,
-                                             referenceToVertexNodes[5],
-                                             referenceToVertexNodes[4],
-                                             100 );
+                                             referenceToVertexNodes[8],
+                                             referenceToVertexNodes[9],
+                                             6 );
+
+    referenceToEdgeNodes[9] = connectVertex( headOfEdgeList,
+                                             referenceToVertexNodes[9],
+                                             referenceToVertexNodes[0],
+                                             10 );
 
 
 
+    printf( "referenceToEdgeNodes[2]->weight = %d should be equal to 75\n",
+            referenceToEdgeNodes[2]->w );
+
+/*
     printf( "lenght of vertexList = %d\n",
             lengthDoubleLinkedList( headOfVertexList ) );
 
@@ -103,13 +123,10 @@ int main( void )
             lengthDoubleLinkedList( referenceToVertexNodes
                                     [1]->edgeListIn ) );
 
-    printf( "referenceToEdgeNodes[2]->weight = %d should be equal to 75\n",
-            referenceToEdgeNodes[2]->w );
-
     printNodeEdges( referenceToVertexNodes[0]->edgeListOut );
     printNodeEdges( referenceToVertexNodes[1]->edgeListIn );
     printNodeEdges( referenceToVertexNodes[4]->edgeListOut );
-
+*/
 
     rootVertex = referenceToVertexNodes[0];
 
@@ -119,10 +136,11 @@ int main( void )
 
     printf( "\n" );
 
-    printf( "Distance in km from node %s:\n", rootVertex->name );
+    printf( "Distance in km (and paths) from node %s:\n",
+            rootVertex->name );
     singleSourceShortestPaths( headOfVertexList, rootVertex );
-    printVertexDistancesFromRootNode( headOfVertexList, rootVertex );
-
+/*    printVertexDistancesFromRootNode( headOfVertexList, rootVertex );*/
+    printDijstra( headOfVertexList, rootVertex );
 
     freeGraph( headOfVertexList, headOfEdgeList );
 

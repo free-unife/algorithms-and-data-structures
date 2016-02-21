@@ -597,10 +597,13 @@ void singleSourceShortestPaths( headPointer hp, nodePointer root )
 
     /* Distance from root to itself is zero.  */
     root->distance = 0;
+    root->parent = root;
 
     while ( succNode != refToDummy ) {
-        if ( belongs( V, succNode ) )
+        if ( belongs( V, succNode ) ) {
             succNode->distance = INF;
+            succNode->parent = root;
+        }
         succNode = succNode->prev;
     }
 
@@ -666,11 +669,13 @@ void singleSourceShortestPaths( headPointer hp, nodePointer root )
                          ( w->distance ) +
                          ( ( edgeListScan->edgeAddr )->w ) ) {
 
-                    /* Assign to the current node field distance the sum of all
-                     * previous distances.  */
+                    /* Assign to the current node field distance the sum of
+                     * all previous distances.  */
                     ( ( edgeListScan->edgeAddr->toNode )->distance ) =
                         ( w->distance ) +
                         ( ( edgeListScan->edgeAddr )->w );
+
+                    ( edgeListScan->edgeAddr->toNode )->parent = w;
                 }
             }
 
@@ -685,4 +690,40 @@ void singleSourceShortestPaths( headPointer hp, nodePointer root )
 
     return;
 
+}
+
+/* Print paths and node distances from root.  */
+void printDijstra( headPointer hp, nodePointer root )
+{
+
+    nodePointer dummy = *hp;
+    nodePointer thisVertex = dummy->next;
+    nodePointer thisParent;
+
+    thisParent = root->parent;
+
+    while ( thisVertex != dummy ) {
+
+        if ( thisVertex->distance != INF ) {
+            if ( thisVertex->parent == thisParent ) {
+                printf( "%s (%d) ", thisParent->name,
+                        thisParent->distance );
+                printf( "--> %s (%d)\n\n", thisVertex->name,
+                        thisVertex->distance );
+            } else {
+                thisParent = thisVertex->parent;
+                printf( "%s (%d) ", thisParent->name,
+                        thisParent->distance );
+                printf( "--> %s (%d)\n\n", thisVertex->name,
+                        thisVertex->distance );
+            }
+
+        }
+
+        thisVertex = thisVertex->next;
+    }
+
+    printf( "\n" );
+
+    return;
 }

@@ -153,3 +153,4 @@ void link( nodePointer * list, nodePointer np );
 void delink( nodePointer * list, nodePointer np );
 void createNodeList( headPointer hp, nodePointer * V );
 void singleSourceShortestPaths( headPointer hp, nodePointer root );
+void printDijstra( headPointer hp, nodePointer root );
