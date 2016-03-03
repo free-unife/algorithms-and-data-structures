@@ -21,9 +21,9 @@ you add `-i` option after issuing `build.sh`, like this:
 ```
 $ ./build.sh -i
 ```
-Some exercises need `gnuplot` installed, otherwise no output is shown.
-Specifically they behave similarly to `build.sh` but they are called 
-`buildAndPlot.sh`.
+Some exercises need `gnuplot` to be installed, otherwise no output is shown.
+Specifically the build files behave similarly to `build.sh` 
+and they are called `buildAndPlot.sh`.
 
 Fell free to contribute to this repository.
 
