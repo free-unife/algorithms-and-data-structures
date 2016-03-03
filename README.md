@@ -1,6 +1,6 @@
 # algorithms-and-data-structures
 C functions related to "Algoritmi e strutture dati" 
-course in UNIFE (University of Ferrara), year 2014-2015.
+course in UNIFE (University of Ferrara), years 2014-2016.
 
 ##What this repository is about
 
@@ -20,7 +20,10 @@ specified by the `indentOptions` variable in `src/mainBuild.sh` if, and only if
 you add `-i` option after issuing `build.sh`, like this:
 ```
 $ ./build.sh -i
-``` 
+```
+Some exercises need `gnuplot` installed, otherwise no output is shown.
+Specifically they behave similarly to `build.sh` but they are called 
+`buildAndPlot.sh`.
 
 Fell free to contribute to this repository.
 

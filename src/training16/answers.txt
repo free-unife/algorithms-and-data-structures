@@ -1,0 +1,6 @@
+location,locationId,exerciseId,possibleAns
+
+dispense,0,1.2,a
+dispense,0,1.3,c
+dispense,0,1.4,b
+

@@ -25,6 +25,7 @@ cCompilerOpts="-Wall -Wextra -Wpedantic -Werror -march=native -O0 -std=c90 -D_DE
 which indent 1>/dev/null 2>/dev/null
 
 if [ $? -eq 0 ] && [ -n "$indentOn" ]; then
+    printf "Indenting...\n"
     for file in $paths; do
         indent $indentOptions "$file"
         # Remove indent backup files.
@@ -39,4 +40,5 @@ if [ $? -eq 0 ] && [ -n "$indentOn" ]; then
 fi
 
 # Compile.
+printf "Compiling...\n"
 $cCompiler $paths $cCompilerOpts -o "$output"
