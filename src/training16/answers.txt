@@ -3,4 +3,12 @@ location,locationId,exerciseId,possibleAns
 dispense,0,1.2,a
 dispense,0,1.3,c
 dispense,0,1.4,b
+dispense,0,1.5,d
+dispense,0,1.6,a
+dispense,0,1.7,b
+dispense,0,1.8,a
+dispense,0,1.9,c
+dispense,0,1.10,d
+dispense,0,1.11,c
+
 
