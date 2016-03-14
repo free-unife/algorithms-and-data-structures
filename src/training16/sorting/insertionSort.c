@@ -12,7 +12,8 @@
 #endif
 
 static void genRandom( int *V, size_t n );
-static double insertionSort( int *V, size_t n );
+static second insertionSort( int *V, size_t n );
+static second getRunningTime( clock_t start, clock_t end );
 
 
 int main( void )
@@ -55,7 +56,7 @@ static void genRandom( int *V, size_t n )
 
     for ( i = 0; i < n; i++ ) {
         gettimeofday( &t1, NULL );
-        /* Il seme e' impostato con i microsecondi.  */
+        /* Seed is set in microseconds.  */
         srand( t1.tv_usec * t1.tv_sec );
         tmp = rand(  );
         V[i] = tmp;
@@ -63,7 +64,15 @@ static void genRandom( int *V, size_t n )
 
 }
 
-static double insertionSort( int *V, size_t n )
+static second getRunningTime( clock_t start, clock_t end )
+{
+
+    return ( ( second ) ( ( double ) ( end - start ) /
+                          ( double ) CLOCKS_PER_SEC ) );
+
+}
+
+static second insertionSort( int *V, size_t n )
 {
 
     size_t i;
@@ -77,10 +86,12 @@ static double insertionSort( int *V, size_t n )
     for ( i = 1; i < n; i++ ) {
         key = V[i];
         j = ( int ) i - 1;
+
         while ( j >= 0 && V[j] > key ) {
             V[j + 1] = V[j];
             j--;
         }
+
         V[j + 1] = key;
     }
 
@@ -88,7 +99,6 @@ static double insertionSort( int *V, size_t n )
 
     fprintf( stdout, "\n" );
 
-    return ( double ) ( ( double ) ( end - start ) /
-                        ( double ) CLOCKS_PER_SEC );
+    return getRunningTime( start, end );
 
 }

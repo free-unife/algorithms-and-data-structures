@@ -26,7 +26,7 @@ cCompilerOpts="-Wall -Wextra -Wpedantic -Werror -march=native -O0 -std=c89 -D_DE
 which indent splint 1>/dev/null 2>/dev/null
 
 if [ $? -eq 0 ] && [ -n "$indentOn" ]; then
-    printf "Indenting...\n"
+    printf "Indenting and checking code...\n"
     for file in $paths; do
         splint "$file"
         indent $indentOptions "$file"

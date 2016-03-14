@@ -11,7 +11,11 @@
 
 paths="insertionSort.c"
 output="insertionSort.o"
+title="Insertion Sort"
+xLabel="Input size (# of elements)"
+yLabel="Execution time (s)"
 
-../mainBuild.sh "$paths" "$output" "$1"
 
-../plot.sh "$output"
+../mainBuild.sh "$paths" "$output" "$1" \
+&& ../plot.sh "$output" "$title" "$xLabel" "$yLabel"
+

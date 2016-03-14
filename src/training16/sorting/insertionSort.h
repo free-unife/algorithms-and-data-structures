@@ -36,3 +36,6 @@
 #define M_SYSTIME_H
 #include <sys/time.h>
 #endif
+
+
+typedef double second;

@@ -10,13 +10,18 @@
 
 
 path="$1"
-gnuplotOptions="set terminal wxt persist"
+title="$2"
+xLabel="$3"
+yLabel="$4"
+
+gnuplotOptions="set terminal wxt persist; set title \""$title"\"; set xlabel \""$xLabel"\"; set ylabel \""$yLabel"\""
 
 
 printf "Plotting...\n"
 
 which gnuplot 1>/dev/null 2>/dev/null
 
-[ $? -eq 0 ] && gnuplot -e "$gnuplotOptions; plot '<./$path'" \
+[ $? -eq 0 ] \
+&& gnuplot -e "$gnuplotOptions; plot '<./$path'" \
 || printf "Install gnuplot\n"
 
