@@ -14,10 +14,12 @@ $ cd src/<directory> && ./build.sh
 An executable file called `<directory>.o` will be created in the 
 `src/<directory>` directory.
 
-If you have the program `indent` installed in your system, the files called by 
-every `build.sh` will automatically be indented (and changed) with the options
-specified by the `indentOptions` variable in `src/mainBuild.sh` if, and only if 
-you add `-i` option after issuing `build.sh`, like this:
+If you have the program `indent` installed in your system, the 
+files called by every `build.sh` will automatically be indented (and changed) 
+with the options specified by the `indentOptions` variable in 
+`src/mainBuild.sh`. Common programming mistakes and code errors are checked by 
+the program `splint`. To use `indent` and `splint` you must add `-i` option 
+after issuing `build.sh`, like this:
 ```
 $ ./build.sh -i
 ```

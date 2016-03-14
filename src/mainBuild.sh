@@ -19,14 +19,16 @@ indentOn="$3"
 export SIMPLE_BACKUP_SUFFIX=".indent.bak"
 indentOptions="-kr -prs -nut"
 cCompiler="gcc"
-cCompilerOpts="-Wall -Wextra -Wpedantic -Werror -march=native -O0 -std=c90 -D_DEFAULT_SOURCE"
+cCompilerOpts="-Wall -Wextra -Wpedantic -Werror -march=native -O0 -std=c89 -D_DEFAULT_SOURCE"
 
-# Check if indent executable exists.
-which indent 1>/dev/null 2>/dev/null
+
+# Check if indent and splint executable exists.
+which indent splint 1>/dev/null 2>/dev/null
 
 if [ $? -eq 0 ] && [ -n "$indentOn" ]; then
     printf "Indenting...\n"
     for file in $paths; do
+        splint "$file"
         indent $indentOptions "$file"
         # Remove indent backup files.
         rm "${file}${SIMPLE_BACKUP_SUFFIX}"

@@ -7,37 +7,32 @@
 
 
 /* Standard libraries.  */
-#ifndef STDLIB
-#define STDLIB
+#ifndef M_STDLIB_H
+#define M_STDLIB_H
 #include <stdlib.h>
 #endif
 
-#ifndef STDIO
-#define STDIO
+#ifndef M_STDIO_H
+#define M_STDIO_H
 #include <stdio.h>
 #endif
 
-#ifndef ASSERT
-#define ASSERT
+#ifndef M_ASSERT_H
+#define M_ASSERT_H
 #include <assert.h>
 #endif
 
-#ifndef LIMITS
-#define LIMITS
+#ifndef M_LIMITS_H
+#define M_LIMITS_H
 #include <limits.h>
 #endif
 
-#ifndef TIME
-#define TIME
+#ifndef M_TIME_H
+#define M_TIME_H
 #include <time.h>
 #endif
 
-#ifndef SYSTIME
-#define SYSTIME
+#ifndef M_SYSTIME_H
+#define M_SYSTIME_H
 #include <sys/time.h>
 #endif
-
-
-/* Function prototypes.  */
-void genRandom( int *V, int n );
-double insertionSort( int *V, int n );

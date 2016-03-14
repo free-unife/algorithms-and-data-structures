@@ -6,31 +6,38 @@
  */
 
 
+#ifndef M_INSERTIONSORT_H
+#define M_INSERTIONSORT_H
 #include "insertionSort.h"
+#endif
+
+static void genRandom( int *V, size_t n );
+static double insertionSort( int *V, size_t n );
 
 
 int main( void )
 {
 
-    int *V, i = 0;
+    int *V;
+    size_t i;
     double runningTime;
 
 
-    /* variabile fino a quelli testati.  */
+    /* Run insetion sort for i arrays.  */
     for ( i = 0; i < 2000; i++ ) {
-        if ( ( V = malloc( sizeof( int ) * i ) ) == NULL )
+        if ( ( V = calloc( i, sizeof( int ) ) ) == NULL )
             exit( EXIT_FAILURE );
 
-        /* Riempimento array con x elementi pseudocasuali.  */
+        /* Riempimento array con i elementi pseudocasuali.  */
         genRandom( V, i );
 
-        /* Chiamata a insertionSort.  */
         runningTime = insertionSort( V, i );
 
-        fprintf( stdout, "%d    %f", i, runningTime );
+        fprintf( stdout, "%d    %f", ( int ) i, runningTime );
 
         free( V );
     }
+
     /* Check array ordinato.  */
     /*checkArray(V, limit); */
 
@@ -38,10 +45,11 @@ int main( void )
 
 }
 
-void genRandom( int *V, int n )
+static void genRandom( int *V, size_t n )
 {
 
-    int i = 0, tmp;
+    size_t i;
+    int tmp;
     struct timeval t1;
 
 
@@ -51,37 +59,36 @@ void genRandom( int *V, int n )
         srand( t1.tv_usec * t1.tv_sec );
         tmp = rand(  );
         V[i] = tmp;
-
-        /*fprintf (stderr, "V[%d]=%d\n", i, V[i]); */
     }
 
 }
 
-double insertionSort( int *V, int n )
+static double insertionSort( int *V, size_t n )
 {
 
-    int j = 1, key, i;
+    size_t i;
+    int j, key;
     clock_t start, end;
 
 
-    /* Clock start.  */
     start = clock(  );
-    for ( j = 1; j < n; j++ ) {
-        key = V[j];
-        i = j - 1;
-        while ( i >= 0 && V[i] > key ) {
-            V[i + 1] = V[i];
-            i--;
-        }
-        V[i + 1] = key;
-    }
-    /* Clock check.  */
-    end = clock(  );
-/*	fprintf(stderr, "%f", (double) end - start);*/
-    fprintf( stdout, "\n" );
-/*	for (i = 0; i < n; i++)
-		fprintf (stderr, "V[%d]=%d\n", i, V[i]); */
 
-    return ( double ) ( ( end - start ) / ( double ) CLOCKS_PER_SEC );
+    /* Sort.  */
+    for ( i = 1; i < n; i++ ) {
+        key = V[i];
+        j = ( int ) i - 1;
+        while ( j >= 0 && V[j] > key ) {
+            V[j + 1] = V[j];
+            j--;
+        }
+        V[j + 1] = key;
+    }
+
+    end = clock(  );
+
+    fprintf( stdout, "\n" );
+
+    return ( double ) ( ( double ) ( end - start ) /
+                        ( double ) CLOCKS_PER_SEC );
 
 }
