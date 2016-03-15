@@ -75,24 +75,24 @@ static second getRunningTime( clock_t start, clock_t end )
 static second insertionSort( int *V, size_t n )
 {
 
-    size_t i;
-    int j, key;
+    size_t j;
+    int i, key;
     clock_t start, end;
 
 
     start = clock(  );
 
     /* Sort.  */
-    for ( i = 1; i < n; i++ ) {
-        key = V[i];
-        j = ( int ) i - 1;
+    for ( j = 1; j < n; j++ ) {
+        key = V[j];
+        i = ( int ) j - 1;
 
-        while ( j >= 0 && V[j] > key ) {
-            V[j + 1] = V[j];
-            j--;
+        while ( i >= 0 && V[i] > key ) {
+            V[i + 1] = V[i];
+            i--;
         }
 
-        V[j + 1] = key;
+        V[i + 1] = key;
     }
 
     end = clock(  );

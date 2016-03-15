@@ -36,8 +36,6 @@ int main( void )
     printVertex( root->pointerToVertexHead );
     breadthFirstSearch( root->pointerToVertexHead, root );
     printf( "\nDistance from root node, after BFS:\n" );
-    printVertexDistancesFromRootNode( root->pointerToVertexHead, root );
-
     printf( "\nPre-order visit:\n" );
     preOrder( root, 0 );
     printf( "\n\n" );
@@ -46,6 +44,8 @@ int main( void )
     printf( "\n\n" );
     printf( "Post-order visit:\n" );
     nodeNum = postOrder( root, 0 );
+    printVertex( root->pointerToVertexHead );
+
     printf( "\n\n" );
 
     printf( "Number of nodes of the imput tree = %d\n", nodeNum );

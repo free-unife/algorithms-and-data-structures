@@ -1,6 +1,6 @@
 location,locationId,exerciseId,possibleAns
 
-dispense,0,1.2,a
+dispense,0,1.2,b
 dispense,0,1.3,c
 dispense,0,1.4,b
 dispense,0,1.5,d
@@ -10,5 +10,16 @@ dispense,0,1.8,a
 dispense,0,1.9,c
 dispense,0,1.10,d
 dispense,0,1.11,c
-
+dispense,0,1.12,false
+dispense,0,1.14,d
+dispense,0,1.15,b
+dispense,0,1.17,a{ "Il numero di coppie di indici i < j dove A[i] > key" }
+dispense,0,1.18,c
+dispense,0,1.19,b
+dispense,0,1.20,d
+dispense,1,2.1,a
+dispense,1,2.2,a
+dispense,1,2.3,false
+dispense,1,2.4,a
+dispense,1,2.7,a
 
