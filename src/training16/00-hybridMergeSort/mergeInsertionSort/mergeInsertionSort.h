@@ -37,5 +37,3 @@
 #include <sys/time.h>
 #endif
 
-
-typedef double second;
