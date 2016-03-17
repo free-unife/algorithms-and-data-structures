@@ -10,39 +10,8 @@
 #include "mergeSort.h"
 #endif
 
-static void mergeSort(int *V, int p, int r);
 
-
-int main( void )
-{
-
-    int *V;
-    size_t i;
-    clock_t start, end;
-
-
-    /* Run insetion sort for i arrays.  */
-    for ( i = 0; i < ARRAY_SIZE; i++ ) {
-        if ( ( V = calloc( i, sizeof( int ) ) ) == NULL )
-            exit( EXIT_FAILURE );
-
-        /* Riempimento array con i elementi pseudocasuali.  */
-        genRandomArray( V, i );
-
-        start = clock(  );
-        mergeSort( V, 0, ( int ) i - 1);
-        end = clock(  );
-
-        fprintf( stdout, "%d    %f\n", ( int ) i, measureRunningTime( start, end ) );
-
-        free( V );
-    }
-
-    exit( EXIT_SUCCESS );
-
-}
-
-static void mergeSort( int *V, int p, int r)
+void mergeSort( int *V, int p, int r)
 {
 
     int q;

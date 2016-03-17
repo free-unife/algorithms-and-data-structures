@@ -37,3 +37,32 @@
 #include <sys/time.h>
 #endif
 
+#ifndef M_STRING_H
+#define M_STRING_H
+#include <string.h>
+#endif
+
+#ifndef M_MATH_H
+#define M_MATH_H
+#include <math.h>
+#endif
+
+#ifndef M_GENRANDOMARRAY_H
+#define M_GENRANDOMARRAY_H
+#include "../genRandomArray/genRandomArray.h"
+#endif
+
+#ifndef M_MEASURERUNNINGTIME_H
+#define M_MEASURERUNNINGTIME_H
+#include "../measureRunningTime/measureRunningTime.h"
+#endif
+
+#ifndef M_INSERTIONSORT_H
+#define M_INSERTIONSORT_H
+#include "../insertionSort/insertionSort.h"
+#endif
+
+#ifndef M_MERGESORT_H
+#define M_MERGESORT_H
+#include "../mergeSort/mergeSort.h"
+#endif

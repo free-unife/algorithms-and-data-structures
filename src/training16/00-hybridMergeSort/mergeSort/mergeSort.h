@@ -56,4 +56,5 @@
 #define INF INT_MAX
 
 
+void mergeSort( int *V, int p, int r);
 void merge (int *V, int p, int q, int r);

@@ -6,6 +6,7 @@
  */
 
 
+/* Standard libraries.  */
 #ifndef M_STDLIB_H
 #define M_STDLIB_H
 #include <stdlib.h>
@@ -36,10 +37,14 @@
 #include <sys/time.h>
 #endif
 
+#ifndef M_STRING_H
+#define M_STRING_H
+#include <string.h>
+#endif
 
-#ifndef M_GLOBALDEFINES_H
-#define M_GLOBALDEFINES_H
-#include "../globalDefines.h"
+#ifndef M_MATH_H
+#define M_MATH_H
+#include <math.h>
 #endif
 
 #ifndef M_GENRANDOMARRAY_H
@@ -52,5 +57,20 @@
 #include "../measureRunningTime/measureRunningTime.h"
 #endif
 
+#ifndef M_INSERTIONSORT_H
+#define M_INSERTIONSORT_H
+#include "../insertionSort/insertionSort.h"
+#endif
 
-void insertionSort( int *V, size_t startInd, size_t endInd );
+#ifndef M_MERGESORT_H
+#define M_MERGESORT_H
+#include "../mergeSort/mergeSort.h"
+#endif
+
+#define K 185
+#define false 0
+#define true 1
+
+
+typedef int boolean;
+

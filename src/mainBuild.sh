@@ -19,7 +19,7 @@ indentOn="$3"
 export SIMPLE_BACKUP_SUFFIX=".indent.bak"
 indentOptions="-kr -prs -nut"
 cCompiler="gcc"
-cCompilerOpts="-Wall -Wextra -Wpedantic -Werror -march=native -O0 -std=c89 -D_DEFAULT_SOURCE"
+cCompilerOpts="-lm -Wall -Wextra -Wpedantic -Werror -march=native -O0 -std=c89 -D_DEFAULT_SOURCE"
 
 
 # Check if indent and splint executable exists.

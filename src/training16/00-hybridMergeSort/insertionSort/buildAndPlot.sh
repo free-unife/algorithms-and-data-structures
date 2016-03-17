@@ -9,7 +9,7 @@
 #
 
 
-paths="../genRandomArray/genRandomArray.c ../measureRunningTime/measureRunningTime.c insertionSort.c"
+paths="../genRandomArray/genRandomArray.c ../measureRunningTime/measureRunningTime.c main.c insertionSort.c"
 output="insertionSort.o"
 title="Insertion Sort"
 xLabel="Input size (# of elements)"

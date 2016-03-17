@@ -53,4 +53,8 @@
 #endif
 
 
-void insertionSort( int *V, size_t startInd, size_t endInd );
+#define INF INT_MAX
+
+
+void mergeSort(int *V, int p, int r);
+void merge (int *V, int p, int q, int r);

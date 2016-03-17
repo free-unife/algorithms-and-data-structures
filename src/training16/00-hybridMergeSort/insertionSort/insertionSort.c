@@ -11,37 +11,7 @@
 #endif
 
 
-int main( void )
-{
-
-    int *V;
-    size_t i;
-    clock_t start, end;
-
-
-    /* Run insetion sort for i arrays.  */
-    for ( i = 0; i < ARRAY_SIZE; i++ ) {
-        if ( ( V = calloc( i, sizeof( int ) ) ) == NULL )
-            exit( EXIT_FAILURE );
-
-        /* Riempimento array con i elementi pseudocasuali.  */
-        genRandomArray( V, i );
-
-        start = clock(  );
-        insertionSort( V, i );
-        end = clock(  );
-
-        fprintf( stdout, "%d    %f\n", ( int ) i, measureRunningTime( start, end ) );
-
-        free( V );
-    }
-
-    exit( EXIT_SUCCESS );
-
-}
-
-
-void insertionSort( int *V, size_t n )
+void insertionSort( int *V, size_t startInd, size_t endInd )
 {
 
     size_t j;
@@ -49,11 +19,11 @@ void insertionSort( int *V, size_t n )
 
 
     /* Sort.  */
-    for ( j = 1; j < n; j++ ) {
+    for ( j = startInd + 1; j <= endInd; j++ ) {
         key = V[j];
         i = ( int ) j - 1;
 
-        while ( i >= 0 && V[i] > key ) {
+        while ( i >= (int) startInd && V[i] > key ) {
             V[i + 1] = V[i];
             i--;
         }

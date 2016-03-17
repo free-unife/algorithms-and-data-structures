@@ -9,9 +9,11 @@
 #
 
 
-paths="../genRandomArray/genRandomArray.c ../measureRunningTime/measureRunningTime.c main.c mergeSort.c"
-output="mergeSort.o"
-title="Merge Sort"
+paths="../genRandomArray/genRandomArray.c \
+../measureRunningTime/measureRunningTime.c ../insertionSort/insertionSort.c \
+../mergeSort/mergeSort.c hybridMergeSort.c"
+output="hybridMergeSort.o"
+title="Hybrid merge sort"
 xLabel="Input size (# of elements)"
 yLabel="Execution time (s)"
 
