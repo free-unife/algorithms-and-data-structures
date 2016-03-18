@@ -6,6 +6,7 @@
  */
 
 
+/* Standard libraries.  */
 #ifndef M_STDLIB_H
 #define M_STDLIB_H
 #include <stdlib.h>
@@ -36,6 +37,15 @@
 #include <sys/time.h>
 #endif
 
+#ifndef M_STRING_H
+#define M_STRING_H
+#include <string.h>
+#endif
+
+#ifndef M_MATH_H
+#define M_MATH_H
+#include <math.h>
+#endif
 
 #ifndef M_GLOBALDEFINES_H
 #define M_GLOBALDEFINES_H
@@ -57,5 +67,18 @@
 #include "../utils/isArraySorted/isArraySorted.h"
 #endif
 
+#ifndef M_INSERTIONSORT_H
+#define M_INSERTIONSORT_H
+#include "../insertionSort/insertionSort.h"
+#endif
 
-void insertionSort( int *V, size_t startInd, size_t endInd );
+#ifndef M_MERGESORT_H
+#define M_MERGESORT_H
+#include "../mergeSort/mergeSort.h"
+#endif
+
+
+#define TOL 0.0000005
+/* Set the minimum index for the array values to be checked. This is useful
+ * to avoid false positives.  */
+#define LOWER_BOUND_INDEX 50

@@ -22,7 +22,7 @@ int main( void )
 
 
     /* Run insetion sort for i arrays.  */
-    for ( i = 0; i < ARRAY_SIZE; i++ ) {
+    for ( i = 1; i <= ARRAY_SIZE; i++ ) {
         if ( ( V = calloc( i, sizeof( int ) ) ) == NULL )
             exit( EXIT_FAILURE );
 
@@ -32,6 +32,7 @@ int main( void )
         start = clock(  );
         mergeSort( V, 0, ( int ) i - 1);
         end = clock(  );
+        assert (isArraySorted (V, 0, i - 1));
 
         fprintf( stdout, "%d    %f\n", ( int ) i, measureRunningTime( start, end ) );
 

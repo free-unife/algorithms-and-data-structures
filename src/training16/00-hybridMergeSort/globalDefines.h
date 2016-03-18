@@ -6,4 +6,12 @@
  */
 
 
-#define ARRAY_SIZE 4000
+#define ARRAY_SIZE 400
+
+#define false 0
+#define true 1
+#define INF INT_MAX
+
+
+typedef int boolean;
+

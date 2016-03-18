@@ -10,79 +10,110 @@
 #include "hybridMergeSort.h"
 #endif
 
-static void hybridMergeSort( int *V, int p, int r);
-static boolean isArrayOrdered( int *V, size_t low, size_t high );
+static void hybridMergeSort( int *V, int p, int r, int k );
+static second sumTimes( second * diffs );
+static size_t getK( second * sum );
 
 
 int main( void )
 {
 
     int *V, *Vcpy0 = NULL, *Vcpy1 = NULL;
-    size_t i;
+    size_t i, k;
     clock_t startHybrid, endHybrid, startMerge, endMerge;
-    second timeHybrid, timeMerge;
+    second timeHybrid, timeMerge, *timeSum, *diffRunningTimes;
 
-    /* Run insetion sort for i arrays.  */
-    for ( i = 1; i <= ARRAY_SIZE; i++ ) {
-        if ( ( V = calloc( i, sizeof( int ) ) ) == NULL )
+
+    /* Array of the sums of all the diffRunningTimes.  */
+    if ( ( timeSum = malloc( ( KMAX + 1 ) * sizeof( second ) ) ) == NULL )
+        exit( EXIT_FAILURE );
+
+    for ( k = 0; k <= KMAX; k++ ) {
+
+        if ( ( diffRunningTimes =
+               malloc( ARRAY_SIZE * sizeof( second ) ) ) == NULL )
             exit( EXIT_FAILURE );
 
-        if ( ( Vcpy0 = calloc( i, sizeof( int ) ) ) == NULL )
-            exit( EXIT_FAILURE );
+        for ( i = 1; i <= ARRAY_SIZE; i++ ) {
+            /* We should use the same arrays for the same i on different k to
+             * have a better result.
+             * For purpose of simplicity we are generating new ones every
+             * time.
+             */
+            if ( ( V = calloc( i, sizeof( int ) ) ) == NULL )
+                exit( EXIT_FAILURE );
 
-        if ( ( Vcpy1 = calloc( i, sizeof( int ) ) ) == NULL )
-            exit( EXIT_FAILURE );
+            /* To have a significant result we must use the same array for
+             * the two algoritms. Since this is not functional programming,
+             * copies of the array V are provided to hybridMergeSort and
+             * mergeSort.  */
+            if ( ( Vcpy0 = calloc( i, sizeof( int ) ) ) == NULL )
+                exit( EXIT_FAILURE );
 
-        /* Riempimento array con i elementi pseudocasuali.  */
-        genRandomArray( V, i );
+            if ( ( Vcpy1 = calloc( i, sizeof( int ) ) ) == NULL )
+                exit( EXIT_FAILURE );
 
-        memcpy ( Vcpy0, V, i );
-        memcpy ( Vcpy1, V, i );
+            genRandomArray( V, i );
 
-        startHybrid = clock(  );
-        hybridMergeSort( Vcpy0, 0, ( int ) i - 1 );
-        endHybrid = clock(  );
-        assert (isArrayOrdered (Vcpy0, 0, i - 1));
+            memcpy( Vcpy0, V, i );
+            memcpy( Vcpy1, V, i );
 
-        startMerge = clock(  );
-        mergeSort( Vcpy1, 0, ( int ) i - 1 );
-        endMerge = clock(  );
-        assert (isArrayOrdered (Vcpy1, 0, i - 1));
+            startHybrid = clock(  );
+            hybridMergeSort( Vcpy0, 0, ( int ) i - 1, ( int ) k );
+            endHybrid = clock(  );
+            /* This guarantees that the array is sorted.  */
+            assert( isArraySorted( Vcpy0, 0, i - 1 ) );
 
-        timeHybrid = measureRunningTime (startHybrid, endHybrid);
-        timeMerge = measureRunningTime (startMerge, endMerge);
+            startMerge = clock(  );
+            mergeSort( Vcpy1, 0, ( int ) i - 1 );
+            endMerge = clock(  );
+            assert( isArraySorted( Vcpy1, 0, i - 1 ) );
 
-        fprintf( stdout, "%d    diff=%f   hy=%f    mr=%f\n", ( int ) i, ( 
-timeHybrid - timeMerge ), timeHybrid, timeMerge );
+            timeHybrid = measureRunningTime( startHybrid, endHybrid );
+            timeMerge = measureRunningTime( startMerge, endMerge );
 
-/*        fprintf( stdout, "%d    %f\n", ( int ) i, fabs ( timeInsertion - 
-timeMerge ) );*/
+            /* Save the difference of the running times of the two algorithms
+             * for the current array size = i.  */
+            diffRunningTimes[i - 1] = timeHybrid - timeMerge;
 
-        free( V );
-        free ( Vcpy0 );
-        free ( Vcpy1 );
+            /* Raw data used for the plotting.  */
+            fprintf( stdout, "%d    %f\n", ( int ) i,
+                     ( timeHybrid - timeMerge ) );
+
+            free( V );
+            free( Vcpy0 );
+            free( Vcpy1 );
+        }
+
+        timeSum[k] = sumTimes( diffRunningTimes );
+
+        free( diffRunningTimes );
+
     }
+
+    fprintf( stderr, "k is about %d\n", ( int ) getK( timeSum ) );
+
+    free( timeSum );
 
     exit( EXIT_SUCCESS );
 
 }
 
-static void hybridMergeSort( int *V, int p, int r)
+static void hybridMergeSort( int *V, int p, int r, int k )
 {
 
     int q;
 
 
-    if (p < r)
-    {
+    if ( p < r ) {
         q = ( p + r ) / 2;
-        hybridMergeSort(V, p, q);
-        hybridMergeSort(V, q + 1, r);
+        hybridMergeSort( V, p, q, k );
+        hybridMergeSort( V, q + 1, r, k );
 
-        if (r - p <= K)
-            insertionSort( V, p, r );
+        if ( r - p <= k )
+            insertionSort( V, ( size_t ) p, ( size_t ) r );
         else
-            merge(V, p, q, r);
+            merge( V, p, q, r );
     }
 
 
@@ -90,28 +121,41 @@ static void hybridMergeSort( int *V, int p, int r)
 
 }
 
-
-static boolean isArrayOrdered( int *V, size_t low, size_t high )
+/* Sum all the the hybrid - merge times for the current k.  */
+static second sumTimes( second * diffs )
 {
 
     size_t i;
+    second sum;
 
 
-    i = low;
-    /* Since there can be multiple equal elements, the == statement holds.  */
-    while ( i < high && V[i] <= V[i + 1] )
-        i++;
+    sum = 0;
+    for ( i = 0; i < ARRAY_SIZE; i++ )
+        sum += diffs[i];
 
-    /* i >= high.  */
-    if ( i == high ) {
-        /* Array is ordered.  */
-        return true;
-    }
-    /* i < high */
-    else {
-        /* Array is not ordered.  */
-        return false;
-    }
+
+    return sum;
 
 }
 
+/* k is the index corresponding to the sum with the least difference.
+ * This means that k is part of the input responsible for the least execution
+ * time.  */
+static size_t getK( second * sum )
+{
+    second kVal;
+    size_t i, k;
+
+
+    k = 0;
+    kVal = sum[0];
+    for ( i = 1; i < KMAX + 1; i++ ) {
+        if ( sum[i] < kVal ) {
+            kVal = sum[i];
+            k = i;
+        }
+    }
+
+    return k;
+
+}

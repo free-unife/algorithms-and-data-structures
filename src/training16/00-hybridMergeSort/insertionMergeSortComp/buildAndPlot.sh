@@ -9,11 +9,18 @@
 #
 
 
-paths="../genRandomArray/genRandomArray.c ../measureRunningTime/measureRunningTime.c ../insertionSort/insertionSort.c ../mergeSort/mergeSort.c findK.c"
+paths="\
+../utils/genRandomArray/genRandomArray.c \
+../utils/measureRunningTime/measureRunningTime.c \
+../utils/isArraySorted/isArraySorted.c \
+../insertionSort/insertionSort.c \
+../mergeSort/mergeSort.c \
+insertionMergeSortComp.c"
+
 output="findK.o"
-title="Find k"
+title="Difference in execution time between merge and insertion sort"
 xLabel="Input size (# of elements)"
-yLabel="Execution time (s)"
+yLabel="Diff execution time (s)"
 
 
 ../mainBuild.sh "$paths" "$output" "$1" \

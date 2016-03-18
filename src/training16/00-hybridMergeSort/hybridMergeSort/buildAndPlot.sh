@@ -9,13 +9,18 @@
 #
 
 
-paths="../genRandomArray/genRandomArray.c \
-../measureRunningTime/measureRunningTime.c ../insertionSort/insertionSort.c \
-../mergeSort/mergeSort.c hybridMergeSort.c"
+paths="\
+../utils/genRandomArray/genRandomArray.c \
+../utils/measureRunningTime/measureRunningTime.c \
+../utils/isArraySorted/isArraySorted.c \
+../insertionSort/insertionSort.c \
+../mergeSort/mergeSort.c \
+hybridMergeSort.c"
+
 output="hybridMergeSort.o"
-title="Hybrid merge sort"
+title="Hybrid merge sort and Merge sort comparison"
 xLabel="Input size (# of elements)"
-yLabel="Execution time (s)"
+yLabel="Diff execution time (hybrid - merge) (s)"
 
 
 ../mainBuild.sh "$paths" "$output" "$1" \

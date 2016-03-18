@@ -9,7 +9,13 @@
 #
 
 
-paths="../genRandomArray/genRandomArray.c ../measureRunningTime/measureRunningTime.c main.c mergeSort.c"
+paths="\
+../utils/genRandomArray/genRandomArray.c \
+../utils/measureRunningTime/measureRunningTime.c \
+../utils/isArraySorted/isArraySorted.c \
+main.c \
+mergeSort.c"
+
 output="mergeSort.o"
 title="Merge Sort"
 xLabel="Input size (# of elements)"

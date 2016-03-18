@@ -44,16 +44,18 @@
 
 #ifndef M_GENRANDOMARRAY_H
 #define M_GENRANDOMARRAY_H
-#include "../genRandomArray/genRandomArray.h"
+#include "../utils/genRandomArray/genRandomArray.h"
 #endif
 
 #ifndef M_MEASURERUNNINGTIME_H
 #define M_MEASURERUNNINGTIME_H
-#include "../measureRunningTime/measureRunningTime.h"
+#include "../utils/measureRunningTime/measureRunningTime.h"
 #endif
 
-
-#define INF INT_MAX
+#ifndef M_ISARRAYSORTED_H
+#define M_ISARRAYSORTED_H
+#include "../utils/isArraySorted/isArraySorted.h"
+#endif
 
 
 void mergeSort(int *V, int p, int r);

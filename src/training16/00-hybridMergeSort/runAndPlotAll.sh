@@ -9,7 +9,7 @@
 #
 
 
-paths="insertionSort mergeSort"
+paths="insertionSort mergeSort insertionMergeSortComp hybridMergeSort"
 buildAndPlotPath="./buildAndPlot.sh"
 
 for cpath in $paths; do

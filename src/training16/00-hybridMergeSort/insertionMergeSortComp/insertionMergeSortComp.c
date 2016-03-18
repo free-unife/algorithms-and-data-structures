@@ -5,9 +5,9 @@
  */
 
 
-#ifndef M_FINDK_H
-#define M_FINDK_H
-#include "findK.h"
+#ifndef M_INSERTIONMERGESORTCOMP_H
+#define M_INSERTIONMERGESORTCOMP_H
+#include "insertionMergeSortComp.h"
 #endif
 
 
@@ -18,8 +18,15 @@ int main( void )
     size_t i;
     clock_t startInsertion, endInsertion, startMerge, endMerge;
     second timeInsertion, timeMerge;
+    second diffTime, *diffRunningTimes;
+    int zero = 0, sum, n;
 
-    /* Run insetion sort for i arrays.  */
+
+    if ( ( diffRunningTimes = malloc( ARRAY_SIZE * sizeof( second ) ) ) == NULL )
+            exit( EXIT_FAILURE );
+    for (i = 0; i < ARRAY_SIZE; i++)
+        diffRunningTimes[i] = INF;
+
     for ( i = 1; i <= ARRAY_SIZE; i++ ) {
         if ( ( V = calloc( i, sizeof( int ) ) ) == NULL )
             exit( EXIT_FAILURE );
@@ -39,24 +46,47 @@ int main( void )
         startInsertion = clock(  );
         insertionSort( Vcpy0, 0, ( int ) i - 1 );
         endInsertion = clock(  );
+        assert (isArraySorted (Vcpy0, 0, i - 1));
 
         startMerge = clock(  );
         mergeSort( Vcpy1, 0, ( int ) i - 1 );
         endMerge = clock(  );
+        assert (isArraySorted (Vcpy0, 0, i - 1));
 
         timeInsertion = measureRunningTime (startInsertion, endInsertion);
         timeMerge = measureRunningTime (startMerge, endMerge);
 
-/*        fprintf( stdout, "%d    diff=%f   ins=%f    mr=%f\n", ( int ) i, ( 
-timeInsertion - timeMerge ), timeInsertion, timeMerge );*/
+        diffTime = fabs ( timeInsertion - timeMerge );
 
-        fprintf( stdout, "%d    %f\n", ( int ) i, fabs ( timeInsertion - 
-timeMerge ) );
+        fprintf( stdout, "%d    %.8f\n", ( int ) i, diffTime );
+
+        if (i > LOWER_BOUND_INDEX && diffTime <= TOL)
+            diffRunningTimes[i - 1] = diffTime;
 
         free( V );
         free ( Vcpy0 );
         free ( Vcpy1 );
     }
+
+    /* Find the zero values (where merge sort is equal to inserion sort)  */
+    fprintf (stderr, "Possible values for input size where merge sort performs like inserion sort (with tolerance %.8f): [ ", TOL);
+    sum = 0;
+    n = 0;
+    /* Get the mean value of the indices of diffRunningTime <= TOL.  */
+    for (i = 0; i < ARRAY_SIZE; i++) {
+        if (diffRunningTimes[i] != INF) {
+            fprintf (stderr, "%d ", (int) i + 1);
+            sum += i + 1;
+            n++;
+        }
+    }
+    fprintf (stderr, "]\n");
+
+    if (n > 0) {
+        zero = sum / n;
+        fprintf (stderr, "mean = zero ~= %d\n", zero);
+    }
+
 
     exit( EXIT_SUCCESS );
 

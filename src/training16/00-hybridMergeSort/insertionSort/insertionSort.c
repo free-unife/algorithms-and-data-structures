@@ -23,7 +23,7 @@ void insertionSort( int *V, size_t startInd, size_t endInd )
         key = V[j];
         i = ( int ) j - 1;
 
-        while ( i >= (int) startInd && V[i] > key ) {
+        while ( i >= ( int ) startInd && V[i] > key ) {
             V[i + 1] = V[i];
             i--;
         }
