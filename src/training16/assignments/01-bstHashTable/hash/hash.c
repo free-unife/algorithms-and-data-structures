@@ -16,17 +16,17 @@
 size_t hash ( char *input )
 {
 
-    size_t hash = 5381, i;
+    size_t key = 5381, i;
 
 
     i = 0;
     while (input[i] != '\0')
     {
-        hash = ((hash << 5) + hash) + (size_t) input[i]; /* hash * 33 + c */
+        key = ((key << 5) + key) + ((size_t) input[i]); /* hash * 33 + c */
         i++;
     }
 
-    return hash % M;
+    return (key % M);
 
 }
 

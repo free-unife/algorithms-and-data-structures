@@ -70,8 +70,8 @@ nodePointer searchVertex( char *nameToSearch, headPointer hp )
     return foundNode;
 }
 
-nodePointer searchEdge( nodePointer fromNode, nodePointer toNode,
-                        headPointer hp )
+nodePointer searchEdge( nodePointer fromNode,
+                        nodePointer toNode, headPointer hp )
 {
 
     /* save the reference of dummy node */
@@ -114,8 +114,8 @@ void reinitConnections( nodePointer vertex )
  * If a vertex is insered twice, we reset his in/out edge list.
  * So every vertex in list have an atomic value (name).
 */
-nodePointer newVertex( char *name, vertexListPointer vlp,
-                       edgeListPointer elp )
+nodePointer newVertex( char *name,
+                       vertexListPointer vlp, edgeListPointer elp )
 {
     nodePointer foundVertex;
     nodePointer dummyVertex;
@@ -181,8 +181,9 @@ nodePointer newVertex( char *name, vertexListPointer vlp,
 }
 
 /* Insert an edge before the dummy node */
-nodePointer newEdge( weight w, nodePointer fromNode, nodePointer toNode,
-                     headPointer hp )
+nodePointer newEdge( weight w,
+                     nodePointer fromNode,
+                     nodePointer toNode, headPointer hp )
 {
     nodePointer foundEgde;
     nodePointer dummy;
@@ -224,8 +225,8 @@ nodePointer newEdge( weight w, nodePointer fromNode, nodePointer toNode,
 }
 
 nodePointer connectVertex( headPointer edgehp,
-                           nodePointer fromNode, nodePointer toNode,
-                           weight w )
+                           nodePointer fromNode,
+                           nodePointer toNode, weight w )
 {
     nodePointer edgeP;
 
@@ -363,8 +364,8 @@ nodePointer *initNodeQueue( int nodeListLen )
     return queue;
 }
 
-void enqueue( int *tail, int nodeListLen,
-              nodePointer * queue, nodePointer toEnqueue )
+void enqueue( int *tail,
+              int nodeListLen, nodePointer * queue, nodePointer toEnqueue )
 {
     queue[*tail] = toEnqueue;
 

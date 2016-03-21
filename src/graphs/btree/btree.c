@@ -20,10 +20,15 @@ boolean emptyTree( tree t )
     return ( t == EMPTY );
 }
 
-void initTree( void )
+void initTrees( void )
 {
-    globalPointerToVertexHead = malloc( sizeof( nodePointer * ) );
-    globalPointerToEdgeHead = malloc( sizeof( nodePointer * ) );
+    if ( ( globalPointerToVertexHead =
+           malloc( sizeof( nodePointer * ) ) ) == NULL )
+        exit( EXIT_FAILURE );
+
+    if ( ( globalPointerToEdgeHead =
+           malloc( sizeof( nodePointer * ) ) ) == NULL )
+        exit( EXIT_FAILURE );
 
     initDoubleLinkedList( globalPointerToVertexHead );
     initDoubleLinkedList( globalPointerToEdgeHead );
@@ -120,7 +125,6 @@ element root( tree t )
 {
     assert( !emptyTree( t ) );
 
-    /*return t->name; */
     return t->name;
 }
 
@@ -134,6 +138,15 @@ int findWeight( tree t )
 boolean lessThan( element newEl, element rootEl )
 {
     if ( atoi( newEl ) < atoi( rootEl ) ) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+boolean greaterThan( element newEl, element rootEl )
+{
+    if ( atoi( newEl ) > atoi( rootEl ) ) {
         return true;
     } else {
         return false;
@@ -157,6 +170,40 @@ tree insOrd( element el, tree t )
     }
 }
 
+/* Recirsive version.
+ * NULL is returned if element with corresponding key is not found.
+ */
+tree searchBST ( tree t, element key )
+{
+
+    if (emptyTree (t)) {
+        return EMPTYTREE;
+    }
+    else if (root (t) == key) {
+        return t;
+    }
+    else if (lessThan( key, root( t ))) {
+        return (searchBST (left (t), key));
+    }
+    else {
+        return (searchBST (right (t), key));
+    }
+
+}
+
+boolean isBST (tree t, element minKey, element maxKey)
+{
+
+    if (emptyTree (t)) {
+        return true;
+    }
+    if (lessThan (root (t), minKey) || greaterThan (root(t), maxKey)) {
+        return false;
+    }
+
+    return ( isBST(left(t), minKey, root (t)) && isBST(right (t), root (t), maxKey));
+
+}
 
 /* Binary tree visit functions.
  * These functions assign a progressive weight ((*graphElelement) -> w) (with

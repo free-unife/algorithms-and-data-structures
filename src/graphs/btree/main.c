@@ -14,12 +14,17 @@
 int main( void )
 {
 
-    tree aTree = EMPTYTREE, root;
+    tree aTree = EMPTYTREE, bTree = EMPTYTREE, aRoot, bRoot;
     int nodeNum;
 
-    /* Create the lists.  */
-    initTree(  );
+    (void) aTree;
+    (void) aRoot;
+    (void) nodeNum;
 
+    /* Create the lists.  */
+    initTrees(  );
+
+/*
     aTree = insOrd( "20", aTree );
 
     aTree = insOrd( "10", aTree );
@@ -30,25 +35,66 @@ int main( void )
     aTree = insOrd( "25", aTree );
     aTree = insOrd( "35", aTree );
 
-    root = aTree;
+    aRoot = aTree;
+*/
+    bTree = insOrd( "43", bTree );
+    bTree = insOrd( "31", bTree );
+    bTree = insOrd( "52", bTree );
+    bTree = insOrd( "12", bTree );
 
-    printf( "Vertex inside global vertex list:\n" );
-    printVertex( root->pointerToVertexHead );
-    breadthFirstSearch( root->pointerToVertexHead, root );
-    printf( "\nDistance from root node, after BFS:\n" );
+    bRoot = bTree;
+
+    preOrder( bRoot, 0 );
+
+/*    printf( "Vertex inside global vertex list:\n" );
+    printVertex( aRoot->pointerToVertexHead );
+    printf( "\n\n" );
     printf( "\nPre-order visit:\n" );
-    preOrder( root, 0 );
+    preOrder( aRoot, 0 );
     printf( "\n\n" );
     printf( "In-order visit:\n" );
-    inOrder( root, 0 );
+    inOrder( aRoot, 0 );
     printf( "\n\n" );
     printf( "Post-order visit:\n" );
-    nodeNum = postOrder( root, 0 );
-    printVertex( root->pointerToVertexHead );
-
+    nodeNum = postOrder( aRoot, 0 );
+    printf( "Number of nodes of the imput tree = %d\n", nodeNum );
     printf( "\n\n" );
 
-    printf( "Number of nodes of the imput tree = %d\n", nodeNum );
+    printf( "Pre-order visit on the second tree:\n" );
+    preOrder( bRoot, 0 );
+    printf( "\n\n" );
+
+
+
+    if (isBST (aRoot, "0", "100")) {
+        aTree = searchBST (aRoot, "35");
+        printf ("\n\n");
+        printf ("aTree is a BST\n");
+    }
+    else {
+        printf ("aTree is not a BST \n");
+    }
+*/
+
+    if (isBST (bRoot, "0", "100")) {
+        bTree = searchBST (bRoot, "43");
+        printf ("%s\n", bTree -> name);
+        bTree = searchBST (bRoot, "31");
+        printf ("%s\n", bTree -> name);
+        bTree = searchBST (bRoot, "52");
+        printf ("%s\n", bTree -> name);
+        bTree = searchBST (bRoot, "12");
+        printf ("%s\n", bTree -> name);
+        printf ("\n\n");
+        printf ("bTree is a BST\n");
+    }
+    else {
+        printf ("bTree is not a BST \n");
+    }
+
+    printf ("\n");
+
+
 
     /*
        printf( "Weight of aTree: %d\n", findWeight( aTree ) );

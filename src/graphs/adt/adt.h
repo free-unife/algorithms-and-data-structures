@@ -102,23 +102,24 @@ boolean isDoubleLinkedListEmpty( headPointer hp );
 void initDoubleLinkedList( headPointer hp );
 int lengthDoubleLinkedList( headPointer hp );
 
-nodePointer newEdge( weight w, nodePointer fromNode, nodePointer toNode,
-                     headPointer hp );
+nodePointer newEdge( weight w,
+                     nodePointer fromNode,
+                     nodePointer toNode, headPointer hp );
 
 void reinitConnections( nodePointer vertex );
 
-nodePointer newVertex( char *name, vertexListPointer vlp,
-                       edgeListPointer elp );
+nodePointer newVertex( char *name,
+                       vertexListPointer vlp, edgeListPointer elp );
 
 nodePointer connectVertex( headPointer edgehp,
-                           nodePointer fromNode, nodePointer toNode,
-                           weight w );
+                           nodePointer fromNode,
+                           nodePointer toNode, weight w );
 
 
 void insertEdgeInList( nodePointer np, headPointer hp );
 
-nodePointer searchEdge( nodePointer fromNode, nodePointer toNode,
-                        headPointer hp );
+nodePointer searchEdge( nodePointer fromNode,
+                        nodePointer toNode, headPointer hp );
 
 nodePointer searchVertex( char *nameToSearch, headPointer hp );
 
@@ -138,8 +139,9 @@ boolean isQueueEmpty( int *head, int *tail );
 
 nodePointer *initNodeQueue( int nodeListLen );
 
-void enqueue( int *tail, int nodeListLen, nodePointer * queue, nodePointer
-              toEnqueue );
+void enqueue( int *tail,
+              int nodeListLen,
+              nodePointer * queue, nodePointer toEnqueue );
 
 nodePointer dequeue( int *head, int nodeListLen, nodePointer * queue );
 
