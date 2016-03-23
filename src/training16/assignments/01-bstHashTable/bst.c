@@ -1,4 +1,4 @@
- /* Copyright © 2016 Franco Masotti <franco.masotti@student.unife.it>
+/* Copyright © 2016 Franco Masotti <franco.masotti@student.unife.it>
  *                  Danny Lessio
  * This work is free. You can redistribute it and/or modify it under the
  * terms of the Do What The Fuck You Want To Public License, Version 2,
@@ -12,11 +12,12 @@
 #endif
 
 
-void initBST( bst root )
+void initBST( bst * root )
 {
 
-    root = EMPTY;
-    ( void ) root;
+    *root = EMPTY;
+
+    return;
 
 }
 
@@ -27,28 +28,46 @@ boolean isBSTEmpty( bst root )
 
 }
 
-bst newNode( char *key, char *value )
+char *BSTKey( bst root )
 {
-    bst nodeAddress;
 
+    assert( root != EMPTY );
 
-    if ( ( nodeAddress = malloc( sizeof( struct node ) ) ) == NULL )
-        exit( EXIT_FAILURE );
+    return ( root->key );
 
-    nodeAddress->key = key;
-    nodeAddress->value = value;
-    nodeAddress->left = EMPTY;
-    nodeAddress->right = EMPTY;
-    nodeAddress->parent = EMPTY;
+}
 
-    return nodeAddress;
+char *BSTVal( bst root )
+{
+
+    assert( root != EMPTY );
+
+    return ( root->value );
+
+}
+
+bst left( bst root )
+{
+
+    assert( root != EMPTY );
+
+    return ( root->left );
+
+}
+
+bst right( bst root )
+{
+
+    assert( root != EMPTY );
+
+    return ( root->right );
 
 }
 
 boolean lessThan( char *key1, char *key2 )
 {
 
-    assert ((key1 != NULL) && (key2 != NULL));
+    assert( ( key1 != NULL ) && ( key2 != NULL ) );
 
     if ( atoi( key1 ) < atoi( key2 ) ) {
         return true;
@@ -61,7 +80,7 @@ boolean lessThan( char *key1, char *key2 )
 boolean greaterThan( char *key1, char *key2 )
 {
 
-    assert ((key1 != NULL) && (key2 != NULL));
+    assert( ( key1 != NULL ) && ( key2 != NULL ) );
 
     if ( atoi( key1 ) > atoi( key2 ) ) {
         return true;
@@ -71,70 +90,100 @@ boolean greaterThan( char *key1, char *key2 )
 
 }
 
-bst insert( char *key, char *value, bst root )
+void newNode( bst * ptree, char *key, char *value )
 {
 
-    assert ((key != NULL) && (value != NULL));
+    if ( ( ( *ptree ) = malloc( sizeof( struct node ) ) ) == NULL )
+        exit( EXIT_FAILURE );
 
-    if ( isBSTEmpty( root ) ) {
-        printf ("in\n");
-        return newNode( key, value );
-    } else if ( lessThan( key, root->key ) ) {
-        insert( key, value, left (root) );
+    ( *ptree )->key = key;
+    ( *ptree )->value = value;
+    ( *ptree )->left = EMPTY;
+    ( *ptree )->right = EMPTY;
+    ( *ptree )->parent = EMPTY;
+
+    return;
+
+}
+
+void nonEmptyInsert( bst root, char *key, char *value )
+{
+
+    /* since &(right(root)) and &(left(root)) cannot be done, we can't use the
+     * ADT functions and we can't use an extra variable. FIXME
+     * http://stackoverflow.com/questions/11397818/using-unary-operator-on-function-return-value
+     */
+
+    assert( ( key != NULL ) && ( value != NULL ) );
+
+    if ( lessThan( key, BSTKey( root ) ) ) {
+        if ( !isBSTEmpty( left( root ) ) ) {
+            nonEmptyInsert( left( root ), key, value );
+        } else {
+            newNode( &(root -> left), key, value );
+        }
     } else {
-        insert( key, value, right (root) );
+        if ( !isBSTEmpty( right( root ) ) ) {
+            nonEmptyInsert( right( root ), key, value );
+        } else {
+            newNode( &(root -> right), key, value );
+        }
     }
 
-    return EMPTY;
+    return;
 
 }
 
-bst left( bst root )
+void insert( bst * ptree, char *key, char *value )
 {
 
-    assert (root != EMPTY);
+    /* assert (key is not present in tree).  */
 
-    return ( root->left );
+    if ( ( *ptree ) == EMPTY )
+        newNode( ptree, key, value );
+    else
+        nonEmptyInsert( *ptree, key, value );
 
-}
-
-bst right( bst root )
-{
-
-    assert (root != EMPTY);
-
-    return ( root->right );
+    return;
 
 }
-
-#ifdef M_BSTMAIN_C
-int main( void )
-{
-
-    bst bsTree = EMPTY, tmp;
-
-
-    initBST( bsTree );
-    if ( isBSTEmpty( bsTree ) )
-        fprintf( stderr, "bsTree is empty\n" );
-
-    bsTree = insert( "00", "ciao", bsTree );
-    tmp = insert( "02", "hola", bsTree );
-    tmp = insert( "01", "hallo", bsTree );
-
-    if ( !isBSTEmpty( left (bsTree) ) )
-        fprintf( stderr, "bsTree is NOT empty\n" );
-
-    fprintf (stderr, "%p %s\n", (void *) (left (bsTree)), tmp -> value);
-
-
-    return 0;
-
-}
-#endif
 
 /*
 bst search(char *key, bst root);
 boolean delete(char *key, bst root);
 boolean isBST(bst root);
+bst minBST (bst root);
+bst maxBST (bst root);
 */
+
+#ifdef M_BSTMAIN_C
+int main( void )
+{
+
+    bst *bsTree;
+
+
+    if ( ( bsTree = malloc( sizeof( bst ) ) ) == NULL )
+        exit( EXIT_FAILURE );
+
+    initBST( bsTree );
+    if ( isBSTEmpty( *bsTree ) )
+        fprintf( stderr, "bsTree is empty\n" );
+
+    fprintf (stderr, "Inserting Elements...\n");
+    insert( bsTree, "01", "ciao" );
+    insert( bsTree, "02", "hello" );
+    insert( bsTree, "00", "hola" );
+    insert( bsTree, "04", "hallo" );
+    insert( bsTree, "03", "testing" );
+
+    fprintf (stderr, "Manual tree traversal\n");
+    printf( "%s\n", BSTKey( left (*bsTree) ) );
+    printf( "%s\n", BSTKey( right (*bsTree) ) );
+    printf( "%s\n", BSTKey( right ( right (*bsTree) ) ) );
+    printf( "%s\n", BSTKey( left ( right ( right (*bsTree) ) ) ) );
+
+    return 0;
+
+}
+#endif
