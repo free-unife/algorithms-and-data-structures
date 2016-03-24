@@ -12,10 +12,10 @@
 #endif
 
 
-void BSTinit( bst * root )
+void BSTinit( bstPtr rootPtr )
 {
 
-    *root = EMPTY;
+    *rootPtr = EMPTY;
 
     return;
 
@@ -73,6 +73,67 @@ bst BSTParent( bst root )
 
 }
 
+/* If the left element of the root is EMPTY return bst pointer, else goto
+ * left node and re-test the condition.  */
+bst BSTMinElement( bst root )
+{
+
+    assert( !BSTEmpty( root ) );
+
+    return ( !BSTEmpty( BSTLeft( root ) ) ?
+             BSTMinElement( BSTLeft( root ) ) : root );
+
+}
+
+bst BSTMaxElement( bst root )
+{
+
+    assert( !BSTEmpty( root ) );
+
+    return ( !BSTEmpty( BSTRight( root ) ) ?
+             BSTMaxElement( BSTRight( root ) ) : root );
+
+}
+
+bst BSTPredecessor( bst root )
+{
+
+    assert( !BSTEmpty( root ) );
+
+    return ( BSTMaxElement( BSTLeft( root ) ) );
+
+}
+
+boolean BSTLeaf( bst root )
+{
+
+    assert( !BSTEmpty( root ) );
+
+    return ( ( BSTEmpty( BSTLeft( root ) ) )
+             && ( BSTEmpty( BSTRight( root ) ) ) );
+
+}
+
+boolean BSTLeftSon( bst root )
+{
+
+    assert( !BSTEmpty( root ) );
+
+    return ( ( !BSTEmpty( BSTLeft( root ) ) )
+             && ( BSTEmpty( BSTRight( root ) ) ) );
+
+}
+
+boolean BSTRightSon( bst root )
+{
+
+    assert( !BSTEmpty( root ) );
+
+    return ( ( BSTEmpty( BSTLeft( root ) ) )
+             && ( !BSTEmpty( BSTRight( root ) ) ) );
+
+}
+
 boolean BSTKeyEqual( char *key1, char *key2 )
 {
 
@@ -100,19 +161,19 @@ boolean BSTKeyGreater( char *key1, char *key2 )
 
 }
 
-bst BSTNewNode( bst * ptree, bst parent, char *key, char *value )
+bst BSTNewNode( bstPtr rootPtr, bst parent, char *key, char *value )
 {
 
-    if ( ( ( *ptree ) = malloc( sizeof( struct node ) ) ) == NULL )
+    if ( ( ( *rootPtr ) = malloc( sizeof( struct node ) ) ) == NULL )
         exit( EXIT_FAILURE );
 
-    ( *ptree )->key = key;
-    ( *ptree )->value = value;
-    ( *ptree )->left = EMPTY;
-    ( *ptree )->right = EMPTY;
-    ( *ptree )->parent = parent;
+    ( *rootPtr )->key = key;
+    ( *rootPtr )->value = value;
+    ( *rootPtr )->left = EMPTY;
+    ( *rootPtr )->right = EMPTY;
+    ( *rootPtr )->parent = parent;
 
-    return *ptree;
+    return *rootPtr;
 
 }
 
@@ -147,7 +208,7 @@ bst BSTNonEmptyInsert( bst root, char *key, char *value )
 
 }
 
-bst BSTinsert( bst * ptree, char *key, char *value )
+bst BSTinsert( bstPtr rootPtr, char *key, char *value )
 {
 
     /* Since random elements are generated, we can't use the following assert:
@@ -159,32 +220,10 @@ bst BSTinsert( bst * ptree, char *key, char *value )
 
     assert( ( key != NULL ) && ( value != NULL ) );
 
-    if ( BSTEmpty( *ptree ) )
-        return ( BSTNewNode( ptree, EMPTY, key, value ) );
+    if ( BSTEmpty( *rootPtr ) )
+        return ( BSTNewNode( rootPtr, EMPTY, key, value ) );
     else
-        return ( BSTNonEmptyInsert( *ptree, key, value ) );
-
-}
-
-/* If the left element of the root is EMPTY return bst pointer, else goto
- * left node and re-test the condition.  */
-bst BSTMinElement( bst root )
-{
-
-    assert( !BSTEmpty( root ) );
-
-    return ( !BSTEmpty( BSTLeft( root ) ) ?
-             BSTMinElement( BSTLeft( root ) ) : root );
-
-}
-
-bst BSTMaxElement( bst root )
-{
-
-    assert( !BSTEmpty( root ) );
-
-    return ( !BSTEmpty( BSTRight( root ) ) ?
-             BSTMaxElement( BSTRight( root ) ) : root );
+        return ( BSTNonEmptyInsert( *rootPtr, key, value ) );
 
 }
 
@@ -216,17 +255,65 @@ boolean BSTis( bst root, char *minKey, char *maxKey )
 
 }
 
-/* Before implementing the delete function we need successor and predecessor
- * functions.
- */
-/* bst BSTdelete(bst *ptree, char *key);  */
+boolean BSTNonEmptyDelete( bstPtr rootPtr, bst root, char *key )
+{
 
+    bst tmp;
+
+
+    if ( !BSTKeyEqual( key, BSTKey( root ) ) ) {
+        if ( BSTKeyLess( key, BSTKey( root ) ) ) {
+            if ( BSTEmpty( BSTLeft( root ) ) )
+                return false;
+            else
+                return ( BSTNonEmptyDelete
+                         ( &( root->left ), BSTLeft( root ), key ) );
+        } else {
+            if ( BSTEmpty( BSTRight( root ) ) )
+                return false;
+            else
+                return ( BSTNonEmptyDelete
+                         ( &( root->right ), BSTRight( root ), key ) );
+        }
+    }
+    /* key == root -> key.  */
+    else {
+        if ( BSTLeaf( root ) ) {
+            *rootPtr = EMPTY;
+            free( root );
+        } else if ( BSTRightSon( root ) ) {
+            *rootPtr = BSTRight( root );
+            free( root );
+        } else if ( BSTLeftSon( root ) ) {
+            *rootPtr = BSTLeft( root );
+            free( root );
+        } else {
+            tmp = BSTMaxElement( BSTLeft( root ) );
+            root->key = BSTKey( tmp );
+            root->value = BSTVal( tmp );
+            return ( BSTNonEmptyDelete
+                     ( &( root->left ), BSTLeft( root ), key ) );
+        }
+    }
+
+    return true;
+
+}
+
+boolean BSTDelete( bstPtr rootPtr, char *key )
+{
+
+    assert( !BSTEmpty( *rootPtr ) );
+
+    return ( BSTNonEmptyDelete( rootPtr, *rootPtr, key ) );
+
+}
 
 #ifdef M_BSTMAIN_C
 int main( void )
 {
 
-    bst *bsTree;
+    bstPtr bsTree;
 
 
     if ( ( bsTree = malloc( sizeof( bst ) ) ) == NULL )
@@ -278,6 +365,15 @@ int main( void )
     fprintf( stderr, "\n\nCheck parent fields\n" );
     fprintf( stderr, "Parent of node with key %s = %s\n", "03",
              BSTKey( BSTParent( BSTSearch( *bsTree, "03" ) ) ) );
+
+
+    fprintf( stderr, "\n\nManual tree deletion\n" );
+    if ( BSTDelete( bsTree, "00" ) && BSTDelete( bsTree, "01" )
+         && BSTDelete( bsTree, "02" ) && BSTDelete( bsTree, "03" )
+         && BSTDelete( bsTree, "04" ) )
+        if ( BSTEmpty( *bsTree ) )
+            fprintf( stderr, "The whole tree has been deleted\n" );
+
 
     return 0;
 

@@ -97,20 +97,26 @@ struct node {
 typedef struct node * bst;
 typedef bst * bstPtr;
 
-void BSTinit( bst * root );
+
+void BSTinit( bstPtr rootPtr );
 boolean BSTEmpty( bst root );
 char *BSTKey( bst root );
 char *BSTVal( bst root );
 bst BSTLeft( bst root );
 bst BSTRight( bst root );
-bst BSTParent ( bst root );
-boolean BSTKeyEqual (char *key1, char *key2 );
+bst BSTParent( bst root );
+bst BSTMinElement( bst root );
+bst BSTMaxElement( bst root );
+bst BSTPredecessor ( bst root );
+boolean BSTLeaf ( bst root );
+boolean BSTKeyEqual( char *key1, char *key2 );
 boolean BSTKeyLess( char *key1, char *key2 );
 boolean BSTKeyGreater( char *key1, char *key2 );
-bst BSTNewNode( bst * ptree, bst parent, char *key, char *value );
+bst BSTNewNode( bstPtr rootPtr, bst parent, char *key, char *value );
 bst BSTNonEmptyInsert( bst root, char *key, char *value );
-bst BSTinsert( bst * ptree, char *key, char *value );
-bst BSTMinElement ( bst root );
-bst BSTMaxElement ( bst root );
-boolean BSTis ( bst root, char *minKey, char *maxKey );
+bst BSTinsert( bstPtr rootPtr, char *key, char *value );
 bst BSTSearch( bst root, char *key );
+boolean BSTis( bst root, char *minKey, char *maxKey );
+boolean BSTNonEmptyDelete (bstPtr rootPtr, bst root, char *key);
+boolean BSTDelete( bstPtr rootPtr, char *key );
+
