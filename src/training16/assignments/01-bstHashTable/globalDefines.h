@@ -97,14 +97,19 @@ struct node {
 };
 
 
-void initBST( bst *root );
-boolean isBSTEmpty( bst root );
-char *BSTKey ( bst root );
-char *BSTVal ( bst root );
-bst left( bst root );
-bst right( bst root );
-boolean lessThan( char *key1, char *key2 );
-boolean greaterThan( char *key1, char *key2 );
-void newNode( bst *ptree, char *key, char *value );
-void nonEmptyInsert (bst root, char *key, char *value);
-void insert( bst *ptree, char *key, char *value );
+void BSTinit( bst * root );
+boolean BSTEmpty( bst root );
+char *BSTKey( bst root );
+char *BSTVal( bst root );
+bst BSTLeft( bst root );
+bst BSTRight( bst root );
+boolean BSTKeyEqual (char *key1, char *key2 );
+boolean BSTKeyLess( char *key1, char *key2 );
+boolean BSTKeyGreater( char *key1, char *key2 );
+void BSTNewNode( bst * ptree, char *key, char *value );
+void BSTNonEmptyInsert( bst root, char *key, char *value );
+void BSTinsert( bst * ptree, char *key, char *value );
+bst BSTMinElement (bst root);
+bst BSTMaxElement (bst root);
+bst BSTSearch(bst root, char *key);
+

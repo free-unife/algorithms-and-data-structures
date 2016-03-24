@@ -12,7 +12,7 @@
 #endif
 
 
-void initBST( bst * root )
+void BSTinit( bst * root )
 {
 
     *root = EMPTY;
@@ -21,7 +21,7 @@ void initBST( bst * root )
 
 }
 
-boolean isBSTEmpty( bst root )
+boolean BSTEmpty( bst root )
 {
 
     return ( root == EMPTY );
@@ -31,7 +31,7 @@ boolean isBSTEmpty( bst root )
 char *BSTKey( bst root )
 {
 
-    assert( root != EMPTY );
+    assert( !BSTEmpty( root ) );
 
     return ( root->key );
 
@@ -40,31 +40,38 @@ char *BSTKey( bst root )
 char *BSTVal( bst root )
 {
 
-    assert( root != EMPTY );
+    assert( !BSTEmpty( root ) );
 
     return ( root->value );
 
 }
 
-bst left( bst root )
+bst BSTLeft( bst root )
 {
 
-    assert( root != EMPTY );
+    assert( !BSTEmpty( root ) );
 
     return ( root->left );
 
 }
 
-bst right( bst root )
+bst BSTRight( bst root )
 {
 
-    assert( root != EMPTY );
+    assert( !BSTEmpty( root ) );
 
     return ( root->right );
 
 }
 
-boolean lessThan( char *key1, char *key2 )
+boolean BSTKeyEqual (char *key1, char *key2 )
+{
+
+    return (atoi (key1) == atoi (key2) ? true : false);
+
+}
+
+boolean BSTKeyLess( char *key1, char *key2 )
 {
 
     assert( ( key1 != NULL ) && ( key2 != NULL ) );
@@ -77,7 +84,7 @@ boolean lessThan( char *key1, char *key2 )
 
 }
 
-boolean greaterThan( char *key1, char *key2 )
+boolean BSTKeyGreater( char *key1, char *key2 )
 {
 
     assert( ( key1 != NULL ) && ( key2 != NULL ) );
@@ -90,7 +97,7 @@ boolean greaterThan( char *key1, char *key2 )
 
 }
 
-void newNode( bst * ptree, char *key, char *value )
+void BSTNewNode( bst * ptree, char *key, char *value )
 {
 
     if ( ( ( *ptree ) = malloc( sizeof( struct node ) ) ) == NULL )
@@ -106,7 +113,7 @@ void newNode( bst * ptree, char *key, char *value )
 
 }
 
-void nonEmptyInsert( bst root, char *key, char *value )
+void BSTNonEmptyInsert( bst root, char *key, char *value )
 {
 
     /* since &(right(root)) and &(left(root)) cannot be done, we can't use the
@@ -116,17 +123,17 @@ void nonEmptyInsert( bst root, char *key, char *value )
 
     assert( ( key != NULL ) && ( value != NULL ) );
 
-    if ( lessThan( key, BSTKey( root ) ) ) {
-        if ( !isBSTEmpty( left( root ) ) ) {
-            nonEmptyInsert( left( root ), key, value );
+    if ( BSTKeyLess( key, BSTKey( root ) ) ) {
+        if ( !BSTEmpty( BSTLeft( root ) ) ) {
+            BSTNonEmptyInsert( BSTLeft( root ), key, value );
         } else {
-            newNode( &(root -> left), key, value );
+            BSTNewNode( &(root -> left), key, value );
         }
     } else {
-        if ( !isBSTEmpty( right( root ) ) ) {
-            nonEmptyInsert( right( root ), key, value );
+        if ( !BSTEmpty( BSTRight( root ) ) ) {
+            BSTNonEmptyInsert( BSTRight( root ), key, value );
         } else {
-            newNode( &(root -> right), key, value );
+            BSTNewNode( &(root -> right), key, value );
         }
     }
 
@@ -134,26 +141,58 @@ void nonEmptyInsert( bst root, char *key, char *value )
 
 }
 
-void insert( bst * ptree, char *key, char *value )
+void BSTinsert( bst * ptree, char *key, char *value )
 {
 
     /* assert (key is not present in tree).  */
 
     if ( ( *ptree ) == EMPTY )
-        newNode( ptree, key, value );
+        BSTNewNode( ptree, key, value );
     else
-        nonEmptyInsert( *ptree, key, value );
+        BSTNonEmptyInsert( *ptree, key, value );
 
     return;
 
 }
 
+/* If the left element of the root is EMPTY return bst pointer, else goto
+ * left node and re-test the condition.  */
+bst BSTMinElement (bst root)
+{
+
+    assert( !BSTEmpty( root ) );
+
+    return (!BSTEmpty (BSTLeft (root)) ? BSTMinElement (BSTLeft (root)) : root);
+
+}
+
+bst BSTMaxElement (bst root)
+{
+
+    assert( !BSTEmpty( root ) );
+
+    return (!BSTEmpty (BSTRight (root)) ? BSTMaxElement (BSTRight (root)) : root);
+
+}
+
+
+bst BSTSearch( bst root, char *key )
+{
+
+    if (BSTEmpty (root))
+        return EMPTY;
+    else if ( BSTKeyEqual (BSTKey (root), key) )
+        return root;
+    else if ( BSTKeyGreater (BSTKey (root), key ) )
+        return ( BSTSearch (BSTLeft (root), key));
+    else
+        return ( BSTSearch (BSTRight (root), key));
+
+}
+
 /*
-bst search(char *key, bst root);
 boolean delete(char *key, bst root);
 boolean isBST(bst root);
-bst minBST (bst root);
-bst maxBST (bst root);
 */
 
 #ifdef M_BSTMAIN_C
@@ -166,22 +205,29 @@ int main( void )
     if ( ( bsTree = malloc( sizeof( bst ) ) ) == NULL )
         exit( EXIT_FAILURE );
 
-    initBST( bsTree );
-    if ( isBSTEmpty( *bsTree ) )
+    BSTinit( bsTree );
+    if ( BSTEmpty( *bsTree ) )
         fprintf( stderr, "bsTree is empty\n" );
 
     fprintf (stderr, "Inserting Elements...\n");
-    insert( bsTree, "01", "ciao" );
-    insert( bsTree, "02", "hello" );
-    insert( bsTree, "00", "hola" );
-    insert( bsTree, "04", "hallo" );
-    insert( bsTree, "03", "testing" );
+    BSTinsert( bsTree, "01", "ciao" );
+    BSTinsert( bsTree, "02", "hello" );
+    BSTinsert( bsTree, "00", "hola" );
+    BSTinsert( bsTree, "04", "hallo" );
+    BSTinsert( bsTree, "03", "testing" );
 
-    fprintf (stderr, "Manual tree traversal\n");
-    printf( "%s\n", BSTKey( left (*bsTree) ) );
-    printf( "%s\n", BSTKey( right (*bsTree) ) );
-    printf( "%s\n", BSTKey( right ( right (*bsTree) ) ) );
-    printf( "%s\n", BSTKey( left ( right ( right (*bsTree) ) ) ) );
+    fprintf ( stderr, "Manual tree traversal\n");
+    fprintf( stderr, "%s\n", BSTKey( BSTLeft (*bsTree) ) );
+    fprintf( stderr, "%s\n", BSTKey( BSTRight (*bsTree) ) );
+    fprintf( stderr, "%s\n", BSTKey( BSTRight ( BSTRight (*bsTree) ) ) );
+    fprintf( stderr, "%s\n", BSTKey( BSTLeft ( BSTRight ( BSTRight (*bsTree) ) ) ) );
+
+    fprintf ( stderr, "Min and max:\n" );
+    printf( "min = %s\n", BSTKey (BSTMinElement (*bsTree)) );
+    printf( "max = %s\n", BSTKey (BSTMaxElement (*bsTree)) );
+
+    fprintf (stderr, "Search for key 03\n");
+    fprintf (stderr, "value of 03 = %s\n", BSTVal (BSTSearch (*bsTree, "03")));
 
     return 0;
 
