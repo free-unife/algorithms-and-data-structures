@@ -84,8 +84,6 @@ void printHashTable( bstPointer * hash );
  */
 /* BST.  */
 
-typedef struct node * bst;
-
 #define EMPTY NULL
 
 struct node {
@@ -96,6 +94,8 @@ struct node {
   struct node *parent;
 };
 
+typedef struct node * bst;
+typedef bst * bstPtr;
 
 void BSTinit( bst * root );
 boolean BSTEmpty( bst root );
@@ -103,13 +103,14 @@ char *BSTKey( bst root );
 char *BSTVal( bst root );
 bst BSTLeft( bst root );
 bst BSTRight( bst root );
+bst BSTParent ( bst root );
 boolean BSTKeyEqual (char *key1, char *key2 );
 boolean BSTKeyLess( char *key1, char *key2 );
 boolean BSTKeyGreater( char *key1, char *key2 );
-void BSTNewNode( bst * ptree, char *key, char *value );
-void BSTNonEmptyInsert( bst root, char *key, char *value );
-void BSTinsert( bst * ptree, char *key, char *value );
-bst BSTMinElement (bst root);
-bst BSTMaxElement (bst root);
-bst BSTSearch(bst root, char *key);
-
+bst BSTNewNode( bst * ptree, bst parent, char *key, char *value );
+bst BSTNonEmptyInsert( bst root, char *key, char *value );
+bst BSTinsert( bst * ptree, char *key, char *value );
+bst BSTMinElement ( bst root );
+bst BSTMaxElement ( bst root );
+boolean BSTis ( bst root, char *minKey, char *maxKey );
+bst BSTSearch( bst root, char *key );
