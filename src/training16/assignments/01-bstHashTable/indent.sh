@@ -6,7 +6,8 @@
 
 
 indentOptions="$1"
-paths="$2"
+splintOptions="$2"
+paths="$3"
 
 # Set indent backup suffix.
 export SIMPLE_BACKUP_SUFFIX=".indent.bak"
@@ -17,7 +18,7 @@ which indent splint 1>/dev/null 2>/dev/null
 if [ $? -eq 0 ]; then
     for file in $paths; do
         file="${file:0:(-2)}.c"
-        splint "$file"
+        splint $splintOptions "$file"
         indent $indentOptions "$file"
         # Remove indent backup files.
         rm "${file}${SIMPLE_BACKUP_SUFFIX}"

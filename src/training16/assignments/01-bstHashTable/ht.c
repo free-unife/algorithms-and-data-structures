@@ -59,7 +59,7 @@ void printHashTable( bstPointer * hash )
 
 }
 
-#ifdef M_HASHMAIN_C
+#ifdef M_HTMAIN_C
 int main( void )
 {
 

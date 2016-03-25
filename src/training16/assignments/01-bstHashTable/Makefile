@@ -22,10 +22,11 @@ INSTALL = /usr/bin/install
 
 CFLAGS = -Wall -Wextra -Wpedantic -Werror -march=native -O0
 LIBS = -lm
-CSTANDARD = -std=c89
+CSTANDARD = -std=c99
 MACRO_REQ = -D_DEFAULT_SOURCE
 
 INDENT_OPTS = -kr -prs -nut
+SPLINT_OPTS = -usereleased -compdef
 
 # targets
 
@@ -59,7 +60,7 @@ uninstall:
 
 indent:
 	@echo "Indenting all files..."
-	@./indent.sh "$(INDENT_OPTS)" "$(PRG_OBJFILES)"
+	@./indent.sh "$(INDENT_OPTS)" "$(SPLINT_OPTS)" "$(PRG_OBJFILES)"
 	@echo "Done."
 
 clean :

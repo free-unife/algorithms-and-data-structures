@@ -11,51 +11,19 @@
 #include "definedModules.h"
 #endif
 
-#ifndef M_STDLIB_H
-#define M_STDLIB_H
-#include <stdlib.h>
-#endif
-
-#ifndef M_STDIO_H
-#define M_STDIO_H
-#include <stdio.h>
-#endif
-
-#ifndef M_ASSERT_H
-#define M_ASSERT_H
 #include <assert.h>
-#endif
-
-#ifndef M_LIMITS_H
-#define M_LIMITS_H
 #include <limits.h>
-#endif
-
-#ifndef M_TIME_H
-#define M_TIME_H
-#include <time.h>
-#endif
-
-#ifndef M_SYSTIME_H
-#define M_SYSTIME_H
-#include <sys/time.h>
-#endif
-
-#ifndef M_STRING_H
-#define M_STRING_H
-#include <string.h>
-#endif
-
-#ifndef M_MATH_H
-#define M_MATH_H
 #include <math.h>
-#endif
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/time.h>
+#include <time.h>
+
 
 /* Global.  */
-#define false 0
-#define true 1
 #define INF INT_MAX
-typedef int boolean;
 
 /* ****************
  * ****************
@@ -99,24 +67,10 @@ typedef bst * bstPtr;
 
 
 void BSTinit( bstPtr rootPtr );
-boolean BSTEmpty( bst root );
+bool BSTEmpty( bst root );
 char *BSTKey( bst root );
 char *BSTVal( bst root );
-bst BSTLeft( bst root );
-bst BSTRight( bst root );
-bst BSTParent( bst root );
-bst BSTMinElement( bst root );
-bst BSTMaxElement( bst root );
-bst BSTPredecessor ( bst root );
-boolean BSTLeaf ( bst root );
-boolean BSTKeyEqual( char *key1, char *key2 );
-boolean BSTKeyLess( char *key1, char *key2 );
-boolean BSTKeyGreater( char *key1, char *key2 );
-bst BSTNewNode( bstPtr rootPtr, bst parent, char *key, char *value );
-bst BSTNonEmptyInsert( bst root, char *key, char *value );
 bst BSTinsert( bstPtr rootPtr, char *key, char *value );
 bst BSTSearch( bst root, char *key );
-boolean BSTis( bst root, char *minKey, char *maxKey );
-boolean BSTNonEmptyDelete (bstPtr rootPtr, bst root, char *key);
-boolean BSTDelete( bstPtr rootPtr, char *key );
+bool BSTDelete( bstPtr rootPtr, char *key );
 

@@ -14,6 +14,6 @@
  * When the module will be considered stable. It will be integrated into the
  * program.
  */
-#define M_HASHMAIN_C
+#define M_HTMAIN_C
 #define M_BSTMAIN_C
 
