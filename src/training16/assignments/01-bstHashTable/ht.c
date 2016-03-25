@@ -12,17 +12,62 @@
 #endif
 
 
-/* http://www.cse.yorku.ca/~oz/hash.html djb2 */
-/* Output is unsigned because we have buckets from 0 to M - 1.  */
-size_t hash( char *input )
+void HTinit ( htSlot *hashTable )
 {
 
-    size_t key = 5381, i;
+    int i;
+
+    for ( i = 0; i < M; i++ )
+        hashTable [i] = EMPTY;
+
+    return;
+
+}
+
+/* Check if the BST corresponding to the current slot exists.  */
+bool HTEmptySlot ( htSlot slot )
+{
+
+    return ( slot == EMPTY );
+
+}
+
+/* New slot -> allocate new bstPtr.  */
+htSlot HTNewSlot ( htSlot *hashTable, unsigned int slotInd )
+{
+
+    bstPtr bsTree;
+
+
+    assert ( HTEmptySlot ( hashTable[slotInd] ) );
+
+    if ( ( bsTree = malloc( sizeof( bst ) ) ) == NULL )
+        exit( EXIT_FAILURE );
+
+    BSTInit( bsTree );
+
+    if ( ( hashTable [slotInd] = malloc ( sizeof ( bstPtr ) ) ) == NULL)
+        exit( EXIT_FAILURE );
+
+    *(hashTable [slotInd]) = bsTree;
+
+    return (hashTable [slotInd]);
+
+}
+
+
+
+/* http://www.cse.yorku.ca/~oz/hash.html djb2 */
+/* Output is unsigned because we have buckets from 0 to M - 1.  */
+unsigned int HTHash( char *input )
+{
+
+    unsigned int key = 5381, i;
 
 
     i = 0;
     while ( input[i] != '\0' ) {
-        key = ( ( key << 5 ) + key ) + ( ( size_t ) input[i] ); /* hash * 33 + c */
+        key = ( ( key << 5 ) + key ) + ( ( unsigned int ) input[i] ); /* hash * 33 + c */
         i++;
     }
 
@@ -30,24 +75,10 @@ size_t hash( char *input )
 
 }
 
-/* Dummy stuff.  */
-bstPointer *initHashTable( void )
+void HTPrint( bstPtr * hash )
 {
 
-    bstPointer *hashTable;
-
-
-    if ( ( hashTable = calloc( M, sizeof( bstPointer ) ) ) == NULL )
-        exit( EXIT_FAILURE );
-
-    return hashTable;
-
-}
-
-void printHashTable( bstPointer * hash )
-{
-
-    size_t i;
+    int i;
 
 
     for ( i = 0; i < M; i++ )
@@ -63,30 +94,24 @@ void printHashTable( bstPointer * hash )
 int main( void )
 {
 
-    char *string;
-    size_t key;
-    bstPointer *hashTable;
+    htSlot *hashTable;
 
 
-    hashTable = initHashTable(  );
-    while ( true ) {
-        if ( ( string = calloc( 500, sizeof( char ) ) ) == NULL )
-            exit( EXIT_FAILURE );
+    if ( ( hashTable = malloc ( sizeof ( htSlot ) * M ) ) == NULL )
+        exit (EXIT_FAILURE);
 
-        printf( "%p\n", ( void * ) string );
-        fprintf( stdout, "Value to be hashed (^C to quit): " );
-        scanf( "%s", string );
+    fprintf (stderr, "Initialize and test one slot of the HT\n");
+    HTinit ( hashTable );
+    if ( HTEmptySlot ( hashTable [M-1] ) )
+        fprintf (stderr, "Current slot is empty\n");
+    else
+        fprintf (stderr, "This message should NOT be shown\n");
 
-        key = hash( string );
-
-        hashTable[key] = string;
-        printf( "key = %u\n", ( unsigned int ) key );
-
-        printf( "Hash table status: " );
-        printHashTable( hashTable );
-
-/*        free (string);*/
-    }
+    fprintf (stderr, "\n\nAdd a new slot in the same position and check if it is still empty\n");
+    if ( HTEmptySlot ( HTNewSlot ( hashTable, M-1 ) ) )
+        fprintf (stderr, "This message should NOT be shown\n");
+    else
+        fprintf (stderr, "Current slot is being used.\n");
 
     return 0;
 

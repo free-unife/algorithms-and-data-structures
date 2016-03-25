@@ -16,7 +16,9 @@ static bst BSTLeft( bst root );
 static bst BSTRight( bst root );
 static bst BSTParent( bst root );
 static bst BSTMaxElement( bst root );
+#ifdef M_BSTMAIN_C
 static bst BSTMinElement( bst root );
+#endif
 static bst BSTPredecessor( bst root );
 static bool BSTLeaf( bst root );
 static bool BSTKeyEqual( char *key1, char *key2 );
@@ -25,12 +27,13 @@ static bool BSTKeyGreater( char *key1, char *key2 );
 static bst BSTNewNode( bstPtr rootPtr, bst parent, char *key,
                        char *value );
 static bst BSTNonEmptyInsert( bst root, char *key, char *value );
+#ifdef M_BSTMAIN_C
 static bool BSTis( bst root, char *minKey, char *maxKey );
+#endif
 static bool BSTNonEmptyDelete( bstPtr rootPtr, bst root, char *key );
 
 
-
-void BSTinit( bstPtr rootPtr )
+void BSTInit( bstPtr rootPtr )
 {
 
     *rootPtr = EMPTY;
@@ -91,6 +94,7 @@ static bst BSTParent( bst root )
 
 }
 
+#ifdef M_BSTMAIN_C
 static bst BSTMinElement( bst root )
 {
 
@@ -100,6 +104,7 @@ static bst BSTMinElement( bst root )
              BSTMaxElement( BSTLeft( root ) ) : root );
 
 }
+#endif
 
 /* If the right element of the root is EMPTY return bst pointer, else goto
  * left node and re-test the condition.  */
@@ -226,7 +231,7 @@ static bst BSTNonEmptyInsert( bst root, char *key, char *value )
 
 }
 
-bst BSTinsert( bstPtr rootPtr, char *key, char *value )
+bst BSTInsert( bstPtr rootPtr, char *key, char *value )
 {
 
     /* Since random elements are generated, we can't use the following assert:
@@ -259,6 +264,7 @@ bst BSTSearch( bst root, char *key )
 
 }
 
+#ifdef M_BSTMAIN_C
 static bool BSTis( bst root, char *minKey, char *maxKey )
 {
 
@@ -272,6 +278,7 @@ static bool BSTis( bst root, char *minKey, char *maxKey )
              && BSTis( BSTRight( root ), BSTKey( root ), maxKey ) );
 
 }
+#endif
 
 static bool BSTNonEmptyDelete( bstPtr rootPtr, bst root, char *key )
 {
@@ -338,19 +345,19 @@ int main( void )
     if ( ( bsTree = malloc( sizeof( bst ) ) ) == NULL )
         exit( EXIT_FAILURE );
 
-    BSTinit( bsTree );
+    BSTInit( bsTree );
     if ( BSTEmpty( *bsTree ) )
         fprintf( stderr, "bsTree is empty\n" );
 
 
     fprintf( stderr, "\n\nInserting Elements...\n" );
-    BSTinsert( bsTree, "01", "ciao" );
-    BSTinsert( bsTree, "02", "hello" );
-    BSTinsert( bsTree, "00", "hola" );
-    BSTinsert( bsTree, "04", "hallo" );
-    if ( BSTEmpty( BSTinsert( bsTree, "03", "testing" ) ) )
+    BSTInsert( bsTree, "01", "ciao" );
+    BSTInsert( bsTree, "02", "hello" );
+    BSTInsert( bsTree, "00", "hola" );
+    BSTInsert( bsTree, "04", "hallo" );
+    if ( BSTEmpty( BSTInsert( bsTree, "03", "testing" ) ) )
         fprintf( stderr, "This message should NOT be printed\n" );
-    if ( BSTEmpty( BSTinsert( bsTree, "03", "bad Value" ) ) )
+    if ( BSTEmpty( BSTInsert( bsTree, "03", "bad Value" ) ) )
         fprintf( stderr, "This message should be printed\n" );
 
 
@@ -406,12 +413,12 @@ int main( void )
 
 
     fprintf( stderr, "\n\nInserting Elements...\n" );
-    BSTinsert( bsTree, "01", "ciao" );
-    BSTinsert( bsTree, "02", "hello" );
-    BSTinsert( bsTree, "00", "hola" );
-    BSTinsert( bsTree, "04", "hallo" );
-    BSTinsert( bsTree, "03", "testing" );
-    BSTinsert( bsTree, "05", "good morning" );
+    BSTInsert( bsTree, "01", "ciao" );
+    BSTInsert( bsTree, "02", "hello" );
+    BSTInsert( bsTree, "00", "hola" );
+    BSTInsert( bsTree, "04", "hallo" );
+    BSTInsert( bsTree, "03", "testing" );
+    BSTInsert( bsTree, "05", "good morning" );
 
 
     fprintf( stderr, "\n\nCheck parent fields\n" );

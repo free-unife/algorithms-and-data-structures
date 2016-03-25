@@ -24,35 +24,9 @@
 
 /* Global.  */
 #define INF INT_MAX
-
-/* ****************
- * ****************
- * ****************
- * ****************
- */
-/* Hash.  */
-
-/* FIXME: THIS NEED TO BE CHANGED ACCORDINGLY WITH graphElement struct AND 
-TYPEDEFS  */
-typedef char* bstPointer;
-
+#define EMPTY NULL
 /* FIXME: Number of buckets to be defined better.  */
 #define M 997
-
-size_t hash( char *input );
-bstPointer *initHashTable( void );
-void printHashTable( bstPointer * hash );
-
-
-
-/* ****************
- * ****************
- * ****************
- * ****************
- */
-/* BST.  */
-
-#define EMPTY NULL
 
 struct node {
   char *key;
@@ -64,13 +38,19 @@ struct node {
 
 typedef struct node * bst;
 typedef bst * bstPtr;
+typedef bstPtr * htSlot;
 
-
-void BSTinit( bstPtr rootPtr );
+/* Protoypes.  */
+void BSTInit( bstPtr rootPtr );
 bool BSTEmpty( bst root );
 char *BSTKey( bst root );
 char *BSTVal( bst root );
-bst BSTinsert( bstPtr rootPtr, char *key, char *value );
+bst BSTInsert( bstPtr rootPtr, char *key, char *value );
 bst BSTSearch( bst root, char *key );
 bool BSTDelete( bstPtr rootPtr, char *key );
 
+void HTinit ( htSlot *hashTable );
+bool HTEmptySlot ( htSlot slot );
+htSlot HTNewSlot ( htSlot *hashTable, unsigned int slotInd );
+unsigned int HTHash( char *input );
+void HTPrint( bstPtr * hash );

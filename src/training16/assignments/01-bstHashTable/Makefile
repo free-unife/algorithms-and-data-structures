@@ -13,8 +13,8 @@
 
 # macros
 
-PRG_NAME = bst
-PRG_OBJFILES = bst.o
+PRG_NAME = ht
+PRG_OBJFILES = bst.o ht.o
 
 CC = /usr/bin/gcc
 BIN_DIR = /usr/bin
