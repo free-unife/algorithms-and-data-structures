@@ -345,9 +345,12 @@ int main( void )
     if ( ( bsTree = malloc( sizeof( bst ) ) ) == NULL )
         exit( EXIT_FAILURE );
 
+    fprintf( stderr, "Initializing BST\n" );
     BSTInit( bsTree );
     if ( BSTEmpty( *bsTree ) )
-        fprintf( stderr, "bsTree is empty\n" );
+        fprintf( stderr, "[ OK ] BST is empty\n" );
+    else
+        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
 
 
     fprintf( stderr, "\n\nInserting Elements...\n" );
@@ -356,9 +359,9 @@ int main( void )
     BSTInsert( bsTree, "00", "hola" );
     BSTInsert( bsTree, "04", "hallo" );
     if ( BSTEmpty( BSTInsert( bsTree, "03", "testing" ) ) )
-        fprintf( stderr, "This message should NOT be printed\n" );
+        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
     if ( BSTEmpty( BSTInsert( bsTree, "03", "bad Value" ) ) )
-        fprintf( stderr, "This message should be printed\n" );
+        fprintf( stderr, "[ OK ] This message should be shown\n" );
 
 
     fprintf( stderr, "\n\nManual tree traversal\n" );
@@ -367,49 +370,60 @@ int main( void )
     fprintf( stderr, "%s\n", BSTKey( BSTRight( BSTRight( *bsTree ) ) ) );
     fprintf( stderr, "%s\n",
              BSTKey( BSTLeft( BSTRight( BSTRight( *bsTree ) ) ) ) );
+    fprintf( stderr,
+             "[ OK ] This message should be shown and all previously printed values should be !(nil)\n" );
 
 
     fprintf( stderr, "\n\nMin and max\n" );
-    printf( "min = %s\n", BSTKey( BSTMinElement( *bsTree ) ) );
-    printf( "max = %s\n", BSTKey( BSTMaxElement( *bsTree ) ) );
+    fprintf( stderr, "min = %s\n", BSTKey( BSTMinElement( *bsTree ) ) );
+    fprintf( stderr, "max = %s\n", BSTKey( BSTMaxElement( *bsTree ) ) );
+    fprintf( stderr, "[ OK ] This message should be shown\n" );
 
 
-    fprintf( stderr, "\n\nSearch for key 03\n" );
-    fprintf( stderr, "value of 03 = %s\n",
-             BSTVal( BSTSearch( *bsTree, "03" ) ) );
-    fprintf( stderr, "Search non-existing key 103\n" );
+    fprintf( stderr, "\n\nSearch for key %s\n", "03" );
+    fprintf( stderr, "value of %s = %s\n",
+             "03", BSTVal( BSTSearch( *bsTree, "03" ) ) );
+    fprintf( stderr, "Search non-existing key %s\n", "103" );
     if ( BSTEmpty( BSTSearch( *bsTree, "103" ) ) )
-        fprintf( stderr,
-                 "Pointer to node with key 103 should be (nil): %p\n",
-                 ( void * ) BSTSearch( *bsTree, "103" ) );
+        fprintf( stderr, "[ OK ] Node with key 103 does not exist\n" );
+    else
+        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
 
 
-    fprintf( stderr, "\n\nBST test\n" );
+    fprintf( stderr,
+             "\n\nIs a BST test with minKey = %s and maxKey = %s\n", "00",
+             "99" );
     if ( BSTis( *bsTree, "00", "99" ) )
-        fprintf( stderr, "\n\nInput tree is a BST\n" );
+        fprintf( stderr, "[ OK ] Input tree is a BST\n" );
     else
-        fprintf( stderr, "\n\nInput tree is NOT a BST\n" );
+        fprintf( stderr, "[ ERR ] Input tree is NOT a BST\n" );
 
 
-    fprintf( stderr, "\n\nDeletion of non-existing node\n" );
+    fprintf( stderr,
+             "\n\nDeletion of non-existing node in a non-empty BST\n" );
     if ( BSTDelete( bsTree, "10" ) )
-        fprintf( stderr, "This message should NOT be printed\n" );
+        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
     else
-        fprintf( stderr, "This message should be printed\n" );
+        fprintf( stderr, "[ OK ] Node with key 10 cannot be deleted\n" );
 
 
     fprintf( stderr, "\n\nManual tree deletion\n" );
     if ( BSTDelete( bsTree, "00" ) && BSTDelete( bsTree, "01" )
          && BSTDelete( bsTree, "02" ) && BSTDelete( bsTree, "03" )
-         && BSTDelete( bsTree, "04" ) )
+         && BSTDelete( bsTree, "04" ) ) {
         if ( BSTEmpty( *bsTree ) )
-            fprintf( stderr, "The whole tree has been deleted\n" );
+            fprintf( stderr, "[ OK ] The whole tree has been deleted\n" );
+        else
+            fprintf( stderr,
+                     "[ ERR ] This message should NOT be shown\n" );
+    }
 
 
     fprintf( stderr, "\n\nEmpty tree deletion\n" );
     if ( BSTDelete( bsTree, "00" ) )
-        fprintf( stderr, "An empty tree has been deleted\n" );
-
+        fprintf( stderr, "[ OK ] An empty tree has been deleted\n" );
+    else
+        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
 
 
     fprintf( stderr, "\n\nInserting Elements...\n" );
@@ -419,6 +433,7 @@ int main( void )
     BSTInsert( bsTree, "04", "hallo" );
     BSTInsert( bsTree, "03", "testing" );
     BSTInsert( bsTree, "05", "good morning" );
+    fprintf( stderr, "[ OK ] This message should be shown\n" );
 
 
     fprintf( stderr, "\n\nCheck parent fields\n" );
@@ -427,10 +442,11 @@ int main( void )
     if ( BSTDelete
          ( bsTree, BSTKey( BSTParent( BSTSearch( *bsTree, "03" ) ) ) ) )
         fprintf( stderr,
-                 "Node with key %s has been deleted, Now the parent of %s should be %s: %s\n",
+                 "[ OK ] Node with key %s has been deleted, Now the parent of %s should be %s: %s\n",
                  "04", "03", "02",
                  BSTKey( BSTParent( BSTSearch( *bsTree, "03" ) ) ) );
-
+    else
+        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
 
     return 0;
 

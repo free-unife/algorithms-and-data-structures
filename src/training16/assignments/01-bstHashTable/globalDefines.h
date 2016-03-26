@@ -49,8 +49,17 @@ bst BSTInsert( bstPtr rootPtr, char *key, char *value );
 bst BSTSearch( bst root, char *key );
 bool BSTDelete( bstPtr rootPtr, char *key );
 
-void HTinit ( htSlot *hashTable );
-bool HTEmptySlot ( htSlot slot );
-htSlot HTNewSlot ( htSlot *hashTable, unsigned int slotInd );
+void HTinit( htSlot * hashTable );
+bool HTEmptySlot( htSlot slot );
+htSlot HTSlot( htSlot * hashTable, unsigned int slotId );
+bst HTBst( htSlot slot );
+bstPtr HTBstPtr( htSlot slot );
+htSlot HTNewSlot( htSlot * hashTable, unsigned int slotId );
+bool HTNewBSTNode( htSlot slot, char *key, char *value );
+bool HTInsert( htSlot * hashTable, unsigned int slotId, char *key, char *value);
+bst HTSearch( htSlot slot, char *key );
+void HTFreeSlot( htSlot * hashTable, unsigned int slotId );
+bool HTNonEmptyDelete( htSlot * hashTable, unsigned int slotId, char *key );
+bool HTDelete( htSlot * hashTable, unsigned int slotId, char *key );
 unsigned int HTHash( char *input );
-void HTPrint( bstPtr * hash );
+
