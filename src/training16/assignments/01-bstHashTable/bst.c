@@ -16,6 +16,7 @@ static bst BSTLeft( bst root );
 static bst BSTRight( bst root );
 static bst BSTParent( bst root );
 static bst BSTMaxElement( bst root );
+
 #ifdef M_BSTMAIN_C
 static bst BSTMinElement( bst root );
 #endif
@@ -27,82 +28,58 @@ static bool BSTKeyGreater( char *key1, char *key2 );
 static bst BSTNewNode( bstPtr rootPtr, bst parent, char *key,
                        char *value );
 static bst BSTNonEmptyInsert( bst root, char *key, char *value );
+
 #ifdef M_BSTMAIN_C
 static bool BSTis( bst root, char *minKey, char *maxKey );
 #endif
 static bool BSTNonEmptyDelete( bstPtr rootPtr, bst root, char *key );
 
-
 void BSTInit( bstPtr rootPtr )
 {
-
     *rootPtr = EMPTY;
-
-    return;
-
 }
 
 bool BSTEmpty( bst root )
 {
-
     return ( root == EMPTY );
-
 }
 
 char *BSTKey( bst root )
 {
-
     assert( !BSTEmpty( root ) );
-
-    return ( root->key );
-
+    return ( !BSTEmpty( root ) ? root->key : EMPTYKEY );
 }
 
 char *BSTVal( bst root )
 {
-
     assert( !BSTEmpty( root ) );
-
-    return ( root->value );
-
+    return ( !BSTEmpty( root ) ? root->value : EMPTYVAL );
 }
 
 static bst BSTLeft( bst root )
 {
-
     assert( !BSTEmpty( root ) );
-
     return ( root->left );
-
 }
 
 static bst BSTRight( bst root )
 {
-
     assert( !BSTEmpty( root ) );
-
     return ( root->right );
-
 }
 
 static bst BSTParent( bst root )
 {
-
     assert( !BSTEmpty( root ) );
-
     return ( root->parent );
-
 }
 
 #ifdef M_BSTMAIN_C
 static bst BSTMinElement( bst root )
 {
-
     assert( !BSTEmpty( root ) );
-
     return ( !BSTEmpty( BSTLeft( root ) ) ?
              BSTMaxElement( BSTLeft( root ) ) : root );
-
 }
 #endif
 
@@ -110,86 +87,64 @@ static bst BSTMinElement( bst root )
  * left node and re-test the condition.  */
 static bst BSTMaxElement( bst root )
 {
-
     assert( !BSTEmpty( root ) );
-
     return ( !BSTEmpty( BSTRight( root ) ) ?
              BSTMaxElement( BSTRight( root ) ) : root );
-
 }
 
 static bst BSTPredecessor( bst root )
 {
-
     assert( !BSTEmpty( root ) );
-
     return ( BSTMaxElement( BSTLeft( root ) ) );
-
 }
 
 static bool BSTLeaf( bst root )
 {
-
     assert( !BSTEmpty( root ) );
-
     return ( ( BSTEmpty( BSTLeft( root ) ) )
              && ( BSTEmpty( BSTRight( root ) ) ) );
-
 }
 
 static bool BSTLeftSon( bst root )
 {
-
     assert( !BSTEmpty( root ) );
-
     return ( ( !BSTEmpty( BSTLeft( root ) ) )
              && ( BSTEmpty( BSTRight( root ) ) ) );
-
 }
 
 static bool BSTRightSon( bst root )
 {
-
     assert( !BSTEmpty( root ) );
-
     return ( ( BSTEmpty( BSTLeft( root ) ) )
              && ( !BSTEmpty( BSTRight( root ) ) ) );
-
 }
 
 static bool BSTKeyEqual( char *key1, char *key2 )
 {
-
     assert( ( key1 != NULL ) && ( key2 != NULL ) );
-
     return ( atoi( key1 ) == atoi( key2 ) ? true : false );
-
 }
 
 static bool BSTKeyLess( char *key1, char *key2 )
 {
-
     assert( ( key1 != NULL ) && ( key2 != NULL ) );
-
     return ( atoi( key1 ) < atoi( key2 ) ? true : false );
-
 }
 
 static bool BSTKeyGreater( char *key1, char *key2 )
 {
-
     assert( ( key1 != NULL ) && ( key2 != NULL ) );
-
     return ( atoi( key1 ) > atoi( key2 ) ? true : false );
-
 }
 
 static bst BSTNewNode( bstPtr rootPtr, bst parent, char *key, char *value )
 {
-
     if ( ( ( *rootPtr ) = malloc( sizeof( struct node ) ) ) == NULL )
         exit( EXIT_FAILURE );
 
+    /*
+     * FIXME: Instead of copying the char key pointers, something like a strdup () for C99 would be more effective. 
+     */
     ( *rootPtr )->key = key;
     ( *rootPtr )->value = value;
     ( *rootPtr )->left = EMPTY;
@@ -197,15 +152,15 @@ static bst BSTNewNode( bstPtr rootPtr, bst parent, char *key, char *value )
     ( *rootPtr )->parent = parent;
 
     return *rootPtr;
-
 }
 
 static bst BSTNonEmptyInsert( bst root, char *key, char *value )
 {
-
-    /* since &(right(root)) and &(left(root)) cannot be done, we can't use the
-     * ADT functions and we can't use an extra variable. FIXME
+    /*
+     * since &(right(root)) and &(left(root)) cannot be done, we can't use the
+     * ADT functions and we can't use an extra variable.
      * http://stackoverflow.com/questions/11397818/using-unary-operator-on-function-return-value
+     * Moreover the compound literal trick doesn't work (assertion failed).
      */
 
     if ( BSTKeyLess( key, BSTKey( root ) ) ) {
@@ -225,34 +180,32 @@ static bst BSTNonEmptyInsert( bst root, char *key, char *value )
             return ( BSTNewNode( &( root->right ), root, key, value ) );
     }
 
-    /* Key equal (i.e. element already in tree.)  */
+    /*
+     * Key equal (i.e. element already in tree.)  
+     */
     else
         return EMPTY;
-
 }
 
 bst BSTInsert( bstPtr rootPtr, char *key, char *value )
 {
-
-    /* Since random elements are generated, we can't use the following assert:
+    /*
+     * Since random elements are generated, we can't use the following assert:
      * assert (key is not present in tree).
      * assert (BSTEmpty (BSTSearch (*ptree, key)));
      * Instead of this, we return EMPTY if a key is already present in the
      * tree.
      */
-
     assert( ( key != NULL ) && ( value != NULL ) );
 
     if ( BSTEmpty( *rootPtr ) )
         return ( BSTNewNode( rootPtr, EMPTY, key, value ) );
     else
         return ( BSTNonEmptyInsert( *rootPtr, key, value ) );
-
 }
 
 bst BSTSearch( bst root, char *key )
 {
-
     if ( BSTEmpty( root ) )
         return EMPTY;
     else if ( BSTKeyEqual( BSTKey( root ), key ) )
@@ -261,13 +214,11 @@ bst BSTSearch( bst root, char *key )
         return ( BSTSearch( BSTLeft( root ), key ) );
     else
         return ( BSTSearch( BSTRight( root ), key ) );
-
 }
 
 #ifdef M_BSTMAIN_C
 static bool BSTis( bst root, char *minKey, char *maxKey )
 {
-
     if ( BSTEmpty( root ) )
         return true;
     if ( BSTKeyLess( BSTKey( root ), minKey )
@@ -276,7 +227,6 @@ static bool BSTis( bst root, char *minKey, char *maxKey )
 
     return ( BSTis( BSTLeft( root ), minKey, BSTKey( root ) )
              && BSTis( BSTRight( root ), BSTKey( root ), maxKey ) );
-
 }
 #endif
 
@@ -298,7 +248,9 @@ static bool BSTNonEmptyDelete( bstPtr rootPtr, bst root, char *key )
                          ( &( root->right ), BSTRight( root ), key ) );
         }
     }
-    /* key == root -> key.  */
+    /*
+     * key == root -> key.  
+     */
     else {
         if ( BSTLeaf( root ) ) {
             *rootPtr = EMPTY;
@@ -309,7 +261,9 @@ static bool BSTNonEmptyDelete( bstPtr rootPtr, bst root, char *key )
         } else if ( BSTLeftSon( root ) ) {
             *rootPtr = BSTLeft( root );
             free( root );
-            /* Two sons.  */
+            /*
+             * Two sons.  
+             */
         } else {
             root->key = BSTKey( BSTPredecessor( root ) );
             root->value = BSTVal( BSTPredecessor( root ) );
@@ -326,19 +280,18 @@ static bool BSTNonEmptyDelete( bstPtr rootPtr, bst root, char *key )
 
 bool BSTDelete( bstPtr rootPtr, char *key )
 {
-
-    /* Deleting an empty tree will result in an empty tree.  */
+    /*
+     * Deleting an empty tree will result in an empty tree.  
+     */
     if ( BSTEmpty( *rootPtr ) )
         return true;
     else
         return ( BSTNonEmptyDelete( rootPtr, *rootPtr, key ) );
-
 }
 
 #ifdef M_BSTMAIN_C
 int main( void )
 {
-
     bstPtr bsTree;
 
 
@@ -448,7 +401,9 @@ int main( void )
     else
         fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
 
-    return 0;
 
+    free( bsTree );
+
+    return 0;
 }
 #endif

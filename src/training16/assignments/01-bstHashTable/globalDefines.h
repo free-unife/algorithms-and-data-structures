@@ -25,6 +25,8 @@
 /* Global.  */
 #define INF INT_MAX
 #define EMPTY NULL
+#define EMPTYKEY ""
+#define EMPTYVAL ""
 /* FIXME: Number of buckets to be defined better.  */
 #define M 997
 
@@ -38,7 +40,15 @@ struct node {
 
 typedef struct node * bst;
 typedef bst * bstPtr;
+
+/* The following are only used in HT.  */
 typedef bstPtr * htSlot;
+typedef bst treeNode;
+typedef bstPtr treeNodePtr;
+
+/* The following are only used in HTBST.  */
+typedef treeNode element;
+typedef treeNodePtr elementPtr;
 
 /* Protoypes.  */
 void BSTInit( bstPtr rootPtr );
@@ -49,17 +59,13 @@ bst BSTInsert( bstPtr rootPtr, char *key, char *value );
 bst BSTSearch( bst root, char *key );
 bool BSTDelete( bstPtr rootPtr, char *key );
 
-void HTinit( htSlot * hashTable );
-bool HTEmptySlot( htSlot slot );
+char *HTTreeNodeKey ( treeNode root );
+char *HTTreeNodeVal ( treeNode root );
+void HTInit( htSlot * hashTable );
 htSlot HTSlot( htSlot * hashTable, unsigned int slotId );
-bst HTBst( htSlot slot );
-bstPtr HTBstPtr( htSlot slot );
-htSlot HTNewSlot( htSlot * hashTable, unsigned int slotId );
-bool HTNewBSTNode( htSlot slot, char *key, char *value );
 bool HTInsert( htSlot * hashTable, unsigned int slotId, char *key, char *value);
 bst HTSearch( htSlot slot, char *key );
-void HTFreeSlot( htSlot * hashTable, unsigned int slotId );
-bool HTNonEmptyDelete( htSlot * hashTable, unsigned int slotId, char *key );
 bool HTDelete( htSlot * hashTable, unsigned int slotId, char *key );
-unsigned int HTHash( char *input );
+
+unsigned int HTBSTHash( char *input );
 

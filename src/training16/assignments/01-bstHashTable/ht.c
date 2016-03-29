@@ -11,65 +11,75 @@
 #include "globalDefines.h"
 #endif
 
+static bool HTTreeNodeEmpty( treeNode root );
+static bool HTEmptySlot( htSlot slot );
+static treeNode HTBst( htSlot slot );
+static treeNodePtr HTBstPtr( htSlot slot );
+static bool HTNewTreeNode( htSlot slot, char *key, char *value );
+static htSlot HTNewSlot( htSlot * hashTable, unsigned int slotId );
+static void HTFreeSlot( htSlot * hashTable, unsigned int slotId );
+static bool HTNonEmptyDelete( htSlot * hashTable, unsigned int slotId,
+                              char *key );
 
-void HTinit( htSlot * hashTable )
+static bool HTTreeNodeEmpty( treeNode root )
 {
+    return ( BSTEmpty( root ) );
+}
 
+char *HTTreeNodeKey( treeNode root )
+{
+    return ( BSTKey( root ) );
+}
+
+char *HTTreeNodeVal( treeNode root )
+{
+    return ( BSTVal( root ) );
+}
+
+void HTInit( htSlot * hashTable )
+{
     int i;
 
     for ( i = 0; i < M; i++ )
         hashTable[i] = EMPTY;
-
-    return;
-
 }
 
 /* Check if the BST corresponding to the current slot exists.  */
-bool HTEmptySlot( htSlot slot )
+static bool HTEmptySlot( htSlot slot )
 {
-
     return ( slot == EMPTY );
-
 }
 
 htSlot HTSlot( htSlot * hashTable, unsigned int slotId )
 {
-
     return ( hashTable[slotId] );
-
 }
 
-/* Return pointer to the root node of the BST corresponding to the input
- * slot.
- */
-bst HTBst( htSlot slot )
+/* Return pointer to the root node of the BST corresponding to the input slot.  */
+static treeNode HTBst( htSlot slot )
 {
-
     return ( **slot );
-
 }
 
 /* Return BST pointer from input slot.  */
-bstPtr HTBstPtr( htSlot slot )
+static treeNodePtr HTBstPtr( htSlot slot )
 {
-
     return ( *slot );
-
 }
 
-/* New slot -> allocate new bstPtr.  */
-htSlot HTNewSlot( htSlot * hashTable, unsigned int slotId )
+/* New slot -> allocate new treeNodePtr.  */
+static htSlot HTNewSlot( htSlot * hashTable, unsigned int slotId )
 {
 
-    bstPtr bsTree;
+    treeNodePtr bsTree;
 
 
     assert( HTEmptySlot( HTSlot( hashTable, slotId ) ) );
 
-    if ( ( hashTable[slotId] = malloc( sizeof( bstPtr ) ) ) == NULL )
+    if ( ( hashTable[slotId] = malloc( sizeof( treeNodePtr ) ) ) == NULL )
         exit( EXIT_FAILURE );
 
-    if ( ( bsTree = malloc( sizeof( bst ) ) ) == NULL )
+    if ( ( bsTree = malloc( sizeof( treeNode ) ) ) == NULL )
         exit( EXIT_FAILURE );
 
     BSTInit( bsTree );
@@ -80,39 +90,35 @@ htSlot HTNewSlot( htSlot * hashTable, unsigned int slotId )
 
 }
 
-bool HTNewBSTNode( htSlot slot, char *key, char *value )
+static bool HTNewTreeNode( htSlot slot, char *key, char *value )
 {
-
-    return ( !BSTEmpty( BSTInsert( HTBstPtr( slot ), key, value ) ) );
-
+    return ( !HTTreeNodeEmpty
+             ( BSTInsert( HTBstPtr( slot ), key, value ) ) );
 }
 
 /* Return true if HTNewNode was successful, else otherwise.  */
 bool HTInsert( htSlot * hashTable, unsigned int slotId, char *key,
                char *value )
 {
-
     if ( HTEmptySlot( HTSlot( hashTable, slotId ) ) )
         HTNewSlot( hashTable, slotId );
 
-    return ( HTNewBSTNode( HTSlot( hashTable, slotId ), key, value ) );
-
+    return ( HTNewTreeNode( HTSlot( hashTable, slotId ), key, value ) );
 }
 
-bst HTSearch( htSlot slot, char *key )
+treeNode HTSearch( htSlot slot, char *key )
 {
-
     if ( HTEmptySlot( slot ) )
         return EMPTY;
     else
         return ( BSTSearch( HTBst( slot ), key ) );
-
 }
 
-void HTFreeSlot( htSlot * hashTable, unsigned int slotId )
+static void HTFreeSlot( htSlot * hashTable, unsigned int slotId )
 {
-
-    /* free the bstPtr.  */
+    /*
+     * free the treeNodePtr.  
+     */
     free( *( hashTable[slotId] ) );
     hashTable[slotId] = EMPTY;
 
@@ -120,64 +126,43 @@ void HTFreeSlot( htSlot * hashTable, unsigned int slotId )
 
 /*
  * When tree is empty current slot must be set to null.
- * Before this bstPtr must be freed.
+ * Before this treeNodePtr must be freed.
  */
-bool HTNonEmptyDelete( htSlot * hashTable, unsigned int slotId, char *key )
+static bool HTNonEmptyDelete( htSlot * hashTable, unsigned int slotId,
+                              char *key )
 {
-
     bool retval;
 
-
     retval = BSTDelete( HTBstPtr( HTSlot( hashTable, slotId ) ), key );
-    if ( retval && BSTEmpty( HTBst( HTSlot( hashTable, slotId ) ) ) )
+    if ( retval
+         && HTTreeNodeEmpty( HTBst( HTSlot( hashTable, slotId ) ) ) )
         HTFreeSlot( hashTable, slotId );
 
     return retval;
-
 }
 
 bool HTDelete( htSlot * hashTable, unsigned int slotId, char *key )
 {
-
-    /* Slot empty -> nothing to delete.  */
+    /*
+     * Slot empty -> nothing to delete.  
+     */
     if ( HTEmptySlot( HTSlot( hashTable, slotId ) ) )
         return true;
     else
         return ( HTNonEmptyDelete( hashTable, slotId, key ) );
-
 }
 
-
-/* http://www.cse.yorku.ca/~oz/hash.html djb2 */
-/* Output is unsigned because we have buckets from 0 to M - 1.  */
-unsigned int HTHash( char *input )
-{
-
-    unsigned int key = 5381, i;
-
-
-    i = 0;
-    while ( input[i] != '\0' ) {
-        key = ( key << 5 ) + key + ( ( unsigned int ) input[i] );       /* hash * 33 + c */
-        i++;
-    }
-
-    return ( key % M );
-
-}
 
 #ifdef M_HTMAIN_C
 int main( void )
 {
-
     htSlot *hashTable;
-
 
     if ( ( hashTable = malloc( sizeof( htSlot ) * M ) ) == NULL )
         exit( EXIT_FAILURE );
 
     fprintf( stderr, "Initialization of the HT\n" );
-    HTinit( hashTable );
+    HTInit( hashTable );
     fprintf( stderr, "[ OK ] HT initialized\n" );
 
 
@@ -224,7 +209,8 @@ int main( void )
     fprintf( stderr,
              "Get value of node with key %s in slot %d which should be %s: %s\n",
              "01", M - 2, "hola",
-             BSTVal( HTSearch( HTSlot( hashTable, M - 2 ), "01" ) ) );
+             HTTreeNodeVal( HTSearch
+                            ( HTSlot( hashTable, M - 2 ), "01" ) ) );
     fprintf( stderr, "[ OK ] This message should be shown\n" );
 
 
@@ -232,7 +218,7 @@ int main( void )
              "\n\nSearch for a non existing element in an existing slot.\n" );
     fprintf( stderr, "Searching for node with key %s in slot %d\n", "10",
              M - 2 );
-    if ( BSTEmpty( HTSearch( HTSlot( hashTable, M - 2 ), "10" ) ) )
+    if ( HTTreeNodeEmpty( HTSearch( HTSlot( hashTable, M - 2 ), "10" ) ) )
         fprintf( stderr, "[ OK ] This message should be shown\n" );
     else
         fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
@@ -267,7 +253,8 @@ int main( void )
     else
         fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
 
-    return 0;
+    free( hashTable );
 
+    return 0;
 }
 #endif

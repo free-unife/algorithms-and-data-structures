@@ -12,9 +12,8 @@
 
 
 # macros
-
-PRG_NAME = htbst.o
-PRG_OBJFILES = bst.o ht.o
+PRG_NAME = 01-htbst.o
+PRG_OBJFILES = bst.o ht.o htbst.o
 
 CC = /usr/bin/gcc
 BIN_DIR = /usr/bin
@@ -25,15 +24,14 @@ LIBS = -lm
 CSTANDARD = -std=c99
 MACRO_REQ = -D_DEFAULT_SOURCE
 
-INDENT_OPTS = -kr -prs -nut
+INDENT_OPTS = -kr -prs -nut -bap -bad -br -cdb -sc
 SPLINT_OPTS = -usereleased -compdef
 
-# targets
-
+# Targets
 
 default : link # default target
 
-all : link install clean
+all : link validate
 
 # compilation of single files, which keeps track of the changes of all header files (*.h) as well as the .c files
 # @echo "$(CC) $< $(CFLAGS) $(CSTANDARD) $(MACRO_REQ)"
@@ -47,20 +45,14 @@ link : $(PRG_OBJFILES) *.h
 	@$(CC) $(CFLAGS) $(LIBS) $(CSTANDARD) $(MACRO_REQ) $(PRG_OBJFILES) -o $(PRG_NAME)
 	@echo "Compiling terminated."
 
-# 611 permissions
-install :
-	@echo "Installing executable in $(BIN_DIR) ..."
-	@$(INSTALL) -Dm 611 --owner=$(USER) $(PRG_NAME) $(BIN_DIR)
-	@echo "Installation completed."
-
-uninstall:
-	@echo "Removing $(PRG_NAME) from system ..."
-	@rm -fv $(BIN_DIR)/$(PRG_NAME)
-	@echo "$(PRG_NAME) removed."
-
-indent:
+indent :
 	@echo "Indenting all files..."
 	@./indent.sh "$(INDENT_OPTS)" "$(SPLINT_OPTS)" "$(PRG_OBJFILES)"
+	@echo "Done."
+
+validate :
+	@echo "Validation..."
+	@./validate.sh "$(PRG_NAME)"
 	@echo "Done."
 
 clean :
