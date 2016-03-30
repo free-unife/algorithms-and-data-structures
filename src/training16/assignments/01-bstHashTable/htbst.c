@@ -6,11 +6,9 @@
  */
 
 
-#ifndef M_GLOBALDEFINES_H
-#define M_GLOBALDEFINES_H
 #include "globalDefines.h"
-#endif
 
+#ifdef M_HTBSTMAIN_C
 static char *HTBSTElementKey( element el );
 static char *HTBSTElementVal( element el );
 
@@ -23,6 +21,7 @@ static char *HTBSTElementVal( element el )
 {
     return ( HTTreeNodeVal( el ) );
 }
+#endif
 
 /* http://www.cse.yorku.ca/~oz/hash.html djb2 */
 /* Output is unsigned because we have buckets from 0 to M - 1.  */
@@ -42,14 +41,14 @@ unsigned int HTBSTHash( char *input )
     return ( key % M );
 }
 
-/* FIXME: I don't kow if we need this a strig serializer. */
-char *HTBSTSerializeStrings( char *key, char *value )
+/* FIXME: I don't kow if we need this a string serializer. */
+/*
+ * (strToHash) len = (key + value + ':' + '\0') len. 
+ */
+/* char *HTBSTSerializeStrings( char *key, char *value )
 {
     char *strToHash;
 
-    /*
-     * (total) len = (key + value + ':' + '\0') len. 
-     */
     if ( ( strToHash =
            calloc( strlen( key ) + strlen( value ) + 2,
                    sizeof( char ) ) ) == NULL )
@@ -58,7 +57,7 @@ char *HTBSTSerializeStrings( char *key, char *value )
     sprintf( strToHash, "%s:%s", key, value );
 
     return strToHash;
-}
+} */
 
 /* Functions wrappers related to the HT functions.  */
 void HTBSTInit( htSlot * hashTable )
@@ -81,6 +80,7 @@ bool HTBSTDelete( htSlot * hashTable, char *key )
     return ( HTDelete( hashTable, HTBSTHash( key ), key ) );
 }
 
+/* FIXME: Every element in the whole HT must have a unique key! */
 #ifdef M_HTBSTMAIN_C
 int main( void )
 {
@@ -102,6 +102,12 @@ int main( void )
                  "00", "ciao", HTBSTHash( "00" ) );
     else
         fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
+    if ( !HTBSTInsert( hashTable, "00", "ciao" ) )
+        fprintf( stderr,
+                 "[ OK ] Node with key %s and value %s in slot %u already present in HT\n",
+                 "00", "ciao", HTBSTHash( "00" ) );
+    else
+        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
     HTBSTInsert( hashTable, "02", "hallo" );
     HTBSTInsert( hashTable, "01", "hola" );
     HTBSTInsert( hashTable, "03", "hello" );
@@ -115,6 +121,14 @@ int main( void )
     fprintf( stderr, "%s\n",
              HTBSTElementVal( HTBSTSearch( hashTable, "01" ) ) );
     fprintf( stderr, "[ OK ] This message should be shown\n" );
+
+
+    fprintf( stderr, "\n\nDouble deletion test\n" );
+    if ( HTBSTDelete( hashTable, "00" )
+         && !HTBSTDelete( hashTable, "00" ) )
+        fprintf( stderr, "[ OK ] Deletion of %s successful\n", "00" );
+    else
+        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
 
     return 0;
 }

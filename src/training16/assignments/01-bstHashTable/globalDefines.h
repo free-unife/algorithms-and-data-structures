@@ -5,12 +5,10 @@
  * as published by Sam Hocevar. See the LICENSE file for more details.
  */
 
+#ifndef M_GLOBALDEFINES_H
+#define M_GLOBALDEFINES_H
 
-#ifndef M_DEFINEDMODULES_H
-#define M_DEFINEDMODULES_H
 #include "definedModules.h"
-#endif
-
 #include <assert.h>
 #include <limits.h>
 #include <math.h>
@@ -21,15 +19,14 @@
 #include <sys/time.h>
 #include <time.h>
 
-
-/* Global.  */
 #define INF INT_MAX
 #define EMPTY NULL
 #define EMPTYKEY ""
 #define EMPTYVAL ""
-/* FIXME: Number of buckets to be defined better.  */
+/* FIXME: Number of buckets to be defined better. */
 #define M 997
 
+/* BST struct. */
 struct node {
   char *key;
   char *value;
@@ -41,16 +38,16 @@ struct node {
 typedef struct node * bst;
 typedef bst * bstPtr;
 
-/* The following are only used in HT.  */
+/* The following are only used in HT. */
 typedef bstPtr * htSlot;
 typedef bst treeNode;
 typedef bstPtr treeNodePtr;
 
-/* The following are only used in HTBST.  */
+/* The following are only used in HTBST. */
 typedef treeNode element;
 typedef treeNodePtr elementPtr;
 
-/* Protoypes.  */
+/* Prototypes. */
 void BSTInit( bstPtr rootPtr );
 bool BSTEmpty( bst root );
 char *BSTKey( bst root );
@@ -69,3 +66,4 @@ bool HTDelete( htSlot * hashTable, unsigned int slotId, char *key );
 
 unsigned int HTBSTHash( char *input );
 
+#endif

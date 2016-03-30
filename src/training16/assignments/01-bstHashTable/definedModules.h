@@ -5,6 +5,9 @@
  * as published by Sam Hocevar. See the LICENSE file for more details.
  */
 
+#ifndef __STDC__
+#error "No ANSI C libraries found."
+#endif
 
 /* Comment out the following to disable all asserts.  */
 /*#define NDEBUG*/
@@ -15,6 +18,6 @@
  */
 
 /* #define M_BSTMAIN_C */
-/*#define M_HTMAIN_C */
+/* #define M_HTMAIN_C */
 #define M_HTBSTMAIN_C
 

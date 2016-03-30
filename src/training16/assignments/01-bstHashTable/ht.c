@@ -6,10 +6,7 @@
  */
 
 
-#ifndef M_GLOBALDEFINES_H
-#define M_GLOBALDEFINES_H
 #include "globalDefines.h"
-#endif
 
 static bool HTTreeNodeEmpty( treeNode root );
 static bool HTEmptySlot( htSlot slot );
@@ -147,7 +144,7 @@ bool HTDelete( htSlot * hashTable, unsigned int slotId, char *key )
      * Slot empty -> nothing to delete.  
      */
     if ( HTEmptySlot( HTSlot( hashTable, slotId ) ) )
-        return true;
+        return false;
     else
         return ( HTNonEmptyDelete( hashTable, slotId, key ) );
 }
@@ -234,10 +231,11 @@ int main( void )
 
 
     fprintf( stderr, "\n\nDeletion of a non-existing element\n" );
-    if ( HTDelete( hashTable, M - 2, "02" ) )
-        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
-    else
+    if ( !HTDelete( hashTable, M - 2, "02" ) )
         fprintf( stderr, "[ OK ] Cannot delete a non-existing element\n" );
+    else
+        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
+
 
     fprintf( stderr,
              "\n\nInsert and delete starting with an empty slot (on %d)\n",

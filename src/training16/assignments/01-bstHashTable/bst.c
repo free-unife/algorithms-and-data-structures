@@ -6,11 +6,7 @@
  */
 
 
-#ifndef M_GLOBALDEFINES_H
-#define M_GLOBALDEFINES_H
 #include "globalDefines.h"
-#endif
-
 
 static bst BSTLeft( bst root );
 static bst BSTRight( bst root );
@@ -265,6 +261,9 @@ static bool BSTNonEmptyDelete( bstPtr rootPtr, bst root, char *key )
              * Two sons.  
              */
         } else {
+            /*
+             * FIXME: Use something like strdup() here as well (don't copy string pointers. 
+             */
             root->key = BSTKey( BSTPredecessor( root ) );
             root->value = BSTVal( BSTPredecessor( root ) );
             root->parent = BSTParent( root );
@@ -281,10 +280,10 @@ static bool BSTNonEmptyDelete( bstPtr rootPtr, bst root, char *key )
 bool BSTDelete( bstPtr rootPtr, char *key )
 {
     /*
-     * Deleting an empty tree will result in an empty tree.  
+     * An empty tree cannot be deleted. 
      */
     if ( BSTEmpty( *rootPtr ) )
-        return true;
+        return false;
     else
         return ( BSTNonEmptyDelete( rootPtr, *rootPtr, key ) );
 }
@@ -354,10 +353,10 @@ int main( void )
 
     fprintf( stderr,
              "\n\nDeletion of non-existing node in a non-empty BST\n" );
-    if ( BSTDelete( bsTree, "10" ) )
-        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
-    else
+    if ( !BSTDelete( bsTree, "10" ) )
         fprintf( stderr, "[ OK ] Node with key 10 cannot be deleted\n" );
+    else
+        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
 
 
     fprintf( stderr, "\n\nManual tree deletion\n" );
@@ -373,8 +372,8 @@ int main( void )
 
 
     fprintf( stderr, "\n\nEmpty tree deletion\n" );
-    if ( BSTDelete( bsTree, "00" ) )
-        fprintf( stderr, "[ OK ] An empty tree has been deleted\n" );
+    if ( !BSTDelete( bsTree, "00" ) )
+        fprintf( stderr, "[ OK ] Cannot delete an empty tree\n" );
     else
         fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
 
