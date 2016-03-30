@@ -23,6 +23,10 @@
 #define EMPTY NULL
 #define EMPTYKEY ""
 #define EMPTYVAL ""
+#define KEYLENGTH 16
+#define KEYCHARMIN 33
+#define KEYCHARMAX 126
+#define NELEM 32768
 /* FIXME: Number of buckets to be defined better. */
 #define M 997
 
@@ -64,6 +68,8 @@ bool HTInsert( htSlot * hashTable, unsigned int slotId, char *key, char *value);
 bst HTSearch( htSlot slot, char *key );
 bool HTDelete( htSlot * hashTable, unsigned int slotId, char *key );
 
-unsigned int HTBSTHash( char *input );
+void HTBSTInit( htSlot * hashTable );
+bool HTBSTInsert( htSlot * hashTable, char *key, char *value );
+bool HTBSTDelete( htSlot * hashTable, char *key );
 
 #endif

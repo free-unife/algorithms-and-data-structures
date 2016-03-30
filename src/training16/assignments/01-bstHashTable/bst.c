@@ -118,19 +118,19 @@ static bool BSTRightSon( bst root )
 static bool BSTKeyEqual( char *key1, char *key2 )
 {
     assert( ( key1 != NULL ) && ( key2 != NULL ) );
-    return ( atoi( key1 ) == atoi( key2 ) ? true : false );
+    return ( ( strcmp ( key1, key2 ) == 0 ) ? true : false );
 }
 
 static bool BSTKeyLess( char *key1, char *key2 )
 {
     assert( ( key1 != NULL ) && ( key2 != NULL ) );
-    return ( atoi( key1 ) < atoi( key2 ) ? true : false );
+    return ( ( strcmp ( key1, key2 ) < 0 ) ? true : false );
 }
 
 static bool BSTKeyGreater( char *key1, char *key2 )
 {
     assert( ( key1 != NULL ) && ( key2 != NULL ) );
-    return ( atoi( key1 ) > atoi( key2 ) ? true : false );
+    return ( ( strcmp ( key1,  key2 ) > 0 ) ? true : false );
 }
 
 static bst BSTNewNode( bstPtr rootPtr, bst parent, char *key, char *value )

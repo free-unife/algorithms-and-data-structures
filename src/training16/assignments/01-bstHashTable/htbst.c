@@ -11,7 +11,10 @@
 #ifdef M_HTBSTMAIN_C
 static char *HTBSTElementKey( element el );
 static char *HTBSTElementVal( element el );
+#endif
+static unsigned int HTBSTHash( char *input );
 
+#ifdef M_HTBSTMAIN_C
 static char *HTBSTElementKey( element el )
 {
     return ( HTTreeNodeKey( el ) );
@@ -25,7 +28,7 @@ static char *HTBSTElementVal( element el )
 
 /* http://www.cse.yorku.ca/~oz/hash.html djb2 */
 /* Output is unsigned because we have buckets from 0 to M - 1.  */
-unsigned int HTBSTHash( char *input )
+static unsigned int HTBSTHash( char *input )
 {
     unsigned int key = 5381, i;
 
@@ -40,24 +43,6 @@ unsigned int HTBSTHash( char *input )
      */
     return ( key % M );
 }
-
-/* FIXME: I don't kow if we need this a string serializer. */
-/*
- * (strToHash) len = (key + value + ':' + '\0') len. 
- */
-/* char *HTBSTSerializeStrings( char *key, char *value )
-{
-    char *strToHash;
-
-    if ( ( strToHash =
-           calloc( strlen( key ) + strlen( value ) + 2,
-                   sizeof( char ) ) ) == NULL )
-        exit( EXIT_FAILURE );
-
-    sprintf( strToHash, "%s:%s", key, value );
-
-    return strToHash;
-} */
 
 /* Functions wrappers related to the HT functions.  */
 void HTBSTInit( htSlot * hashTable )
