@@ -10,6 +10,7 @@
 
 #include "definedModules.h"
 #include <assert.h>
+#include <errno.h>
 #include <limits.h>
 #include <math.h>
 #include <stdio.h>
@@ -26,7 +27,7 @@
 #define KEYLENGTH 16
 #define KEYCHARMIN 33
 #define KEYCHARMAX 126
-#define NELEM 32768
+#define MAINLOOPTESTS 4
 /* FIXME: Number of buckets to be defined better. */
 #define M 997
 

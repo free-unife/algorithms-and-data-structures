@@ -5,8 +5,8 @@
  * as published by Sam Hocevar. See the LICENSE file for more details.
  */
 
-#ifndef __STDC__
-#error "No ANSI C libraries found."
+#if __STDC_VERSION__ != 199901L
+#error "Ansi C99 not available"
 #endif
 
 /* Comment out the following to disable all asserts.  */

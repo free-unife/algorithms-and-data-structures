@@ -71,8 +71,11 @@ int main( void )
 {
     htSlot *hashTable;
 
-    if ( ( hashTable = malloc( sizeof( htSlot ) * M ) ) == NULL )
+    if ( ( hashTable = malloc( sizeof( htSlot ) * M ) ) == NULL ) {
+        if ( errno )
+            perror( strerror( errno ) );
         exit( EXIT_FAILURE );
+    }
 
     fprintf( stderr, "Initialization of the HT\n" );
     HTBSTInit( hashTable );

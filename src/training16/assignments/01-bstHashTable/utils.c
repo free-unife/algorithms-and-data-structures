@@ -8,7 +8,7 @@
 
 #include "globalDefines.h"
 
-double measureRunningTime( clock_t start, clock_t end )
+double runningTime( clock_t start, clock_t end )
 {
     return ( ( ( double ) ( end - start ) / ( double ) CLOCKS_PER_SEC ) );
 }

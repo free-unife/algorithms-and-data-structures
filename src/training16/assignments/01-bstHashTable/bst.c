@@ -118,25 +118,28 @@ static bool BSTRightSon( bst root )
 static bool BSTKeyEqual( char *key1, char *key2 )
 {
     assert( ( key1 != NULL ) && ( key2 != NULL ) );
-    return ( ( strcmp ( key1, key2 ) == 0 ) ? true : false );
+    return ( ( strcmp( key1, key2 ) == 0 ) ? true : false );
 }
 
 static bool BSTKeyLess( char *key1, char *key2 )
 {
     assert( ( key1 != NULL ) && ( key2 != NULL ) );
-    return ( ( strcmp ( key1, key2 ) < 0 ) ? true : false );
+    return ( ( strcmp( key1, key2 ) < 0 ) ? true : false );
 }
 
 static bool BSTKeyGreater( char *key1, char *key2 )
 {
     assert( ( key1 != NULL ) && ( key2 != NULL ) );
-    return ( ( strcmp ( key1,  key2 ) > 0 ) ? true : false );
+    return ( ( strcmp( key1, key2 ) > 0 ) ? true : false );
 }
 
 static bst BSTNewNode( bstPtr rootPtr, bst parent, char *key, char *value )
 {
-    if ( ( ( *rootPtr ) = malloc( sizeof( struct node ) ) ) == NULL )
+    if ( ( ( *rootPtr ) = malloc( sizeof( struct node ) ) ) == NULL ) {
+        if ( errno )
+            perror( strerror( errno ) );
         exit( EXIT_FAILURE );
+    }
 
     /*
      * FIXME: Instead of copying the char key pointers, something like a strdup () for C99 would be more effective. 
@@ -293,9 +296,12 @@ int main( void )
 {
     bstPtr bsTree;
 
-
-    if ( ( bsTree = malloc( sizeof( bst ) ) ) == NULL )
+    if ( ( bsTree = malloc( sizeof( bst ) ) ) == NULL ) {
+        if ( errno )
+            perror( strerror( errno ) );
         exit( EXIT_FAILURE );
+    }
+
 
     fprintf( stderr, "Initializing BST\n" );
     BSTInit( bsTree );

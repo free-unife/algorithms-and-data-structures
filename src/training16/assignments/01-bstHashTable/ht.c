@@ -73,11 +73,17 @@ static htSlot HTNewSlot( htSlot * hashTable, unsigned int slotId )
 
     assert( HTEmptySlot( HTSlot( hashTable, slotId ) ) );
 
-    if ( ( hashTable[slotId] = malloc( sizeof( treeNodePtr ) ) ) == NULL )
+    if ( ( hashTable[slotId] = malloc( sizeof( treeNodePtr ) ) ) == NULL ) {
+        if ( errno )
+            perror( strerror( errno ) );
         exit( EXIT_FAILURE );
+    }
 
-    if ( ( bsTree = malloc( sizeof( treeNode ) ) ) == NULL )
+    if ( ( bsTree = malloc( sizeof( treeNode ) ) ) == NULL ) {
+        if ( errno )
+            perror( strerror( errno ) );
         exit( EXIT_FAILURE );
+    }
 
     BSTInit( bsTree );
 
@@ -155,8 +161,11 @@ int main( void )
 {
     htSlot *hashTable;
 
-    if ( ( hashTable = malloc( sizeof( htSlot ) * M ) ) == NULL )
+    if ( ( hashTable = malloc( sizeof( htSlot ) * M ) ) == NULL ) {
+        if ( errno )
+            perror( strerror( errno ) );
         exit( EXIT_FAILURE );
+    }
 
     fprintf( stderr, "Initialization of the HT\n" );
     HTInit( hashTable );
