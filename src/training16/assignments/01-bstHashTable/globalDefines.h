@@ -17,7 +17,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/time.h>
 #include <time.h>
 
 #define INF INT_MAX
@@ -27,8 +26,7 @@
 #define KEYLENGTH 16
 #define KEYCHARMIN 33
 #define KEYCHARMAX 126
-#define MAINLOOPTESTS 4
-/* FIXME: Number of buckets to be defined better. */
+#define MAINLOOPTESTS 8
 #define M 997
 
 /* BST struct. */

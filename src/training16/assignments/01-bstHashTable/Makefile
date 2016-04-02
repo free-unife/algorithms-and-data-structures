@@ -20,9 +20,9 @@ BIN_DIR = /usr/bin
 INSTALL = /usr/bin/install
 
 CFLAGS = -Wall -Wextra -Wpedantic -Werror -march=native -O0
-LIBS = -lm
+LIBS = -lm -lrt
 CSTANDARD = -std=c99
-MACRO_REQ = -D_DEFAULT_SOURCE
+MACRO_REQ =
 
 INDENT_OPTS = -kr -prs -nut -bap -bad -br -cdb -sc
 SPLINT_OPTS = -usereleased -compdef
@@ -31,7 +31,7 @@ SPLINT_OPTS = -usereleased -compdef
 
 default : link # default target
 
-all : link validate
+all : link run
 
 # compilation of single files, which keeps track of the changes of all header files (*.h) as well as the .c files
 # @echo "$(CC) $< $(CFLAGS) $(CSTANDARD) $(MACRO_REQ)"
@@ -54,6 +54,15 @@ validate :
 	@echo "Validation..."
 	@./validate.sh "$(PRG_NAME)"
 	@echo "Done."
+
+# Run verbose.
+run :
+	@echo "Running..."
+	@./$(PRG_NAME)
+
+runsilent :
+	@echo "Running..."
+	@./$(PRG_NAME) 2>&-
 
 clean :
 	@echo "Removing object files..."
