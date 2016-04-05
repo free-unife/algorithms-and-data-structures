@@ -19,13 +19,13 @@ CC = /usr/bin/gcc
 BIN_DIR = /usr/bin
 INSTALL = /usr/bin/install
 
-CFLAGS = -Wall -Wextra -Wpedantic -Werror -march=native -O0
+CFLAGS = -Wall -Wextra -Wpedantic -Werror -march=native -O3
 LIBS = -lm -lrt
 CSTANDARD = -std=c99
 MACRO_REQ =
 
 INDENT_OPTS = -kr -prs -nut -bap -bad -br -cdb -sc
-SPLINT_OPTS = -usereleased -compdef
+SPLINT_OPTS = -usereleased -compdef -preproc
 
 # Targets
 
