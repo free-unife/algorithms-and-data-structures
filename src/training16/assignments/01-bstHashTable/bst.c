@@ -13,7 +13,7 @@ static bst BSTRight( bst root );
 static bst BSTParent( bst root );
 static bst BSTMaxElement( bst root );
 
-#ifdef M_BSTMAIN_C
+#ifdef M_BSTMAINBAK_C
 static bst BSTMinElement( bst root );
 #endif
 static bst BSTPredecessor( bst root );
@@ -25,7 +25,7 @@ static bst BSTNewNode( bstPtr rootPtr, bst parent, char *key,
                        char *value );
 static bst BSTNonEmptyInsert( bst root, char *key, char *value );
 
-#ifdef M_BSTMAIN_C
+#ifdef M_BSTMAINBAK_C
 static bool BSTis( bst root, char *minKey, char *maxKey );
 #endif
 static bool BSTNonEmptyDelete( bstPtr rootPtr, bst root, char *key );
@@ -70,7 +70,7 @@ static bst BSTParent( bst root )
     return ( root->parent );
 }
 
-#ifdef M_BSTMAIN_C
+#ifdef M_BSTMAINBAK_C
 static bst BSTMinElement( bst root )
 {
     assert( !BSTEmpty( root ) );
@@ -215,7 +215,7 @@ bst BSTSearch( bst root, char *key )
         return ( BSTSearch( BSTRight( root ), key ) );
 }
 
-#ifdef M_BSTMAIN_C
+#ifdef M_BSTMAINBAK_C
 static bool BSTis( bst root, char *minKey, char *maxKey )
 {
     if ( BSTEmpty( root ) )
@@ -292,6 +292,56 @@ bool BSTDelete( bstPtr rootPtr, char *key )
 }
 
 #ifdef M_BSTMAIN_C
+int main ( void )
+{
+    int i;
+    bstPtr bsTree;
+    bst root;
+    char *number[10000];
+    clock_t start, stop;
+
+    if ( ( bsTree = malloc( sizeof( bst ) ) ) == NULL ) {
+        if ( errno )
+            perror( strerror( errno ) );
+        exit( EXIT_FAILURE );
+    }
+
+    BSTInit( bsTree );
+
+    if ( BSTEmpty( *bsTree ) )
+        fprintf( stderr, "[ OK ] BST is empty\n" );
+    else
+        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
+
+    fprintf( stderr, "\n\nInserting incremental elements...\n" );
+    for ( i = 0; i < 10000; i++ )
+    {
+        number[i] = calloc ( 6, sizeof ( char ) );
+        sprintf ( number[i], "%d", i );
+
+        if ( BSTEmpty ( BSTInsert( bsTree, number[i], number[i] ) ) )
+            fprintf ( stderr, "[ ERR ], %d\n", i );
+    }
+
+    root = *bsTree;
+    while (! BSTEmpty ( BSTRight( root ) ) )
+    {
+        printf ("%s\n", BSTVal ( root ) );
+        root = BSTRight( root );
+    }
+
+    start = clock( );
+    BSTSearch ( *bsTree, "9999" );
+    stop = clock( );
+
+    fprintf (stderr, "time = %f\n", ( ( double ) ( stop - start ) / ( double ) CLOCKS_PER_SEC ) );
+
+    return 0;
+
+}
+#endif
+
+#ifdef M_BSTMAINBAK_C
 int main( void )
 {
     bstPtr bsTree;

@@ -49,10 +49,10 @@ int main( void )
 {
     htSlot *hashTable;
     int j, i, duplicateKeys, nonDeletedElements;
-    int elements[MAINLOOPTESTS] = { 1, M / 10, M, M * 2, M * 4, M * 10, M * 100, M * 1000 };
+    int elements[MAINLOOPTESTS] = { 1, M / 10, M, M * 2, M * 4, M * 10, M * 100, M * 10000 };
     char **keys;
     double loadFactor;
-    clock_t insertStart, insertEnd, deleteStart, deleteEnd;
+    clock_t insertStart, insertEnd, searchStart, searchEnd, deleteStart, deleteEnd;
 
     fprintf( stderr, "\n\nGen random string test\n" );
     fprintf( stderr, "%s\n", genRandomString( KEYLENGTH ) );
@@ -104,6 +104,14 @@ int main( void )
                      duplicateKeys );
 
 
+        fprintf ( stderr, "\n\nSearching last key\n");
+        searchStart = clock ( );
+
+        HTBSTSearch ( hashTable, keys[elements[j] - 1]);
+
+        searchEnd = clock ( );
+
+
         fprintf( stderr,
                  "\n\nDeleting all the previous %d elements in the HT\n",
                  elements[j] );
@@ -126,7 +134,7 @@ int main( void )
 
         fprintf( stderr, "input size    buckets    load factor    insert    delete\n" );
 
-        fprintf( stdout, "%d    %u    %f    %f    %f\n", elements[j], M, loadFactor, runningTime ( insertStart, insertEnd ), runningTime( deleteStart, deleteEnd ) );
+        fprintf( stdout, "%d    %u    %f    %f    %f    %f\n", elements[j], M, loadFactor, runningTime ( insertStart, insertEnd ), runningTime (searchStart, searchEnd), runningTime( deleteStart, deleteEnd ) );
 
         free( keys );
         free( hashTable );

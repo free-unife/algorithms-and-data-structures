@@ -69,6 +69,7 @@ bool HTDelete( htSlot * hashTable, unsigned int slotId, char *key );
 
 void HTBSTInit( htSlot * hashTable );
 bool HTBSTInsert( htSlot * hashTable, char *key, char *value );
+element HTBSTSearch( htSlot * hashTable, char *key );
 bool HTBSTDelete( htSlot * hashTable, char *key );
 
 #endif

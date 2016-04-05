@@ -21,7 +21,8 @@
  * program.
  */
 
-/* #define M_BSTMAIN_C */
+#define M_BSTMAIN_C
+/* #define M_BSTMAINBAK_C */
 /* #define M_HTMAIN_C */
 /* #define M_HTBSTMAIN_C */
 

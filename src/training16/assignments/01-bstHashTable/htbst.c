@@ -65,7 +65,6 @@ bool HTBSTDelete( htSlot * hashTable, char *key )
     return ( HTDelete( hashTable, HTBSTHash( key ), key ) );
 }
 
-/* FIXME: Every element in the whole HT must have a unique key! */
 #ifdef M_HTBSTMAIN_C
 int main( void )
 {
