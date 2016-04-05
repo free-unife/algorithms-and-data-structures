@@ -1,10 +1,17 @@
-- By setting `elements[0] = 1`, I get a running time of `r = 0.000008 seconds 
-  = 8 * 10^-6 seconds`. So, inserting an element in the HT on my machine costs 
-  `r`.
-- Since the load factor alpha = n / k, where n = elements[i] and k = M, in the 
-  previous case I get: `alpha = 1 / 997 = 0.0010030`. If I substitute this in 
-  the following formula:
-  ```
-Insertion complexity for a single element = theta ( 1 + log2 ( alpha ) )
-  ```
-  I get `-8.9614`, which is useless.
+- alpha = n / k, where n = number_of_elements and k = M = number_of_backets.
+- Each BST has about alpha elements.
+- The BST has a search-insertion-delete time of theta( log(alpha) ) if it is totally balanced.
+- In the worst case we get big-o( alpha ) because the three is totally unbalanced.
+
+Trying with the real measured times, we found out that:
+- Given an input (BST elements) of 100000, we know that searching an element inside a totally unbalanced tree costs O( 100000 ), and theta( log( 100000 ) ) for a totally balanced one.
+
+O( 100000 ) vs theta( log( 100000 ) )
+O( 100000 ) vs theta( 17 ) ... like 10000 times better.
+
+Searching one of the lastest string insered inside the three we get the following times:
+- 1*10^-3 seconds for the unbalanced case;
+- 2*10^-6 seconds for the semi balanced case.
+
+So the difference between the two is about 1000 times, but we are working in a medium case.
+IT WORKS, more or less.
