@@ -19,10 +19,10 @@ class Base( object ):
         return
 
     def get_input( self, input_array ):
-        self._input_array = input_array
+        self._input_array = list( input_array )
 
     def get_output( self ):
-        return( self._input_array )
+        return( list( self._input_array ) )
 
 
 class MergeSort( Base ):
