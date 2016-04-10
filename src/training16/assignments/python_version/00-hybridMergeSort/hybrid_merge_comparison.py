@@ -1,9 +1,4 @@
-# plotting module
-try:
-	from matplotlib			import pyplot		as plt 
-	from matplotlib         import patches      as mpatches
-except:
-	print("matplotlib not found.")
+
 # process_time consider only execution time ( it excludes sleeps )
 from time 				import process_time as tic
 from time 				import process_time as toc
@@ -11,6 +6,13 @@ from sorting_algorithms import MergeSort
 from sorting_algorithms import HybridSort
 from input_helper 		import generate_random_integers
 from input_helper		import is_asc_ordered
+# plotting module
+matplotlib_available = True
+try:
+	from matplotlib			import pyplot		as plt 
+	from matplotlib         import patches      as mpatches
+except ImportError:
+	matplotlib_available = False
 
 # from find_K.py i'm sure that the best K is lower than 85
 M_ATTEMPTS = 1
@@ -49,11 +51,11 @@ for attempt in range(0, M_ATTEMPTS):
 		hybrid_sorter.asc_sort()
 		end_time_hybrid   = toc()
 		
+		'''
 		# assert that all is correct
 		hybrid_output = hybrid_sorter.get_output()
 		merge_output  = merge_sorter.get_output()
 		
-		'''
 		assert len( hybrid_output )            == ARRAY_SIZE
 		assert len( merge_output )             == ARRAY_SIZE
 		assert is_asc_ordered( hybrid_output ) == True
@@ -69,16 +71,19 @@ for attempt in range(0, M_ATTEMPTS):
 		merge_times.append( time_merge )
 
 
-	# plot for this attempt ( type of input )
-	plt.figure()
-	plt.plot( K_VALUES, merge_times,  'ro' )
-	plt.plot( K_VALUES, hybrid_times, 'bo' )
-	red_patch = mpatches.Patch(color='red', label='MergeSort')
-	blue_patch = mpatches.Patch(color='blue', label='HybridSort')
-	plt.legend(handles=[red_patch, blue_patch])
-	plt.xlabel("K")
-	plt.ylabel("time")
-	plt.draw()
+	if matplotlib_available:
+		# plot for this attempt ( type of input )
+		plt.figure()
+		plt.plot( K_VALUES, merge_times,  'ro' )
+		plt.plot( K_VALUES, hybrid_times, 'bo' )
+		red_patch = mpatches.Patch(color='red', label='MergeSort')
+		blue_patch = mpatches.Patch(color='blue', label='HybridSort')
+		plt.legend(handles=[red_patch, blue_patch])
+		plt.xlabel("K")
+		plt.ylabel("time")
+		plt.draw()
 
-plt.show()
+if matplotlib_available:
+	plt.show()
+
 # looks like that the best K is between 10 and 35
