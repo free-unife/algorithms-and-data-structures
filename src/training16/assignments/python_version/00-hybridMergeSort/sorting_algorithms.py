@@ -2,7 +2,7 @@ class Base( object ):
     ''' This class contains all the basic methods of a sorter '''
 
     def __init__( self, input_array = [] ):
-        self._input_array = input_array;
+        self._input_array = list( input_array );
         return
 
     ## public methods
