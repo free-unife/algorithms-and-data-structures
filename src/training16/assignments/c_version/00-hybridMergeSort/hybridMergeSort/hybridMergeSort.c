@@ -101,24 +101,21 @@ int main( void )
 
 static void hybridMergeSort( int *V, int p, int r, int k )
 {
-
     int q;
 
-
-    if ( p < r ) {
-        q = ( p + r ) / 2;
-        hybridMergeSort( V, p, q, k );
-        hybridMergeSort( V, q + 1, r, k );
-
-        if ( r - p <= k )
-            insertionSort( V, ( size_t ) p, ( size_t ) r );
-        else
+    if( (r - p) <= k ) {
+        insertionSort( V, ( size_t ) p, ( size_t ) r );
+    }
+    
+    else{
+        if( p < r ){
+            hybridMergeSort( V, p, q, k );
+            hybridMergeSort( V, q + 1, r, k );
             merge( V, p, q, r );
+        }
     }
 
-
     return;
-
 }
 
 /* Sum all the the hybrid - merge times for the current k.  */
