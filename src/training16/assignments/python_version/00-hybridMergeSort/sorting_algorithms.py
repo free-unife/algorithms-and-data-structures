@@ -111,7 +111,7 @@ class InsertionSort( Base ):
 
 
 
-class HybridMergeInsertionSort( MergeSort, InsertionSort ):
+class HybridSort( MergeSort, InsertionSort ):
     ''' In literature MergeSort is faster than InsertionSort for big size input.
     In theory, InsertionSort is faster only for small-size (K length) inputs.
     This class implements a mixed version of the two, wich executes InsertionSort
@@ -128,16 +128,16 @@ class HybridMergeInsertionSort( MergeSort, InsertionSort ):
 
     # overriding the _merge_sort method of MergeSort
     def _merge_sort( self, p, r ):
-        if ( p < r ):
-            q = int( ( p + r ) / 2 );
-            self._merge_sort( p, q )
-            self._merge_sort( q + 1, r )
-
-            if ( r - p ) <= self._K :
-                self._insertion_sort( p, r )
-            else:
+        if ( r - p ) <= self._K:
+            self._insertion_sort( p, r )
+            print("Launching insertionsort with K", self._K)
+            print("r-p partition:" , r-p)
+        else:
+            if p < r:
+                q = int( ( p + r ) / 2 )
+                self._merge_sort( p, q )
+                self._merge_sort( q + 1, r )
                 self._merge( p, q, r )
-
         return
 
     def asc_sort( self ):
