@@ -40,7 +40,13 @@ struct listNode {
 typedef struct listNode * list;
 typedef list * listPtr;
 
+void LISTInit( listPtr headPtr );
+bool LISTEmpty( list head );
 char *LISTKey( list head );
+char *LISTVal( list head );
+list LISTInsert( listPtr headPtr, char *key, char *value );
+list LISTSearch( list head, char *key );
+bool LISTDelete( listPtr headPtr, char *key );
 
 /* BST struct. */
 struct bstNode {
