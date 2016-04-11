@@ -13,7 +13,7 @@
 
 # macros
 PRG_NAME = 01-htbst.o
-PRG_OBJFILES = bst.o
+PRG_OBJFILES = list.o
 
 CC = /usr/bin/gcc
 BIN_DIR = /usr/bin

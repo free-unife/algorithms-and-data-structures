@@ -13,7 +13,7 @@ static bst BSTRight( bst root );
 static bst BSTParent( bst root );
 static bst BSTMaxElement( bst root );
 
-#ifdef M_BSTMAINBAK_C
+#ifdef M_BSTMAIN_C
 static bst BSTMinElement( bst root );
 #endif
 static bst BSTPredecessor( bst root );
@@ -25,7 +25,7 @@ static bst BSTNewNode( bstPtr rootPtr, bst parent, char *key,
                        char *value );
 static bst BSTNonEmptyInsert( bst root, char *key, char *value );
 
-#ifdef M_BSTMAINBAK_C
+#ifdef M_BSTMAIN_C
 static bool BSTis( bst root, char *minKey, char *maxKey );
 #endif
 static bool BSTNonEmptyDelete( bstPtr rootPtr, bst root, char *key );
@@ -70,7 +70,7 @@ static bst BSTParent( bst root )
     return ( root->parent );
 }
 
-#ifdef M_BSTMAINBAK_C
+#ifdef M_BSTMAIN_C
 static bst BSTMinElement( bst root )
 {
     assert( !BSTEmpty( root ) );
@@ -135,15 +135,12 @@ static bool BSTKeyGreater( char *key1, char *key2 )
 
 static bst BSTNewNode( bstPtr rootPtr, bst parent, char *key, char *value )
 {
-    if ( ( ( *rootPtr ) = malloc( sizeof( struct node ) ) ) == NULL ) {
+    if ( ( ( *rootPtr ) = malloc( sizeof( struct bstNode ) ) ) == NULL ) {
         if ( errno )
             perror( strerror( errno ) );
         exit( EXIT_FAILURE );
     }
 
-    /*
-     * FIXME: Instead of copying the char key pointers, something like a strdup () for C99 would be more effective. 
-     */
     ( *rootPtr )->key = key;
     ( *rootPtr )->value = value;
     ( *rootPtr )->left = EMPTY;
@@ -215,7 +212,7 @@ bst BSTSearch( bst root, char *key )
         return ( BSTSearch( BSTRight( root ), key ) );
 }
 
-#ifdef M_BSTMAINBAK_C
+#ifdef M_BSTMAIN_C
 static bool BSTis( bst root, char *minKey, char *maxKey )
 {
     if ( BSTEmpty( root ) )
@@ -264,9 +261,6 @@ static bool BSTNonEmptyDelete( bstPtr rootPtr, bst root, char *key )
              * Two sons.  
              */
         } else {
-            /*
-             * FIXME: Use something like strdup() here as well (don't copy string pointers. 
-             */
             root->key = BSTKey( BSTPredecessor( root ) );
             root->value = BSTVal( BSTPredecessor( root ) );
             root->parent = BSTParent( root );
@@ -292,131 +286,6 @@ bool BSTDelete( bstPtr rootPtr, char *key )
 }
 
 #ifdef M_BSTMAIN_C
-
-static char *genRandomString( int len );
-
-static char *genRandomString( int len )
-{
-    int i;
-    char *str;
-    struct timespec t1;
-
-    if ( ( str = calloc( len + 1, sizeof( char ) ) ) == NULL )
-        exit( EXIT_FAILURE );
-
-    /*
-     * Seed is set in nanoseconds.
-     */
-    clock_gettime( CLOCK_MONOTONIC, &t1 );
-    srand( t1.tv_nsec );
-
-    for ( i = 0; i < len; i++ ) {
-        /*
-         * Strings are len charaters long and each charater is in the domain 
-         * [KEYCHARMIN - KEYCHARMAX]. 
-         */
-        str[i] = ( rand(  ) % ( KEYCHARMAX - KEYCHARMIN ) ) + KEYCHARMIN;
-        assert( str[i] >= KEYCHARMIN && str[i] <= KEYCHARMAX );
-    }
-
-    assert( ( int ) strlen( str ) == len );
-
-    return str;
-}
-
-int main( void )
-{
-    int i;
-    bstPtr bsTree;
-    bst root;
-    char *number[50000];
-    clock_t start, stop;
-    int j = 0;
-    int numberOfZerosToAdd;
-    char *zero;
-
-    if ( ( bsTree = malloc( sizeof( bst ) ) ) == NULL ) {
-        if ( errno )
-            perror( strerror( errno ) );
-        exit( EXIT_FAILURE );
-    }
-
-    BSTInit( bsTree );
-
-    if ( BSTEmpty( *bsTree ) )
-        fprintf( stderr, "[ OK ] BST is empty\n" );
-    else
-        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
-
-    fprintf( stderr, "\n\nInserting incremental elements...\n" );
-    for ( i = 0; i < 50000; i++ ) {
-        number[i] = calloc( 11, sizeof( char ) );
-        zero = calloc( 11, sizeof( char ) );
-
-        sprintf( number[i], "%d", i );
-        numberOfZerosToAdd = 10 - strlen( number[i] );
-
-        for ( j = 0; j <= numberOfZerosToAdd; j++ ) {
-            strcpy( number[i], strcat( zero, number[i] ) );
-            strcpy( zero, "0" );
-        }
-
-        if ( BSTEmpty( BSTInsert( bsTree, number[i], number[i] ) ) )
-            fprintf( stderr, "[ ERR ], %d\n", i );
-
-        free( zero );
-    }
-
-    /* Check if bsTree is totally unbalanced.  */
-    root = *bsTree;
-    while ( !BSTEmpty( BSTRight( root ) ) ) {
-        printf( "%s\n", BSTVal( root ) );
-        root = BSTRight( root );
-    }
-
-    start = clock(  );
-    BSTSearch( *bsTree, "49999" );
-    stop = clock(  );
-
-    fprintf( stderr, "time = %f\n",
-             ( ( double ) ( stop - start ) / ( double ) CLOCKS_PER_SEC ) );
-
-    free (bsTree);
-
-    if ( ( bsTree = malloc( sizeof( bst ) ) ) == NULL ) {
-        if ( errno )
-            perror( strerror( errno ) );
-        exit( EXIT_FAILURE );
-    }
-
-    BSTInit( bsTree );
-
-    if ( BSTEmpty( *bsTree ) )
-        fprintf( stderr, "[ OK ] BST is empty\n" );
-    else
-        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
-
-    for ( i = 0; i < 50000; i++)
-    {
-        number[i] = genRandomString ( 10 );
-        if ( BSTEmpty( BSTInsert( bsTree, number[i], number[i] ) ) )
-            fprintf( stderr, "[ ERR ], %d\n", i );
-
-    }
-
-    start = clock(  );
-    BSTSearch( *bsTree, number[49999] );
-    stop = clock(  );
-
-    fprintf( stderr, "time = %f\n",
-             ( ( double ) ( stop - start ) / ( double ) CLOCKS_PER_SEC ) );
-
-    return 0;
-
-}
-#endif
-
-#ifdef M_BSTMAINBAK_C
 int main( void )
 {
     bstPtr bsTree;

@@ -29,16 +29,29 @@
 #define MAINLOOPTESTS 8
 #define M 997
 
-/* BST struct. */
-struct node {
-  char *key;
-  char *value;
-  struct node *left;
-  struct node *right;
-  struct node *parent;
+/* LIST struct */
+struct listNode {
+    char *key;
+    char *value;
+    struct listNode *next;
+    struct listNode *prev;
 };
 
-typedef struct node * bst;
+typedef struct listNode * list;
+typedef list * listPtr;
+
+char *LISTKey( list head );
+
+/* BST struct. */
+struct bstNode {
+    char *key;
+    char *value;
+    struct bstNode *left;
+    struct bstNode *right;
+    struct bstNode *parent;
+};
+
+typedef struct bstNode * bst;
 typedef bst * bstPtr;
 
 /* The following are only used in HT. */
