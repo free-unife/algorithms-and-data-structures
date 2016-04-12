@@ -35,6 +35,8 @@ class DoubleLinkedList( object ):
         self._dummy.set_next( self._dummy )
         self._dummy.set_prev( self._dummy )
 
+
+
     def insert_node_in_queue( self, key, value = 0):
         # create the node
         new_node = Node( key, value )
@@ -44,6 +46,7 @@ class DoubleLinkedList( object ):
         new_node.set_next( self._dummy )
         self._dummy.get_prev().set_next( new_node )
         self._dummy.set_prev( new_node )
+        return
 
     def insert_node_in_head( self, key, value = 0 ):
         # create the element
@@ -54,6 +57,10 @@ class DoubleLinkedList( object ):
         new_node.set_prev( self._dummy )
         self._dummy.get_next().set_prev( new_node )
         self._dummy.set_next( new_node )
+        return
+
+    def insert( self, key, value = 0 ):
+        return self.insert_node_in_queue( key, value )
 
     # prints all the keys inside the list
     def print_keys( self ):
@@ -65,9 +72,13 @@ class DoubleLinkedList( object ):
             print( "Node [%d] -> key == %d" %( index, key ) )
             node_to_print = node_to_print.get_next()
             index = index + 1
+        return
 
     # return a node from its key, if the node is not found None is returned
     def search_node( self, key ):
+        if key is None:
+            return None
+
         node_to_search = self._dummy.get_next()
 
         while node_to_search != self._dummy:
@@ -80,12 +91,18 @@ class DoubleLinkedList( object ):
 
         return None
 
+    def search( self, key ):
+        return self.search_node( key )
+
     def delete_node( self, node_to_delete ):
 
-        if node_to_delete != None :
+        if node_to_delete is not None :
 
-            # Give it out of the list
+            # Get it out from the list
             node_to_delete.get_prev().set_next( node_to_delete.get_next() )
             node_to_delete.get_next().set_prev( node_to_delete.get_prev() )
 
         return
+
+    def delete( self, node_to_delete ):
+        return self.delete_node( node_to_delete )
