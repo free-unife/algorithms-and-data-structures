@@ -10,13 +10,14 @@
 
 static bool LISTHTListNodeEmpty( listNode head );
 static bool LISTHTEmptySlot( htListSlot slot );
-static listNode LISTHTBst( htListSlot slot );
-static listNodePtr LISTHTBstPtr( htListSlot slot );
+static listNode LISTHTList( htListSlot slot );
+static listNodePtr LISTHTListPtr( htListSlot slot );
 static bool LISTHTNewListNode( htListSlot slot, char *key, char *value );
-static htListSlot LISTHTNewSlot( htListSlot * hashTable, unsigned int slotId );
+static htListSlot LISTHTNewSlot( htListSlot * hashTable,
+                                 unsigned int slotId );
 static void LISTHTFreeSlot( htListSlot * hashTable, unsigned int slotId );
-static bool LISTHTNonEmptyDelete( htListSlot * hashTable, unsigned int slotId,
-                              char *key );
+static bool LISTHTNonEmptyDelete( htListSlot * hashTable,
+                                  unsigned int slotId, char *key );
 
 static bool LISTHTListNodeEmpty( listNode head )
 {
@@ -53,19 +54,20 @@ htListSlot LISTHTSlot( htListSlot * hashTable, unsigned int slotId )
 }
 
 /* Return pointer to the head node of the LIST corresponding to the input slot.  */
-static listNode LISTHTBst( htListSlot slot )
+static listNode LISTHTList( htListSlot slot )
 {
     return ( **slot );
 }
 
 /* Return LIST pointer from input slot.  */
-static listNodePtr LISTHTBstPtr( htListSlot slot )
+static listNodePtr LISTHTListPtr( htListSlot slot )
 {
     return ( *slot );
 }
 
 /* New slot -> allocate new listNodePtr.  */
-static htListSlot LISTHTNewSlot( htListSlot * hashTable, unsigned int slotId )
+static htListSlot LISTHTNewSlot( htListSlot * hashTable,
+                                 unsigned int slotId )
 {
 
     listNodePtr doubleLinked;
@@ -96,17 +98,18 @@ static htListSlot LISTHTNewSlot( htListSlot * hashTable, unsigned int slotId )
 static bool LISTHTNewListNode( htListSlot slot, char *key, char *value )
 {
     return ( !LISTHTListNodeEmpty
-             ( LISTInsert( LISTHTBstPtr( slot ), key, value ) ) );
+             ( LISTInsert( LISTHTListPtr( slot ), key, value ) ) );
 }
 
 /* Return true if LISTHTNewNode was successful, else otherwise.  */
 bool LISTHTInsert( htListSlot * hashTable, unsigned int slotId, char *key,
-               char *value )
+                   char *value )
 {
     if ( LISTHTEmptySlot( LISTHTSlot( hashTable, slotId ) ) )
         LISTHTNewSlot( hashTable, slotId );
 
-    return ( LISTHTNewListNode( LISTHTSlot( hashTable, slotId ), key, value ) );
+    return ( LISTHTNewListNode
+             ( LISTHTSlot( hashTable, slotId ), key, value ) );
 }
 
 listNode LISTHTSearch( htListSlot slot, char *key )
@@ -114,7 +117,7 @@ listNode LISTHTSearch( htListSlot slot, char *key )
     if ( LISTHTEmptySlot( slot ) )
         return EMPTY;
     else
-        return ( LISTSearch( LISTHTBst( slot ), key ) );
+        return ( LISTSearch( LISTHTList( slot ), key ) );
 }
 
 static void LISTHTFreeSlot( htListSlot * hashTable, unsigned int slotId )
@@ -128,17 +131,21 @@ static void LISTHTFreeSlot( htListSlot * hashTable, unsigned int slotId )
 }
 
 /*
- * When tree is empty current slot must be set to null.
+ * When list is empty current slot must be set to null.
  * Before this listNodePtr must be freed.
  */
-static bool LISTHTNonEmptyDelete( htListSlot * hashTable, unsigned int slotId,
-                              char *key )
+static bool LISTHTNonEmptyDelete( htListSlot * hashTable,
+                                  unsigned int slotId, char *key )
 {
     bool retval;
 
-    retval = LISTDelete( LISTHTBstPtr( LISTHTSlot( hashTable, slotId ) ), key );
+    retval =
+        LISTDelete( LISTHTListPtr( LISTHTSlot( hashTable, slotId ) ),
+                    key );
     if ( retval
-         && LISTHTListNodeEmpty( LISTHTBst( LISTHTSlot( hashTable, slotId ) ) ) )
+         &&
+         LISTHTListNodeEmpty( LISTHTList
+                              ( LISTHTSlot( hashTable, slotId ) ) ) )
         LISTHTFreeSlot( hashTable, slotId );
 
     return retval;
@@ -216,7 +223,8 @@ int main( void )
              "Get value of node with key %s in slot %d which should be %s: %s\n",
              "01", M - 2, "hola",
              LISTHTListNodeVal( LISTHTSearch
-                            ( LISTHTSlot( hashTable, M - 2 ), "01" ) ) );
+                                ( LISTHTSlot( hashTable, M - 2 ),
+                                  "01" ) ) );
     fprintf( stderr, "[ OK ] This message should be shown\n" );
 
 
@@ -224,7 +232,8 @@ int main( void )
              "\n\nSearch for a non existing element in an existing slot.\n" );
     fprintf( stderr, "Searching for node with key %s in slot %d\n", "10",
              M - 2 );
-    if ( LISTHTListNodeEmpty( LISTHTSearch( LISTHTSlot( hashTable, M - 2 ), "10" ) ) )
+    if ( LISTHTListNodeEmpty
+         ( LISTHTSearch( LISTHTSlot( hashTable, M - 2 ), "10" ) ) )
         fprintf( stderr, "[ OK ] This message should be shown\n" );
     else
         fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );

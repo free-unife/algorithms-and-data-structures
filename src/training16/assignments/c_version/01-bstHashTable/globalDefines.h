@@ -26,7 +26,7 @@
 #define KEYLENGTH 16
 #define KEYCHARMIN 33
 #define KEYCHARMAX 126
-#define MAINLOOPTESTS 8
+#define NUMBER_OF_TESTS 10000
 #define M 997
 
 unsigned int hash( char *input );
@@ -60,8 +60,8 @@ list LISTInsert( listPtr headPtr, char *key, char *value );
 list LISTSearch( list head, char *key );
 bool LISTDelete( listPtr headPtr, char *key );
 
-char *LISTHTListNodeKey ( listNode root );
-char *LISTHTListNodeVal ( listNode root );
+char *LISTHTListNodeKey ( listNode list );
+char *LISTHTListNodeVal ( listNode list );
 void LISTHTInit( htListSlot * hashTable );
 htListSlot LISTHTSlot( htListSlot * hashTable, unsigned int slotId );
 bool LISTHTInsert( htListSlot * hashTable, unsigned int slotId, char *key, char *value );
