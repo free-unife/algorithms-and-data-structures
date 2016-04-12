@@ -13,13 +13,13 @@
 
 # macros
 PRG_NAME = 01-htbst.o
-PRG_OBJFILES = list.o
+PRG_OBJFILES = list.o listht.o hash.o htlist.o
 
 CC = /usr/bin/gcc
 BIN_DIR = /usr/bin
 INSTALL = /usr/bin/install
 
-CFLAGS = -Wall -Wextra -Wpedantic -Werror -march=native -O3
+CFLAGS = -Wall -Wextra -Wpedantic -Werror -march=native -O0
 LIBS = -lm -lrt
 CSTANDARD = -std=c99
 MACRO_REQ =

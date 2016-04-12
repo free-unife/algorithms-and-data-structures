@@ -8,92 +8,92 @@
 
 #include "globalDefines.h"
 
-#ifdef M_HTBSTMAIN_C
-static char *HTBSTElementKey( treeElement el );
-static char *HTBSTElementVal( treeElement el );
+#ifdef M_HTLISTMAIN_C
+static char *HTLISTElementKey( listElement el );
+static char *HTLISTElementVal( listElement el );
 #endif
 
-#ifdef M_HTBSTMAIN_C
-static char *HTBSTElementKey( treeElement el )
+#ifdef M_HTLISTMAIN_C
+static char *HTLISTElementKey( listElement el )
 {
-    return ( BSTHTTreeNodeKey( el ) );
+    return ( LISTHTListNodeKey( el ) );
 }
 
-static char *HTBSTElementVal( treeElement el )
+static char *HTLISTElementVal( listElement el )
 {
-    return ( BSTHTTreeNodeVal( el ) );
+    return ( LISTHTListNodeVal( el ) );
 }
 #endif
 
-/* Functions wrappers related to the BSTHT functions. */
-void HTBSTInit( htTreeSlot * hashTable )
+/* Functions wrappers related to the LISTHT functions. */
+void HTLISTInit( htListSlot * hashTable )
 {
-    BSTHTInit( hashTable );
+    LISTHTInit( hashTable );
 }
 
-bool HTBSTInsert( htTreeSlot * hashTable, char *key, char *value )
+bool HTLISTInsert( htListSlot * hashTable, char *key, char *value )
 {
-    return ( BSTHTInsert( hashTable, hash( key ), key, value ) );
+    return ( LISTHTInsert( hashTable, hash( key ), key, value ) );
 }
 
-treeElement HTBSTSearch( htTreeSlot * hashTable, char *key )
+listElement HTLISTSearch( htListSlot * hashTable, char *key )
 {
-    return ( BSTHTSearch( BSTHTSlot( hashTable, hash( key ) ), key ) );
+    return ( LISTHTSearch( LISTHTSlot( hashTable, hash( key ) ), key ) );
 }
 
-bool HTBSTDelete( htTreeSlot * hashTable, char *key )
+bool HTLISTDelete( htListSlot * hashTable, char *key )
 {
-    return ( BSTHTDelete( hashTable, hash( key ), key ) );
+    return ( LISTHTDelete( hashTable, hash( key ), key ) );
 }
 
-#ifdef M_HTBSTMAIN_C
+#ifdef M_HTLISTMAIN_C
 int main( void )
 {
-    htTreeSlot *hashTable;
+    htListSlot *hashTable;
 
-    if ( ( hashTable = malloc( sizeof( htTreeSlot ) * M ) ) == NULL ) {
+    if ( ( hashTable = malloc( sizeof( htListSlot ) * M ) ) == NULL ) {
         if ( errno )
             perror( strerror( errno ) );
         exit( EXIT_FAILURE );
     }
 
     fprintf( stderr, "Initialization of the HT\n" );
-    HTBSTInit( hashTable );
+    HTLISTInit( hashTable );
     fprintf( stderr, "[ OK ] HT initialized\n" );
 
 
     fprintf( stderr,
              "\n\nInsert some elements in the HT using the hash function\n" );
-    if ( HTBSTInsert( hashTable, "00", "ciao" ) )
+    if ( HTLISTInsert( hashTable, "00", "ciao" ) )
         fprintf( stderr,
                  "[ OK ] Inserted node with key %s and value %s in slot %u\n",
                  "00", "ciao", hash( "00" ) );
     else
         fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
-    if ( !HTBSTInsert( hashTable, "00", "ciao" ) )
+    if ( !HTLISTInsert( hashTable, "00", "ciao" ) )
         fprintf( stderr,
                  "[ OK ] Node with key %s and value %s in slot %u already present in HT\n",
                  "00", "ciao", hash( "00" ) );
     else
         fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
-    HTBSTInsert( hashTable, "02", "hallo" );
-    HTBSTInsert( hashTable, "01", "hola" );
-    HTBSTInsert( hashTable, "03", "hello" );
+    HTLISTInsert( hashTable, "02", "hallo" );
+    HTLISTInsert( hashTable, "01", "hola" );
+    HTLISTInsert( hashTable, "03", "hello" );
 
 
     fprintf( stderr, "\n\nGet key and value from a search\n" );
     fprintf( stderr, "Returned Values should be %s and %s\n", "01",
              "hola" );
     fprintf( stderr, "%s\n",
-             HTBSTElementKey( HTBSTSearch( hashTable, "01" ) ) );
+             HTLISTElementKey( HTLISTSearch( hashTable, "01" ) ) );
     fprintf( stderr, "%s\n",
-             HTBSTElementVal( HTBSTSearch( hashTable, "01" ) ) );
+             HTLISTElementVal( HTLISTSearch( hashTable, "01" ) ) );
     fprintf( stderr, "[ OK ] This message should be shown\n" );
 
 
     fprintf( stderr, "\n\nDouble deletion test\n" );
-    if ( HTBSTDelete( hashTable, "00" )
-         && !HTBSTDelete( hashTable, "00" ) )
+    if ( HTLISTDelete( hashTable, "00" )
+         && !HTLISTDelete( hashTable, "00" ) )
         fprintf( stderr, "[ OK ] Deletion of %s successful\n", "00" );
     else
         fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );

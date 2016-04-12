@@ -21,9 +21,11 @@
  * program.
  */
 
-#define M_LISTMAIN_C
+/*#define M_LISTMAIN_C*/
+/*#define M_LISTHTMAIN_C*/
+#define M_HTLISTMAIN_C
+
 /*#define M_BSTMAIN_C*/
-/* #define M_BSTMAINBAK_C */
-/* #define M_HTMAIN_C */
-/* #define M_HTBSTMAIN_C */
+/*#define M_BSTHTMAIN_C*/
+/*#define M_HTBSTMAIN_C*/
 

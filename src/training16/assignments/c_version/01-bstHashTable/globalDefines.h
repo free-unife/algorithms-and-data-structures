@@ -29,6 +29,8 @@
 #define MAINLOOPTESTS 8
 #define M 997
 
+unsigned int hash( char *input );
+
 /* LIST struct */
 struct listNode {
     char *key;
@@ -37,8 +39,18 @@ struct listNode {
     struct listNode *prev;
 };
 
+/* The following are only used in LIST. */
 typedef struct listNode * list;
 typedef list * listPtr;
+
+/* The following are only used in LISTHT. */
+typedef listPtr * htListSlot;
+typedef list listNode;
+typedef listPtr listNodePtr;
+
+/* The following are only used in HTLIST. */
+typedef listNode listElement;
+typedef listNodePtr listElementPtr;
 
 void LISTInit( listPtr headPtr );
 bool LISTEmpty( list head );
@@ -47,6 +59,19 @@ char *LISTVal( list head );
 list LISTInsert( listPtr headPtr, char *key, char *value );
 list LISTSearch( list head, char *key );
 bool LISTDelete( listPtr headPtr, char *key );
+
+char *LISTHTListNodeKey ( listNode root );
+char *LISTHTListNodeVal ( listNode root );
+void LISTHTInit( htListSlot * hashTable );
+htListSlot LISTHTSlot( htListSlot * hashTable, unsigned int slotId );
+bool LISTHTInsert( htListSlot * hashTable, unsigned int slotId, char *key, char *value );
+list LISTHTSearch( htListSlot slot, char *key );
+bool LISTHTDelete( htListSlot * hashTable, unsigned int slotId, char *key );
+
+void HTLISTInit( htListSlot * hashTable );
+bool HTLISTInsert( htListSlot * hashTable, char *key, char *value );
+listElement HTLISTSearch( htListSlot * hashTable, char *key );
+bool HTLISTDelete( htListSlot * hashTable, char *key );
 
 /* BST struct. */
 struct bstNode {
@@ -57,17 +82,18 @@ struct bstNode {
     struct bstNode *parent;
 };
 
+/* The following are only used in BST. */
 typedef struct bstNode * bst;
 typedef bst * bstPtr;
 
-/* The following are only used in HT. */
-typedef bstPtr * htSlot;
+/* The following are only used in BSTHT. */
+typedef bstPtr * htTreeSlot;
 typedef bst treeNode;
 typedef bstPtr treeNodePtr;
 
 /* The following are only used in HTBST. */
-typedef treeNode element;
-typedef treeNodePtr elementPtr;
+typedef treeNode treeElement;
+typedef treeNodePtr treeElementPtr;
 
 /* Prototypes. */
 void BSTInit( bstPtr rootPtr );
@@ -78,17 +104,17 @@ bst BSTInsert( bstPtr rootPtr, char *key, char *value );
 bst BSTSearch( bst root, char *key );
 bool BSTDelete( bstPtr rootPtr, char *key );
 
-char *HTTreeNodeKey ( treeNode root );
-char *HTTreeNodeVal ( treeNode root );
-void HTInit( htSlot * hashTable );
-htSlot HTSlot( htSlot * hashTable, unsigned int slotId );
-bool HTInsert( htSlot * hashTable, unsigned int slotId, char *key, char *value);
-bst HTSearch( htSlot slot, char *key );
-bool HTDelete( htSlot * hashTable, unsigned int slotId, char *key );
+char *BSTHTTreeNodeKey ( treeNode root );
+char *BSTHTTreeNodeVal ( treeNode root );
+void BSTHTInit( htTreeSlot * hashTable );
+htTreeSlot BSTHTSlot( htTreeSlot * hashTable, unsigned int slotId );
+bool BSTHTInsert( htTreeSlot * hashTable, unsigned int slotId, char *key, char *value );
+bst BSTHTSearch( htTreeSlot slot, char *key );
+bool BSTHTDelete( htTreeSlot * hashTable, unsigned int slotId, char *key );
 
-void HTBSTInit( htSlot * hashTable );
-bool HTBSTInsert( htSlot * hashTable, char *key, char *value );
-element HTBSTSearch( htSlot * hashTable, char *key );
-bool HTBSTDelete( htSlot * hashTable, char *key );
+void HTBSTInit( htTreeSlot * hashTable );
+bool HTBSTInsert( htTreeSlot * hashTable, char *key, char *value );
+treeElement HTBSTSearch( htTreeSlot * hashTable, char *key );
+bool HTBSTDelete( htTreeSlot * hashTable, char *key );
 
 #endif
