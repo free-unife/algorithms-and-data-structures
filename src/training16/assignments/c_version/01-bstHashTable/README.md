@@ -1,3 +1,28 @@
+This is how the c files are structured:
+```
+->  =   left operand is "included" by right operand
+
+bst.c       ->      bstht.c     ->      htbst.c     ->      main.c
+                    hash.c
+
+list.c      ->      listht.c    ->      htlist.c    ->      main.c
+                    hash.c
+```
+
+You can also view it as a stack:
+```
+            main.c
+         /          \
+htbst.c                 htlist.c
+|                           |
+|                           |
+bstht.c                 listht.c
+|       \            /      |
+|           hash.c          |
+|                           |
+bst.c                   list.c
+```
+
 - alpha = n / k, where n = number_of_elements and k = M = number_of_backets.
 - Each BST has about alpha elements.
 - The BST has a search-insertion-delete time of theta( log(alpha) ) if it is totally balanced.

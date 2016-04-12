@@ -285,6 +285,19 @@ bool BSTDelete( bstPtr rootPtr, char *key )
         return ( BSTNonEmptyDelete( rootPtr, *rootPtr, key ) );
 }
 
+/*
+bst BSTClear ( bst root )
+{
+    if ( BSTEmpty ( root ) )
+        return EMPTY;
+
+    BSTClear ( BSTLeft ( root ) );
+    BSTClear ( BSTLeft ( root ) );
+
+    free ( root );
+}
+*/
+
 #ifdef M_BSTMAIN_C
 int main( void )
 {
