@@ -23,20 +23,16 @@ bstht.c                 listht.c
 bst.c                   list.c
 ```
 
-- alpha = n / k, where n = number_of_elements and k = M = number_of_backets.
-- Each BST has about alpha elements.
-- The BST has a search-insertion-delete time of theta( log(alpha) ) if it is totally balanced.
-- In the worst case we get big-o( alpha ) because the three is totally unbalanced.
+- Test with 100 iterations. There seems to be a problem because of fluctuating 
+  values.
 
-Trying with the real measured times, we found out that:
-- Given an input (BST elements) of 100000, we know that searching an element inside a totally unbalanced tree costs O( 100000 ), and theta( log( 100000 ) ) for a totally balanced one.
+![100 iterations test](https://raw.githubusercontent.com/free-unife/algorithms-and-data-structures/master/src/training16/assignments/c_version/01-bstHashTable/images/htlistbst100Iterations.png)
 
-O( 100000 ) vs theta( log( 100000 ) )
-O( 100000 ) vs theta( 17 ) ... like 10000 times better.
+- With a 200-iteration test you can see a big asymptotical difference between 
+  list and bst chaining. The time complexity of the implementation with the 
+  lists seems to grow exponentially while the implementation with the bst 
+  seems to grows lineary. This curious effect is due to the scaling of the 
+  graph. The real running times infact are linear for the lists and logarithmic 
+  for the bst.
 
-Searching one of the lastest string insered inside the three we get the following times:
-- 1*10^-3 seconds for the unbalanced case;
-- 2*10^-6 seconds for the semi balanced case.
-
-So the difference between the two is about 1000 times, but we are working in a medium case.
-IT WORKS, more or less.
+![200 iterations test](https://raw.githubusercontent.com/free-unife/algorithms-and-data-structures/master/src/training16/assignments/c_version/01-bstHashTable/images/htlistbst200Iterations.png)

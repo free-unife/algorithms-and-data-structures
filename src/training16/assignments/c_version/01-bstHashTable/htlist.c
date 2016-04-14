@@ -12,6 +12,9 @@
 static char *HTLISTElementKey( listElement el );
 static char *HTLISTElementVal( listElement el );
 #endif
+#ifdef M_HTLISTMAIN_C
+static void testInsertElement( htListSlot * hashTable );
+#endif
 
 #ifdef M_HTLISTMAIN_C
 static char *HTLISTElementKey( listElement el )
@@ -46,22 +49,20 @@ bool HTLISTDelete( htListSlot * hashTable, char *key )
     return ( LISTHTDelete( hashTable, hash( key ), key ) );
 }
 
-#ifdef M_HTLISTMAIN_C
-int main( void )
+bool HTLISTClearHashTable( htListSlot * hashTable,
+                           unsigned int numberOfSlots )
 {
-    htListSlot *hashTable;
+    unsigned int i;
 
-    if ( ( hashTable = malloc( sizeof( htListSlot ) * M ) ) == NULL ) {
-        if ( errno )
-            perror( strerror( errno ) );
-        exit( EXIT_FAILURE );
-    }
+    for ( i = 0; i < numberOfSlots; i++ )
+        if ( !LISTHTClearSlot( hashTable, i ) )
+            return false;
+    return true;
+}
 
-    fprintf( stderr, "Initialization of the HT\n" );
-    HTLISTInit( hashTable );
-    fprintf( stderr, "[ OK ] HT initialized\n" );
-
-
+#ifdef M_HTLISTMAIN_C
+static void testInsertElement( htListSlot * hashTable )
+{
     fprintf( stderr,
              "\n\nInsert some elements in the HT using the hash function\n" );
     if ( HTLISTInsert( hashTable, "00", "ciao" ) )
@@ -79,6 +80,26 @@ int main( void )
     HTLISTInsert( hashTable, "02", "hallo" );
     HTLISTInsert( hashTable, "01", "hola" );
     HTLISTInsert( hashTable, "03", "hello" );
+}
+#endif
+
+#ifdef M_HTLISTMAIN_C
+int main( void )
+{
+    htListSlot *hashTable;
+
+    if ( ( hashTable = malloc( sizeof( htListSlot ) * M ) ) == NULL ) {
+        if ( errno )
+            perror( strerror( errno ) );
+        exit( EXIT_FAILURE );
+    }
+
+    fprintf( stderr, "Initialization of the HT\n" );
+    HTLISTInit( hashTable );
+    fprintf( stderr, "[ OK ] HT initialized\n" );
+
+
+    testInsertElement( hashTable );
 
 
     fprintf( stderr, "\n\nGet key and value from a search\n" );
@@ -97,6 +118,27 @@ int main( void )
         fprintf( stderr, "[ OK ] Deletion of %s successful\n", "00" );
     else
         fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
+
+
+    fprintf( stderr, "\n\nClearing all the hash table\n" );
+    if ( HTLISTClearHashTable( hashTable, M ) )
+        fprintf( stderr,
+                 "[ OK ] All the hash table has been cleared successfuly\n" );
+    else
+        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
+
+
+    fprintf( stderr, "\n\nClearing all the hash table again\n" );
+    if ( HTLISTClearHashTable( hashTable, M ) )
+        fprintf( stderr,
+                 "[ OK ] All the hash table has been cleared successfuly\n" );
+    else
+        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
+
+
+    testInsertElement( hashTable );
+
+    free( hashTable );
 
     return 0;
 }

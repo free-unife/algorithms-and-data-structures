@@ -11,8 +11,8 @@
 #
 
 
-# macros
-PRG_NAME = 01-htbst.o
+# Macros.
+PRG_NAME = 01-htlistbst.o
 PRG_OBJFILES = list.o bst.o listht.o bstht.o hash.o htlist.o htbst.o main.c
 
 CC = /usr/bin/gcc
@@ -43,7 +43,7 @@ link : $(PRG_OBJFILES) *.h
 	@echo "Compiling ..."
 	@echo "$(CC) -o $(PRG_NAME) $(CFLAGS) $(LIBS) $(CSTANDARD) $(MACRO_REQ)"
 	@$(CC) $(CFLAGS) $(LIBS) $(CSTANDARD) $(MACRO_REQ) $(PRG_OBJFILES) -o $(PRG_NAME)
-	@echo "Compiling terminated."
+	@echo "Compilation terminated."
 
 indent :
 	@echo "Indenting all files..."
@@ -59,10 +59,17 @@ validate :
 run :
 	@echo "Running..."
 	@./$(PRG_NAME)
+	@echo "Done."
 
 runsilent :
 	@echo "Running..."
 	@./$(PRG_NAME) 2>&-
+	@echo "Done."
+
+plot:
+	@echo "Plotting..."
+	@./plot.sh
+	@echo "Done."
 
 clean :
 	@echo "Removing object files..."

@@ -46,6 +46,18 @@ bool HTBSTDelete( htTreeSlot * hashTable, char *key )
     return ( BSTHTDelete( hashTable, hash( key ), key ) );
 }
 
+bool HTBSTClearHashTable( htTreeSlot * hashTable,
+                          unsigned int numberOfSlots )
+{
+    unsigned int i;
+
+    for ( i = 0; i < numberOfSlots; i++ )
+        if ( !BSTHTClearSlot( hashTable, i ) )
+            return false;
+
+    return true;
+}
+
 #ifdef M_HTBSTMAIN_C
 int main( void )
 {
@@ -97,6 +109,24 @@ int main( void )
         fprintf( stderr, "[ OK ] Deletion of %s successful\n", "00" );
     else
         fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
+
+
+    fprintf( stderr, "\n\nClearing all the hash table\n" );
+    if ( HTBSTClearHashTable( hashTable, M ) )
+        fprintf( stderr,
+                 "[ OK ] All the hash table has been cleared successfuly\n" );
+    else
+        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
+
+
+    fprintf( stderr, "\n\nClearing all the hash table again\n" );
+    if ( HTBSTClearHashTable( hashTable, M ) )
+        fprintf( stderr,
+                 "[ OK ] All the hash table has been cleared successfuly\n" );
+    else
+        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
+
+    free( hashTable );
 
     return 0;
 }

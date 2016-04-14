@@ -7,8 +7,14 @@
 
 
 #include "globalDefines.h"
+/*#define PEDANTIC*/
 
 static bool LISTHTListNodeEmpty( listNode head );
+
+#ifdef PEDANTIC
+static bool LISTHTListNodePtrEmpty( listNodePtr headPtr );
+#endif
+static listNode LISTHTClearList( listNode head );
 static bool LISTHTEmptySlot( htListSlot slot );
 static listNode LISTHTList( htListSlot slot );
 static listNodePtr LISTHTListPtr( htListSlot slot );
@@ -24,6 +30,13 @@ static bool LISTHTListNodeEmpty( listNode head )
     return ( LISTEmpty( head ) );
 }
 
+#ifdef PEDANTIC
+static bool LISTHTListNodePtrEmpty( listNodePtr headPtr )
+{
+    return ( headPtr == EMPTY );
+}
+#endif
+
 char *LISTHTListNodeKey( listNode head )
 {
     return ( LISTKey( head ) );
@@ -32,6 +45,31 @@ char *LISTHTListNodeKey( listNode head )
 char *LISTHTListNodeVal( listNode head )
 {
     return ( LISTVal( head ) );
+}
+
+static listNode LISTHTClearList( listNode head )
+{
+    return ( LISTClear( head ) );
+}
+
+bool LISTHTClearSlot( htListSlot * hashTable, unsigned int slotId )
+{
+    /*
+     * Slot is already empty.  
+     */
+    if ( LISTHTEmptySlot( LISTHTSlot( hashTable, slotId ) ) )
+        return true;
+    /*
+     * If the tree has been cleared correctly, the pointer associated to the
+     * * slot must also be cleared. 
+     */
+    else if ( LISTHTListNodeEmpty
+              ( LISTHTClearList
+                ( LISTHTList( LISTHTSlot( hashTable, slotId ) ) ) ) ) {
+        LISTHTFreeSlot( hashTable, slotId );
+        return true;
+    } else
+        return false;
 }
 
 void LISTHTInit( htListSlot * hashTable )
@@ -125,9 +163,17 @@ static void LISTHTFreeSlot( htListSlot * hashTable, unsigned int slotId )
     /*
      * free the listNodePtr.  
      */
-    free( *( hashTable[slotId] ) );
-    hashTable[slotId] = EMPTY;
+#ifdef PEDANTIC
+    if ( !LISTHTListNodePtrEmpty
+         ( LISTHTListPtr( LISTHTSlot( hashTable, slotId )
+            ) ) )
+#endif
+        free( LISTHTListPtr( LISTHTSlot( hashTable, slotId ) ) );
+    /*
+     * free( *( hashTable[slotId] ) ); 
+     */
 
+    hashTable[slotId] = EMPTY;
 }
 
 /*
@@ -269,6 +315,18 @@ int main( void )
     else
         fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
 
+
+    fprintf( stderr, "\n\nClear an entire slot (on %d)\n", M - 2 );
+    if ( LISTHTClearSlot( hashTable, M - 2 )
+         && LISTHTEmptySlot( LISTHTSlot( hashTable, M - 2 ) ) )
+        fprintf( stderr, "[ OK ] The whole slot %d has been cleared\n",
+                 M - 2 );
+
+    fprintf( stderr, "\n\nClear an entire empty slot (on %d)\n", M - 40 );
+    if ( LISTHTClearSlot( hashTable, M - 40 )
+         && LISTHTEmptySlot( LISTHTSlot( hashTable, M - 40 ) ) )
+        fprintf( stderr, "[ OK ] The whole slot %d has been cleared\n",
+                 M - 40 );
     free( hashTable );
 
     return 0;

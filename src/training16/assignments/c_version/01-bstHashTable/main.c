@@ -12,7 +12,11 @@ static double runningTime( clock_t start, clock_t end );
 static char *genRandomString( int len );
 static void shuffleArrayRandomly( char *array, int len );
 static char *getActions( int ins, int search, int del );
-double listOperations( char **keys, char *actions, int totalElements );
+static bool keyDuplicates( char **keys, int len );
+static double listOperations( char **keys, char *actions,
+                              int totalElements );
+static double bstOperations( char **keys, char *actions,
+                             int totalElements );
 
 static double runningTime( clock_t start, clock_t end )
 {
@@ -53,6 +57,7 @@ static char *genRandomString( int len )
 
 /* Fisher yates algorithm:
  * <http://www.dispersiondesign.com/articles/algorithms/shuffle_array_order>
+ * This function is used to shuffle the actions array.
  */
 static void shuffleArrayRandomly( char *array, int len )
 {
@@ -82,7 +87,10 @@ static char *getActions( int ins, int search, int del )
     }
 
     /*
-     * Fill the array with the correct number of actions. 
+     * Fill the array with the correct number of actions.
+     * i = insert
+     * s = search
+     * d = delete
      */
     while ( i < ins + search + del ) {
         if ( i < ins )
@@ -99,7 +107,16 @@ static char *getActions( int ins, int search, int del )
     return actions;
 }
 
-double listOperations( char **keys, char *actions, int totalElements )
+static bool keyDuplicates( char **keys, int len )
+{
+    if ( len > 1 )
+        return ( strcmp( keys[len - 1], keys[len - 2] ) ==
+                 0 ? true : false );
+    return false;
+}
+
+static double listOperations( char **keys, char *actions,
+                              int totalElements )
 {
     int j;
     clock_t startClock, endClock;
@@ -109,28 +126,20 @@ double listOperations( char **keys, char *actions, int totalElements )
     /*
      * Create hash table for the lists. 
      */
-    if ( ( listHashTable = malloc( sizeof( htListSlot ) * M ) ) == NULL ) {
+    if ( ( listHashTable = malloc( sizeof( htListSlot * ) * M ) ) == NULL ) {
         if ( errno )
             perror( strerror( errno ) );
         exit( EXIT_FAILURE );
     }
 
-/*    fprintf (stderr, "---- %p ----\n", (void *) listHashTable ); */
+    HTLISTInit( listHashTable );
 
     totalTime = 0.0;
-    /*
-     * For which decrements until elements* > 0 
-     */
     for ( j = 0; j < totalElements; j++ ) {
         if ( actions[j] == 'i' ) {
-            /*
-             * This counts also the time tried to insert invalid keys. 
-             */
             startClock = clock(  );
-            while ( !HTLISTInsert( listHashTable, keys[j],
-                                   "insertingAlwaysTheSameStringForSimplicity" ) )
-            {
-            }
+            HTLISTInsert( listHashTable, keys[j],
+                          "insertingAlwaysTheSameStringForSimplicity" );
             endClock = clock(  );
         } else if ( actions[j] == 's' ) {
             startClock = clock(  );
@@ -144,15 +153,14 @@ double listOperations( char **keys, char *actions, int totalElements )
         totalTime += runningTime( startClock, endClock );
     }
 
-    /*
-     * Of course, with the following we don't free the hash table but only its reference. 
-     */
-/*    free( listHashTable );*/
+    HTLISTClearHashTable( listHashTable, M );
+    free( listHashTable );
 
     return totalTime;
 }
 
-double bstOperations( char **keys, char *actions, int totalElements )
+static double bstOperations( char **keys, char *actions,
+                             int totalElements )
 {
     int j;
     clock_t startClock, endClock;
@@ -160,31 +168,22 @@ double bstOperations( char **keys, char *actions, int totalElements )
     htTreeSlot *bstHashTable;
 
     /*
-     * Create hash table for the bst. 
+     * Create hash table for the bsts. 
      */
-    if ( ( bstHashTable = malloc( sizeof( htTreeSlot ) * M ) ) == NULL ) {
+    if ( ( bstHashTable = malloc( sizeof( htTreeSlot * ) * M ) ) == NULL ) {
         if ( errno )
             perror( strerror( errno ) );
         exit( EXIT_FAILURE );
     }
 
-/*    fprintf (stderr, "---- %p ----\n", (void *) bstHashTable ); */
+    HTBSTInit( bstHashTable );
 
     totalTime = 0.0;
-    /*
-     * For which decrements until elements* > 0 
-     */
     for ( j = 0; j < totalElements; j++ ) {
         if ( actions[j] == 'i' ) {
-            /*
-             * This counts also the time tried to insert invalid keys. 
-             */
             startClock = clock(  );
-            while ( !HTBSTInsert( bstHashTable, keys[j],
-                                  "insertingAlwaysTheSameStringForSimplicity" ) )
-            {
-                printf( "in\n" );
-            }
+            HTBSTInsert( bstHashTable, keys[j],
+                         "insertingAlwaysTheSameStringForSimplicity" );
             endClock = clock(  );
         } else if ( actions[j] == 's' ) {
             startClock = clock(  );
@@ -198,11 +197,8 @@ double bstOperations( char **keys, char *actions, int totalElements )
         totalTime += runningTime( startClock, endClock );
     }
 
-    /*
-     * Of course, with the following we don't free the hash table but only its reference. 
-     */
-/*    HTBSTClear ( bstHashTable );  */
-/*    free( bstHashTable );*/
+    HTBSTClearHashTable( bstHashTable, M );
+    free( bstHashTable );
 
     return totalTime;
 }
@@ -214,6 +210,10 @@ int main( void )
     int elementsToInsert, elementsToSearch, elementsToDelete;
     int totalElements;
     char **keys, *actions;
+
+/*    int loadFactor;*/
+
+    fprintf( stdout, "elements    list    bst\n" );
 
     for ( i = 1; i <= NUMBER_OF_TESTS; i++ ) {
         /*
@@ -229,20 +229,25 @@ int main( void )
                 perror( strerror( errno ) );
             exit( EXIT_FAILURE );
         }
-        for ( j = 0; j < elements; j++ )
-            keys[j] = genRandomString( KEYLENGTH );
+        /*
+         * Unique keys are generated.
+         */
+        for ( j = 0; j < elements; j++ ) {
+            do
+                keys[j] = genRandomString( KEYLENGTH );
+            while ( keyDuplicates( keys, j ) );
+
+        }
 
         /*
          * Operations (in probability percentages):
-         * *  75 % elements = insert
-         * *  12.5 % elements = search
-         * *  12.5 % elements = delete
+         * 75 % elements = insert
+         * 12.5 % elements = search
+         * 12.5 % elements = delete
          */
         /*
-         * From probability percentages to integers. 
-         */
-        /*
-         * A small approximation is done because we are working with integers. 
+         * Calculated the number of operations based on each type.
+         * A small approximation is done because we are working with integers.
          */
         elementsToInsert = elements * .75;
         elementsToSearch = elements * .125;
@@ -250,20 +255,18 @@ int main( void )
         totalElements =
             elementsToInsert + elementsToSearch + elementsToDelete;
 
-        /*
-         * Get the actions 
-         */
         actions =
             getActions( elementsToInsert, elementsToSearch,
                         elementsToDelete );
 
-        fprintf( stderr, "%d    %f", totalElements, listOperations( keys,
-                                                                    actions,
-                                                                    totalElements ) );
+/*        loadFactor = elementsToInsert / M;
 
-        fprintf( stderr, "    %f\n", bstOperations( keys,
-                                                    actions,
-                                                    totalElements ) );
+        fprintf( stderr, "%d", loadFactor );
+*/
+        fprintf( stdout, "%d    %f    %f\n", totalElements,
+                 listOperations( keys, actions, totalElements ),
+                 bstOperations( keys, actions, totalElements ) );
+
 
         free( actions );
         free( keys );

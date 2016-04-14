@@ -28,6 +28,7 @@ static bst BSTNonEmptyInsert( bst root, char *key, char *value );
 #ifdef M_BSTMAIN_C
 static bool BSTis( bst root, char *minKey, char *maxKey );
 #endif
+
 static bool BSTNonEmptyDelete( bstPtr rootPtr, bst root, char *key );
 
 void BSTInit( bstPtr rootPtr )
@@ -285,18 +286,22 @@ bool BSTDelete( bstPtr rootPtr, char *key )
         return ( BSTNonEmptyDelete( rootPtr, *rootPtr, key ) );
 }
 
-/*
-bst BSTClear ( bst root )
+/* Pre order visit to delete the whole tree.
+ * we don't care about repositioning nodes or saving pointers.
+ */
+bst BSTClear( bst root )
 {
-    if ( BSTEmpty ( root ) )
+    if ( BSTEmpty( root ) )
         return EMPTY;
 
-    BSTClear ( BSTLeft ( root ) );
-    BSTClear ( BSTLeft ( root ) );
+    BSTClear( BSTLeft( root ) );
+    BSTClear( BSTRight( root ) );
 
-    free ( root );
+    free( root );
+
+    return EMPTY;
 }
-*/
+
 
 #ifdef M_BSTMAIN_C
 int main( void )
@@ -410,6 +415,20 @@ int main( void )
                  "[ OK ] Node with key %s has been deleted, Now the parent of %s should be %s: %s\n",
                  "04", "03", "02",
                  BSTKey( BSTParent( BSTSearch( *bsTree, "03" ) ) ) );
+    else
+        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
+
+
+    fprintf( stderr, "\n\nRemove the whole tree automatically\n" );
+    if ( BSTEmpty( BSTClear( *bsTree ) ) )
+        fprintf( stderr, "[ OK ] The whole tree has been deleted\n" );
+    else
+        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
+
+
+    fprintf( stderr, "\n\nRemove the empty tree\n" );
+    if ( BSTEmpty( BSTClear( *bsTree ) ) )
+        fprintf( stderr, "[ OK ] There was nothing to delete\n" );
     else
         fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
 

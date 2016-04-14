@@ -26,7 +26,7 @@
 #define KEYLENGTH 16
 #define KEYCHARMIN 33
 #define KEYCHARMAX 126
-#define NUMBER_OF_TESTS 10000
+#define NUMBER_OF_TESTS 200
 #define M 997
 
 unsigned int hash( char *input );
@@ -59,6 +59,7 @@ char *LISTVal( list head );
 list LISTInsert( listPtr headPtr, char *key, char *value );
 list LISTSearch( list head, char *key );
 bool LISTDelete( listPtr headPtr, char *key );
+list LISTClear ( list head );
 
 char *LISTHTListNodeKey ( listNode list );
 char *LISTHTListNodeVal ( listNode list );
@@ -67,12 +68,13 @@ htListSlot LISTHTSlot( htListSlot * hashTable, unsigned int slotId );
 bool LISTHTInsert( htListSlot * hashTable, unsigned int slotId, char *key, char *value );
 list LISTHTSearch( htListSlot slot, char *key );
 bool LISTHTDelete( htListSlot * hashTable, unsigned int slotId, char *key );
+bool LISTHTClearSlot ( htListSlot * hashTable, unsigned int slotId );
 
 void HTLISTInit( htListSlot * hashTable );
 bool HTLISTInsert( htListSlot * hashTable, char *key, char *value );
 listElement HTLISTSearch( htListSlot * hashTable, char *key );
 bool HTLISTDelete( htListSlot * hashTable, char *key );
-
+bool HTLISTClearHashTable( htListSlot * hashTable, unsigned int numberOfSlots );
 /* BST struct. */
 struct bstNode {
     char *key;
@@ -103,18 +105,23 @@ char *BSTVal( bst root );
 bst BSTInsert( bstPtr rootPtr, char *key, char *value );
 bst BSTSearch( bst root, char *key );
 bool BSTDelete( bstPtr rootPtr, char *key );
+bst BSTClear ( bst root );
 
 char *BSTHTTreeNodeKey ( treeNode root );
 char *BSTHTTreeNodeVal ( treeNode root );
+bool BSTHTClearSlot ( htTreeSlot * hashTable, unsigned int slotId );
+treeNode BSTHTClear ( treeNode root );
 void BSTHTInit( htTreeSlot * hashTable );
 htTreeSlot BSTHTSlot( htTreeSlot * hashTable, unsigned int slotId );
 bool BSTHTInsert( htTreeSlot * hashTable, unsigned int slotId, char *key, char *value );
 bst BSTHTSearch( htTreeSlot slot, char *key );
 bool BSTHTDelete( htTreeSlot * hashTable, unsigned int slotId, char *key );
+bool BSTHTClearSlot ( htTreeSlot * hashTable, unsigned int slotId );
 
 void HTBSTInit( htTreeSlot * hashTable );
 bool HTBSTInsert( htTreeSlot * hashTable, char *key, char *value );
 treeElement HTBSTSearch( htTreeSlot * hashTable, char *key );
 bool HTBSTDelete( htTreeSlot * hashTable, char *key );
+bool HTBSTClearHashTable( htTreeSlot * hashTable, unsigned int numberOfSlots );
 
 #endif

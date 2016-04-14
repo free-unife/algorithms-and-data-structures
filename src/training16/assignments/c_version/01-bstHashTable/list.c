@@ -171,6 +171,17 @@ bool LISTDelete( listPtr headPtr, char *key )
         return ( LISTNonEmptyDelete( headPtr, *headPtr, key ) );
 }
 
+list LISTClear( list head )
+{
+    if ( LISTEmpty( head ) )
+        return EMPTY;
+
+    LISTClear( LISTSuccessor( head ) );
+    free( head );
+
+    return EMPTY;
+}
+
 #ifdef M_LISTMAIN_C
 static void printList( list head )
 {
@@ -289,6 +300,19 @@ int main( void )
     fprintf( stderr, "\n\nPrinting list\n" );
     printList( *doubleLinked );
 
+
+    fprintf( stderr, "\n\nRemove the whole list automatically\n" );
+    if ( LISTEmpty( LISTClear( *doubleLinked ) ) )
+        fprintf( stderr, "[ OK ] The whole list has been deleted\n" );
+    else
+        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
+
+
+    fprintf( stderr, "\n\nRemove the empty list\n" );
+    if ( LISTEmpty( LISTClear( *doubleLinked ) ) )
+        fprintf( stderr, "[ OK ] There was nothing to delete\n" );
+    else
+        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
 
     free( doubleLinked );
 

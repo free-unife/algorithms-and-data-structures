@@ -27,6 +27,9 @@ Some exercises need `gnuplot` to be installed, otherwise no output is shown.
 Specifically the build files behave similarly to `build.sh` 
 and they are called `buildAndPlot.sh`.
 
+In some cases there is a traditional Makefile with all the necessary targets 
+available.
+
 Fell free to contribute to this repository.
 
 ##Covered arguments

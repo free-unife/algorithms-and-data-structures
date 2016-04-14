@@ -7,8 +7,15 @@
 
 
 #include "globalDefines.h"
+/*#define PEDANTIC*/
 
 static bool BSTHTTreeNodeEmpty( treeNode root );
+
+#ifdef PEDANTIC
+static bool BSTHTTreeNodePtrEmpty( treeNodePtr rootPtr );
+#endif
+
+static treeNode BSTHTClearTree( treeNode root );
 static bool BSTHTEmptySlot( htTreeSlot slot );
 static treeNode BSTHTBst( htTreeSlot slot );
 static treeNodePtr BSTHTBstPtr( htTreeSlot slot );
@@ -24,6 +31,13 @@ static bool BSTHTTreeNodeEmpty( treeNode root )
     return ( BSTEmpty( root ) );
 }
 
+#ifdef PEDANTIC
+static bool BSTHTTreeNodePtrEmpty( treeNodePtr rootPtr )
+{
+    return ( rootPtr == EMPTY );
+}
+#endif
+
 char *BSTHTTreeNodeKey( treeNode root )
 {
     return ( BSTKey( root ) );
@@ -34,6 +48,32 @@ char *BSTHTTreeNodeVal( treeNode root )
     return ( BSTVal( root ) );
 }
 
+static treeNode BSTHTClearTree( treeNode root )
+{
+    return ( BSTClear( root ) );
+}
+
+/* When a whole slot is cleared even its associated tree must be cleared. */
+bool BSTHTClearSlot( htTreeSlot * hashTable, unsigned int slotId )
+{
+    /*
+     * Slot is already empty.  
+     */
+    if ( BSTHTEmptySlot( BSTHTSlot( hashTable, slotId ) ) )
+        return true;
+    /*
+     * If the tree has been cleared correctly, the pointer associated to the
+     * * slot must also be cleared. 
+     */
+    else if ( BSTHTTreeNodeEmpty
+              ( BSTHTClearTree
+                ( BSTHTBst( BSTHTSlot( hashTable, slotId ) ) ) ) ) {
+        BSTHTFreeSlot( hashTable, slotId );
+        return true;
+    } else
+        return false;
+}
+
 void BSTHTInit( htTreeSlot * hashTable )
 {
     int i;
@@ -42,7 +82,7 @@ void BSTHTInit( htTreeSlot * hashTable )
         hashTable[i] = EMPTY;
 }
 
-/* Check if the BST corresponding to the current slot exists.  */
+/* Check if the BST corresponding to the current slot exists. */
 static bool BSTHTEmptySlot( htTreeSlot slot )
 {
     return ( slot == EMPTY );
@@ -56,22 +96,20 @@ htTreeSlot BSTHTSlot( htTreeSlot * hashTable, unsigned int slotId )
 /* Return pointer to the root node of the BST corresponding to the input slot.  */
 static treeNode BSTHTBst( htTreeSlot slot )
 {
-    return ( **slot );
+    return ( BSTHTEmptySlot( slot ) ? EMPTY : **slot );
 }
 
 /* Return BST pointer from input slot.  */
 static treeNodePtr BSTHTBstPtr( htTreeSlot slot )
 {
-    return ( *slot );
+    return ( BSTHTEmptySlot( slot ) ? EMPTY : *slot );
 }
 
 /* New slot -> allocate new treeNodePtr.  */
 static htTreeSlot BSTHTNewSlot( htTreeSlot * hashTable,
                                 unsigned int slotId )
 {
-
     treeNodePtr bsTree;
-
 
     assert( BSTHTEmptySlot( BSTHTSlot( hashTable, slotId ) ) );
 
@@ -92,7 +130,6 @@ static htTreeSlot BSTHTNewSlot( htTreeSlot * hashTable,
     *( BSTHTSlot( hashTable, slotId ) ) = bsTree;
 
     return ( BSTHTSlot( hashTable, slotId ) );
-
 }
 
 static bool BSTHTNewTreeNode( htTreeSlot slot, char *key, char *value )
@@ -123,11 +160,20 @@ treeNode BSTHTSearch( htTreeSlot slot, char *key )
 static void BSTHTFreeSlot( htTreeSlot * hashTable, unsigned int slotId )
 {
     /*
-     * free the treeNodePtr.  
+     * free the treeNodePtr if this exists. Since free( NULL ) does not return
+     * an error the following if is not compulsory.
      */
-    free( *( hashTable[slotId] ) );
-    hashTable[slotId] = EMPTY;
+#ifdef PEDANTIC
+    if ( !BSTHTTreeNodePtrEmpty
+         ( BSTHTBstPtr( BSTHTSlot( hashTable, slotId )
+            ) ) )
+#endif
+        free( BSTHTBstPtr( BSTHTSlot( hashTable, slotId ) ) );
+    /*
+     * free( *( hashTable[slotId] ) ); 
+     */
 
+    hashTable[slotId] = EMPTY;
 }
 
 /*
@@ -265,6 +311,18 @@ int main( void )
                  2 );
     else
         fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
+
+    fprintf( stderr, "\n\nClear an entire slot (on %d)\n", M - 2 );
+    if ( BSTHTClearSlot( hashTable, M - 2 )
+         && BSTHTEmptySlot( BSTHTSlot( hashTable, M - 2 ) ) )
+        fprintf( stderr, "[ OK ] The whole slot %d has been cleared\n",
+                 M - 2 );
+
+    fprintf( stderr, "\n\nClear an entire empty slot (on %d)\n", M - 40 );
+    if ( BSTHTClearSlot( hashTable, M - 40 )
+         && BSTHTEmptySlot( BSTHTSlot( hashTable, M - 40 ) ) )
+        fprintf( stderr, "[ OK ] The whole slot %d has been cleared\n",
+                 M - 40 );
 
     free( hashTable );
 
