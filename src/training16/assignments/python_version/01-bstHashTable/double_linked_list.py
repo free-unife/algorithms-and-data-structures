@@ -1,23 +1,29 @@
-''' This module implements a double linked list '''
+'''
+Copyright © 2016 Franco Masotti <franco.masotti@student.unife.it>
+                 Danny Lessio   <danny.lessio@gmail.com>
+This work is free. You can redistribute it and/or modify it under the
+terms of the Do What The Fuck You Want To Public License, Version 2,
+as published by Sam Hocevar. See the LICENSE file for more details.
+'''
 
-class Node( object ):
-    def __init__( self, key, value = 0 ):
-        self._key = key
-        self._value = value
+''' This module implements a double linked list '''
+class StdNode( object ):
+    def __init__( self, element ):
+        self._element = element
         self._prev = None
         self._next = None
 
-    def get_key( self ):
-        return self._key
-
-    def get_value( self ):
-        return self._value
+    def set_element( self, element ):
+        self._element = element
 
     def set_next( self, nextt ):
         self._next = nextt
 
     def set_prev( self, prev ):
         self._prev = prev
+
+    def get_element( self ):
+        return self._element
 
     def get_next( self ):
         return self._next
@@ -28,81 +34,90 @@ class Node( object ):
 
 
 class DoubleLinkedList( object ):
+    ''' This class implements a standard DoubleLinkedList
+    that can handle multiple Node Types '''
+    
+    def __init__( self, NodeType=StdNode, dummy_attr=False ):
+        self._NodeType = NodeType
 
-    # This creates a dummyNode and refers to itself
-    def __init__( self ):
-        self._dummy = Node( -1 )
+        # create a dummyNode and refers to itself
+        self._dummy = self._NodeType( dummy_attr )
         self._dummy.set_next( self._dummy )
         self._dummy.set_prev( self._dummy )
 
 
+    # return a list of nodes searching for element
+    def find_nodes( self, element ):
+        found_nodes = []
+        dummy = self._dummy
 
-    def insert_node_in_queue( self, key, value = 0):
+        a_node = dummy.get_next()
+
+        while a_node is not dummy :
+
+            if element == a_node.get_element() :
+                found_nodes.append( a_node )
+
+            a_node = a_node.get_next()
+
+        return found_nodes
+
+
+    def insert_node_in_queue( self, *node_attr, verbose=False ):
+        if verbose is True:
+            print( "insert", node_attr, "in queue")
+
         # create the node
-        new_node = Node( key, value )
+        # node_attr is a tuple, the * expands it.
+        new_node = self._NodeType( *node_attr )
 
         # Fix chaining
         new_node.set_prev( self._dummy.get_prev() )
         new_node.set_next( self._dummy )
         self._dummy.get_prev().set_next( new_node )
         self._dummy.set_prev( new_node )
-        return
+        return True
 
-    def insert_node_in_head( self, key, value = 0 ):
-        # create the element
-        new_node = Node( key, value )
+
+    def insert_node_in_head( self, *node_attr, verbose=False ):
+        if verbose is True:
+            print( "insert", node_attr, "in head")
+
+        # create the Node
+        new_node = self._NodeType( *node_attr )
 
         # Fix chaining
         new_node.set_next( self._dummy.get_next() )
         new_node.set_prev( self._dummy )
         self._dummy.get_next().set_prev( new_node )
         self._dummy.set_next( new_node )
-        return
+        return True
 
-    def insert( self, key, value = 0 ):
-        return self.insert_node_in_queue( key, value )
-
-    # prints all the keys inside the list
-    def print_keys( self ):
+ 
+    # prints all the elements inside the list
+    def print_elements( self ):
+        print("Printing the list elements:")
         index = 0
-        node_to_print = self._dummy.get_next()
+        dummy = self._dummy
 
-        while node_to_print != self._dummy:
-            key = node_to_print.get_key()
-            print( "Node [%d] -> key == %d" %( index, key ) )
-            node_to_print = node_to_print.get_next()
+        a_node = dummy.get_next()
+
+        while a_node is not dummy :
+            element = a_node.get_element()
+            print( "Node [%d] -> element == %s" %( index, element ) )
+            a_node = a_node.get_next()
             index = index + 1
         return
 
-    # return a node from its key, if the node is not found None is returned
-    def search_node( self, key ):
-        if key is None:
-            return None
 
-        node_to_search = self._dummy.get_next()
-
-        while node_to_search != self._dummy:
-            key_of_node = node_to_search.get_key()
-
-            if key == key_of_node:
-                return node_to_search
-
-            node_to_search = node_to_search.get_next()
-
-        return None
-
-    def search( self, key ):
-        return self.search_node( key )
-
-    def delete_node( self, node_to_delete ):
-
+    def delete_node( self, node_to_delete, verbose=False ):
+        if verbose is True:
+            print( "Deleting node %s from list" % node_to_delete )
         if node_to_delete is not None :
-
             # Get it out from the list
             node_to_delete.get_prev().set_next( node_to_delete.get_next() )
             node_to_delete.get_next().set_prev( node_to_delete.get_prev() )
+            return True
+        return False
 
-        return
 
-    def delete( self, node_to_delete ):
-        return self.delete_node( node_to_delete )
