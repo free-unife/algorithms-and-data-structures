@@ -9,6 +9,8 @@ as published by Sam Hocevar. See the LICENSE file for more details.
 from double_linked_list import DoubleLinkedList
 from hash_implementations import HashTable
 from key_value_double_linked_list import KeyValueDoubleLinkedList
+from bst import BST
+from input_helper import generate_random_integers
 
 '''
 # Testing HastTable
@@ -77,3 +79,16 @@ node = lista.search( key="00" )
 node = lista.search( key="01" )
 print( node.get_value() )
 '''
+
+# testing standard bst
+bst = BST()
+
+integers = generate_random_integers( 1000 )
+
+print( len(integers ))
+for integer in integers:
+	if bst.insert( integer ) is False:
+		print( "multiple")
+
+bst.pre_order_print()
+bst.assert_bst()
