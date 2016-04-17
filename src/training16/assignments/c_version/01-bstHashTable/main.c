@@ -29,8 +29,11 @@ static char *genRandomString( int len )
     char *str;
     struct timespec t1;
 
-    if ( ( str = calloc( len + 1, sizeof( char ) ) ) == NULL )
+    if ( ( str = calloc( len + 1, sizeof( char ) ) ) == NULL ) {
+        if ( errno )
+            perror( strerror( errno ) );
         exit( EXIT_FAILURE );
+    }
 
     /*
      * Seed is set in nanoseconds.
