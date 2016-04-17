@@ -126,7 +126,7 @@ class HybridSort( MergeSort, InsertionSort ):
     if the partition to sort is lower than K, otherwise sorts with MergeSort. '''
 
     def __init__( self, input_array = [], K = -1 ):
-        super().__init__( input_array )
+        super( MergeSort, self ).__init__( input_array )
         self._K = K
         return
 
