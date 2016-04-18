@@ -296,7 +296,7 @@ bst BSTClear( bst root )
 
     BSTClear( BSTLeft( root ) );
     BSTClear( BSTRight( root ) );
-
+    root = EMPTY;
     free( root );
 
     return EMPTY;

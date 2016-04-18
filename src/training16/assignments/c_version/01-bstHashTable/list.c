@@ -177,6 +177,7 @@ list LISTClear( list head )
         return EMPTY;
 
     LISTClear( LISTSuccessor( head ) );
+    head = EMPTY;
     free( head );
 
     return EMPTY;

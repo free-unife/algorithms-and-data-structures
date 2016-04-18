@@ -7,7 +7,6 @@
 
 
 #include "globalDefines.h"
-/*#define PEDANTIC*/
 
 static bool LISTHTListNodeEmpty( listNode head );
 
@@ -167,6 +166,7 @@ static void LISTHTFreeSlot( htListSlot * hashTable, unsigned int slotId )
     if ( !LISTHTListNodePtrEmpty
          ( LISTHTListPtr( LISTHTSlot( hashTable, slotId )
             ) ) )
+        *( LISTHTSlot( hashTable, slotId ) ) = EMPTY;
 #endif
         free( LISTHTListPtr( LISTHTSlot( hashTable, slotId ) ) );
     /*

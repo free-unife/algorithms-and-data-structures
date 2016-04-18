@@ -27,6 +27,9 @@ MACRO_REQ =
 INDENT_OPTS = -kr -prs -nut -bap -bad -br -cdb -sc
 SPLINT_OPTS = -usereleased -compdef -preproc
 
+PLOT_INPUT_FILE = out.dat
+PLOT_OUTPUT_DIR = images
+
 # Targets
 
 default : link # default target
@@ -68,7 +71,11 @@ runsilent :
 
 plot:
 	@echo "Plotting..."
-	@./plot.sh
+	@mkdir -p $(PLOT_OUTPUT_DIR)
+	@./$(PRG_NAME) > $(PLOT_INPUT_FILE)
+	@./plot.sh $(PLOT_INPUT_FILE) > $(PLOT_OUTPUT_DIR)/plot.png
+	@ rm $(PLOT_INPUT_FILE)
+	@echo "Plot results have been written in $(PLOT_OUTPUT_DIR)/plot.png"
 	@echo "Done."
 
 clean :

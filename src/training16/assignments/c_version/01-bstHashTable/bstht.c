@@ -7,7 +7,6 @@
 
 
 #include "globalDefines.h"
-/*#define PEDANTIC*/
 
 static bool BSTHTTreeNodeEmpty( treeNode root );
 
@@ -167,6 +166,7 @@ static void BSTHTFreeSlot( htTreeSlot * hashTable, unsigned int slotId )
     if ( !BSTHTTreeNodePtrEmpty
          ( BSTHTBstPtr( BSTHTSlot( hashTable, slotId )
             ) ) )
+        *( BSTHTSlot( hashTable, slotId ) ) = EMPTY;
 #endif
         free( BSTHTBstPtr( BSTHTSlot( hashTable, slotId ) ) );
     /*

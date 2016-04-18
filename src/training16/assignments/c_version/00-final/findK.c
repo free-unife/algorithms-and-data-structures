@@ -27,6 +27,10 @@ static int minIndexDoubleArray( double *array, int len )
     return minInd;
 }
 
+/* k is the maximum size where insertion sort performs like merge sort.
+ * Before k insertion sort performs better ( and after k merge sort performs
+ * better ).
+ */
 int findK( void )
 {
     int attempt, size;
@@ -37,8 +41,10 @@ int findK( void )
     int *possibleK;
     int k;
 
-    possibleK = allocArray( ATTEMPTS );
+    fprintf( stdout, "%s    %s    %s    %s    %s\n", "attempt", "arraySize",
+                     "insertionSortTime", "mergeSortTime", "diffTime" );
 
+    possibleK = allocArray( ATTEMPTS );
     for ( attempt = 0; attempt < ATTEMPTS; attempt++ ) {
 
         if ( ( diffTimes =
@@ -49,7 +55,7 @@ int findK( void )
             exit( EXIT_FAILURE );
         }
 
-        for ( size = MIN_SIZE; size < MAX_SIZE; size++ ) {
+        for ( size = MIN_SIZE; size <= MAX_SIZE; size++ ) {
             initArray( &array );
             initArray( &arrayInsertionSort );
             initArray( &arrayMergeSort );
@@ -83,7 +89,7 @@ int findK( void )
             assert( arrayOrdered( arrayInsertionSort ) );
             assert( arrayOrdered( arrayMergeSort ) );
 
-            diffTime =  fabs ( insertionSortTime - mergeSortTime);
+            diffTime = fabs( insertionSortTime - mergeSortTime );
 
             /*
              * Save times. 
@@ -109,12 +115,13 @@ int findK( void )
     /*
      * Average of all possible ks. 
      */
-    k = arraySum( possibleK ) / arrayLength (possibleK);
+    k = arraySum( possibleK ) / arrayLength( possibleK );
 
-    fprintf ( stderr, "\n\nPossible k for each one of the %d attempts\n", ATTEMPTS );
-    printArray ( possibleK );
+    fprintf( stderr, "\n\nPossible k for each one of the %d attempts\n",
+             ATTEMPTS );
+    printArray( possibleK );
 
-    free (possibleK);
+    free( possibleK );
 
     return k;
 }

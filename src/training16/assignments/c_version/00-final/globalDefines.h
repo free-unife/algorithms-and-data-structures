@@ -21,8 +21,11 @@
 
 #define INF INT_MAX
 #define EMPTY NULL
-#define RAND_MIN 0
-#define ARRAY_NULL_NUM INF
+#define ARRAY_NULL_NUM INT_MIN
+
+#define MIN_RAND 0
+#define MAX_RAND INT_MAX
+
 #define ATTEMPTS 10
 #define MIN_SIZE 20
 #define MAX_SIZE 150

@@ -5,6 +5,7 @@
  * as published by Sam Hocevar. See the LICENSE file for more details.
  */
 
+/* This file contains the int array ADT as well as the runningTime function. */
 
 #include "globalDefines.h"
 
@@ -139,7 +140,8 @@ int *allocArray( int len )
 {
     int *dest;
 
-    if ( ( dest = malloc( ( ( size_t ) len + 1) * sizeof( int ) ) ) == NULL ) {
+    if ( ( dest =
+           malloc( ( ( size_t ) len + 1 ) * sizeof( int ) ) ) == NULL ) {
         if ( errno )
             perror( strerror( errno ) );
         exit( EXIT_FAILURE );
@@ -177,9 +179,9 @@ int *genRandomArray( int len )
     srand( t1.tv_nsec );
 
     for ( i = 0; i < len; i++ ) {
-        array[i] = ( rand(  ) % ( RAND_MAX - RAND_MIN ) ) + RAND_MIN;
-        assert( ge( el( array, i ), RAND_MIN )
-                && le( el( array, i ), RAND_MAX ) );
+        array[i] = ( rand(  ) % ( MAX_RAND - MIN_RAND ) ) + MIN_RAND;
+        assert( ge( el( array, i ), MIN_RAND )
+                && le( el( array, i ), MAX_RAND ) );
     }
 
     return array;

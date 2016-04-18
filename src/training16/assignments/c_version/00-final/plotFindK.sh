@@ -11,15 +11,13 @@
 
 path="$1"
 
-title="Comparison between hash table implemented with chaining LISTs and BSTs"
+title="Comparison between insertion sort and merge sort to find k"
 xLabel="number of elements"
 yLabel="time (s)"
 
-col0="elements"
-col1="list"
-col2="bst"
+col0="arraySize"
+col1="insertionSortTime"
+col2="mergeSortTime"
 
 ../plot.sh "$path" "$title" "$xLabel" "$yLabel" "$col0" "$col1" "$col2"
-
-
 

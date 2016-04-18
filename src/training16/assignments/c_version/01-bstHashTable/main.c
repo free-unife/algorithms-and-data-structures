@@ -129,7 +129,7 @@ static double listOperations( char **keys, char *actions,
     /*
      * Create hash table for the lists. 
      */
-    if ( ( listHashTable = malloc( sizeof( htListSlot * ) * M ) ) == NULL ) {
+    if ( ( listHashTable = malloc( sizeof( htListSlot ) * M ) ) == NULL ) {
         if ( errno )
             perror( strerror( errno ) );
         exit( EXIT_FAILURE );
@@ -173,7 +173,7 @@ static double bstOperations( char **keys, char *actions,
     /*
      * Create hash table for the bsts. 
      */
-    if ( ( bstHashTable = malloc( sizeof( htTreeSlot * ) * M ) ) == NULL ) {
+    if ( ( bstHashTable = malloc( sizeof( htTreeSlot ) * M ) ) == NULL ) {
         if ( errno )
             perror( strerror( errno ) );
         exit( EXIT_FAILURE );
