@@ -52,7 +52,8 @@ class BST( object ):
 			
 			else:
 				self.__recursive_insert( root.get_left(), new_node )
-		
+				return False
+
 		# right side
 		elif new_node.get_key() > root.get_key() :
 			if root.get_right() is None:
@@ -61,6 +62,7 @@ class BST( object ):
 
 			else:
 				self.__recursive_insert( root.get_right(), new_node )
+				return False
 
 		# error		
 		elif new_node.get_key() == root.get_key():

@@ -88,7 +88,7 @@ integers = generate_random_integers( 1000 )
 print( len(integers ))
 for integer in integers:
 	if bst.insert( integer ) is False:
-		print( "multiple")
+		print( integer, " duplicate")
 
 bst.pre_order_print()
 bst.assert_bst()
