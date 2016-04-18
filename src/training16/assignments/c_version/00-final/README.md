@@ -25,4 +25,4 @@ insertionSort.c     |            merge.c ---------
 - K represents the array size where insertion sorts performs like merge sort.
   Below K insertion sort performs better than merge sort. 
 
-![findk.png](https://raw.githubusercontent.com/free-unife/algorithms-and-data-structures/master/src/training16/assignments/c_version/00-final/images/findK.png)
+![findk.png](https://raw.githubusercontent.com/free-unife/algorithms-and-data-structures/master/src/training16/assignments/c_version/00-final/images/findk.png)
