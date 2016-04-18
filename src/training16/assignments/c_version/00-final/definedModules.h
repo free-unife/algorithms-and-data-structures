@@ -27,4 +27,6 @@
 /*#define M_MERGE_C*/
 /*#define M_MERGESORT_C*/
 
-#define M_FINDK_C
+/*#define M_FINDK_C*/
+
+#define M_HYBRIDSORT_C

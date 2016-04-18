@@ -56,4 +56,6 @@ void merge( int *array, int p, int q, int r );
 
 void mergeSort( int *array, int p, int r );
 
+int findK( void );
+
 #endif

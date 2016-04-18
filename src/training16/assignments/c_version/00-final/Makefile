@@ -13,7 +13,7 @@
 
 # Macros.
 PRG_NAME = 00-hybridMergeComp.o
-PRG_OBJFILES = utils.o insertionSort.o merge.o mergeSort.o findK.c
+PRG_OBJFILES = utils.o insertionSort.o merge.o mergeSort.o findK.o hybridSort.o
 
 CC = /usr/bin/gcc
 BIN_DIR = /usr/bin

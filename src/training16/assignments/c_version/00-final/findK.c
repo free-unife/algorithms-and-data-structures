@@ -41,8 +41,15 @@ int findK( void )
     int *possibleK;
     int k;
 
-    fprintf( stdout, "%s    %s    %s    %s    %s\n", "attempt", "arraySize",
-                     "insertionSortTime", "mergeSortTime", "diffTime" );
+    #ifdef M_FINDK_C
+    fprintf( stdout, "%s    %s    %s    %s    %s\n", "attempt",
+             "arraySize", "insertionSortTime", "mergeSortTime",
+             "diffTime" );
+    #else
+    fprintf( stderr, "%s    %s    %s    %s    %s\n", "attempt",
+             "arraySize", "insertionSortTime", "mergeSortTime",
+             "diffTime" );
+    #endif
 
     possibleK = allocArray( ATTEMPTS );
     for ( attempt = 0; attempt < ATTEMPTS; attempt++ ) {
@@ -103,8 +110,13 @@ int findK( void )
             /*
              * Print the results so that gnuplot can catch and use them. 
              */
+            #ifdef M_FINDK_C
             fprintf( stdout, "%d    %d    %f    %f    %f\n", attempt, size,
                      insertionSortTime, mergeSortTime, diffTime );
+            #else
+            fprintf( stderr, "%d    %d    %f    %f    %f\n", attempt, size,
+                     insertionSortTime, mergeSortTime, diffTime );
+            #endif
         }
         possibleK[attempt] = MIN_SIZE +
             minIndexDoubleArray( diffTimes, MAX_SIZE - MIN_SIZE );
