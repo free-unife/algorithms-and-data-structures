@@ -92,3 +92,10 @@ for integer in integers:
 
 bst.pre_order_print()
 bst.assert_bst()
+print("Searching node 100")
+found = bst.search( key=100 )
+
+if found is False:
+	print("not found")
+else:
+	print( found.get_key() )

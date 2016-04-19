@@ -48,6 +48,7 @@ class BST( object ):
 		if new_node.get_key() < root.get_key() :
 			if root.get_left() is None:
 				root.set_left( new_node )
+				new_node.set_parent( root )
 				return True
 			
 			else:
@@ -58,6 +59,7 @@ class BST( object ):
 		elif new_node.get_key() > root.get_key() :
 			if root.get_right() is None:
 				root.set_right( new_node )
+				new_node.set_parent( root )
 				return True
 
 			else:
@@ -76,6 +78,7 @@ class BST( object ):
 		# Search where to insert it
 		if self._root is None:
 			self._root = new_node
+			new_node.set_parent( self._root )
 			return True
 		else:
 			return self.__recursive_insert( self._root, new_node )
@@ -91,23 +94,80 @@ class BST( object ):
 
 
 	def pre_order_print( self ):
+		print("pre order printing of bst elements:")
 		root = self._root
 		self.__recursively_pre_order_print( root )
 
 
-	# TODO be sure of this check
 	def assert_bst( self ):
-		def rec_ibst( root ):
-		    if root.get_left() is None and root.get_right() is None:
-		        return
-		    
+		def __recursively_assert_bst( root ):
 		    if root.get_left() is not None:
 		    	assert root.get_left().get_key() < root.get_key()
-		    	rec_ibst( root.get_left() )
+		    	__recursively_assert_bst( root.get_left() )
 		    
 		    if root.get_right() is not None:
 		    	assert root.get_right().get_key() > root.get_key()
-		    	rec_ibst( root.get_right() )
+		    	__recursively_assert_bst( root.get_right() )
 
-		rec_ibst( self._root )
+		__recursively_assert_bst( self._root )
 		return True
+
+	def search( self, key ):
+		def __recursively_search( root, key ):
+			# key not found:
+			if root is None:
+				return False
+
+			# key found:
+			elif key == root.get_key():
+				return root
+
+			# searching on right:
+			elif key > root.get_key():
+				return __recursively_search( root.get_right(), key )
+				
+			# searching on left:
+			elif key < root.get_key():
+				return __recursively_search( root.get_left(), key )
+
+			
+		# root must be not None
+		if self._root is None:
+			return False
+		else:
+			return __recursively_search( self._root, key )
+			
+
+
+'''
+	def delete( self, key ):
+		def __recursively_delete( node, key ):
+
+			# if it is a leaf
+			if node.get_left()   is     None and node.get_right() is     None:
+				node = None
+				return True
+			
+			# if it has only a left son
+			elif node.get_left() is not None and node.get_right() is     None:
+				node = node.get_left()
+				return True
+			
+			# if it has only a right son
+			elif node.get_left() is     None and node.get_right() is not None:
+				node = node.get_right()
+				return True
+			
+			# if it has two sons
+			elif node.get_left() is not None and node.get_right() is not None:
+
+
+		# Find the node to delete
+		toDelete = self.search( key )
+		
+		if toDelete is False or self.root is None:
+			return False
+		else:
+			__recursively_delete( toDelete, key )
+
+'''
