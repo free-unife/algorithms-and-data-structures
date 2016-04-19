@@ -13,7 +13,7 @@
 
 # Macros.
 PRG_NAME = 00-hybridMergeComp.o
-PRG_OBJFILES = utils.o insertionSort.o merge.o mergeSort.o findK.o hybridSort.o
+PRG_OBJFILES = utils.o insertionSort.o merge.o mergeSort.o findK.o hybridSort.o main.c
 
 CC = /usr/bin/gcc
 BIN_DIR = /usr/bin
@@ -70,12 +70,21 @@ runsilent:
 	@echo "Done."
 
 findk:
-	@echo "Plotting..."
+	@echo "Plotting findk..."
 	@mkdir -p $(PLOT_OUTPUT_DIR)
 	@./$(PRG_NAME) > $(PLOT_INPUT_FILE)
 	@./plotFindK.sh $(PLOT_INPUT_FILE) > $(PLOT_OUTPUT_DIR)/findk.png
 	@ rm $(PLOT_INPUT_FILE)
 	@echo "Plot results have been written in $(PLOT_OUTPUT_DIR)/findk.png"
+	@echo "Done."
+
+compare:
+	@echo "Plotting comparsion..."
+	@mkdir -p $(PLOT_OUTPUT_DIR)
+	@./$(PRG_NAME) > $(PLOT_INPUT_FILE)
+	@./plotComparison.sh $(PLOT_INPUT_FILE) > $(PLOT_OUTPUT_DIR)/comparison.png
+	@ rm $(PLOT_INPUT_FILE)
+	@echo "Plot results have been written in $(PLOT_OUTPUT_DIR)/comparison.png"
 	@echo "Done."
 
 clean:

@@ -11,16 +11,14 @@ void hybridSort( int *array, int p, int r, int k )
 {
     int q;
 
-    if( le( ( r - p ), k ) )
+    if ( le( ( r - p ), k ) )
         insertionSort( array, p, r );
-    else
-        if ( lt ( p, r ) )
-        {
-            q = ( p + r ) / 2;
-            hybridSort( array, p, q, k );
-            hybridSort ( array, q + 1, r, k );
-            merge ( array, p, q, r );
-        }
+    else if ( lt( p, r ) ) {
+        q = ( p + r ) / 2;
+        hybridSort( array, p, q, k );
+        hybridSort( array, q + 1, r, k );
+        merge( array, p, q, r );
+    }
 }
 
 #ifdef M_HYBRIDSORT_C
@@ -50,12 +48,14 @@ int main( void )
 
 
     fprintf( stderr, "\n\nHybrid sort test\n" );
-    k = findK ( );
+    k = findK(  );
     start = clock(  );
     hybridSort( array, 0, 100 - 1, k );
     end = clock(  );
     if ( arrayOrdered( array ) )
-        fprintf( stderr, "[ OK ] Array has been ordered in %f s, with k = %d\n", runningTime( start, end ), k );
+        fprintf( stderr,
+                 "[ OK ] Array has been ordered in %f s, with k = %d\n",
+                 runningTime( start, end ), k );
     else
         fprintf( stderr, "[ ERR ] This message should not be shown\n" );
 

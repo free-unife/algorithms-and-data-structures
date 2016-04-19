@@ -9,10 +9,15 @@
 #
 
 
-paths="insertionSort mergeSort insertionMergeSortComp hybridMergeSort"
-buildAndPlotPath="./buildAndPlot.sh"
+path="$1"
 
-for cpath in $paths; do
-    echo $cpath
-    (cd "$cpath" && $buildAndPlotPath && cd "$OLDPWD") &
-done
+title="Comparison between hybrid sort and merge sort in relation to k"
+xLabel="k"
+yLabel="time (s)"
+
+col0="k"
+col1="mergeSortTime"
+col2="hybridSortTime"
+
+../plot.sh "$path" "$title" "$xLabel" "$yLabel" "$col0" "$col1" "$col2"
+
