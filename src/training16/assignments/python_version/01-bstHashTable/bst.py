@@ -43,35 +43,35 @@ class BST( object ):
 		self._NodeType = NodeType
 		self._root = None
 
-	def __recursive_insert( self, root, new_node ):
-		# left side
-		if new_node.get_key() < root.get_key() :
-			if root.get_left() is None:
-				root.set_left( new_node )
-				new_node.set_parent( root )
-				return True
-			
-			else:
-				self.__recursive_insert( root.get_left(), new_node )
-				return False
-
-		# right side
-		elif new_node.get_key() > root.get_key() :
-			if root.get_right() is None:
-				root.set_right( new_node )
-				new_node.set_parent( root )
-				return True
-
-			else:
-				self.__recursive_insert( root.get_right(), new_node )
-				return False
-
-		# error		
-		elif new_node.get_key() == root.get_key():
-			return False
-
-
+	
 	def insert( self, key, *other_node_args ):
+		def __insert_recursively( node, new_node ):
+			# error		
+			if new_node.get_key() == node.get_key():
+				return False
+
+			# left side
+			elif new_node.get_key() < node.get_key() :
+				if node.get_left() is None:
+					node.set_left( new_node )
+					new_node.set_parent( node )
+					return True
+				
+				else:
+					return __insert_recursively( node.get_left(), new_node )
+
+			# right side
+			elif new_node.get_key() > node.get_key() :
+				if node.get_right() is None:
+					node.set_right( new_node )
+					new_node.set_parent( node )
+					return True
+
+				else:
+					return __insert_recursively( node.get_right(), new_node )
+
+			
+		# Init
 		# Create a new node
 		new_node = self._NodeType( key, *other_node_args )
 
@@ -81,61 +81,63 @@ class BST( object ):
 			new_node.set_parent( self._root )
 			return True
 		else:
-			return self.__recursive_insert( self._root, new_node )
+			return __insert_recursively( self._root, new_node )
 
-
-	def __recursively_pre_order_print( self, root ):
-		if not root:
-			return True
-
-		print( root.get_key() )
-		self.__recursively_pre_order_print( root.get_left() )
-		self.__recursively_pre_order_print( root.get_right() )
 
 
 	def pre_order_print( self ):
+		def __pre_order_recursively_print( node ):
+			if not node:
+				return True
+
+			print( node.get_key() )
+			__pre_order_recursively_print( node.get_left() )
+			__pre_order_recursively_print( node.get_right() )
+
+		# Init
 		print("pre order printing of bst elements:")
-		root = self._root
-		self.__recursively_pre_order_print( root )
+		__pre_order_recursively_print( node=self._root )
 
 
 	def assert_bst( self ):
-		def __recursively_assert_bst( root ):
-		    if root.get_left() is not None:
-		    	assert root.get_left().get_key() < root.get_key()
-		    	__recursively_assert_bst( root.get_left() )
+		def __bst_recursively_assert( node ):
+		    if node.get_left() is not None:
+		    	assert node.get_left().get_key() < node.get_key()
+		    	__bst_recursively_assert( node.get_left() )
 		    
-		    if root.get_right() is not None:
-		    	assert root.get_right().get_key() > root.get_key()
-		    	__recursively_assert_bst( root.get_right() )
+		    if node.get_right() is not None:
+		    	assert node.get_right().get_key() > node.get_key()
+		    	__bst_recursively_assert( node.get_right() )
 
-		__recursively_assert_bst( self._root )
+		# Init
+		__bst_recursively_assert( node=self._root )
 		return True
 
+
 	def search( self, key ):
-		def __recursively_search( root, key ):
+		def __search_recursively( node, key ):
 			# key not found:
-			if root is None:
+			if node is None:
 				return False
 
 			# key found:
-			elif key == root.get_key():
-				return root
+			elif key == node.get_key():
+				return node
 
 			# searching on right:
-			elif key > root.get_key():
-				return __recursively_search( root.get_right(), key )
+			elif key > node.get_key():
+				return __search_recursively( node.get_right(), key )
 				
 			# searching on left:
-			elif key < root.get_key():
-				return __recursively_search( root.get_left(), key )
+			elif key < node.get_key():
+				return __search_recursively( node.get_left(), key )
 
 			
 		# root must be not None
 		if self._root is None:
 			return False
 		else:
-			return __recursively_search( self._root, key )
+			return __search_recursively( node=self._root, key=key )
 			
 
 
