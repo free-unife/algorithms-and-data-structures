@@ -18,16 +18,3 @@
 
 #define PEDANTIC
 
-/* If main modules are defined here, they will be linked in the executable.
- * When the module will be considered stable. It will be integrated into the
- * program.
- */
-
-/*#define M_LISTMAIN_C*/
-/*#define M_LISTHTMAIN_C*/
-/*#define M_HTLISTMAIN_C*/
-
-/*#define M_BSTMAIN_C*/
-/*#define M_BSTHTMAIN_C*/
-/*#define M_HTBSTMAIN_C*/
-

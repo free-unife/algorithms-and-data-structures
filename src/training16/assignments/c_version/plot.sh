@@ -17,7 +17,7 @@ col0="$5"
 col1="$6"
 col2="$7"
 
-style="points pointtype 5 pointsize -0.5"
+style="points pointtype 5 pointsize 1"
 #terminalType="wxt persist"
 terminalType="png medium"
 keyProprieties="set key outside; set key right top"

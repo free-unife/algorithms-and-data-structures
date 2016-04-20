@@ -12,17 +12,13 @@
 
 
 # Macros.
-PRG_NAME = 00-hybridMergeComp.o
-PRG_OBJFILES = utils.o insertionSort.o merge.o mergeSort.o findK.o hybridSort.o main.c
-
 CC = /usr/bin/gcc
-BIN_DIR = /usr/bin
-INSTALL = /usr/bin/install
 
+DEPS = definedModules.h globalDefines.h
 CFLAGS = -Wall -Wextra -Wpedantic -Werror -march=native -O0
 LIBS = -lm -lrt
 CSTANDARD = -std=c99
-MACRO_REQ =
+DEFFLAG =
 
 INDENT_OPTS = -kr -prs -nut -bap -bad -br -cdb -sc
 SPLINT_OPTS = -usereleased -compdef -preproc
@@ -30,67 +26,83 @@ SPLINT_OPTS = -usereleased -compdef -preproc
 PLOT_INPUT_FILE = out.dat
 PLOT_OUTPUT_DIR = images
 
+EXECUTABLES = utils.out insertionsort.out merge.out mergesort.out findk.out hybridsort.out main.out
+PRG_OBJFILES = utils.o insertionSort.o merge.o mergeSort.o findK.o hybridSort.o main.o
+
 # Targets
+default : main # default target
 
-default : link # default target
+all : main plotcompare
 
-all : link run
-
-# compilation of single files, which keeps track of the changes of all header files (*.h) as well as the .c files
-# @echo "$(CC) $< $(CFLAGS) $(CSTANDARD) $(MACRO_REQ)"
-%.o: %.c *.h
-	@$(CC) $(CFLAGS) $(CSTANDARD) $(MACRO_REQ) -c -o $@ $< # single object file compiling
-
-# executables linking
-link: $(PRG_OBJFILES) *.h
-	@echo "Compiling ..."
-	@echo "$(CC) -o $(PRG_NAME) $(CFLAGS) $(LIBS) $(CSTANDARD) $(MACRO_REQ)"
-	@$(CC) $(CFLAGS) $(LIBS) $(CSTANDARD) $(MACRO_REQ) $(PRG_OBJFILES) -o $(PRG_NAME)
-	@echo "Compilation terminated."
+%.o: %.c $(DEPS)
+	@$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) $(DEFFLAG) -c -o $@ $<
 
 indent:
 	@echo "Indenting all files..."
 	@./indent.sh "$(INDENT_OPTS)" "$(SPLINT_OPTS)" "$(PRG_OBJFILES)"
 	@echo "Done."
 
-validate:
-	@echo "Validation..."
-	@./validate.sh "$(PRG_NAME)"
-	@echo "Done."
+clean:
+	@echo "Removing object files..."
+	@rm -fv *.o $(EXECUTABLES)
+	@echo "Object files removed."
 
-# Run verbose.
-run:
-	@echo "Running..."
-	@./$(PRG_NAME)
-	@echo "Done."
+target utils: override DEFFLAG = -DM_UTILS_C
+utils: utils.o
+	@$(CC) -o $@.out $^
+	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_UTILS_C -o $@.out"
+	@./validate.sh $@.out
 
-runsilent:
-	@echo "Running..."
-	@./$(PRG_NAME) 2>&-
-	@echo "Done."
+target insertionsort: override DEFFLAG = -DM_INSERTIONSORT_C
+insertionsort: utils.o insertionSort.o
+	@$(CC) -o $@.out $^
+	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_INSERTIONSORT_C -o $@.out"
+	@./validate.sh $@.out
 
-findk:
+target merge: override DEFFLAG = -DM_MERGE_C
+merge: utils.o merge.o
+	@$(CC) -o $@.out $^
+	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_MERGE_C -o $@.out"
+	@./validate.sh $@.out
+
+target mergesort: override DEFFLAG = -DM_MERGESORT_C
+mergesort: utils.o merge.o mergeSort.o
+	@$(CC) -o $@.out $^
+	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_MERGESORT_C -o $@.out"
+	@./validate.sh $@.out
+
+target findk: override DEFFLAG = -DM_FINDK_C
+findk: utils.o insertionSort.o merge.o mergeSort.o findK.o
+	@$(CC) -o $@.out $^
+	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_FINDK_C -o $@.out"
+
+target hybridsort: override DEFFLAG = -DM_HYBRIDSORT_C
+hybridsort: utils.o insertionSort.o merge.o mergeSort.o findK.o hybridSort.o
+	@$(CC) -o $@.out $^
+	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_HYBRIDSORT_C -o $@.out"
+	@./validate.sh $@.out
+
+main: $(PRG_OBJFILES)
+	@$(CC) -o $@.out $^
+	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -o $@.out"
+
+plotfindk: findk
 	@echo "Plotting findk..."
 	@mkdir -p $(PLOT_OUTPUT_DIR)
-	@./$(PRG_NAME) > $(PLOT_INPUT_FILE)
+	@./findk.out > $(PLOT_INPUT_FILE)
 	@./plotFindK.sh $(PLOT_INPUT_FILE) > $(PLOT_OUTPUT_DIR)/findk.png
 	@ rm $(PLOT_INPUT_FILE)
 	@echo "Plot results have been written in $(PLOT_OUTPUT_DIR)/findk.png"
 	@echo "Done."
 
-compare:
+plotcompare: main
 	@echo "Plotting comparsion..."
 	@mkdir -p $(PLOT_OUTPUT_DIR)
-	@./$(PRG_NAME) > $(PLOT_INPUT_FILE)
+	@./main.out > $(PLOT_INPUT_FILE)
 	@./plotComparison.sh $(PLOT_INPUT_FILE) > $(PLOT_OUTPUT_DIR)/comparison.png
 	@ rm $(PLOT_INPUT_FILE)
 	@echo "Plot results have been written in $(PLOT_OUTPUT_DIR)/comparison.png"
 	@echo "Done."
 
-clean:
-	@echo "Removing object files..."
-	@rm -fv *.o $(PRG_NAME)
-	@echo "Object files removed."
-
 # to protect files with the following names, the .PHONY rule is used
-.PHONY: all link install uninstall clean
+.PHONY: default all clean indent $(EXECUTABLES)

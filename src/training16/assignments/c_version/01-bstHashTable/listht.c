@@ -168,7 +168,7 @@ static void LISTHTFreeSlot( htListSlot * hashTable, unsigned int slotId )
             ) ) )
         *( LISTHTSlot( hashTable, slotId ) ) = EMPTY;
 #endif
-        free( LISTHTListPtr( LISTHTSlot( hashTable, slotId ) ) );
+    free( LISTHTListPtr( LISTHTSlot( hashTable, slotId ) ) );
     /*
      * free( *( hashTable[slotId] ) ); 
      */

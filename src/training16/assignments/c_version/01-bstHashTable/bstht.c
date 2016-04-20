@@ -168,7 +168,7 @@ static void BSTHTFreeSlot( htTreeSlot * hashTable, unsigned int slotId )
             ) ) )
         *( BSTHTSlot( hashTable, slotId ) ) = EMPTY;
 #endif
-        free( BSTHTBstPtr( BSTHTSlot( hashTable, slotId ) ) );
+    free( BSTHTBstPtr( BSTHTSlot( hashTable, slotId ) ) );
     /*
      * free( *( hashTable[slotId] ) ); 
      */

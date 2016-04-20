@@ -28,8 +28,11 @@ static bst BSTNonEmptyInsert( bst root, char *key, char *value );
 #ifdef M_BSTMAIN_C
 static bool BSTis( bst root, char *minKey, char *maxKey );
 #endif
-
 static bool BSTNonEmptyDelete( bstPtr rootPtr, bst root, char *key );
+
+#ifdef M_BSTMAIN_C
+static void BSTPrint( bst root );
+#endif
 
 void BSTInit( bstPtr rootPtr )
 {
@@ -252,10 +255,10 @@ static bool BSTNonEmptyDelete( bstPtr rootPtr, bst root, char *key )
         if ( BSTLeaf( root ) ) {
             *rootPtr = EMPTY;
             free( root );
-        } else if ( BSTRightSon( root ) ) {
+        } else if ( !BSTLeftSon( root ) ) {
             *rootPtr = BSTRight( root );
             free( root );
-        } else if ( BSTLeftSon( root ) ) {
+        } else if ( !BSTRightSon( root ) ) {
             *rootPtr = BSTLeft( root );
             free( root );
             /*
@@ -302,6 +305,17 @@ bst BSTClear( bst root )
     return EMPTY;
 }
 
+#ifdef M_BSTMAIN_C
+static void BSTPrint( bst root )
+{
+    if ( BSTEmpty( root ) )
+        return;
+
+    fprintf( stderr, "%s %s\n", BSTKey( root ), BSTVal( root ) );
+    BSTPrint( BSTLeft( root ) );
+    BSTPrint( BSTRight( root ) );
+}
+#endif
 
 #ifdef M_BSTMAIN_C
 int main( void )
@@ -406,15 +420,18 @@ int main( void )
     fprintf( stderr, "[ OK ] This message should be shown\n" );
 
 
+    fprintf( stderr, "\n\nPrinting tree\n" );
+    BSTPrint( *bsTree );
+
+
     fprintf( stderr, "\n\nCheck parent fields\n" );
     fprintf( stderr, "Parent of node with key %s = %s\n", "03",
              BSTKey( BSTParent( BSTSearch( *bsTree, "03" ) ) ) );
     if ( BSTDelete
          ( bsTree, BSTKey( BSTParent( BSTSearch( *bsTree, "03" ) ) ) ) )
         fprintf( stderr,
-                 "[ OK ] Node with key %s has been deleted, Now the parent of %s should be %s: %s\n",
-                 "04", "03", "02",
-                 BSTKey( BSTParent( BSTSearch( *bsTree, "03" ) ) ) );
+                 "[ OK ] Parent node of %s has been deleted. Now the parent of %s should be %s: %s\n",
+                 "03", "04", "03", "02" );
     else
         fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
 

@@ -15,18 +15,3 @@
 
 /* Comment out the following to disable all asserts.  */
 /*#define NDEBUG*/
-
-/* If main modules are defined here, they will be linked in the executable.
- * When the module will be considered stable. It will be integrated into the
- * program.
- */
-
-/*#define M_UTILS_C*/
-
-/*#define M_INSERTIONSORT_C*/
-/*#define M_MERGE_C*/
-/*#define M_MERGESORT_C*/
-
-/*#define M_FINDK_C*/
-
-/*#define M_HYBRIDSORT_C*/
