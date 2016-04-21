@@ -11,11 +11,11 @@
 
 path="$1"
 
-title="Comparison between hybrid sort and merge sort in relation to k"
-xLabel="k"
+title="Comparison between hybrid sort and merge sort related to K"
+xLabel="K"
 yLabel="time (s)"
 
-col0="k"
+col0="K"
 col1="mergeSortTime"
 col2="hybridSortTime"
 

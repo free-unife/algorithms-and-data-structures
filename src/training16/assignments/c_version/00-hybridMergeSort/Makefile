@@ -99,7 +99,7 @@ plotcompare: main
 	@echo "Plotting comparsion..."
 	@mkdir -p $(PLOT_OUTPUT_DIR)
 	@./main.out > $(PLOT_INPUT_FILE)
-	@./plotComparison.sh $(PLOT_INPUT_FILE) > $(PLOT_OUTPUT_DIR)/comparison.png
+	@./plotCompare.sh $(PLOT_INPUT_FILE) > $(PLOT_OUTPUT_DIR)/comparison.png
 	@ rm $(PLOT_INPUT_FILE)
 	@echo "Plot results have been written in $(PLOT_OUTPUT_DIR)/comparison.png"
 	@echo "Done."

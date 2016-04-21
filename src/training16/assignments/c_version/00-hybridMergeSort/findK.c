@@ -27,9 +27,10 @@ static int minIndexDoubleArray( double *array, int len )
     return minInd;
 }
 
-/* k is the maximum size where insertion sort performs like merge sort.
- * Before k insertion sort performs better ( and after k merge sort performs
- * better ).
+/* k corresponds to the maximum array size where insertion sort performs like
+ * merge sort.
+ * With values less than k, insertion sort performs better, and with values
+ * greater than k merge sort performs better ).
  */
 int findK( void )
 {

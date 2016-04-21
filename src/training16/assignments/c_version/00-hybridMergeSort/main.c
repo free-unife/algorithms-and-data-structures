@@ -14,7 +14,7 @@ int main( void )
     clock_t start, end;
     double mergeSortTime, hybridSortTime;
 
-    fprintf( stdout, "%s    %s    %s    %s    %s\n", "attempt", "k",
+    fprintf( stdout, "%s    %s    %s    %s    %s\n", "attempt", "K",
              "arraySize", "mergeSortTime", "hybridSortTime" );
 
     for ( attempt = 0; attempt < ATTEMPTS; attempt++ ) {

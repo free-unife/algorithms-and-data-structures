@@ -35,7 +35,7 @@ clean` before `make <target>`.
 - `plotfindk` : plots a comparison between insertion sort and merge sort. The 
   value of K is determined by the intersection between the two curves.
 - `plotcompare` : plots a comparison between merge sort and hybrid sort. Hybrid 
-  sort performs best between input sizes of around 10 and 35.
+  sort performs better than merge sort when K is between 10 and 35.
 
 ####Exercise 01-bstHashTable
 - `bst`

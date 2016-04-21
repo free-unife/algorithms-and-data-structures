@@ -11,6 +11,8 @@ void hybridSort( int *array, int p, int r, int k )
 {
     int q;
 
+    /* When the input array size is less than k we, have the base case
+     * that executes insertion sort. */
     if ( le( ( r - p ), k ) )
         insertionSort( array, p, r );
     else if ( lt( p, r ) ) {
