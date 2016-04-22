@@ -29,6 +29,6 @@ gnuplotColSpecifiers="using \"$col0\":\"$col1\" with $style, '' using \"$col0\":
 which gnuplot 1>/dev/null 2>/dev/null
 
 [ $? -eq 0 ] \
-&& gnuplot -e "$gnuplotOptions; plot 'out.dat' $gnuplotColSpecifiers" \
+&& gnuplot -e "$gnuplotOptions; plot '$inputPath' $gnuplotColSpecifiers" \
 || printf "Install gnuplot\n"
 
