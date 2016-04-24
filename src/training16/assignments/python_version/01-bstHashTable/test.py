@@ -11,6 +11,7 @@ from hash_implementations import HashTable
 from key_value_double_linked_list import KeyValueDoubleLinkedList
 from bst import BST
 from input_helper import generate_random_integers
+from random import shuffle
 
 '''
 # Testing HastTable
@@ -83,19 +84,40 @@ print( node.get_value() )
 # testing standard bst
 bst = BST()
 
-integers = generate_random_integers( 1000 )
+integers = list(range(-100, 101))
+shuffle( integers )
 
 print( len(integers ))
 for integer in integers:
-	if bst.insert( integer ) is False:
-		print( integer, " duplicate")
+	try:
+		bst.insert( integer )
+	except Exception as e:
+		print( e )
+	
 
 bst.pre_order_print()
 bst.assert_bst()
+
+'''
 print("Searching node 100")
 found = bst.search( key=100 )
+'''
 
-if found is False:
-	print("not found")
-else:
-	print( found.get_key() )
+
+minNode = bst.find_min_node( )
+print( "min Node = ", minNode.get_key() )
+
+integers = sorted( integers , key=int )
+
+print( integers )
+for toInsert in integers:
+	try:
+		bst.insert( toInsert )
+	except Exception as e:
+		print( e )
+
+for toDelete in integers:
+	bst.pre_order_print()
+	bst.assert_bst()
+	bst.delete( toDelete )
+

@@ -37,6 +37,12 @@ class StdNode( object ):
 	def get_parent( self ):
 		return self._parent
 
+	def copy_attrs_from( self, another_node ):
+		if another_node is not None:
+			self._key = another_node.get_key()
+		else:
+			raise ReferenceError( "None node passed")
+
 
 class BST( object ):
 	def __init__( self, NodeType=StdNode ):
@@ -48,7 +54,7 @@ class BST( object ):
 		def __insert_recursively( node, new_node ):
 			# error		
 			if new_node.get_key() == node.get_key():
-				return False
+				raise ValueError( "Duplicate key " + str(key) )
 
 			# left side
 			elif new_node.get_key() < node.get_key() :
@@ -118,7 +124,7 @@ class BST( object ):
 		def __search_recursively( node, key ):
 			# key not found:
 			if node is None:
-				return False
+				raise ValueError( "Node not found")
 
 			# key found:
 			elif key == node.get_key():
@@ -135,41 +141,88 @@ class BST( object ):
 			
 		# root must be not None
 		if self._root is None:
-			return False
+			raise ValueError( "self._root must be not None" )
 		else:
 			return __search_recursively( node=self._root, key=key )
-			
 
 
-'''
+	def find_min_node( self, rootNode="NotSet" ):   # Gets minimum node in a subtree
+		if rootNode is "NotSet":
+			if self._root is not None:
+				rootNode = self._root
+			else:
+				raise ValueError( "Can't find min if self._root is None ")
+
+		if rootNode is not "NotSet":
+			if rootNode is not None:
+				current_node = rootNode
+				while current_node.get_left() is not None:
+					current_node = current_node.get_left()
+				return current_node
+
+			else:
+				raise ValueError( "Can't find min if rootNode is None ")
+		    
+
+
+	
+	def __set_parent_child( self, node, new_node ):
+
+		if node is not self._root:
+
+			# If node to delete is on the the left side
+			if node.get_parent().get_left() == node:
+				node.get_parent().set_left( new_node ) 
+
+			# If node to delete is on the right side
+			if node.get_parent().get_right() == node:
+				node.get_parent().set_right( new_node )		
+
+			# First fix the new_node parent
+			if new_node is not None:
+				new_node.set_parent( node.get_parent() )
+		else:
+			self._root = new_node
+
+			if self._root is not None:
+				self._root.set_parent( None )
+
+
 	def delete( self, key ):
-		def __recursively_delete( node, key ):
+		def __recursively_delete( node ):
 
 			# if it is a leaf
 			if node.get_left()   is     None and node.get_right() is     None:
-				node = None
+				# Set the rigth parent son with None
+				self.__set_parent_child( node=node, new_node=None )					
+				
 				return True
 			
 			# if it has only a left son
 			elif node.get_left() is not None and node.get_right() is     None:
-				node = node.get_left()
+				# Set the rigth parent son with the node left son
+				self.__set_parent_child( node=node, new_node=node.get_left() )
 				return True
 			
 			# if it has only a right son
 			elif node.get_left() is     None and node.get_right() is not None:
-				node = node.get_right()
+				# Set the rigth parent son with the node right son
+				self.__set_parent_child( node=node, new_node=node.get_right() )
 				return True
 			
 			# if it has two sons
 			elif node.get_left() is not None and node.get_right() is not None:
+				
+				successor = self.find_min_node( node.get_right() )
+				node.copy_attrs_from( successor )
+				__recursively_delete( successor )
+	            
 
+		# Init
+		try:
+			toDelete = self.search( key )
+			__recursively_delete( node=toDelete )
 
-		# Find the node to delete
-		toDelete = self.search( key )
-		
-		if toDelete is False or self.root is None:
-			return False
-		else:
-			__recursively_delete( toDelete, key )
-
-'''
+		except ValueError as e:
+			raise ValueError( "Can't delete a node that not exsists" )
+			
