@@ -12,6 +12,7 @@ from key_value_double_linked_list import KeyValueDoubleLinkedList
 from bst import BST
 from input_helper import generate_random_integers
 from random import shuffle
+from key_value_bst import KV_BST
 
 '''
 # Testing HastTable
@@ -80,7 +81,7 @@ node = lista.search( key="00" )
 node = lista.search( key="01" )
 print( node.get_value() )
 '''
-
+'''
 # testing standard bst
 bst = BST()
 
@@ -93,21 +94,25 @@ for integer in integers:
 		bst.insert( integer )
 	except Exception as e:
 		print( e )
-	
+'''
 
+'''
 bst.pre_order_print()
 bst.assert_bst()
+'''
 
 '''
 print("Searching node 100")
 found = bst.search( key=100 )
 '''
 
-
+'''
 minNode = bst.find_min_node( )
 print( "min Node = ", minNode.get_key() )
-
+'''
+'''
 integers = sorted( integers , key=int )
+
 
 print( integers )
 for toInsert in integers:
@@ -120,4 +125,17 @@ for toDelete in integers:
 	bst.pre_order_print()
 	bst.assert_bst()
 	bst.delete( toDelete )
+'''
 
+kv_bst = KV_BST()
+kv_bst.insert(key=  0  , value="bubbaman")
+kv_bst.insert(key=  1  , value="calamen")
+kv_bst.insert(key= -1  , value="calamen")
+kv_bst.insert(key= -2  , value="calamen")
+kv_bst.insert(key= -0.5, value="calamen")
+print( kv_bst )
+
+kv_bst.delete(0)
+kv_bst.delete(-0.5)
+kv_bst.delete(-0.5)
+print( kv_bst )

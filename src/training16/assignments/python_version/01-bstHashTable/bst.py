@@ -12,18 +12,23 @@ class StdNode( object ):
 		self._left   = None
 		self._right  = None
 		self._parent = None
+		return
 
 	def set_key( self, key ):
 		self._key = key
+		return
 
 	def set_left( self, left ):
-		self._left = left 
+		self._left = left
+		return
 
 	def set_right( self, right ):
 		self._right = right
+		return
 
 	def set_parent( self, parent ):
 		self._parent = parent
+		return
 
 	def get_key( self ):
 		return self._key
@@ -41,7 +46,8 @@ class StdNode( object ):
 		if another_node is not None:
 			self._key = another_node.get_key()
 		else:
-			raise ReferenceError( "None node passed")
+			raise ReferenceError( "None node passed" )
+		return
 
 
 class BST( object ):
@@ -50,7 +56,7 @@ class BST( object ):
 		self._root = None
 
 	
-	def insert( self, key, *other_node_args ):
+	def insert_node( self, key, *other_node_args ):
 		def __insert_recursively( node, new_node ):
 			# error		
 			if new_node.get_key() == node.get_key():
@@ -84,7 +90,7 @@ class BST( object ):
 		# Search where to insert it
 		if self._root is None:
 			self._root = new_node
-			new_node.set_parent( self._root )
+			self._root.set_parent( None )
 			return True
 		else:
 			return __insert_recursively( self._root, new_node )
@@ -120,7 +126,7 @@ class BST( object ):
 		return True
 
 
-	def search( self, key ):
+	def search_node( self, key ):
 		def __search_recursively( node, key ):
 			# key not found:
 			if node is None:
@@ -188,7 +194,7 @@ class BST( object ):
 				self._root.set_parent( None )
 
 
-	def delete( self, key ):
+	def delete_node( self, key ):
 		def __recursively_delete( node ):
 
 			# if it is a leaf
@@ -212,6 +218,12 @@ class BST( object ):
 			
 			# if it has two sons
 			elif node.get_left() is not None and node.get_right() is not None:
+				''' Find the in-order successor of a node, 
+				    as right sub tree is not NIL (Our present case is node has 2 children), 
+				    then its in-order successor is node with least value in its right sub tree, 
+				    which will have at a maximum of 1 sub tree, 
+				    so deleting it would fall in one of first 2 cases.
+				'''
 				
 				successor = self.find_min_node( node.get_right() )
 				node.copy_attrs_from( successor )
@@ -220,7 +232,7 @@ class BST( object ):
 
 		# Init
 		try:
-			toDelete = self.search( key )
+			toDelete = self.search_node( key )
 			__recursively_delete( node=toDelete )
 
 		except ValueError as e:
