@@ -8,9 +8,9 @@ as published by Sam Hocevar. See the LICENSE file for more details.
 
 import hashlib
 import random
-#value = hashlib.md5( str( key ).encode( 'utf-8' ) ).hexdigest( ) )
+from   random import shuffle
 
-class HT_User( object ):
+class HT_Fake_User( object ):
 	def __init__( self, hash_table, number_operations, 
 		insert_pergentage, search_pergentage, delete_pergentage ):
 		
@@ -20,12 +20,24 @@ class HT_User( object ):
 		self._search_pergentage = search_pergentage / 100
 		self._delete_pergentage = delete_pergentage / 100
 		assert( insert_pergentage + search_pergentage + delete_pergentage == 100 )
-		self._total_insertion = 0
-		self._total_searches = 0
-		self._total_deletion = 0
-		self._successfull_insertion = 0
-		self._successfull_searches = 0
-		self._successfull_deletion = 0
+		
+		# number of tentatives
+		self._total_insert = 0
+		self._total_search = 0
+		self._total_delete = 0
+		
+		# successfull tentatives
+		self._successfull_insert = 0
+		self._successfull_search = 0
+		self._successfull_delete = 0
+		
+		# time variables
+		self._insert_time = 0
+		self._search_time = 0
+		self._delete_time = 0
+
+		# keys inside the HT
+		self._keys = []
 
 
 	def __choose_action( self ):
@@ -41,46 +53,88 @@ class HT_User( object ):
 		
 		if x <= insert_domain:
 			return "insert"
+
 		if x >  insert_domain and x <= search_domain:
 			return "search"
+
 		if x >  search_domain and x <= delete_domain:
 			return "delete"
 
 
 	def insert( self ):
-		# incremental count of all operations
-		self._total_insertion += 1
-
+		
 		try:
-			# generate a random key and a random value
-			low  = - 10 * self._number_operations
-			high =   10 * self._number_operations
-			
-			key = str( random.randint( low, high ) )
-			value = hashlib.md5( str( key ).encode( 'utf-8' ) ).hexdigest()
-			
+			# get the key
+			current_index = self._total_insert
+			key = self._keys[ current_index ]
+
+			# generate the value with an md5 applied to the key
+			value = hashlib.md5( key.encode( 'utf-8' ) ).hexdigest()
 			
 			# insert them into the hash table
 			self._hash_table.put( key, value )
 
-			# incremental count af all successfull operations
-			self._successfull_insertion += 1
+			# incremental count af all successfull insert
+			self._successfull_insert += 1
 
 		except Exception as e:
 			# Doesn't matter if some key falls the insertion
 			pass
+
+		# incremental count of all operations
+		self._total_insert += 1
 			
 
 
 	def search( self ):
-		self._total_searches  += 1
+		
+		try:
+			low  = 0
+			high = self._number_operations - 1
+			random_index = random.randint( low, high )
+			random_key = self._keys[ random_index ]
+			self._hash_table.get( random_key )
+			self._successfull_search += 1
+		except:
+			# does not matter if a search goes wrong
+			pass
+		
+		self._total_search += 1
 
 
 	def delete( self ):
-		self._total_deletion  += 1
+		try:
+			low  = 0
+			high = self._number_operations - 1
+			random_index = random.randint( low, high )
+			random_key = self._keys[ random_index ]
+			self._hash_table.delete( random_key )
+			self._successfull_delete += 1
+		except:
+			# does not matter if a delete goes wrong
+			pass
+
+		self._total_delete += 1
 
 
-	def begin( self ):
+	def generate_keys( self ):
+		self._keys = []
+
+		low  = - int( self._number_operations / 2 )  
+		high =   int( self._number_operations / 2 )
+		
+		# append in order keys
+		for key in range( low, high ):
+			self._keys.append( str( key ) )
+
+		# shuffle them
+		shuffle( self._keys )
+
+
+	def start( self ):
+		# first generate the keys to push
+		self.generate_keys()
+
 		for operation in range( 0, self._number_operations ):
 			operation_type = self.__choose_action()
 
@@ -94,24 +148,37 @@ class HT_User( object ):
 				self.delete()
 
 
-	def get_total_insertion( self ):
-		return self._total_insertion
+	def get_total_insert( self ):
+		return self._total_insert
 
 
-	def get_total_searches( self ):
-		return self._total_searches
+	def get_total_search( self ):
+		return self._total_search
 
 
-	def get_total_deletion( self ):
-		return self._total_deletion
-
-	def get_successfull_insertion( self ):
-		return self._successfull_insertion
+	def get_total_delete( self ):
+		return self._total_delete
 
 
-	def get_successfull_searches( self ):
-		return self._successfull_searches
+	def get_successfull_insert( self ):
+		return self._successfull_insert
 
 
-	def get_successfull_deletion( self ):
-		return self._successfull_deletion
+	def get_successfull_search( self ):
+		return self._successfull_search
+
+
+	def get_successfull_delete( self ):
+		return self._successfull_delete
+
+
+	def get_insert_time( self ):
+		return self._insert_time
+
+
+	def get_search_time( self ):
+		return self._search_time
+
+
+	def get_delete_time( self ):
+		return self._delete_time
