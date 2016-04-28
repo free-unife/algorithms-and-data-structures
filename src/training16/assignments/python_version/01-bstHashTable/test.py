@@ -127,15 +127,17 @@ for toDelete in integers:
 	bst.delete( toDelete )
 '''
 
+'''
 kv_bst = KV_BST()
-kv_bst.insert(key=  0  , value="bubbaman")
-kv_bst.insert(key=  1  , value="calamen")
-kv_bst.insert(key= -1  , value="calamen")
-kv_bst.insert(key= -2  , value="calamen")
-kv_bst.insert(key= -0.5, value="calamen")
+kv_bst.insert( key=  0  , value="bubbaman", verbose=True )
+kv_bst.insert( key=  1  , value="calamen" , verbose=True )
+kv_bst.insert( key= -1  , value="calamen" , verbose=True )
+kv_bst.insert( key= -2  , value="calamen" , verbose=True )
+kv_bst.insert( key= -0.5, value="calamen" , verbose=True )
 print( kv_bst )
 
-kv_bst.delete(0)
-kv_bst.delete(-0.5)
-kv_bst.delete(-0.5)
+kv_bst.delete(  0  , verbose=True )
+kv_bst.delete( -0.5, verbose=True )
+#kv_bst.delete( -0.5, verbose=True )
 print( kv_bst )
+'''

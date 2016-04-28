@@ -36,18 +36,28 @@ class KV_BST( BST ):
 		# Init the BST with a key-value Node
 		super().__init__( KV_Node )
 
-	def insert( self, key, value=""):
-		self.insert_node( key, value )
+
+	def insert( self, key, value="", verbose=False ):
+		if verbose is True:
+			print( "Inserting key =", str( key ), "and value =", str( value ) )
+
+		return self.insert_node( key, value )
+
 
 	def search( self, key ):
 		self.search_node( key )
 
-	def delete( self, key):
-		self.delete_node( key )
+
+	def delete( self, key, verbose=False ):
+		if verbose is True:
+			print( "Deleting key =", str( key ) )
+
+		return self.delete_node( key )
 		
+
 	def print_bst( self ):
 		def __recursively_print_bst( node ):
-			if not node:
+			if node is None:
 				return True
 
 			print( node.get_key() , node.get_value() )
@@ -57,7 +67,8 @@ class KV_BST( BST ):
 
 		# Init
 		print("BST elements:")
-		__recursively_print_bst( node=self._root )
+		return __recursively_print_bst( node=self._root )
 	
 	def __str__( self ):
-		return str( self.print_bst() )
+		self.print_bst()
+		return ""
