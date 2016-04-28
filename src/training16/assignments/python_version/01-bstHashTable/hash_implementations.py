@@ -95,3 +95,7 @@ class HashTable( object ):
             if not self._buckets[i].is_empty():
                 print( "Bucket [ %d ] :" % i )
                 print( self._buckets[i] )
+
+    def __str__( self ):
+        self.print_ht()
+        return ""

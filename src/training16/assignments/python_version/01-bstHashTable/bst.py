@@ -244,3 +244,4 @@ class BST( object ):
 			return True
 		else:
 			return False
+			

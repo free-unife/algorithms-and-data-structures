@@ -126,3 +126,4 @@ class DoubleLinkedList( object ):
             return True
         else:
             return False
+            
