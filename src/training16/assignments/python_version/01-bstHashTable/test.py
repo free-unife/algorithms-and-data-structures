@@ -136,8 +136,48 @@ kv_bst.insert( key= -2  , value="calamen" , verbose=True )
 kv_bst.insert( key= -0.5, value="calamen" , verbose=True )
 print( kv_bst )
 
+node = kv_bst.search( key=-1 )
+print(node)
+print("found node with value", node.get_value() )
+#kv_bst.search( key=10)
+
 kv_bst.delete(  0  , verbose=True )
 kv_bst.delete( -0.5, verbose=True )
 #kv_bst.delete( -0.5, verbose=True )
 print( kv_bst )
 '''
+
+ht_bst = HashTable( n_buckets=997, implementation='BST' )
+
+try:
+	ht_bst.put( key="10", value="gigi", verbose=True)
+except Exception as e:
+	print( e )
+
+try:
+	ht_bst.put( key="20", value="maicol", verbose=True)
+except Exception as e:
+	print( e )
+
+try:
+	ht_bst.put( key="30", value="sandra", verbose=True)
+except Exception as e:
+	print( e )
+
+try:
+	ht_bst.put( key="40", value="pepoo", verbose=True)
+except Exception as e:
+	print( e )
+
+try:
+	ht_bst.get( key="30", verbose=True)
+except Exception as e:
+	print( e )
+
+try:
+	ht_bst.delete( key="50", verbose=True)
+except Exception as e:
+	print( e )
+	print("")
+
+ht_bst.print_ht()

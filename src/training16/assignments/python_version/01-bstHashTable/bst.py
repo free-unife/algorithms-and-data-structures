@@ -130,7 +130,7 @@ class BST( object ):
 		def __search_recursively( node, key ):
 			# key not found:
 			if node is None:
-				raise ValueError( "Node not found")
+				raise ValueError( "Node not found" )
 
 			# key found:
 			elif key == node.get_key():
@@ -238,3 +238,9 @@ class BST( object ):
 		except ValueError as e:
 			raise ValueError( "Can't delete a node that not exsists" )
 			
+
+	def is_empty( self ):
+		if self._root is None:
+			return True
+		else:
+			return False

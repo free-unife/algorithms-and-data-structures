@@ -45,7 +45,7 @@ class KV_BST( BST ):
 
 
 	def search( self, key ):
-		self.search_node( key )
+		return self.search_node( key )
 
 
 	def delete( self, key, verbose=False ):
@@ -68,6 +68,7 @@ class KV_BST( BST ):
 		# Init
 		print("BST elements:")
 		return __recursively_print_bst( node=self._root )
+	
 	
 	def __str__( self ):
 		self.print_bst()

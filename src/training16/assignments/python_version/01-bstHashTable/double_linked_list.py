@@ -104,7 +104,7 @@ class DoubleLinkedList( object ):
 
         while a_node is not dummy :
             element = a_node.get_element()
-            print( "Node [%d] -> element == %s" %( index, element ) )
+            print( node.get_key() , node.get_value() )
             a_node = a_node.get_next()
             index = index + 1
         return
@@ -121,3 +121,8 @@ class DoubleLinkedList( object ):
         return False
 
 
+    def is_empty( self ):
+        if self._dummy.get_next() == self._dummy:
+            return True
+        else:
+            return False

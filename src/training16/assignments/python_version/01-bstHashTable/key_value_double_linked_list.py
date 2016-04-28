@@ -42,30 +42,57 @@ class KeyValueDoubleLinkedList( DoubleLinkedList ):
         # Initialize with a key, value Node
         super().__init__( KV_Node )
 
+
     def search( self, key ):
         search_result = self.find_nodes( key )
+        
         if not search_result:
-            return False
+            raise ValueError("Key " + str(key) + " not found.")
         else:
             return search_result[0]
 
+
     def insert( self, key, value="", verbose=False ):
         # Assert that there's not another key inside
-        nodes = self.find_nodes( key )
-        if not nodes:
-            return self.insert_node_in_queue(  key, value , verbose=verbose )
-        else:
-            print( "Can't insert", key, " key already exist.")
-            return False
-
+        raiseError = False
+        try:
+            # this fails if nothing is found
+            self.search( key )
+            raiseError = True
+        except:
+            # and if nothing is found is a good thing
+            return self.insert_node_in_queue( key, value , verbose=verbose )
+        
+        # but if something was found we must raise an error
+        if raiseError is True:
+            raise ValueError( "Key " + str( key ) + " already exists." )
+        
+            
+        
+        
     # delete a node given its key
     def delete( self, key, verbose=False ):
-        node_to_delete = self.search( key )
+        try:
+            node_to_delete = self.search( key )
+            self.delete_node( node_to_delete, verbose )
+        except:
+            raise ValueError( "Can't delete node that does not exists" )
         
-        if not node_to_delete:
-            return False
-        else:
-            return self.delete_node( node_to_delete, verbose )
 
-    def print_keys( self ):
-        return self.print_elements()
+    def key_value_print( self ):
+        print("LIST elements:")
+        index = 0
+        dummy = self._dummy
+
+        a_node = dummy.get_next()
+
+        while a_node is not dummy :
+            print( a_node.get_key() , a_node.get_value() )
+            a_node = a_node.get_next()
+            index = index + 1
+        return
+
+
+    def __str__( self ):
+        self.key_value_print()
+        return ""
