@@ -10,6 +10,13 @@ import hashlib
 import random
 from   random import shuffle
 
+
+# Return the value (in fractional seconds) of the sum of the system and user 
+# CPU time of the current process. It does not include time elapsed during sleep.
+from   time   import process_time as tic
+from   time   import process_time as toc
+
+
 class HT_Fake_User( object ):
 	def __init__( self, hash_table, number_operations, 
 		insert_pergentage, search_pergentage, delete_pergentage ):
@@ -32,9 +39,9 @@ class HT_Fake_User( object ):
 		self._successfull_delete = 0
 		
 		# time variables
-		self._insert_time = 0
-		self._search_time = 0
-		self._delete_time = 0
+		self._total_insert_time = 0
+		self._total_search_time = 0
+		self._total_delete_time = 0
 
 		# keys inside the HT
 		self._keys = []
@@ -63,58 +70,78 @@ class HT_Fake_User( object ):
 
 	def insert( self ):
 		
-		try:
-			# get the key
-			current_index = self._total_insert
-			key = self._keys[ current_index ]
-
-			# generate the value with an md5 applied to the key
-			value = hashlib.md5( key.encode( 'utf-8' ) ).hexdigest()
+		# get the key
+		current_index = self._total_insert
+		key = self._keys[ current_index ]
+		
+		# generate the value with an md5 applied to the key
+		value = hashlib.md5( key.encode( 'utf-8' ) ).hexdigest()
 			
+		
+		start = tic()
+		try:
 			# insert them into the hash table
 			self._hash_table.put( key, value )
-
 			# incremental count af all successfull insert
 			self._successfull_insert += 1
 
 		except Exception as e:
 			# Doesn't matter if some key falls the insertion
 			pass
+		stop  = toc()
+		
+		# increment the total insert time
+		self._total_insert_time += ( stop - start )
 
 		# incremental count of all operations
 		self._total_insert += 1
-			
-
-
-	def search( self ):
 		
+		
+	def search( self ):
+
+		low  = 0
+		high = self._number_operations - 1
+		random_index = random.randint( low, high )
+		random_key = self._keys[ random_index ]
+		
+		start = tic()
 		try:
-			low  = 0
-			high = self._number_operations - 1
-			random_index = random.randint( low, high )
-			random_key = self._keys[ random_index ]
 			self._hash_table.get( random_key )
 			self._successfull_search += 1
 		except:
 			# does not matter if a search goes wrong
 			pass
+		stop  = toc()
+
+		# increment the total search time
+		self._total_search_time += ( stop - start )
 		
+		# incremental count of all operations
 		self._total_search += 1
 
 
 	def delete( self ):
+		
+		low  = 0
+		high = self._number_operations - 1
+		random_index = random.randint( low, high )
+		random_key = self._keys[ random_index ]
+		
+		start = tic()
 		try:
-			low  = 0
-			high = self._number_operations - 1
-			random_index = random.randint( low, high )
-			random_key = self._keys[ random_index ]
 			self._hash_table.delete( random_key )
 			self._successfull_delete += 1
 		except:
-			# does not matter if a delete goes wrong
+			# does not matter if a search goes wrong
 			pass
+		stop  = toc()
 
+		# increment the total delete time
+		self._total_delete_time += ( stop - start )
+		
+		# incremental count of all operations
 		self._total_delete += 1
+
 
 
 	def generate_keys( self ):
@@ -172,13 +199,13 @@ class HT_Fake_User( object ):
 		return self._successfull_delete
 
 
-	def get_insert_time( self ):
-		return self._insert_time
+	def get_total_insert_time( self ):
+		return self._total_insert_time
 
 
-	def get_search_time( self ):
-		return self._search_time
+	def get_total_search_time( self ):
+		return self._total_search_time
 
 
-	def get_delete_time( self ):
-		return self._delete_time
+	def get_total_delete_time( self ):
+		return self._total_delete_time
