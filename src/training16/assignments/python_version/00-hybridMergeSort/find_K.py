@@ -96,8 +96,8 @@ for attempt in range( 0, M_ATTEMPTS ):
 	print("K is about: %d for the attempt %d" % ( possible_K[ attempt ] , attempt))
 	
 	if matplotlib_available:
-		plt.plot(size_range, insertion_times, 'ro')
-		plt.plot(size_range, merge_times, 'bo')
+		plt.plot(size_range, insertion_times, 'ro' )
+		plt.plot(size_range, merge_times, 'bo' )
 
 
 # the average of all the possible K is a suitable K

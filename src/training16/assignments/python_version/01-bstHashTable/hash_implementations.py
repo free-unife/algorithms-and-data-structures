@@ -22,6 +22,7 @@ class HashTable( object ):
         self._choosen_implementation = implementation
         self._number_of_buckets = n_buckets
         self._buckets = []
+        self._inside_elements_count = 0
 
         # fill the buckets with the choosen implementation
         for i in range( 0, self._number_of_buckets ):
@@ -53,6 +54,7 @@ class HashTable( object ):
         i = self.__hash( key )
         try:
             self._buckets[i].insert( key=key, value=value )
+            self._inside_elements_count += 1
         except:
             raise ValueError("Push Failed: Key " + str( key ) + " already exists.")
         
@@ -83,6 +85,7 @@ class HashTable( object ):
 
         try:
             self._buckets[i].delete( key=key )
+            self._inside_elements_count -= 1
             if verbose is True:
                 print( "Successfully deleted.")
         except:
@@ -95,6 +98,9 @@ class HashTable( object ):
             if not self._buckets[i].is_empty():
                 print( "Bucket [ %d ] :" % i )
                 print( self._buckets[i] )
+
+    def get_alpha_charge( self ):
+        return self._inside_elements_count / self._number_of_buckets
 
     def __str__( self ):
         self.print_ht()
