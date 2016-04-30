@@ -11,6 +11,22 @@ As we can see from this benchmark test, executed with 100000 random operations g
 <br>
 12.5 % operation delete
 <br>
-At the operation 100000 the charge factor is about 360 with a number of bucket of 251:
+<br>---- end of ht_list benchmark :
+<br>total insert tentatives: 74998
+<br>total search tentatives: 12501
+<br>total delete tentatives: 12501
+<br>successfull insert tentatives: 74998
+<br>successfull search tentatives: 10724
+<br>successfull delete tentatives: 10738
+<br>final alpha charge: 256.0159362549801
+<br>
+<br>---- end of ht_bst benchmark :
+<br>total insert tentatives: 74962
+<br>total search tentatives: 12595
+<br>total delete tentatives: 12443
+<br>successfull insert tentatives: 74962
+<br>successfull search tentatives: 10850
+<br>successfull delete tentatives: 10733
+<br>final alpha charge: 255.89243027888446
 
 ![alt tag](https://raw.githubusercontent.com/free-unife/algorithms-and-data-structures/master/src/training16/assignments/python_version/01-bstHashTable/images/benchmark.png)
