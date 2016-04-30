@@ -18,15 +18,15 @@ from   time   import process_time as toc
 
 
 class HT_Fake_User( object ):
-	def __init__( self, hash_table, number_operations, 
-		insert_pergentage, search_pergentage, delete_pergentage ):
+	def __init__( self, hash_table, total_operations,
+		insert_percentage, search_percentage, delete_percentage ):
 		
 		self._hash_table = hash_table
-		self._number_operations = number_operations
-		self._insert_pergentage = insert_pergentage / 100
-		self._search_pergentage = search_pergentage / 100
-		self._delete_pergentage = delete_pergentage / 100
-		assert( insert_pergentage + search_pergentage + delete_pergentage == 100 )
+		self._total_operations  = total_operations
+		self._insert_percentage = insert_percentage / 100
+		self._search_percentage = search_percentage / 100
+		self._delete_percentage = delete_percentage / 100
+		assert( insert_percentage + search_percentage + delete_percentage == 100 )
 		
 		# number of tentatives
 		self._total_insert = 0
@@ -43,8 +43,22 @@ class HT_Fake_User( object ):
 		self._total_search_time = 0
 		self._total_delete_time = 0
 
-		# keys inside the HT
+		# performed operations count
+		self._performed_operations = 0
+
+		# GENERATE KEYS
 		self._keys = []
+
+		low  = - int( self._total_operations / 2 )  
+		high =   int( self._total_operations / 2 )
+		
+		# append in order keys
+		for key in range( low, high ):
+			self._keys.append( str( key ) )
+
+		# shuffle them
+		shuffle( self._keys )
+
 
 
 	def __choose_action( self ):
@@ -52,9 +66,9 @@ class HT_Fake_User( object ):
 		    with a normal distribution, we can dicrectly check if 
 		    the random number is inside the right interval and TADAaA! '''
 
-		insert_domain = self._insert_pergentage
-		search_domain = insert_domain + self._search_pergentage
-		delete_domain = search_domain + self._delete_pergentage
+		insert_domain = self._insert_percentage
+		search_domain = insert_domain + self._search_percentage
+		delete_domain = search_domain + self._delete_percentage
 		
 		x = random.random()
 		
@@ -100,7 +114,7 @@ class HT_Fake_User( object ):
 	def search( self ):
 
 		low  = 0
-		high = self._number_operations - 1
+		high = self._successfull_insert
 		random_index = random.randint( low, high )
 		random_key = self._keys[ random_index ]
 		
@@ -123,7 +137,7 @@ class HT_Fake_User( object ):
 	def delete( self ):
 		
 		low  = 0
-		high = self._number_operations - 1
+		high = self._successfull_insert
 		random_index = random.randint( low, high )
 		random_key = self._keys[ random_index ]
 		
@@ -142,27 +156,11 @@ class HT_Fake_User( object ):
 		# incremental count of all operations
 		self._total_delete += 1
 
-
-
-	def generate_keys( self ):
-		self._keys = []
-
-		low  = - int( self._number_operations / 2 )  
-		high =   int( self._number_operations / 2 )
 		
-		# append in order keys
-		for key in range( low, high ):
-			self._keys.append( str( key ) )
 
-		# shuffle them
-		shuffle( self._keys )
-
-
-	def start( self ):
-		# first generate the keys to push
-		self.generate_keys()
-
-		for operation in range( 0, self._number_operations ):
+	def perform( self, operations ):
+		
+		for operation in range( 0, operations ):
 			operation_type = self.__choose_action()
 
 			if operation_type is "insert":
@@ -174,6 +172,15 @@ class HT_Fake_User( object ):
 			if operation_type is "delete":
 				self.delete()
 
+			# increment performed operations
+			self._performed_operations += 1
+
+
+	def are_there_operations_to_perform( self ):
+		if self._performed_operations < self._total_operations:
+			return True
+		else:
+			return False
 
 	def get_total_insert( self ):
 		return self._total_insert
