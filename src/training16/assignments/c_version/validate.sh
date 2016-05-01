@@ -13,6 +13,7 @@
 
 path="$1"
 
+printf "\nValidation status: "
 { [ -x "$path" ] && [ $(./"$path" 2>&1 | grep -c ERR) -eq 0 ] \
 && [ $(./"$path" 2>&-; echo $?) -eq 0 ]; } \
 && { printf "PASSED\n"; exit 0; } \

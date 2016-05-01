@@ -7,20 +7,22 @@
 
 #include "globalDefines.h"
 
-void insertionSort( int *array, int startInd, int endInd )
+void
+insertionSort (int *array, int startInd, int endInd)
 {
-    int j;
-    int i, key;
+  int j;
+  int i, key;
 
-    for ( j = startInd + 1; le( j, endInd ); j++ ) {
-        key = el( array, j );
-        i = j - 1;
+  for (j = startInd + 1; le (j, endInd); j++)
+    {
+      key = el (array, j);
+      i = j - 1;
 
-        while ( ge( i, startInd ) && gt( el( array, i ), key ) ) {
-            array[i + 1] = el( array, i );
-            i--;
-        }
-        array[i + 1] = key;
+      while (ge (i, startInd) && gt (el (array, i), key))
+	{
+	  array[i + 1] = el (array, i);
+	  i--;
+	}
+      array[i + 1] = key;
     }
 }
-

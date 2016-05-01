@@ -7,47 +7,53 @@
 
 #include "globalDefines.h"
 
-void merge( int *array, int p, int q, int r )
+void
+merge (int *array, int p, int q, int r)
 {
-    int n1 = q - p + 1;
-    int n2 = r - q;
-    int i, j, k;
-    int *L, *R;
+  int n1 = q - p + 1;
+  int n2 = r - q;
+  int i, j, k;
+  int *L, *R;
 
-    if ( ( L = malloc( ( n1 + 1 ) * sizeof( int ) ) ) == NULL ) {
-        if ( errno )
-            perror( strerror( errno ) );
-        exit( EXIT_FAILURE );
+  if ((L = malloc ((n1 + 1) * sizeof (int))) == NULL)
+    {
+      if (errno)
+	perror (strerror (errno));
+      exit (EXIT_FAILURE);
     }
 
-    if ( ( R = malloc( ( n2 + 1 ) * sizeof( int ) ) ) == NULL ) {
-        if ( errno )
-            perror( strerror( errno ) );
-        exit( EXIT_FAILURE );
+  if ((R = malloc ((n2 + 1) * sizeof (int))) == NULL)
+    {
+      if (errno)
+	perror (strerror (errno));
+      exit (EXIT_FAILURE);
     }
 
-    for ( i = 0; lt( i, n1 ); i++ )
-        L[i] = el( array, p + i );
+  for (i = 0; lt (i, n1); i++)
+    L[i] = el (array, p + i);
 
-    for ( j = 0; lt( j, n2 ); j++ )
-        R[j] = el( array, q + 1 + j );
+  for (j = 0; lt (j, n2); j++)
+    R[j] = el (array, q + 1 + j);
 
-    L[n1] = INF;
-    R[n2] = INF;
+  L[n1] = INF;
+  R[n2] = INF;
 
-    i = 0;
-    j = 0;
-    for ( k = p; le( k, r ); k++ ) {
-        if ( le( el( L, i ), el( R, j ) ) ) {
-            array[k] = el( L, i );
-            i++;
-        } else {
-            array[k] = el( R, j );
-            j++;
-        }
+  i = 0;
+  j = 0;
+  for (k = p; le (k, r); k++)
+    {
+      if (le (el (L, i), el (R, j)))
+	{
+	  array[k] = el (L, i);
+	  i++;
+	}
+      else
+	{
+	  array[k] = el (R, j);
+	  j++;
+	}
     }
 
-    free( L );
-    free( R );
+  free (L);
+  free (R);
 }
-

@@ -7,24 +7,26 @@
 
 #include "globalDefines.h"
 
-static int minIndexDoubleArray( double *array, int len );
+static int minIndexDoubleArray (double *array, int len);
 
 /* If C the language wasn't strongly typed I could use all the array functions 
  * defined in utils.c. */
-static int minIndexDoubleArray( double *array, int len )
+static int
+minIndexDoubleArray (double *array, int len)
 {
-    int i, minInd;
-    double min;
+  int i, minInd;
+  double min;
 
-    min = array[0];
-    minInd = 0;
-    for ( i = 1; i < len; i++ )
-        if ( array[i] < min ) {
-            min = array[i];
-            minInd = i;
-        }
+  min = array[0];
+  minInd = 0;
+  for (i = 1; i < len; i++)
+    if (array[i] < min)
+      {
+	min = array[i];
+	minInd = i;
+      }
 
-    return minInd;
+  return minInd;
 }
 
 /* k corresponds to the maximum array size where insertion sort performs like
@@ -32,110 +34,110 @@ static int minIndexDoubleArray( double *array, int len )
  * With values less than k, insertion sort performs better, and with values
  * greater than k merge sort performs better ).
  */
-int findK( void )
+int
+findK (void)
 {
-    int attempt, size;
-    int *array, *arrayInsertionSort, *arrayMergeSort;
-    clock_t start, end;
-    double insertionSortTime, mergeSortTime, diffTime;
-    double *diffTimes;
-    int *possibleK;
-    int k;
+  int attempt, size;
+  int *array, *arrayInsertionSort, *arrayMergeSort;
+  clock_t start, end;
+  double insertionSortTime, mergeSortTime, diffTime;
+  double *diffTimes;
+  int *possibleK;
+  int k;
 
 #if defined M_FINDK_C
-    fprintf( stdout, "%s    %s    %s    %s    %s\n", "attempt",
-             "arraySize", "insertionSortTime", "mergeSortTime",
-             "diffTime" );
+  fprintf (stdout, "%s    %s    %s    %s    %s\n", "attempt",
+	   "arraySize", "insertionSortTime", "mergeSortTime", "diffTime");
 #elif defined M_MAIN_C
-    fprintf( stderr, "%s    %s    %s    %s    %s\n", "attempt",
-             "arraySize", "insertionSortTime", "mergeSortTime",
-             "diffTime" );
+  fprintf (stderr, "%s    %s    %s    %s    %s\n", "attempt",
+	   "arraySize", "insertionSortTime", "mergeSortTime", "diffTime");
 #endif
 
-    possibleK = allocArray( ATTEMPTS );
-    for ( attempt = 0; attempt < ATTEMPTS; attempt++ ) {
+  possibleK = allocArray (ATTEMPTS);
+  for (attempt = 0; attempt < ATTEMPTS; attempt++)
+    {
 
-        if ( ( diffTimes =
-               malloc( ( MAX_SIZE - MIN_SIZE ) * sizeof( double ) ) ) ==
-             NULL ) {
-            if ( errno )
-                perror( strerror( errno ) );
-            exit( EXIT_FAILURE );
-        }
+      if ((diffTimes =
+	   malloc ((MAX_SIZE - MIN_SIZE) * sizeof (double))) == NULL)
+	{
+	  if (errno)
+	    perror (strerror (errno));
+	  exit (EXIT_FAILURE);
+	}
 
-        for ( size = MIN_SIZE; size <= MAX_SIZE; size++ ) {
-            initArray( &array );
-            initArray( &arrayInsertionSort );
-            initArray( &arrayMergeSort );
+      for (size = MIN_SIZE; size <= MAX_SIZE; size++)
+	{
+	  initArray (&array);
+	  initArray (&arrayInsertionSort);
+	  initArray (&arrayMergeSort);
 
-            array = genRandomArray( size );
+	  array = genRandomArray (size);
 
-            assert( !arrayEmpty( array ) );
+	  assert (!arrayEmpty (array));
 
-            /*
-             * Get copies of the original array. 
-             */
-            arrayInsertionSort = copyArray( array );
-            arrayMergeSort = copyArray( array );
-            assert( arrayEqual( array, arrayInsertionSort ) );
-            assert( arrayEqual( array, arrayMergeSort ) );
+	  /*
+	   * Get copies of the original array. 
+	   */
+	  arrayInsertionSort = copyArray (array);
+	  arrayMergeSort = copyArray (array);
+	  assert (arrayEqual (array, arrayInsertionSort));
+	  assert (arrayEqual (array, arrayMergeSort));
 
-            start = clock(  );
-            insertionSort( arrayInsertionSort, 0, size - 1 );
-            end = clock(  );
-            insertionSortTime = runningTime( start, end );
+	  start = clock ();
+	  insertionSort (arrayInsertionSort, 0, size - 1);
+	  end = clock ();
+	  insertionSortTime = runningTime (start, end);
 
-            start = clock(  );
-            mergeSort( arrayMergeSort, 0, size - 1 );
-            end = clock(  );
-            mergeSortTime = runningTime( start, end );
+	  start = clock ();
+	  mergeSort (arrayMergeSort, 0, size - 1);
+	  end = clock ();
+	  mergeSortTime = runningTime (start, end);
 
-            /*
-             * Check if the arrays are ordered. 
-             */
-            assert( arrayEqual( arrayInsertionSort, arrayMergeSort ) );
-            assert( arrayOrdered( arrayInsertionSort ) );
-            assert( arrayOrdered( arrayMergeSort ) );
+	  /*
+	   * Check if the arrays are ordered. 
+	   */
+	  assert (arrayEqual (arrayInsertionSort, arrayMergeSort));
+	  assert (arrayOrdered (arrayInsertionSort));
+	  assert (arrayOrdered (arrayMergeSort));
 
-            diffTime = fabs( insertionSortTime - mergeSortTime );
+	  diffTime = fabs (insertionSortTime - mergeSortTime);
 
-            /*
-             * Save times. 
-             */
-            diffTimes[size - MIN_SIZE] = diffTime;
+	  /*
+	   * Save times. 
+	   */
+	  diffTimes[size - MIN_SIZE] = diffTime;
 
-            free( arrayMergeSort );
-            free( arrayInsertionSort );
-            free( array );
+	  free (arrayMergeSort);
+	  free (arrayInsertionSort);
+	  free (array);
 
-            /*
-             * Print the results so that gnuplot can catch and use them. 
-             */
+	  /*
+	   * Print the results so that gnuplot can catch and use them. 
+	   */
 #if defined M_FINDK_C
-            fprintf( stdout, "%d    %d    %f    %f    %f\n", attempt, size,
-                     insertionSortTime, mergeSortTime, diffTime );
+	  fprintf (stdout, "%d    %d    %f    %f    %f\n", attempt, size,
+		   insertionSortTime, mergeSortTime, diffTime);
 #elif defined M_MAIN_C
-            fprintf( stderr, "%d    %d    %f    %f    %f\n", attempt, size,
-                     insertionSortTime, mergeSortTime, diffTime );
+	  fprintf (stderr, "%d    %d    %f    %f    %f\n", attempt, size,
+		   insertionSortTime, mergeSortTime, diffTime);
 #endif
-        }
-        possibleK[attempt] = MIN_SIZE +
-            minIndexDoubleArray( diffTimes, MAX_SIZE - MIN_SIZE );
+	}
+      possibleK[attempt] = MIN_SIZE +
+	minIndexDoubleArray (diffTimes, MAX_SIZE - MIN_SIZE);
 
-        free( diffTimes );
+      free (diffTimes);
     }
 
-    /*
-     * Average of all possible ks. 
-     */
-    k = arraySum( possibleK ) / arrayLength( possibleK );
+  /*
+   * Average of all possible ks. 
+   */
+  k = arraySum (possibleK) / arrayLength (possibleK);
 
-    fprintf( stderr, "\n\nPossible k for each one of the %d attempts\n",
-             ATTEMPTS );
-    printArray( possibleK );
+  fprintf (stderr, "\n\nPossible k for each one of the %d attempts\n",
+	   ATTEMPTS);
+  printArray (possibleK);
 
-    free( possibleK );
+  free (possibleK);
 
-    return k;
+  return k;
 }
-

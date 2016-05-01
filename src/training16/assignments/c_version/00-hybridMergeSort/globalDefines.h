@@ -43,34 +43,34 @@
 
 #define COMPARISON_SIZE 5000
 
-extern double runningTime( clock_t start, clock_t end );
-extern void initArray( int **arrayPtr );
-extern bool arrayNull ( int *array );
-extern bool arrayEmpty( int *array );
-extern int el( int *array, int index );
-extern int *pt( int *array, int index );
-extern bool eq ( int a, int b );
-extern bool gt ( int a, int b );
-extern bool lt ( int a, int b );
-extern bool ge( int a, int b );
-extern bool le( int a, int b );
-extern bool arrayOrdered( int *array );
-extern void printArray( int *array );
-extern int arrayLength ( int *array );
-extern int arraySum( int *array );
-extern bool arrayEqual( int *a1, int *a2 );
-extern int *allocArray ( int len );
-extern int *copyArray ( int *src );
-extern int *genRandomArray( int len );
+extern double runningTime (clock_t start, clock_t end);
+extern void initArray (int **arrayPtr);
+extern bool arrayNull (int *array);
+extern bool arrayEmpty (int *array);
+extern int el (int *array, int index);
+extern int *pt (int *array, int index);
+extern bool eq (int a, int b);
+extern bool gt (int a, int b);
+extern bool lt (int a, int b);
+extern bool ge (int a, int b);
+extern bool le (int a, int b);
+extern bool arrayOrdered (int *array);
+extern void printArray (int *array);
+extern int arrayLength (int *array);
+extern int arraySum (int *array);
+extern bool arrayEqual (int *a1, int *a2);
+extern int *allocArray (int len);
+extern int *copyArray (int *src);
+extern int *genRandomArray (int len);
 
-extern void insertionSort( int *array, int startInd, int endInd );
+extern void insertionSort (int *array, int startInd, int endInd);
 
-extern void merge( int *array, int p, int q, int r );
+extern void merge (int *array, int p, int q, int r);
 
-extern void mergeSort( int *array, int p, int r );
+extern void mergeSort (int *array, int p, int r);
 
-extern int findK( void );
+extern int findK (void);
 
-extern void hybridSort( int *array, int p, int r, int k );
+extern void hybridSort (int *array, int p, int r, int k);
 
 #endif

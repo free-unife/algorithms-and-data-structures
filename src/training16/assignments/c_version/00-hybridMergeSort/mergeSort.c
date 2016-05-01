@@ -7,15 +7,16 @@
 
 #include "globalDefines.h"
 
-void mergeSort( int *array, int p, int r )
+void
+mergeSort (int *array, int p, int r)
 {
-    int q;
+  int q;
 
-    if ( lt( p, r ) ) {
-        q = ( p + r ) / 2;
-        mergeSort( array, p, q );
-        mergeSort( array, q + 1, r );
-        merge( array, p, q, r );
+  if (lt (p, r))
+    {
+      q = (p + r) / 2;
+      mergeSort (array, p, q);
+      mergeSort (array, q + 1, r);
+      merge (array, p, q, r);
     }
 }
-

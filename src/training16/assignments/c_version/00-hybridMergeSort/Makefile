@@ -20,7 +20,8 @@ LIBS = -lm -lrt
 CSTANDARD = -std=c99
 DEFFLAG =
 
-INDENT_OPTS = -kr -prs -nut -bap -bad -br -cdb -sc
+# INDENT_OPTS = -kr -prs -nut -bap -bad -br -cdb -sc
+INDENT_OPTS = -nbad -bap -nbc -bbo -bl -bli2 -bls -ncdb -nce -cp1 -cs -di2 -ndj -nfc1-nfca -hnl -i2 -ip5 -lp -pcs -psl -nsc -nsob
 SPLINT_OPTS = -usereleased -compdef -preproc
 
 PLOT_INPUT_FILE = out.dat
@@ -44,7 +45,7 @@ all: main plotcompare
 
 indent:
 	@echo "Indenting all files..."
-	@./indent.sh "$(INDENT_OPTS)" "$(SPLINT_OPTS)" "$(PRG_OBJFILES)\ $(TEST_MODULE_OBJFILE)"
+	@./indent.sh "$(INDENT_OPTS)" "$(SPLINT_OPTS)" "$(PRG_OBJFILES) $(TEST_MODULE_OBJFILE) $(DEPS)"
 	@echo "Done."
 
 clean:

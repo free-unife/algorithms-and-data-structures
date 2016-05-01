@@ -27,7 +27,7 @@ if [ $? -eq 0 ]; then
         splint $splintOptions "$file"
         indent $indentOptions "$file"
         # Remove indent backup files.
-        rm "${file}${SIMPLE_BACKUP_SUFFIX}"
+        rm -rf "${file}${SIMPLE_BACKUP_SUFFIX}"
 
         # Get header path (.h files).
         file="${file:0:(-2)}.h"
