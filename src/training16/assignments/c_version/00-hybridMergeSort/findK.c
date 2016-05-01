@@ -42,11 +42,11 @@ int findK( void )
     int *possibleK;
     int k;
 
-#ifdef M_FINDK_C
+#if defined M_FINDK_C
     fprintf( stdout, "%s    %s    %s    %s    %s\n", "attempt",
              "arraySize", "insertionSortTime", "mergeSortTime",
              "diffTime" );
-#else
+#elif defined M_MAIN_C
     fprintf( stderr, "%s    %s    %s    %s    %s\n", "attempt",
              "arraySize", "insertionSortTime", "mergeSortTime",
              "diffTime" );
@@ -111,10 +111,10 @@ int findK( void )
             /*
              * Print the results so that gnuplot can catch and use them. 
              */
-#ifdef M_FINDK_C
+#if defined M_FINDK_C
             fprintf( stdout, "%d    %d    %f    %f    %f\n", attempt, size,
                      insertionSortTime, mergeSortTime, diffTime );
-#else
+#elif defined M_MAIN_C
             fprintf( stderr, "%d    %d    %f    %f    %f\n", attempt, size,
                      insertionSortTime, mergeSortTime, diffTime );
 #endif
@@ -139,15 +139,3 @@ int findK( void )
     return k;
 }
 
-#ifdef M_FINDK_C
-int main( void )
-{
-    int k;
-
-    k = findK(  );
-
-    fprintf( stderr, "\n\nAvg of possible k is %d\n", k );
-
-    return 0;
-}
-#endif

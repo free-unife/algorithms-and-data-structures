@@ -7,6 +7,7 @@
 
 #include "globalDefines.h"
 
+#if defined M_MAIN_C
 int main( void )
 {
     int attempt, k;
@@ -67,3 +68,4 @@ int main( void )
 
     return 0;
 }
+#endif
