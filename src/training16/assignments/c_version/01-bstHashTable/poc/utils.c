@@ -12,22 +12,24 @@
 
 #include "globalDefines.h"
 
-bool element_null ( void *element )
+bool
+element_null (void *element)
 {
-    return ( element == NULL );
+  return (element == NULL);
 }
 
-void *malloc_safe ( size_t size )
+void *
+malloc_safe (size_t size)
 {
-    void *dst;
+  void *dst;
 
-    dst = malloc ( size );
-    if ( element_null ( dst ) )
+  dst = malloc (size);
+  if (element_null (dst))
     {
-       if ( errno )
-           perror( strerror( errno ) );
-       exit( EXIT_FAILURE );
+      if (errno)
+	perror (strerror (errno));
+      exit (EXIT_FAILURE);
     }
 
-    return dst;
+  return dst;
 }

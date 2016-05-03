@@ -27,13 +27,15 @@ PLOT_INPUT_FILE = out.dat
 PLOT_OUTPUT_DIR = images
 
 EXECUTABLES = utils.out adt.out bst.out
-PRG_OBJFILES = utils.o adt.o
+PRG_OBJFILES = utils.o adt.o bst.o
 TEST_MODULE_OBJFILE = tests.o
 TEST_MODULE_SRCFILE = tests.c
 
+FORCE_REBUILD_OBJFILES = $(TEST_MODULE_OBJFILE)
+
 # To protect files with the following names, the .PHONY rule is used.
 # This also enables us to force the TEST_MODULE_OBJFILE target.
-.PHONY: default all clean indent $(EXECUTABLES) $(TEST_MODULE_OBJFILE)
+.PHONY: default all clean indent $(EXECUTABLES) $(FORCE_REBUILD_OBJFILES)
 
 default: main
 
@@ -61,19 +63,19 @@ target utils: override DEFFLAG = -DM_UTILS_C
 utils: $(TEST_MODULE_OBJFILE) utils.o
 	@$(CC) -o $@.out $^
 	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_UTILS_C -o $@.out"
-	#@./validate.sh $@.out
+	@./validate.sh $@.out
 
 target adt: override DEFFLAG = -DM_ADT_C
 adt: $(TEST_MODULE_OBJFILE) utils.o adt.o
 	@$(CC) -o $@.out $^
 	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_ADT_C -o $@.out"
-	#@./validate.sh $@.out
+	@./validate.sh $@.out
 
 target bst: override DEFFLAG = -DM_BST_C
 bst: $(TEST_MODULE_OBJFILE) utils.o adt.o bst.o
 	@$(CC) -o $@.out $^
 	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_BST_C -o $@.out"
-	#@./validate.sh $@.out
+	@./validate.sh $@.out
 
 doxygen:
 	@doxygen doxy.conf
