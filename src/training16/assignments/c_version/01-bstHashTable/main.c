@@ -20,7 +20,7 @@ static double bstOperations( char **keys, char *actions,
 
 static double runningTime( clock_t start, clock_t end )
 {
-    return ( ( ( double ) ( end - start ) / ( double ) CLOCKS_PER_SEC ) );
+    return ( (double) ( ( double ) ( end - start ) / ( double ) CLOCKS_PER_SEC ) );
 }
 
 static char *genRandomString( int len )

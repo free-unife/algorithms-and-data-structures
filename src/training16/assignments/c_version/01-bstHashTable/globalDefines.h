@@ -75,6 +75,7 @@ bool HTLISTInsert( htListSlot * hashTable, char *key, char *value );
 listElement HTLISTSearch( htListSlot * hashTable, char *key );
 bool HTLISTDelete( htListSlot * hashTable, char *key );
 bool HTLISTClearHashTable( htListSlot * hashTable, unsigned int numberOfSlots );
+
 /* BST struct. */
 struct bstNode {
     char *key;

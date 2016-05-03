@@ -13,7 +13,7 @@ static bst BSTRight( bst root );
 static bst BSTParent( bst root );
 static bst BSTMaxElement( bst root );
 
-#ifdef M_BSTMAIN_C
+#if defined M_BSTMAIN_C
 static bst BSTMinElement( bst root );
 #endif
 static bst BSTPredecessor( bst root );
@@ -25,12 +25,12 @@ static bst BSTNewNode( bstPtr rootPtr, bst parent, char *key,
                        char *value );
 static bst BSTNonEmptyInsert( bst root, char *key, char *value );
 
-#ifdef M_BSTMAIN_C
+#if defined M_BSTMAIN_C
 static bool BSTis( bst root, char *minKey, char *maxKey );
 #endif
 static bool BSTNonEmptyDelete( bstPtr rootPtr, bst root, char *key );
 
-#ifdef M_BSTMAIN_C
+#if defined M_BSTMAIN_C
 static void BSTPrint( bst root );
 #endif
 

@@ -1,14 +1,7 @@
 #How to use the make files
-
-The first thing to do is to set a shell alias:
-
 ```
-$ alias make='make -B'
+$ make [TARGET]
 ```
-
-This forces the whole rebuild every time a build target is called with the 
-usual `$ make <target>` command. If this is not done you must always call `make 
-clean` before `make <target>`.
 
 #Makefile targets
 
