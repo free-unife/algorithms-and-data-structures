@@ -38,6 +38,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -58,12 +59,6 @@ struct listNode
      * @brief Pointer to the previous Node obkect.
      */
   struct Node *prev;
-
-    /**
-     * @brief Pointer to the Node object which contains key and value
-     * fields of the current listNode instance.
-     */
-  struct Node *parentStructPtr;
 };
 
 /**
@@ -87,12 +82,6 @@ struct bstNode
      * @brief Pointer to the parent Node object.
      */
   struct Node *parent;
-
-    /**
-     * @brief Pointer to the Node object which contains key and value
-     * fields of the current bstNode instance.
-     */
-  struct Node *parentStructPtr;
 };
 
 /**
@@ -139,6 +128,15 @@ typedef struct bstNode *bnode;
  * @typedef struct listNode *lnode
  */
 typedef struct listNode *lnode;
+
+struct HashTable
+{
+  nodePtr *ptr;
+  unsigned int numberOfSlots;
+  char type;
+};
+
+typedef struct HashTable *ht;
 
 /* ========================================== */
 
@@ -280,28 +278,15 @@ extern nodePtr nodeptr_new (void);
 
 /* ========================================== */
 
-#if defined M_BST_C
-extern node BSTLeft (node root);
-
-extern node BSTRight (node root);
-
-extern node BSTParent (node root);
-
-extern node BSTMaxElement (node root);
-
-extern node BSTPredecessor (node root);
-
-extern bool BSTIsLeaf (node root);
-
 extern void BSTPrint (node root);
 
 extern bool BSTIs (node root, char *minKey, char *maxKey);
-#endif
 
 /**
  * @brief Insert a new node in a specified BST.
  *
- * @param[in] rootPtr A pointer <TODO>
+ * @param[in] rootPtr A memory address containing the pointer to the root node 
+ * (BST).
  * @param[in] key A memory address corresponding to the key.
  * @param[in] value A memory address corresponding to the value.
  *
@@ -348,5 +333,17 @@ extern bool BSTDelete (nodePtr rootPtr, char *key);
  */
 extern node BSTClear (node root);
 
+/* ========================================== */
 
+extern ht HTInit (unsigned int numberOfSlots, char type);
+
+extern bool HTInsert (ht hashTable, char *key, char *value);
+
+extern node HTSearch (ht hashTable, char *key);
+
+extern bool HTDelete (ht hashTable, char *key);
+
+extern bool HTClear (ht * hashTable);
+
+extern void HTPrint (ht hashTable);
 #endif

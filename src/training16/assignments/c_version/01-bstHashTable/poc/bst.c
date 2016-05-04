@@ -12,42 +12,38 @@
 
 #include "globalDefines.h"
 
-#if !defined M_BST_C
 static node BSTLeft (node root);
 static node BSTRight (node root);
 static node BSTParent (node root);
 static node BSTMaxElement (node root);
 static node BSTPredecessor (node root);
 static bool BSTIsLeaf (node root);
-#endif
+static bool BSTHasLeftOnly (node root);
+static bool BSTHasRightOnly (node root);
 static node BSTNewNode (nodePtr rootPtr, node parentNode, char *key,
 			char *value);
 static node BSTNonEmptyInsert (node root, char *key, char *value);
 static bool BSTNonEmptyDelete (nodePtr rootPtr, node root, char *key);
 
-#if !defined M_BST_C
 static node
-#else
-node
-#endif
 BSTLeft (node root)
 {
   return (node_null (root) ? NULL : root->bn->left);
 }
 
-node
+static node
 BSTRight (node root)
 {
   return (node_null (root) ? NULL : root->bn->right);
 }
 
-node
+static node
 BSTParent (node root)
 {
   return (node_null (root) ? NULL : root->bn->parent);
 }
 
-node
+static node
 BSTMaxElement (node root)
 {
   if (node_null (root))
@@ -57,27 +53,27 @@ BSTMaxElement (node root)
 	    BSTMaxElement (BSTRight (root)) : root);
 }
 
-node
+static node
 BSTPredecessor (node root)
 {
   return (node_null (root) ? NULL : BSTMaxElement (BSTLeft (root)));
 }
 
-bool
+static bool
 BSTIsLeaf (node root)
 {
   assert (!node_null (root));
   return ((node_null (BSTLeft (root))) && (node_null (BSTRight (root))));
 }
 
-bool
+static bool
 BSTHasLeftOnly (node root)
 {
   assert (!node_null (root));
   return ((node_null (BSTLeft (root))) && (!node_null (BSTRight (root))));
 }
 
-bool
+static bool
 BSTHasRightOnly (node root)
 {
   assert (!node_null (root));
@@ -252,7 +248,6 @@ BSTClear (node root)
   return NULL;
 }
 
-#if defined M_BST_C
 bool
 BSTIs (node root, char *minKey, char *maxKey)
 {
@@ -276,4 +271,3 @@ BSTPrint (node root)
   BSTPrint (BSTLeft (root));
   BSTPrint (BSTRight (root));
 }
-#endif

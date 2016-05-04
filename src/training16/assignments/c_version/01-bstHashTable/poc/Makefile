@@ -26,8 +26,8 @@ SPLINT_OPTS = -usereleased -compdef -preproc
 PLOT_INPUT_FILE = out.dat
 PLOT_OUTPUT_DIR = images
 
-EXECUTABLES = utils.out adt.out bst.out
-PRG_OBJFILES = utils.o adt.o bst.o
+EXECUTABLES = utils.out node.out bst.out ht.out
+PRG_OBJFILES = utils.o node.o bst.o ht.o
 TEST_MODULE_OBJFILE = tests.o
 TEST_MODULE_SRCFILE = tests.c
 
@@ -65,16 +65,22 @@ utils: $(TEST_MODULE_OBJFILE) utils.o
 	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_UTILS_C -o $@.out"
 	@./validate.sh $@.out
 
-target adt: override DEFFLAG = -DM_ADT_C
-adt: $(TEST_MODULE_OBJFILE) utils.o adt.o
+target node: override DEFFLAG = -DM_NODE_C
+node: $(TEST_MODULE_OBJFILE) utils.o node.o
 	@$(CC) -o $@.out $^
-	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_ADT_C -o $@.out"
+	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_NODE_C -o $@.out"
 	@./validate.sh $@.out
 
 target bst: override DEFFLAG = -DM_BST_C
-bst: $(TEST_MODULE_OBJFILE) utils.o adt.o bst.o
+bst: $(TEST_MODULE_OBJFILE) utils.o node.o bst.o
 	@$(CC) -o $@.out $^
 	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_BST_C -o $@.out"
+	@./validate.sh $@.out
+
+target ht: override DEFFLAG = -DM_HT_C
+ht: $(TEST_MODULE_OBJFILE) utils.o node.o bst.o ht.o
+	@$(CC) -o $@.out $^
+	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_HT_C -o $@.out"
 	@./validate.sh $@.out
 
 doxygen:

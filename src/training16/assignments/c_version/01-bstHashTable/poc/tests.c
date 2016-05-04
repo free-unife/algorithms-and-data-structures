@@ -14,7 +14,7 @@ main (void)
   return 0;
 }
 
-#elif defined M_ADT_C
+#elif defined M_NODE_C
 int
 main (void)
 {
@@ -85,6 +85,38 @@ main (void)
   assert (BSTIs (*rootRef, "00", "99"));
 
   assert (node_null (BSTClear (*rootRef)));
+
+  return 0;
+}
+
+#elif defined M_HT_C
+int
+main (void)
+{
+  ht hashTable;
+  char **keys;
+  int i, iterations = 2048;
+
+  hashTable = HTInit (997, 'b');
+
+  keys = malloc_safe (sizeof (char *) * iterations);
+  for (i = 0; i < iterations; i++)
+    {
+      keys[i] = malloc_safe (sizeof (char) * 256);
+      sprintf (keys[i], "%d", i);
+      assert (HTInsert (hashTable, keys[i], keys[i]));
+    }
+
+  assert (keys_equal (key_get (HTSearch (hashTable, "123")), "123"));
+
+  HTPrint (hashTable);
+
+  assert (HTDelete (hashTable, "0"));
+  assert (HTDelete (hashTable, "1"));
+  assert (!HTDelete (hashTable, "0"));
+  assert (!HTDelete (hashTable, "1"));
+
+  assert (HTClear (&hashTable));
 
   return 0;
 }

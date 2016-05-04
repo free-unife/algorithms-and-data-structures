@@ -91,7 +91,6 @@ node_new (char *key, char *value, char type)
       b = malloc_safe (sizeof (struct bstNode));
       new_node->ln = NULL;
       new_node->bn = b;
-      (new_node->bn)->parentStructPtr = new_node;
     }
   /* LIST */
   else
@@ -99,7 +98,6 @@ node_new (char *key, char *value, char type)
       l = malloc_safe (sizeof (struct listNode));
       new_node->ln = l;
       new_node->bn = NULL;
-      (new_node->ln)->parentStructPtr = new_node;
     }
 
   new_node->key = key;
