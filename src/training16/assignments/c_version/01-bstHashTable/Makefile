@@ -14,87 +14,88 @@
 # Macros.
 CC = /usr/bin/gcc
 
-DEPS = definedModules.h globalDefines.h
-CFLAGS = -Wall -Wextra -Wpedantic -Werror -march=native -O0
+DEPS = globalDefines.h
+CFLAGS = -g -Wall -Wextra -Wpedantic -Werror -march=native -O0
 LIBS = -lm -lrt
 CSTANDARD = -std=c99
 DEFFLAG =
 
-INDENT_OPTS = -kr -prs -nut -bap -bad -br -cdb -sc
+INDENT_OPTS = -nbad -bap -nbc -bbo -bl -bli2 -bls -ncdb -nce -cp1 -cs -di2 -ndj -nfc1-nfca -hnl -i2 -ip5 -lp -pcs -psl -nsc -nsob
 SPLINT_OPTS = -usereleased -compdef -preproc
 
 PLOT_INPUT_FILE = out.dat
 PLOT_OUTPUT_DIR = images
 
-EXECUTABLES = list.out bst.out listht.out bstht.out hash.out htlist.out htbst.out main.out
-PRG_OBJFILES = list.o bst.o listht.o bstht.o hash.o htlist.o htbst.o main.o
+EXECUTABLES = utils.out node.out bst.out list.out ht.out
+PRG_OBJFILES = utils.o node.o bst.o list.o ht.o
+TEST_MODULE_OBJFILE = tests.o
+TEST_MODULE_SRCFILE = tests.c
 
-# Targets
-default : main # default target
+FORCE_REBUILD_OBJFILES = $(TEST_MODULE_OBJFILE)
 
-all : main plot
+# To protect files with the following names, the .PHONY rule is used.
+# This also enables us to force the TEST_MODULE_OBJFILE target.
+.PHONY: default all clean indent $(EXECUTABLES) $(FORCE_REBUILD_OBJFILES)
+
+default: main
+
+all: main plotcompare
 
 %.o: %.c $(DEPS)
 	@$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) $(DEFFLAG) -c -o $@ $<
 
 indent:
 	@echo "Indenting all files..."
-	@./indent.sh "$(INDENT_OPTS)" "$(SPLINT_OPTS)" "$(PRG_OBJFILES)"
+	@./indent.sh "$(INDENT_OPTS)" "$(SPLINT_OPTS)" "$(PRG_OBJFILES) $(TEST_MODULE_OBJFILE) $(DEPS)"
 	@echo "Done."
 
 clean:
 	@echo "Removing object files..."
-	@rm -fv *.o $(EXECUTABLES)
+	@rm -fv *.o *.out
 	@echo "Object files removed."
 
-target bst: override DEFFLAG = -DM_BSTMAIN_C
-bst: bst.o
+# Always clean the test module before compiling the rest.
+$(TEST_MODULE_OBJFILE): $(TEST_MODULE_SRCFILE)
+	@rm -rf $(TEST_MODULE_OBJFILE)
+	@$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) $(DEFFLAG) -c -o $@ $<
+
+target utils: override DEFFLAG = -DM_UTILS_C
+utils: $(TEST_MODULE_OBJFILE) utils.o
 	@$(CC) -o $@.out $^
-	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_BSTMAIN_C -o $@.out"
+	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_UTILS_C -o $@.out"
 	@./validate.sh $@.out
 
-target bstht: override DEFFLAG = -DM_BSTHTMAIN_C
-bstht: bst.o bstht.o
+target node: override DEFFLAG = -DM_NODE_C
+node: $(TEST_MODULE_OBJFILE) utils.o node.o
 	@$(CC) -o $@.out $^
-	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_BSTHTMAIN_C -o $@.out"
+	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_NODE_C -o $@.out"
 	@./validate.sh $@.out
 
-target htbst: override DEFFLAG = -DM_HTBSTMAIN_C
-htbst: bst.o bstht.o hash.o htbst.o
+target bst: override DEFFLAG = -DM_BST_C
+bst: $(TEST_MODULE_OBJFILE) utils.o node.o bst.o
 	@$(CC) -o $@.out $^
-	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_BSTHTMAIN_C -o $@.out"
+	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_BST_C -o $@.out"
 	@./validate.sh $@.out
 
-target list: override DEFFLAG = -DM_LISTMAIN_C
-list: list.o
+target list: override DEFFLAG = -DM_LIST_C
+list: $(TEST_MODULE_OBJFILE) utils.o node.o list.o
 	@$(CC) -o $@.out $^
-	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_LISTMAIN_C -o $@.out"
+	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_LIST_C -o $@.out"
 	@./validate.sh $@.out
 
-target listht: override DEFFLAG = -DM_LISTHTMAIN_C
-listht: list.o listht.o
+target ht: override DEFFLAG = -DM_HT_C
+ht: $(TEST_MODULE_OBJFILE) utils.o node.o bst.o list.o ht.o
 	@$(CC) -o $@.out $^
-	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_LISTHTMAIN_C -o $@.out"
+	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_HT_C -o $@.out"
 	@./validate.sh $@.out
 
-target htlist: override DEFFLAG = -DM_HTLISTMAIN_C
-htlist: list.o listht.o hash.o htlist.o
-	@$(CC) -o $@.out $^
-	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_HTLISTMAIN_C -o $@.out"
-	@./validate.sh $@.out
+doxygen:
+	@doxygen doxy.conf
 
-main: $(PRG_OBJFILES)
-	@$(CC) -o $@.out $^
-	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -o $@.out"
+doxygenlatex: doxygen
+	@cd latex; make pdf; mv refman.pdf ../.; cd ..
 
-plot: main
-	@echo "Plotting..."
-	@mkdir -p $(PLOT_OUTPUT_DIR)
-	@./main.out > $(PLOT_INPUT_FILE)
-	@./plot.sh $(PLOT_INPUT_FILE) > $(PLOT_OUTPUT_DIR)/plot.png
-	@ rm $(PLOT_INPUT_FILE)
-	@echo "Plot results have been written in $(PLOT_OUTPUT_DIR)/plot.png"
-	@echo "Done."
+cleandoxygen:
+	@rm -rf html latex refman.pdf
 
-# to protect files with the following names, the .PHONY rule is used
-.PHONY: default all clean indent $(EXECUTABLES)
+cleanall: clean cleandoxygen

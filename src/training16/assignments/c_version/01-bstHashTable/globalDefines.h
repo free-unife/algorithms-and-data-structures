@@ -1,4 +1,9 @@
-/* Copyright © 2016 Franco Masotti <franco.masotti@student.unife.it>
+/**
+ * @file globalDefines.h
+ * @author Franco Masotti
+ * @date 02 May 2016
+ * @brief Header file containing exportable methods.
+ * @copyright Copyright © 2016 Franco Masotti <franco.masotti@student.unife.it>
  *                  Danny Lessio
  * This work is free. You can redistribute it and/or modify it under the
  * terms of the Do What The Fuck You Want To Public License, Version 2,
@@ -6,123 +11,376 @@
  */
 
 #ifndef M_GLOBALDEFINES_H
+
+/**
+ * @brief Include the main header.
+ */
 #define M_GLOBALDEFINES_H
 
-#include "definedModules.h"
+/**
+ * @brief Tell the compiler that we want ISO C99 source, and check if the
+ * system has ANSI C 99.
+ */
+#define ISOC99_SOURCE
+#define _POSIX_C_SOURCE 199309L
+#if __STDC_VERSION__ != 199901L
+#error "ANSI C99 not available"
+#endif
+
+/*
+ * Comment out the following to disable all asserts.
+ */
+/*#define NDEBUG*/
+
 #include <assert.h>
 #include <errno.h>
 #include <limits.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
-#define INF INT_MAX
-#define EMPTY NULL
-#define EMPTYKEY ""
-#define EMPTYVAL ""
-#define KEYLENGTH 16
-#define KEYCHARMIN 33
-#define KEYCHARMAX 126
-#define NUMBER_OF_TESTS 200
-#define M 997
+/**
+ * @brief List Node Abstract Data Type.
+ *
+ * @struct listNode
+ */
+struct listNode
+{
+    /**
+     * @brief Pointer to the next Node object.
+     */
+  struct Node *next;
 
-unsigned int hash( char *input );
-
-/* LIST struct */
-struct listNode {
-    char *key;
-    char *value;
-    struct listNode *next;
-    struct listNode *prev;
+    /**
+     * @brief Pointer to the previous Node obkect.
+     */
+  struct Node *prev;
 };
 
-/* The following are only used in LIST. */
-typedef struct listNode * list;
-typedef list * listPtr;
+/**
+ * @brief Bst Node Abstract Data Type.
+ *
+ * @struct bstNode
+ */
+struct bstNode
+{
+    /**
+     * @brief Pointer to the left Node object.
+     */
+  struct Node *left;
 
-/* The following are only used in LISTHT. */
-typedef listPtr * htListSlot;
-typedef list listNode;
-typedef listPtr listNodePtr;
+    /**
+     * @brief Pointer to the right Node object.
+     */
+  struct Node *right;
 
-/* The following are only used in HTLIST. */
-typedef listNode listElement;
-typedef listNodePtr listElementPtr;
-
-void LISTInit( listPtr headPtr );
-bool LISTEmpty( list head );
-char *LISTKey( list head );
-char *LISTVal( list head );
-list LISTInsert( listPtr headPtr, char *key, char *value );
-list LISTSearch( list head, char *key );
-bool LISTDelete( listPtr headPtr, char *key );
-list LISTClear ( list head );
-
-char *LISTHTListNodeKey ( listNode list );
-char *LISTHTListNodeVal ( listNode list );
-void LISTHTInit( htListSlot * hashTable );
-htListSlot LISTHTSlot( htListSlot * hashTable, unsigned int slotId );
-bool LISTHTInsert( htListSlot * hashTable, unsigned int slotId, char *key, char *value );
-list LISTHTSearch( htListSlot slot, char *key );
-bool LISTHTDelete( htListSlot * hashTable, unsigned int slotId, char *key );
-bool LISTHTClearSlot ( htListSlot * hashTable, unsigned int slotId );
-
-void HTLISTInit( htListSlot * hashTable );
-bool HTLISTInsert( htListSlot * hashTable, char *key, char *value );
-listElement HTLISTSearch( htListSlot * hashTable, char *key );
-bool HTLISTDelete( htListSlot * hashTable, char *key );
-bool HTLISTClearHashTable( htListSlot * hashTable, unsigned int numberOfSlots );
-
-/* BST struct. */
-struct bstNode {
-    char *key;
-    char *value;
-    struct bstNode *left;
-    struct bstNode *right;
-    struct bstNode *parent;
+    /**
+     * @brief Pointer to the parent Node object.
+     */
+  struct Node *parent;
 };
 
-/* The following are only used in BST. */
-typedef struct bstNode * bst;
-typedef bst * bstPtr;
+/**
+ * @brief Node Abstract Data Type.
+ *
+ * @struct Node
+ *
+ * @note A node should be only of one type (i.e: either listNode or bstNode is
+ * set, but not both). If you want you could use both ln and bn pointers at the
+ * same time.
+ */
+struct Node
+{
+  char *key;
+  char *value;
 
-/* The following are only used in BSTHT. */
-typedef bstPtr * htTreeSlot;
-typedef bst treeNode;
-typedef bstPtr treeNodePtr;
+    /**
+     * @brief Pointer to a listNode struct which contains listNode information.
+     */
+  struct listNode *ln;
 
-/* The following are only used in HTBST. */
-typedef treeNode treeElement;
-typedef treeNodePtr treeElementPtr;
+    /**
+     * @brief Pointer to a bstNode struct which contains bstNode information.
+     */
+  struct bstNode *bn;
+};
 
-/* Prototypes. */
-void BSTInit( bstPtr rootPtr );
-bool BSTEmpty( bst root );
-char *BSTKey( bst root );
-char *BSTVal( bst root );
-bst BSTInsert( bstPtr rootPtr, char *key, char *value );
-bst BSTSearch( bst root, char *key );
-bool BSTDelete( bstPtr rootPtr, char *key );
-bst BSTClear ( bst root );
+/**
+ * @typedef struct Node *node
+ */
+typedef struct Node *node;
 
-char *BSTHTTreeNodeKey ( treeNode root );
-char *BSTHTTreeNodeVal ( treeNode root );
-bool BSTHTClearSlot ( htTreeSlot * hashTable, unsigned int slotId );
-treeNode BSTHTClear ( treeNode root );
-void BSTHTInit( htTreeSlot * hashTable );
-htTreeSlot BSTHTSlot( htTreeSlot * hashTable, unsigned int slotId );
-bool BSTHTInsert( htTreeSlot * hashTable, unsigned int slotId, char *key, char *value );
-bst BSTHTSearch( htTreeSlot slot, char *key );
-bool BSTHTDelete( htTreeSlot * hashTable, unsigned int slotId, char *key );
-bool BSTHTClearSlot ( htTreeSlot * hashTable, unsigned int slotId );
+/**
+ * @typedef node *nodePtr
+ */
+typedef node *nodePtr;
 
-void HTBSTInit( htTreeSlot * hashTable );
-bool HTBSTInsert( htTreeSlot * hashTable, char *key, char *value );
-treeElement HTBSTSearch( htTreeSlot * hashTable, char *key );
-bool HTBSTDelete( htTreeSlot * hashTable, char *key );
-bool HTBSTClearHashTable( htTreeSlot * hashTable, unsigned int numberOfSlots );
+/**
+ * @typedef struct bstNode *bnode
+ */
+typedef struct bstNode *bnode;
 
+/**
+ * @typedef struct listNode *lnode
+ */
+typedef struct listNode *lnode;
+
+/**
+ * @brief HashTable Abstract Data Type.
+ *
+ * @struct HashTable
+ *
+ * @note TODO
+ */
+struct HashTable
+{
+  nodePtr *ptr;
+  unsigned int numberOfSlots;
+  char type;
+};
+
+/**
+ * @typedef struct HashTable *ht
+ */
+typedef struct HashTable *ht;
+
+/* ========================================== */
+
+/**
+ * @brief Check if any type of pointer is NULL.
+ *
+ * @param[in] element Any kind of pointer.
+ *
+ * @retval true element is NULL.
+ * @retval false element is not NULL.
+ */
+extern bool element_null (void *element);
+
+/**
+ * @brief Allocate new space in a safe way.
+ *
+ * @param[in] size Total size to be allocated .
+ *
+ * @retval dst The pointer to the new instance of data.
+ */
+extern void *malloc_safe (size_t size);
+
+/* ========================================== */
+
+/**
+ * @brief Check if the node is NULL.
+ *
+ * @param[in] n A pointer to a node instance.
+ *
+ * @retval true The node is NULL.
+ * @retval false The node is not NULL.
+ */
+extern bool node_null (node n);
+
+/**
+ * @brief Get the key from a node.
+ *
+ * @param[in] n A pointer to a node instance.
+ *
+ * @retval node->key A memory address corresponding to the key.
+ *
+ * @warning The return value can be NULL.
+ */
+extern char *key_get (node n);
+
+/**
+ * @brief Store the key inside a node.
+ *
+ * @param[in] n A pointer to a node instance.
+ * @param[in] key A memory address corresponding to the key.
+ *
+ * @retval true The key has been stored correctly.
+ * @retval false The key has not been stored because the input node was NULL.
+ */
+extern bool key_set (node n, char *key);
+
+/**
+ * @brief Check if two keys are equal.
+ *
+ * @param[in] key1 A memory address corresponding to the first key.
+ * @param[in] key2 A memory address corresponding to the second key.
+ *
+ * @retval true The two keys are equal.
+ * @retval false The two keys differ.
+ */
+extern bool keys_equal (char *key1, char *key2);
+
+/**
+ * @brief Check if the first key is smaller than the second.
+ *
+ * @param[in] key1 A memory address corresponding to the first key.
+ * @param[in] key2 A memory address corresponding to the second key.
+ *
+ * @retval true key1 is smaller than key2.
+ * @retval false key1 is not smaller than key2.
+ */
+extern bool keys_less (char *key1, char *key2);
+
+/**
+ * @brief Check if the first key is bigger than the second.
+ *
+ * @param[in] key1 A memory address corresponding to the first key.
+ * @param[in] key2 A memory address corresponding to the second key.
+ *
+ * @retval true key1 is bigger than key2.
+ * @retval false key1 is not bigger than key2.
+ */
+extern bool keys_greater (char *key1, char *key2);
+
+/**
+ * @brief Get the value from a node.
+ *
+ * @param[in] n A pointer to a node instance.
+ *
+ * @retval node->value A memory address corresponding to the value.
+ *
+ * @warning The return value can be NULL.
+ */
+extern char *value_get (node n);
+
+/**
+ * @brief Store the value inside a node.
+ *
+ * @param[in] n A pointer to a node instance.
+ * @param[in] value A memory address corresponding to the value.
+ *
+ * @retval true The value has been stored correctly.
+ * @retval false The value has not been stored because the input node was NULL.
+ */
+extern bool value_set (node n, char *value);
+
+/* ========================================== */
+
+/**
+ * @brief Create a generic new node.
+ *
+ * @param[in] key A memory address corresponding to the key.
+ * @param[in] value A memory address corresponding to the value.
+ * @param[in] type A character corresponding to the type of node to be
+ * created.
+ *
+ * @note type can either be 'b' or 'l', for either bsts or lists.
+ *
+ * @retval new_node A memory address corresponding to the new node.
+ *
+ * @warning The return value can be NULL.
+ */
+extern node node_new (char *key, char *value, char type);
+
+/**
+ * @brief Set a node object to NULL.
+ *
+ * @retval npt A memory address corresponding to the new instance of a nodePtr
+ * object.
+ *
+ * @warning The return value can be NULL.
+ */
+extern nodePtr nodeptr_new (void);
+
+/* ========================================== */
+
+/**
+ * @brief Check if the input tree is a BST.
+ *
+ * @param[in] root A pointer to the BST.
+ * @param[in] minKey A memory address corresponding to the minimum key value.
+ * @param[in] maxKey A memory address corresponding to the maximum key value.
+ *
+ * @retval true The input tree is a BST.
+ * @retval false The input tree is not a BST.
+ */
+extern bool BSTIs (node root, char *minKey, char *maxKey);
+
+/**
+ * @brief Insert a new node in a specified BST.
+ *
+ * @param[in] rootPtr A memory address containing the pointer to the root node
+ * (BST).
+ * @param[in] key A memory address corresponding to the key.
+ * @param[in] value A memory address corresponding to the value.
+ *
+ * @retval new_node A memory address corresponding to the new node.
+ *
+ * @warning The return value can be NULL.
+ */
+extern node BSTInsert (nodePtr rootPtr, char *key, char *value);
+
+/**
+ * @brief Search for a node with a given key in a specified BST.
+ *
+ * @param[in] root A pointer to the BST.
+ * @param[in] key A memory address corresponding to the key.
+ *
+ * @retval root A memory address corresponding to the searched node.
+ *
+ * @warning The return value can be NULL.
+ */
+extern node BSTSearch (node root, char *key);
+
+/**
+ * @brief Delete the node with the given key in a specified BST.
+ *
+ * @param[in] root A pointer to the BST.
+ * @param[in] key A memory address corresponding to the key.
+ *
+ * @retval true The node was deleted.
+ * @retval false The node was not deleted.
+ *
+ * @note return value is false if root is empty or the specified element was
+ * not found.
+ */
+extern bool BSTDelete (nodePtr rootPtr, char *key);
+
+/**
+ * @brief Delete the BST starting from the specified point.
+ *
+ * @param[in] root A pointer to the BST.
+ *
+ * @retval NULL
+ *
+ * @note Usually this function is used to delete the whole tree.
+ */
+extern node BSTClear (node root);
+
+/**
+ * @brief Print a BST in pre-order criteria.
+ *
+ * @param[in] root A pointer to the BST.
+ */
+extern void BSTPrint (node root);
+
+/* ========================================== */
+
+extern node LISTInsert (nodePtr headPtr, char *key, char *value);
+
+extern node LISTSearch (node head, char *key);
+
+extern bool LISTDelete (nodePtr headPtr, char *key);
+
+extern node LISTClear (node head);
+
+extern void LISTPrint (node head);
+
+/* ========================================== */
+
+extern ht HTInit (unsigned int numberOfSlots, char type);
+
+extern bool HTInsert (ht hashTable, char *key, char *value);
+
+extern node HTSearch (ht hashTable, char *key);
+
+extern bool HTDelete (ht hashTable, char *key);
+
+extern bool HTClear (ht * hashTable);
+
+extern void HTPrint (ht hashTable);
 #endif

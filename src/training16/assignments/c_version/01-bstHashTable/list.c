@@ -1,322 +1,171 @@
-/* Copyright © 2016 Franco Masotti <franco.masotti@student.unife.it>
+/**
+ * @file list.c
+ * @author Franco Masotti
+ * @date 02 May 2016
+ * @brief List functions.
+ * @copyright Copyright © 2016 Franco Masotti <franco.masotti@student.unife.it>
  *                  Danny Lessio
  * This work is free. You can redistribute it and/or modify it under the
  * terms of the Do What The Fuck You Want To Public License, Version 2,
  * as published by Sam Hocevar. See the LICENSE file for more details.
  */
 
-
 #include "globalDefines.h"
 
-static bool LISTKeyEqual( char *key1, char *key2 );
-static list LISTPredecessor( list head );
-static list LISTSuccessor( list head );
-static list LISTNewNode( listPtr headPtr, list prec, char *key,
-                         char *value );
-static list LISTNonEmptyInsert( list head, char *key, char *value );
-static bool LISTNonEmptyDelete( listPtr headPtr, list head, char *key );
+static node LISTSuccessor (node head);
+static node LISTPredecessor (node head);
+static node LISTNewNode (nodePtr headPtr, node prevNode, char *key,
+			 char *value);
+static node LISTNonEmptyInsert (node head, char *key, char *value);
+static bool LISTNonEmptyDelete (nodePtr headPtr, node head, char *key);
 
-#ifdef M_LISTMAIN_C
-static void printList( list head );
-#endif
-
-void LISTInit( listPtr headPtr )
+static node
+LISTSuccessor (node head)
 {
-    *headPtr = EMPTY;
+  return (node_null (head) ? NULL : head->ln->next);
 }
 
-bool LISTEmpty( list head )
+static node
+LISTPredecessor (node head)
 {
-    return ( head == EMPTY );
+  return (node_null (head) ? NULL : head->ln->prev);
 }
 
-char *LISTKey( list head )
+static node
+LISTNewNode (nodePtr headPtr, node prevNode, char *key, char *value)
 {
-    assert( !LISTEmpty( head ) );
-    return ( !LISTEmpty( head ) ? head->key : EMPTYKEY );
+  (*headPtr) = node_new (key, value, 'l');
+  (*headPtr)->ln->prev = prevNode;
+  (*headPtr)->ln->next = NULL;
+
+  return *headPtr;
 }
 
-char *LISTVal( list head )
+static node
+LISTNonEmptyInsert (node head, char *key, char *value)
 {
-    assert( !LISTEmpty( head ) );
-    return ( !LISTEmpty( head ) ? head->value : EMPTYVAL );
+  if (keys_equal (key_get (head), key))
+    return NULL;
+  else if (!node_null (LISTSuccessor (head)))
+    return (LISTNonEmptyInsert (LISTSuccessor (head), key, value));
+  else
+    return (LISTNewNode (&(head->ln->next), head, key, value));
 }
 
-static bool LISTKeyEqual( char *key1, char *key2 )
+node
+LISTInsert (nodePtr headPtr, char *key, char *value)
 {
-    assert( ( key1 != NULL ) && ( key2 != NULL ) );
-    return ( ( strcmp( key1, key2 ) == 0 ) ? true : false );
+  if (element_null (key) || element_null (value))
+    return NULL;
+  else if (node_null (*headPtr))
+    return (LISTNewNode (headPtr, NULL, key, value));
+  else
+    return (LISTNonEmptyInsert (*headPtr, key, value));
 }
 
-static list LISTPredecessor( list head )
+node
+LISTSearch (node head, char *key)
 {
-    assert( !LISTEmpty( head ) );
-    return ( head->prev );
+  if (node_null (head))
+    return NULL;
+  else if (keys_equal (key_get (head), key))
+    return head;
+  else
+    return (LISTSearch (LISTSuccessor (head), key));
 }
 
-static list LISTSuccessor( list head )
+static bool
+LISTNonEmptyDelete (nodePtr headPtr, node head, char *key)
 {
-    assert( !LISTEmpty( head ) );
-    return ( head->next );
-}
+  /*
+   * Element not found.
+   */
+  if (node_null (head))
+    return false;
 
-static list LISTNewNode( listPtr headPtr, list prec, char *key,
-                         char *value )
-{
-    if ( ( ( *headPtr ) = malloc( sizeof( struct listNode ) ) ) == NULL ) {
-        if ( errno )
-            perror( strerror( errno ) );
-        exit( EXIT_FAILURE );
+  /*
+   * Element may still be in list.
+   */
+  else if (!keys_equal (key, key_get (head)))
+    return (LISTNonEmptyDelete
+	    (&(head->ln->next), LISTSuccessor (head), key));
+  /*
+   * The element to delete has been found.  We now have the usual cases for a
+   * double linked list without a dummy node.
+   */
+  else
+    {
+      /*
+       * There is only one element in list.
+       */
+      if (node_null (LISTPredecessor (head))
+	  && node_null (LISTSuccessor (head)))
+	{
+	  *headPtr = NULL;
+	  free (head);
+	}
+      /*
+       * Element to delete is at the head of the list.
+       */
+      else if (node_null (LISTPredecessor (head)))
+	{
+	  *headPtr = LISTSuccessor (head);
+	  (head->ln->next)->ln->prev = NULL;
+	  free (head);
+	  /*
+	   * Element to delete is at the tail of the list.
+	   */
+	}
+      else if (node_null (LISTSuccessor (head)))
+	{
+	  (head->ln->prev)->ln->next = NULL;
+	  free (head);
+	  /*
+	   * Element to delete is in the middle of the list.
+	   */
+	}
+      else
+	{
+	  (head->ln->prev)->ln->next = LISTSuccessor (head);
+	  (head->ln->next)->ln->prev = LISTPredecessor (head);
+	  free (head);
+	}
     }
 
-    ( *headPtr )->key = key;
-    ( *headPtr )->value = value;
-    ( *headPtr )->prev = prec;
-    ( *headPtr )->next = EMPTY;
-
-    return *headPtr;
+  return true;
 }
 
-static list LISTNonEmptyInsert( list head, char *key, char *value )
+bool
+LISTDelete (nodePtr headPtr, char *key)
 {
-    if ( LISTKeyEqual( LISTKey( head ), key ) )
-        return EMPTY;
-    else if ( !LISTEmpty( LISTSuccessor( head ) ) )
-        return ( LISTNonEmptyInsert( LISTSuccessor( head ), key, value ) );
-    else
-        return ( LISTNewNode( &( head->next ), head, key, value ) );
+  /*
+   * An empty list cannot be deleted.
+   */
+  if (node_null (*headPtr))
+    return false;
+  else
+    return (LISTNonEmptyDelete (headPtr, *headPtr, key));
 }
 
-list LISTInsert( listPtr headPtr, char *key, char *value )
+node
+LISTClear (node head)
 {
-    assert( ( key != NULL ) && ( value != NULL ) );
+  if (node_null (head))
+    return NULL;
 
-    if ( LISTEmpty( *headPtr ) )
-        return ( LISTNewNode( headPtr, EMPTY, key, value ) );
-    else
-        return ( LISTNonEmptyInsert( *headPtr, key, value ) );
+  LISTClear (LISTSuccessor (head));
+  head = NULL;
+  free (head);
+
+  return NULL;
 }
 
-list LISTSearch( list head, char *key )
+void
+LISTPrint (node head)
 {
-    if ( LISTEmpty( head ) )
-        return EMPTY;
-    else if ( LISTKeyEqual( LISTKey( head ), key ) )
-        return head;
-    else
-        return ( LISTSearch( LISTSuccessor( head ), key ) );
+  if (node_null (head))
+    return;
+
+  fprintf (stderr, "%s %s\n", key_get (head), value_get (head));
+  LISTPrint (LISTSuccessor (head));
 }
-
-static bool LISTNonEmptyDelete( listPtr headPtr, list head, char *key )
-{
-    /*
-     * Element not found. 
-     */
-    if ( LISTEmpty( head ) )
-        return false;
-
-    /*
-     * Element may still be in list. 
-     */
-    else if ( !LISTKeyEqual( key, LISTKey( head ) ) )
-        return ( LISTNonEmptyDelete
-                 ( &( head->next ), LISTSuccessor( head ), key ) );
-    /*
-     * The element to delete has been found.  We now have the usual cases for a 
-     * linked list without a dummy node. 
-     */
-    else {
-        /*
-         * There is only one element in list. 
-         */
-        if ( LISTEmpty( LISTPredecessor( head ) )
-             && LISTEmpty( LISTSuccessor( head ) ) ) {
-            *headPtr = EMPTY;
-            free( head );
-        }
-        /*
-         * Element to delete is at the head of the list. 
-         */
-        else if ( LISTEmpty( LISTPredecessor( head ) ) ) {
-            *headPtr = LISTSuccessor( head );
-            ( head->next )->prev = EMPTY;
-            free( head );
-            /*
-             * Element to delete is at the tail of the list. 
-             */
-        } else if ( LISTEmpty( LISTSuccessor( head ) ) ) {
-            ( head->prev )->next = EMPTY;
-            free( head );
-            /*
-             * Element to delete is in the middle of the list. 
-             */
-        } else {
-            ( head->prev )->next = LISTSuccessor( head );
-            ( head->next )->prev = LISTPredecessor( head );
-            free( head );
-        }
-    }
-
-    return true;
-}
-
-bool LISTDelete( listPtr headPtr, char *key )
-{
-    /*
-     * An empty list cannot be deleted. 
-     */
-    if ( LISTEmpty( *headPtr ) )
-        return false;
-    else
-        return ( LISTNonEmptyDelete( headPtr, *headPtr, key ) );
-}
-
-list LISTClear( list head )
-{
-    if ( LISTEmpty( head ) )
-        return EMPTY;
-
-    LISTClear( LISTSuccessor( head ) );
-    head = EMPTY;
-    free( head );
-
-    return EMPTY;
-}
-
-#ifdef M_LISTMAIN_C
-static void printList( list head )
-{
-    if ( LISTEmpty( head ) )
-        fprintf( stderr, "No more elements to print.\n" );
-    else {
-        fprintf( stderr, "%s  %s\n", LISTKey( head ), LISTVal( head ) );
-        printList( LISTSuccessor( head ) );
-    }
-}
-#endif
-
-#ifdef M_LISTMAIN_C
-int main( void )
-{
-    listPtr doubleLinked;
-
-    if ( ( doubleLinked = malloc( sizeof( list ) ) ) == NULL ) {
-        if ( errno )
-            perror( strerror( errno ) );
-        exit( EXIT_FAILURE );
-    }
-
-
-    fprintf( stderr, "Initializing LIST\n" );
-    LISTInit( doubleLinked );
-    if ( LISTEmpty( *doubleLinked ) )
-        fprintf( stderr, "[ OK ] LIST is empty\n" );
-    else
-        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
-
-
-    fprintf( stderr, "\n\nInserting Elements...\n" );
-    LISTInsert( doubleLinked, "01", "ciao" );
-    LISTInsert( doubleLinked, "02", "hello" );
-    LISTInsert( doubleLinked, "00", "hola" );
-    LISTInsert( doubleLinked, "04", "hallo" );
-    if ( LISTEmpty( LISTInsert( doubleLinked, "03", "testing" ) ) )
-        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
-    if ( LISTEmpty( LISTInsert( doubleLinked, "03", "bad Value" ) ) )
-        fprintf( stderr, "[ OK ] This message should be shown\n" );
-
-
-    fprintf( stderr, "Manual element search\n" );
-    fprintf( stderr, "%s\n", LISTKey( LISTSuccessor( *doubleLinked ) ) );
-    fprintf( stderr, "%s\n",
-             LISTKey( LISTPredecessor
-                      ( LISTSuccessor( *doubleLinked ) ) ) );
-    fprintf( stderr, "%s\n",
-             LISTKey( LISTSuccessor( LISTSuccessor( *doubleLinked ) ) ) );
-    fprintf( stderr, "%s\n",
-             LISTKey( LISTSuccessor
-                      ( LISTSuccessor
-                        ( LISTSuccessor( *doubleLinked ) ) ) ) );
-    fprintf( stderr,
-             "[ OK ] This message should be shown and all previously printed values should be !(nil)\n" );
-
-
-    fprintf( stderr, "\n\nSearch for key %s\n", "03" );
-    fprintf( stderr, "value of %s = %s\n",
-             "03", LISTVal( LISTSearch( *doubleLinked, "03" ) ) );
-    fprintf( stderr, "Search non-existing key %s\n", "103" );
-    if ( LISTEmpty( LISTSearch( *doubleLinked, "103" ) ) )
-        fprintf( stderr, "[ OK ] Node with key 103 does not exist\n" );
-    else
-        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
-
-
-    fprintf( stderr,
-             "\n\nDeletion of non-existing node in a non-empty list\n" );
-    if ( !LISTDelete( doubleLinked, "10" ) )
-        fprintf( stderr, "[ OK ] Node with key 10 cannot be deleted\n" );
-    else
-        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
-
-
-    fprintf( stderr, "\n\nPrinting list\n" );
-    printList( *doubleLinked );
-
-
-    fprintf( stderr, "\n\nManual list deletion\n" );
-    if ( LISTDelete( doubleLinked, "00" )
-         && LISTDelete( doubleLinked, "01" )
-         && LISTDelete( doubleLinked, "02" )
-         && LISTDelete( doubleLinked, "03" )
-         && LISTDelete( doubleLinked, "04" ) ) {
-        if ( LISTEmpty( *doubleLinked ) )
-            fprintf( stderr, "[ OK ] The whole list has been deleted\n" );
-        else
-            fprintf( stderr,
-                     "[ ERR ] This message should NOT be shown\n" );
-    }
-
-
-    fprintf( stderr, "\n\nPrinting list\n" );
-    printList( *doubleLinked );
-
-
-    fprintf( stderr, "\n\nEmpty list deletion\n" );
-    if ( !LISTDelete( doubleLinked, "00" ) )
-        fprintf( stderr, "[ OK ] Cannot delete an empty list\n" );
-    else
-        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
-
-
-    fprintf( stderr, "\n\nInserting Elements...\n" );
-    LISTInsert( doubleLinked, "01", "ciao" );
-    LISTInsert( doubleLinked, "02", "hello" );
-    LISTInsert( doubleLinked, "00", "hola" );
-    LISTInsert( doubleLinked, "04", "hallo" );
-    LISTInsert( doubleLinked, "03", "testing" );
-    LISTInsert( doubleLinked, "05", "good morning" );
-    fprintf( stderr, "[ OK ] This message should be shown\n" );
-
-
-    fprintf( stderr, "\n\nPrinting list\n" );
-    printList( *doubleLinked );
-
-
-    fprintf( stderr, "\n\nRemove the whole list automatically\n" );
-    if ( LISTEmpty( LISTClear( *doubleLinked ) ) )
-        fprintf( stderr, "[ OK ] The whole list has been deleted\n" );
-    else
-        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
-
-
-    fprintf( stderr, "\n\nRemove the empty list\n" );
-    if ( LISTEmpty( LISTClear( *doubleLinked ) ) )
-        fprintf( stderr, "[ OK ] There was nothing to delete\n" );
-    else
-        fprintf( stderr, "[ ERR ] This message should NOT be shown\n" );
-
-    free( doubleLinked );
-
-    return 0;
-}
-#endif

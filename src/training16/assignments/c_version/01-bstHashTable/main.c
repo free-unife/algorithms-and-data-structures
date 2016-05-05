@@ -1,279 +1,181 @@
-/* Copyright © 2016 Franco Masotti <franco.masotti@student.unife.it>
+/**
+ * @file main.c
+ * @author Franco Masotti
+ * @date 02 May 2016
+ * @brief Implementation file.
+ * @copyright Copyright © 2016 Franco Masotti <franco.masotti@student.unife.it>
  *                  Danny Lessio
  * This work is free. You can redistribute it and/or modify it under the
  * terms of the Do What The Fuck You Want To Public License, Version 2,
  * as published by Sam Hocevar. See the LICENSE file for more details.
  */
 
-
 #include "globalDefines.h"
 
 static double runningTime( clock_t start, clock_t end );
-static char *genRandomString( int len );
-static void shuffleArrayRandomly( char *array, int len );
-static char *getActions( int ins, int search, int del );
-static bool keyDuplicates( char **keys, int len );
-static double listOperations( char **keys, char *actions,
-                              int totalElements );
-static double bstOperations( char **keys, char *actions,
-                             int totalElements );
 
 static double runningTime( clock_t start, clock_t end )
 {
     return ( (double) ( ( double ) ( end - start ) / ( double ) CLOCKS_PER_SEC ) );
 }
 
-static char *genRandomString( int len )
+
+static char
+HTType (ht hashTable)
 {
-    int i;
-    char *str;
-    struct timespec t1;
-
-    if ( ( str = calloc( len + 1, sizeof( char ) ) ) == NULL ) {
-        if ( errno )
-            perror( strerror( errno ) );
-        exit( EXIT_FAILURE );
-    }
-
-    /*
-     * Seed is set in nanoseconds.
-     */
-    clock_gettime( CLOCK_MONOTONIC, &t1 );
-    srand( t1.tv_nsec );
-
-    for ( i = 0; i < len; i++ ) {
-        /*
-         * Strings are len charaters long and each charater is in the domain 
-         * [KEYCHARMIN - KEYCHARMAX]. 
-         */
-        str[i] =
-            ( char ) ( rand(  ) % ( KEYCHARMAX - KEYCHARMIN ) ) +
-            KEYCHARMIN;
-        assert( ( int ) str[i] >= KEYCHARMIN
-                && ( int ) str[i] <= KEYCHARMAX );
-    }
-
-    assert( ( int ) strlen( str ) == len );
-
-    return str;
+  assert (!element_null (hashTable));
+  return (hashTable->type);
 }
 
-/* Fisher yates algorithm:
- * <http://www.dispersiondesign.com/articles/algorithms/shuffle_array_order>
- * This function is used to shuffle the actions array.
+static unsigned int
+HTNumOfSlots (ht hashTable)
+{
+  assert (!element_null (hashTable));
+  return (hashTable->numberOfSlots);
+}
+
+static nodePtr *
+HTPtr (ht hashTable)
+{
+  assert (!element_null (hashTable));
+  return (hashTable->ptr);
+}
+
+/* http://www.cse.yorku.ca/~oz/hash.html djb2
+ * The slot id is returned.
+ * Output is unsigned because we have buckets from 0 to M - 1.
+ * This is also known as the hash function.
  */
-static void shuffleArrayRandomly( char *array, int len )
+static unsigned int
+slotid_get (char *input, ht hashTable)
 {
-    int i = len - 1;
-    int j, tmp;
+  unsigned int key = 5381, i;
 
-    srand( time( NULL ) );
-    while ( i > 0 ) {
-        j = rand(  ) % ( i + 1 );
-        tmp = array[i];
-        array[i] = array[j];
-        array[j] = tmp;
-        i--;
+  i = 0;
+  while (input[i] != '\0')
+    {
+      key = (key << 5) + key + ((unsigned int) input[i]);
+      i++;
     }
+
+  return (key % HTNumOfSlots (hashTable));
 }
 
-static char *getActions( int ins, int search, int del )
+static nodePtr
+slot_get (ht hashTable, char *key)
 {
-    int i;
-    char *actions;
-
-    if ( ( actions =
-           malloc( sizeof( char ) * ( ins + search + del ) ) ) == NULL ) {
-        if ( errno )
-            perror( strerror( errno ) );
-        exit( EXIT_FAILURE );
-    }
-
-    /*
-     * Fill the array with the correct number of actions.
-     * i = insert
-     * s = search
-     * d = delete
-     */
-    while ( i < ins + search + del ) {
-        if ( i < ins )
-            actions[i] = 'i';
-        else if ( i < ins + search )
-            actions[i] = 's';
-        else if ( i < ins + search + del )
-            actions[i] = 'd';
-        i++;
-    }
-
-    shuffleArrayRandomly( actions, ins + search + del );
-
-    return actions;
+  return ((HTPtr (hashTable))[slotid_get (key, hashTable)]);
 }
 
-static bool keyDuplicates( char **keys, int len )
+static void
+HTFreeStruct (ht * hashTablePtr)
 {
-    if ( len > 1 )
-        return ( strcmp( keys[len - 1], keys[len - 2] ) ==
-                 0 ? true : false );
-    return false;
+  /* Clear the structure. */
+  (*hashTablePtr)->numberOfSlots = 0;
+  (*hashTablePtr)->ptr = NULL;
+  (*hashTablePtr)->type = '\0';
+
+  free (*hashTablePtr);
+
+  /* Avoid dangling reference. */
+  *hashTablePtr = NULL;
 }
 
-static double listOperations( char **keys, char *actions,
-                              int totalElements )
+ht
+HTInit (unsigned int numberOfSlots, char type)
 {
-    int j;
-    clock_t startClock, endClock;
-    double totalTime;
-    htListSlot *listHashTable;
+  int i;
+  ht hashTable;
 
-    /*
-     * Create hash table for the lists. 
-     */
-    if ( ( listHashTable = malloc( sizeof( htListSlot ) * M ) ) == NULL ) {
-        if ( errno )
-            perror( strerror( errno ) );
-        exit( EXIT_FAILURE );
-    }
+  hashTable = malloc_safe (sizeof (struct HashTable));
+  hashTable->ptr = malloc_safe (sizeof (nodePtr) * numberOfSlots);
+  hashTable->numberOfSlots = numberOfSlots;
+  hashTable->type = type;
 
-    HTLISTInit( listHashTable );
+  assert ((type == 'b') || (type == 'l'));
 
-    totalTime = 0.0;
-    for ( j = 0; j < totalElements; j++ ) {
-        if ( actions[j] == 'i' ) {
-            startClock = clock(  );
-            HTLISTInsert( listHashTable, keys[j],
-                          "insertingAlwaysTheSameStringForSimplicity" );
-            endClock = clock(  );
-        } else if ( actions[j] == 's' ) {
-            startClock = clock(  );
-            HTLISTSearch( listHashTable, keys[j] );
-            endClock = clock(  );
-        } else {
-            startClock = clock(  );
-            HTLISTDelete( listHashTable, keys[j] );
-            endClock = clock(  );
-        }
-        totalTime += runningTime( startClock, endClock );
-    }
+  for (i = 0; i < (int) numberOfSlots; i++)
+    (hashTable->ptr)[i] = NULL;
 
-    HTLISTClearHashTable( listHashTable, M );
-    free( listHashTable );
-
-    return totalTime;
+  return hashTable;
 }
 
-static double bstOperations( char **keys, char *actions,
-                             int totalElements )
+bool
+HTInsert (ht hashTable, char *key, char *value)
 {
-    int j;
-    clock_t startClock, endClock;
-    double totalTime;
-    htTreeSlot *bstHashTable;
+  /* If the slot is empty -> allocate a new node pointer. */
+  if (element_null (slot_get (hashTable, key)))
+    (hashTable->ptr)[slotid_get (key, hashTable)] = nodeptr_new ();
 
-    /*
-     * Create hash table for the bsts. 
-     */
-    if ( ( bstHashTable = malloc( sizeof( htTreeSlot ) * M ) ) == NULL ) {
-        if ( errno )
-            perror( strerror( errno ) );
-        exit( EXIT_FAILURE );
-    }
-
-    HTBSTInit( bstHashTable );
-
-    totalTime = 0.0;
-    for ( j = 0; j < totalElements; j++ ) {
-        if ( actions[j] == 'i' ) {
-            startClock = clock(  );
-            HTBSTInsert( bstHashTable, keys[j],
-                         "insertingAlwaysTheSameStringForSimplicity" );
-            endClock = clock(  );
-        } else if ( actions[j] == 's' ) {
-            startClock = clock(  );
-            HTBSTSearch( bstHashTable, keys[j] );
-            endClock = clock(  );
-        } else {
-            startClock = clock(  );
-            HTBSTDelete( bstHashTable, keys[j] );
-            endClock = clock(  );
-        }
-        totalTime += runningTime( startClock, endClock );
-    }
-
-    HTBSTClearHashTable( bstHashTable, M );
-    free( bstHashTable );
-
-    return totalTime;
+  if (HTType (hashTable) == 'b')
+    return (!node_null (BSTInsert (slot_get (hashTable, key), key, value)));
+  else
+    return (!node_null (LISTInsert (slot_get (hashTable, key), key, value)));
 }
 
-
-int main( void )
+node
+HTSearch (ht hashTable, char *key)
 {
-    int i, j, elements;
-    int elementsToInsert, elementsToSearch, elementsToDelete;
-    int totalElements;
-    char **keys, *actions;
+  if (element_null (slot_get (hashTable, key)))
+    return NULL;
 
-/*    int loadFactor;*/
+  if (HTType (hashTable) == 'b')
+    return (BSTSearch (*(slot_get (hashTable, key)), key));
+  else
+    return (LISTSearch (*(slot_get (hashTable, key)), key));
+}
 
-    fprintf( stdout, "elements    list    bst\n" );
+bool
+HTDelete (ht hashTable, char *key)
+{
+  if (HTType (hashTable) == 'b')
+    return (BSTDelete (slot_get (hashTable, key), key));
+  else
+    return (LISTDelete (slot_get (hashTable, key), key));
+}
 
-    for ( i = 1; i <= NUMBER_OF_TESTS; i++ ) {
-        /*
-         * Calculate the number of elements. 
-         */
-        elements = M * i;
+bool
+HTClear (ht * hashTablePtr)
+{
+  int i = 0;
 
-        /*
-         * Generate elements keys. 
-         */
-        if ( ( keys = malloc( sizeof( char * ) * elements ) ) == NULL ) {
-            if ( errno )
-                perror( strerror( errno ) );
-            exit( EXIT_FAILURE );
-        }
-        /*
-         * Unique keys are generated.
-         */
-        for ( j = 0; j < elements; j++ ) {
-            do
-                keys[j] = genRandomString( KEYLENGTH );
-            while ( keyDuplicates( keys, j ) );
-
-        }
-
-        /*
-         * Operations (in probability percentages):
-         * 75 % elements = insert
-         * 12.5 % elements = search
-         * 12.5 % elements = delete
-         */
-        /*
-         * Calculated the number of operations based on each type.
-         * A small approximation is done because we are working with integers.
-         */
-        elementsToInsert = elements * .75;
-        elementsToSearch = elements * .125;
-        elementsToDelete = elements * .125;
-        totalElements =
-            elementsToInsert + elementsToSearch + elementsToDelete;
-
-        actions =
-            getActions( elementsToInsert, elementsToSearch,
-                        elementsToDelete );
-
-/*        loadFactor = elementsToInsert / M;
-
-        fprintf( stderr, "%d", loadFactor );
-*/
-        fprintf( stdout, "%d    %f    %f\n", totalElements,
-                 listOperations( keys, actions, totalElements ),
-                 bstOperations( keys, actions, totalElements ) );
-
-
-        free( actions );
-        free( keys );
+  if (HTType (*hashTablePtr) == 'b')
+    {
+      for (i = 0; i < (int) HTNumOfSlots (*hashTablePtr); i++)
+	if (!element_null (((*hashTablePtr)->ptr[i])))
+	  if (!node_null (BSTClear (*(((*hashTablePtr)->ptr)[i]))))
+	    return false;
+    }
+  else
+    {
+      for (i = 0; i < (int) HTNumOfSlots (*hashTablePtr); i++)
+	if (!element_null (((*hashTablePtr)->ptr[i])))
+	  if (!node_null (LISTClear (*(((*hashTablePtr)->ptr)[i]))))
+	    return false;
     }
 
-    return 0;
+  HTFreeStruct (hashTablePtr);
+
+  return true;
+}
+
+void
+HTPrint (ht hashTable)
+{
+  int i;
+
+  assert (!element_null (hashTable));
+
+  if (HTType (hashTable) == 'b')
+    {
+      for (i = 0; i < (int) HTNumOfSlots (hashTable); i++)
+	if (!element_null ((hashTable->ptr)[i]))
+	  BSTPrint (*((hashTable->ptr)[i]));
+    }
+  else
+    {
+      for (i = 0; i < (int) HTNumOfSlots (hashTable); i++)
+	if (!element_null ((hashTable->ptr)[i]))
+	  LISTPrint (*((hashTable->ptr)[i]));
+    }
 }

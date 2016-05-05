@@ -1,8 +1,8 @@
 /*
- * @file utils.c
+ * @file ht.c
  * @author Franco Masotti
  * @date 02 May 2016
- * @brief Header file containing exportable methods.
+ * @brief Hash table functions.
  * @copyright Copyright © 2016 Franco Masotti <franco.masotti@student.unife.it>
  *                  Danny Lessio
  * This work is free. You can redistribute it and/or modify it under the
@@ -12,30 +12,29 @@
 
 #include "globalDefines.h"
 
-static char ht_type (ht hashTable);
-static unsigned int ht_numofslots (ht hashTable);
-static nodePtr *ht_ptr (ht hashTable);
-/* This is also known as the hash function. */
+static char HTType (ht hashTable);
+static unsigned int HTNumOfSlots (ht hashTable);
+static nodePtr *HTPtr (ht hashTable);
 static unsigned int slotid_get (char *input, ht hashTable);
 static nodePtr slot_get (ht hashTable, char *key);
 static void HTFreeStruct (ht * hashTablePtr);
 
 static char
-ht_type (ht hashTable)
+HTType (ht hashTable)
 {
   assert (!element_null (hashTable));
   return (hashTable->type);
 }
 
 static unsigned int
-ht_numofslots (ht hashTable)
+HTNumOfSlots (ht hashTable)
 {
   assert (!element_null (hashTable));
   return (hashTable->numberOfSlots);
 }
 
 static nodePtr *
-ht_ptr (ht hashTable)
+HTPtr (ht hashTable)
 {
   assert (!element_null (hashTable));
   return (hashTable->ptr);
@@ -44,6 +43,7 @@ ht_ptr (ht hashTable)
 /* http://www.cse.yorku.ca/~oz/hash.html djb2
  * The slot id is returned.
  * Output is unsigned because we have buckets from 0 to M - 1.
+ * This is also known as the hash function.
  */
 static unsigned int
 slotid_get (char *input, ht hashTable)
@@ -57,13 +57,13 @@ slotid_get (char *input, ht hashTable)
       i++;
     }
 
-  return (key % ht_numofslots (hashTable));
+  return (key % HTNumOfSlots (hashTable));
 }
 
 static nodePtr
 slot_get (ht hashTable, char *key)
 {
-  return ((ht_ptr (hashTable))[slotid_get (key, hashTable)]);
+  return ((HTPtr (hashTable))[slotid_get (key, hashTable)]);
 }
 
 static void
@@ -106,32 +106,31 @@ HTInsert (ht hashTable, char *key, char *value)
   if (element_null (slot_get (hashTable, key)))
     (hashTable->ptr)[slotid_get (key, hashTable)] = nodeptr_new ();
 
-  if (ht_type (hashTable) == 'b')
+  if (HTType (hashTable) == 'b')
     return (!node_null (BSTInsert (slot_get (hashTable, key), key, value)));
   else
-    return false;
+    return (!node_null (LISTInsert (slot_get (hashTable, key), key, value)));
 }
 
 node
 HTSearch (ht hashTable, char *key)
 {
-  /* If the slot is empty -> allocate a new node pointer. */
   if (element_null (slot_get (hashTable, key)))
     return NULL;
 
-  if (ht_type (hashTable) == 'b')
+  if (HTType (hashTable) == 'b')
     return (BSTSearch (*(slot_get (hashTable, key)), key));
   else
-    return NULL;
+    return (LISTSearch (*(slot_get (hashTable, key)), key));
 }
 
 bool
 HTDelete (ht hashTable, char *key)
 {
-  if (ht_type (hashTable) == 'b')
+  if (HTType (hashTable) == 'b')
     return (BSTDelete (slot_get (hashTable, key), key));
   else
-    return false;
+    return (LISTDelete (slot_get (hashTable, key), key));
 }
 
 bool
@@ -139,19 +138,19 @@ HTClear (ht * hashTablePtr)
 {
   int i = 0;
 
-  for (i = 0; i < (int) ht_numofslots (*hashTablePtr); i++)
+  if (HTType (*hashTablePtr) == 'b')
     {
-      if (!element_null (((*hashTablePtr)->ptr[i])))
-	{
-	  if (ht_type (*hashTablePtr) == 'b')
-	    {
-	      if (!node_null (BSTClear (*(((*hashTablePtr)->ptr)[i]))))
-		return false;
-	    }
-	  else
-	    {
-	    }
-	}
+      for (i = 0; i < (int) HTNumOfSlots (*hashTablePtr); i++)
+	if (!element_null (((*hashTablePtr)->ptr[i])))
+	  if (!node_null (BSTClear (*(((*hashTablePtr)->ptr)[i]))))
+	    return false;
+    }
+  else
+    {
+      for (i = 0; i < (int) HTNumOfSlots (*hashTablePtr); i++)
+	if (!element_null (((*hashTablePtr)->ptr[i])))
+	  if (!node_null (LISTClear (*(((*hashTablePtr)->ptr)[i]))))
+	    return false;
     }
 
   HTFreeStruct (hashTablePtr);
@@ -166,14 +165,16 @@ HTPrint (ht hashTable)
 
   assert (!element_null (hashTable));
 
-  for (i = 0; i < (int) ht_numofslots (hashTable); i++)
+  if (HTType (hashTable) == 'b')
     {
-      if (!element_null ((hashTable->ptr)[i]))
-	{
-	  if (ht_type (hashTable) == 'b')
-	    BSTPrint (*((hashTable->ptr)[i]));
-	  else
-	    fprintf (stderr, "exit\n");
-	}
+      for (i = 0; i < (int) HTNumOfSlots (hashTable); i++)
+	if (!element_null ((hashTable->ptr)[i]))
+	  BSTPrint (*((hashTable->ptr)[i]));
+    }
+  else
+    {
+      for (i = 0; i < (int) HTNumOfSlots (hashTable); i++)
+	if (!element_null ((hashTable->ptr)[i]))
+	  LISTPrint (*((hashTable->ptr)[i]));
     }
 }

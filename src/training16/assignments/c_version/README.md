@@ -10,6 +10,9 @@ $ make [TARGET]
 - `all`
 - `indent`
 - `clean`
+- `cleanall`
+- `doxygen`
+- `doxygenlatex`
 
 ###List of specific targets
 
@@ -31,6 +34,18 @@ $ make [TARGET]
   sort performs better than merge sort when K is between 10 and 35.
 
 ####Exercise 01-bstHashTable
+This is the final version of 01-bstHashTable.
+- `utils`
+- `node`
+- `bst`
+- `list`
+- `ht`
+- `main`
+- `plot` : plots a time comparison between list and bst operations over the 
+  same input data.
+
+####Exercise 01-bstHashTable-poc
+This is the first version of 01-bstHashTable.
 - `bst`
 - `bstht`
 - `htbst`
