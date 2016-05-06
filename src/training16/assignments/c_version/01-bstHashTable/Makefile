@@ -26,8 +26,8 @@ SPLINT_OPTS = -usereleased -compdef -preproc
 PLOT_INPUT_FILE = out.dat
 PLOT_OUTPUT_DIR = images
 
-EXECUTABLES = utils.out node.out bst.out list.out ht.out
-PRG_OBJFILES = utils.o node.o bst.o list.o ht.o
+EXECUTABLES = utils.out node.out bst.out list.out ht.out man.out
+PRG_OBJFILES = utils.o node.o bst.o list.o ht.o main.o
 TEST_MODULE_OBJFILE = tests.o
 TEST_MODULE_SRCFILE = tests.c
 
@@ -42,7 +42,7 @@ default: main
 all: main plotcompare
 
 %.o: %.c $(DEPS)
-	@$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) $(DEFFLAG) -c -o $@ $<
+	@$(CC) $(CFLAGS) $(CSTANDARD) $(DEFFLAG) -c -o $@ $(LIBS) $<
 
 indent:
 	@echo "Indenting all files..."
@@ -88,6 +88,10 @@ ht: $(TEST_MODULE_OBJFILE) utils.o node.o bst.o list.o ht.o
 	@$(CC) -o $@.out $^
 	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_HT_C -o $@.out"
 	@./validate.sh $@.out
+
+main: $(TEST_MODULE_OBJFILE) utils.o node.o bst.o list.o ht.o main.o
+	@$(CC) $(LIBS) -o $@.out $^
+	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -o $@.out"
 
 doxygen:
 	@doxygen doxy.conf

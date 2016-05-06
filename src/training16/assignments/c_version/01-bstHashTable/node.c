@@ -100,12 +100,37 @@ node_new (char *key, char *value, char type)
       new_node->bn = NULL;
     }
 
-  new_node->key = key;
-  new_node->value = value;
+  /* Copy the content instead of the pointer. */
+  new_node->key = malloc_safe (sizeof (char) * (strlen (key) + 1));
+  new_node->value = malloc_safe (sizeof (char) * (strlen (value) + 1));
+  new_node->key[strlen (key)] = '\0';
+  new_node->value[strlen (value)] = '\0';
+
+  strcpy (new_node->key, key);
+  strcpy (new_node->value, value);
 
   return new_node;
+}
 
 
+void
+node_delete (nodePtr nPtr, char type)
+{
+  if (element_null (nPtr) || node_null (*nPtr))
+    return;
+
+  if (type == 'b')
+    free ((*nPtr)->bn);
+  else
+    free ((*nPtr)->ln);
+
+  free (key_get (*nPtr));
+  free (value_get (*nPtr));
+  (*nPtr)->key = NULL;
+  (*nPtr)->value = NULL;
+
+  free (*nPtr);
+  *nPtr = NULL;
 }
 
 nodePtr

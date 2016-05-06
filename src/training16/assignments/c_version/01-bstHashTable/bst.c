@@ -312,17 +312,17 @@ BSTNonEmptyDelete (nodePtr rootPtr, node root, char *key)
       if (BSTIsLeaf (root))
 	{
 	  *rootPtr = NULL;
-	  free (root);
+	  node_delete (&root, 'b');
 	}
       else if (!BSTHasLeftOnly (root))
 	{
 	  *rootPtr = BSTRight (root);
-	  free (root);
+	  node_delete (&root, 'b');
 	}
       else if (!BSTHasRightOnly (root))
 	{
 	  *rootPtr = BSTLeft (root);
-	  free (root);
+	  node_delete (&root, 'b');
 	}
       /*
        * Two sons.
@@ -363,8 +363,7 @@ BSTClear (node root)
 
   BSTClear (BSTLeft (root));
   BSTClear (BSTRight (root));
-  root = NULL;
-  free (root);
+  node_delete (&root, 'b');
 
   return NULL;
 }

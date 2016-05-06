@@ -102,7 +102,7 @@ LISTNonEmptyDelete (nodePtr headPtr, node head, char *key)
 	  && node_null (LISTSuccessor (head)))
 	{
 	  *headPtr = NULL;
-	  free (head);
+	  node_delete (&head, 'l');
 	}
       /*
        * Element to delete is at the head of the list.
@@ -111,7 +111,7 @@ LISTNonEmptyDelete (nodePtr headPtr, node head, char *key)
 	{
 	  *headPtr = LISTSuccessor (head);
 	  (head->ln->next)->ln->prev = NULL;
-	  free (head);
+	  node_delete (&head, 'l');
 	  /*
 	   * Element to delete is at the tail of the list.
 	   */
@@ -119,7 +119,7 @@ LISTNonEmptyDelete (nodePtr headPtr, node head, char *key)
       else if (node_null (LISTSuccessor (head)))
 	{
 	  (head->ln->prev)->ln->next = NULL;
-	  free (head);
+	  node_delete (&head, 'l');
 	  /*
 	   * Element to delete is in the middle of the list.
 	   */
@@ -128,7 +128,7 @@ LISTNonEmptyDelete (nodePtr headPtr, node head, char *key)
 	{
 	  (head->ln->prev)->ln->next = LISTSuccessor (head);
 	  (head->ln->next)->ln->prev = LISTPredecessor (head);
-	  free (head);
+	  node_delete (&head, 'l');
 	}
     }
 
@@ -154,8 +154,7 @@ LISTClear (node head)
     return NULL;
 
   LISTClear (LISTSuccessor (head));
-  head = NULL;
-  free (head);
+  node_delete (&head, 'l');
 
   return NULL;
 }

@@ -30,4 +30,4 @@ bst.c                   list.c
   graph. The real running times infact are linear for the lists and logarithmic 
   for the bst.
 
-![200 iterations test](https://raw.githubusercontent.com/free-unife/algorithms-and-data-structures/master/src/training16/assignments/c_version/01-bstHashTable/images/plot.png)
+![200 iterations test](https://raw.githubusercontent.com/free-unife/algorithms-and-data-structures/master/src/training16/assignments/c_version/01-bstHashTable-poc/images/plot.png)

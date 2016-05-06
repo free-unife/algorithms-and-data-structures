@@ -91,7 +91,7 @@ struct bstNode
  *
  * @note A node should be only of one type (i.e: either listNode or bstNode is
  * set, but not both). If you want you could use both ln and bn pointers at the
- * same time.
+ * same time, but keep in mind to change the code appropriately.
  */
 struct Node
 {
@@ -134,7 +134,7 @@ typedef struct listNode *lnode;
  *
  * @struct HashTable
  *
- * @note TODO
+ * @note Each element in the whole hash table must be unique.
  */
 struct HashTable
 {
@@ -275,6 +275,12 @@ extern bool value_set (node n, char *value);
  * @warning The return value can be NULL.
  */
 extern node node_new (char *key, char *value, char type);
+
+
+
+extern void node_delete (nodePtr nPtr, char type);
+
+
 
 /**
  * @brief Set a node object to NULL.

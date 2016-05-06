@@ -127,6 +127,9 @@ HTSearch (ht hashTable, char *key)
 bool
 HTDelete (ht hashTable, char *key)
 {
+  if (element_null (slot_get (hashTable, key)))
+    return false;
+
   if (HTType (hashTable) == 'b')
     return (BSTDelete (slot_get (hashTable, key), key));
   else
