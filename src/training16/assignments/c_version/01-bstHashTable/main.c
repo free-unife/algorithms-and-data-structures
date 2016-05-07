@@ -12,16 +12,18 @@
 
 #include "globalDefines.h"
 
-/*#define M 997*/
 #define M 251
 #define KEYCHARMIN 33
 #define KEYCHARMAX 126
-#define ATTEMPTS 100
-#define KEYLENGTH 16
+#define ATTEMPTS 101
+#define KEYLENGTH 4
 
-static double insMiss = 0;
-static double srcMiss = 0;
-static double delMiss = 0;
+/* miss variables are only referred to the list hash table, since the bst
+ * hash table would obtain the same results. */
+static double insMiss = 0.0;
+static double srcMiss = 0.0;
+static double delMiss = 0.0;
+static double insSucc = 0.0;
 
 static double runningtime_get (clock_t start, clock_t end);
 static char *randomstring_new (int len);
@@ -179,15 +181,17 @@ operations (ht hashTable, char **keys, char *actions, int totalOperations)
 	  startClock = clock ();
 	  retval = HTInsert (hashTable, keys[i], keys[i]);
 	  endClock = clock ();
-	  if (retval == false)
+	  if (retval == false && hashTable -> type == 'l' )
 	    insMiss++;
+      else if (retval == true && hashTable -> type == 'l')
+        insSucc++;
 	}
       else if (isSearchAction (actions[i]))
 	{
 	  startClock = clock ();
 	  tmp = HTSearch (hashTable, keys[i]);
 	  endClock = clock ();
-	  if (node_null (tmp))
+	  if (node_null (tmp) && hashTable -> type == 'l')
 	    srcMiss++;
 	}
       else
@@ -195,7 +199,7 @@ operations (ht hashTable, char **keys, char *actions, int totalOperations)
 	  startClock = clock ();
 	  retval = HTDelete (hashTable, keys[i]);
 	  endClock = clock ();
-	  if (retval == false)
+	  if (retval == false && hashTable -> type == 'l')
 	    delMiss++;
 	}
       totalTime += runningtime_get (startClock, endClock);
@@ -242,12 +246,12 @@ main (void)
   char *actions, **keys;
   int totalOperations = 0;
   int currentOperations = 0;
-  ht hashTableList, hashTableBst;
   double listTime, bstTime;
   double loadFactor = 0.0;
   int insOperations, srcOperations, delOperations;
   int totalInsElements = 0;
   double prevInsMiss = 0.0;
+  ht hashTableList, hashTableBst;
 
   fprintf (stdout,
 	   "currentOperations    totalOperations    totalInsertedElements    loadFactor    list    bst\n");
@@ -260,11 +264,9 @@ main (void)
       currentOperations = M * i;
 
       keys = keys_new (currentOperations, KEYLENGTH);
+      numbers = numbersfromprobability_get (currentOperations, insProb, srcProb, delProb);
 
-      numbers =
-	numbersfromprobability_get (currentOperations, insProb, srcProb,
-				    delProb);
-
+      /* Number of operations based on currentOperations variable. */
       insOperations = numbers[0];
       srcOperations = numbers[1];
       delOperations = numbers[2];
@@ -278,12 +280,14 @@ main (void)
 
       prevInsMiss = insMiss;
 
+      /* Running time calculation is based on currentOperation variables. */
       listTime = operations (hashTableList, keys, actions, currentOperations);
-
       bstTime = operations (hashTableBst, keys, actions, currentOperations);
 
       /* Calculate the real number of elements in the hash tables. */
-      totalInsElements += insOperations - (insMiss - prevInsMiss);
+      totalInsElements += (insOperations - (insMiss - prevInsMiss));
+
+      assert ( insSucc == ( totalInsElements ));
 
       loadFactor = (double) totalInsElements / M;
 
@@ -292,11 +296,13 @@ main (void)
 	       loadFactor, listTime, bstTime);
 
       keys_delete (currentOperations, &keys);
-
       free (actions);
     }
 
-/*      HTPrint ( hashTableBst );*/
+/*
+      HTPrint ( hashTableList );
+      HTPrint ( hashTableBst );
+*/
 
   HTClear (&hashTableList);
   HTClear (&hashTableBst);

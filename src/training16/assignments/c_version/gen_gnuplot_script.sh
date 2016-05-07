@@ -11,16 +11,16 @@
 # Script that generate a gnuplot script file.
 
 inputPath="$1"
-title="$2"
-xLabel="$3"
-yLabel="$4"
-col0="$5"
-col1="$6"
-col2="$7"
+style="$2"
+title="$3"
+xLabel="$4"
+yLabel="$5"
+col0="$6"
+col1="$7"
+col2="$8"
 
 ################
 
-style="lines"
 terminalType="png medium"
 
 cat <<-EOF
@@ -42,6 +42,9 @@ set xlabel "${xLabel}"
 set ylabel "${yLabel}"
 
 plot '${inputPath}' using "${col0}":"${col1}" with ${style}, '' using "${col0}":"${col2}" with ${style}
+
+#plot '${inputPath}' using "${col0}":"${col1}" with ${style}
+#plot '${inputPath}' using "${col0}":"${col2}" with ${style}
 
 EOF
 

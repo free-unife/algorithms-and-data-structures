@@ -99,14 +99,13 @@ prepareplot: main
 	@./main.out > $(PLOT_INPUT_FILE)
 
 gengnuplotscript: prepareplot
-	@../gen_gnuplot_script.sh "out.dat" "Comparison between hash table implemented with chaining LISTs and BSTs" "number of operations" "time (s)" "totalOperations" "list" "bst" > $(GNUPLOT_SCRIPT)
+	@../gen_gnuplot_script.sh "out.dat" "lines" "Comparison between hash table implemented with chaining LISTs and BSTs" "number of operations" "time (s)" "currentOperations" "list" "bst" > $(GNUPLOT_SCRIPT)
 	@chmod +x $(GNUPLOT_SCRIPT)
 
 plot: gengnuplotscript
 	@mkdir -p $(PLOT_OUTPUT_DIR)
-	@./$(GNUPLOT_SCRIPT) > $(PLOT_OUTPUT_DIR)/poc.png
-	@rm -rf $(PLOT_INPUT_FILE)
-	@echo "Plot results have been written in $(PLOT_OUTPUT_DIR)/poc.png"
+	@./$(GNUPLOT_SCRIPT) > $(PLOT_OUTPUT_DIR)/plot.png
+	@echo "Plot results have been written in $(PLOT_OUTPUT_DIR)/plot.png"
 
 doxygen:
 	@doxygen doxy.conf

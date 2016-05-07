@@ -11,12 +11,12 @@
 set terminal png medium
 set key outside
 set key right top
-set title "Comparison between hash table implemented with chaining LISTs and BSTs"
-set xlabel "number of operations"
+set title "Comparison between hybrid sort and merge sort related to K"
+set xlabel "K"
 set ylabel "time (s)"
 
-plot 'out.dat' using "currentOperations":"list" with lines, '' using "currentOperations":"bst" with lines
+plot 'outcomparison.dat' using "K":"mergeSortTime" with points pointtype 5 pointsize 1, '' using "K":"hybridSortTime" with points pointtype 5 pointsize 1
 
-#plot 'out.dat' using "currentOperations":"list" with lines
-#plot 'out.dat' using "currentOperations":"bst" with lines
+#plot 'outcomparison.dat' using "K":"mergeSortTime" with points pointtype 5 pointsize 1
+#plot 'outcomparison.dat' using "K":"hybridSortTime" with points pointtype 5 pointsize 1
 

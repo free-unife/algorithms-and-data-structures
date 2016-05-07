@@ -19,7 +19,7 @@ col0="elements"
 col1="list"
 col2="bst"
 
-../plot.sh "$path" "$title" "$xLabel" "$yLabel" "$col0" "$col1" "$col2"
+./gnuPlot.sh "$path" "$title" "$xLabel" "$yLabel" "$col0" "$col1" "$col2"
 
 
 

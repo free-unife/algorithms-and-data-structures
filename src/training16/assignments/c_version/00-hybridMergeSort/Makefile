@@ -24,8 +24,11 @@ DEFFLAG =
 INDENT_OPTS = -nbad -bap -nbc -bbo -bl -bli2 -bls -ncdb -nce -cp1 -cs -di2 -ndj -nfc1-nfca -hnl -i2 -ip5 -lp -pcs -psl -nsc -nsob
 SPLINT_OPTS = -usereleased -compdef -preproc
 
-PLOT_INPUT_FILE = out.dat
+PLOT_INPUT_FILE_FINDK = outfindk.dat
+PLOT_INPUT_FILE_COMPARE = outcomparison.dat
 PLOT_OUTPUT_DIR = images
+GNUPLOT_SCRIPT_FINDK = gnuplotfindk.script
+GNUPLOT_SCRIPT_COMPARE = gnuplotcomparison.script
 
 EXECUTABLES = utils.out insertionsort.out merge.out mergesort.out findk.out hybridsort.out main.out
 PRG_OBJFILES = utils.o insertionSort.o merge.o mergeSort.o findK.o hybridSort.o main.o
@@ -60,59 +63,67 @@ $(TEST_MODULE_OBJFILE): $(TEST_MODULE_SRCFILE)
 
 target utils: override DEFFLAG = -DM_UTILS_C
 utils: $(TEST_MODULE_OBJFILE) utils.o
-	@$(CC) -o $@.out $^
-	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_UTILS_C -o $@.out"
+	@$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) $(DEFFLAG) -o $@.out $^
+	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) $(DEFFLAG) -o $@.out"
 	@./validate.sh $@.out
 
 target insertionsort: override DEFFLAG = -DM_INSERTIONSORT_C
 insertionsort: $(TEST_MODULE_OBJFILE) utils.o insertionSort.o
-	@$(CC) -o $@.out $^
-	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_INSERTIONSORT_C -o $@.out"
+	@$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) $(DEFFLAG) -o $@.out $^
+	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) $(DEFFLAG) -o $@.out"
 	@./validate.sh $@.out
 
 target merge: override DEFFLAG = -DM_MERGE_C
 merge: $(TEST_MODULE_OBJFILE) utils.o merge.o
-	@$(CC) -o $@.out $^
-	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_MERGE_C -o $@.out"
+	@$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) $(DEFFLAG) -o $@.out $^
+	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) $(DEFFLAG) -o $@.out"
 	@./validate.sh $@.out
 
 target mergesort: override DEFFLAG = -DM_MERGESORT_C
 mergesort: $(TEST_MODULE_OBJFILE) utils.o merge.o mergeSort.o
-	@$(CC) -o $@.out $^
-	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_MERGESORT_C -o $@.out"
+	@$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) $(DEFFLAG) -o $@.out $^
+	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) $(DEFFLAG) -o $@.out"
 	@./validate.sh $@.out
 
 target findk: override DEFFLAG = -DM_FINDK_C
 findk: $(TEST_MODULE_OBJFILE) utils.o insertionSort.o merge.o mergeSort.o findK.o
-	@$(CC) -o $@.out $^
-	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_FINDK_C -o $@.out"
+	@$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) $(DEFFLAG) -o $@.out $^
+	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) $(DEFFLAG) -o $@.out"
 
 target hybridsort: override DEFFLAG = -DM_HYBRIDSORT_C
 hybridsort: $(TEST_MODULE_OBJFILE) utils.o insertionSort.o merge.o mergeSort.o findK.o hybridSort.o
-	@$(CC) -o $@.out $^
-	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_HYBRIDSORT_C -o $@.out"
+	@$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) $(DEFFLAG) -o $@.out $^
+	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) $(DEFFLAG) -o $@.out"
 	@./validate.sh $@.out
 
 target main: override DEFFLAG = -DM_MAIN_C
 main: $(PRG_OBJFILES)
-	@$(CC) -o $@.out $^
-	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_MAIN_C -o $@.out"
+	@$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) $(DEFFLAG) -o $@.out $^
+	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) $(DEFFLAG) -o $@.out"
 
-plotfindk: findk
-	@echo "Plotting findk..."
+prepareplotfindk: findk
+	@echo "Plotting..."
+	@./findk.out > $(PLOT_INPUT_FILE_FINDK)
+
+gengnuplotscriptfindk: prepareplotfindk
+	@../gen_gnuplot_script.sh $(PLOT_INPUT_FILE_FINDK) "points pointtype 5 pointsize 1" "Comparison between insertion sort and merge sort to find k" "number of elements" "time (s)" "arraySize" "insertionSortTime" "mergeSortTime" > $(GNUPLOT_SCRIPT_FINDK)
+	@chmod +x $(GNUPLOT_SCRIPT_FINDK)
+
+plotfindk: gengnuplotscriptfindk
 	@mkdir -p $(PLOT_OUTPUT_DIR)
-	@./findk.out > $(PLOT_INPUT_FILE)
-	@./plotFindK.sh $(PLOT_INPUT_FILE) > $(PLOT_OUTPUT_DIR)/findk.png
-	@ rm $(PLOT_INPUT_FILE)
+	@./$(GNUPLOT_SCRIPT_FINDK) > $(PLOT_OUTPUT_DIR)/findk.png
 	@echo "Plot results have been written in $(PLOT_OUTPUT_DIR)/findk.png"
-	@echo "Done."
 
-plotcompare: main
-	@echo "Plotting comparsion..."
+prepareplotcompare: main
+	@echo "Plotting..."
+	@./main.out > $(PLOT_INPUT_FILE_COMPARE)
+
+gengnuplotscriptcompare: prepareplotcompare
+	@../gen_gnuplot_script.sh $(PLOT_INPUT_FILE_COMPARE) "points pointtype 5 pointsize 1" "Comparison between hybrid sort and merge sort related to K" "K" "time (s)" "K" "mergeSortTime" "hybridSortTime"> $(GNUPLOT_SCRIPT_COMPARE)
+	@chmod +x $(GNUPLOT_SCRIPT_COMPARE)
+
+plotcompare: gengnuplotscriptcompare
 	@mkdir -p $(PLOT_OUTPUT_DIR)
-	@./main.out > $(PLOT_INPUT_FILE)
-	@./plotCompare.sh $(PLOT_INPUT_FILE) > $(PLOT_OUTPUT_DIR)/comparison.png
-	@ rm $(PLOT_INPUT_FILE)
+	@./$(GNUPLOT_SCRIPT_COMPARE) > $(PLOT_OUTPUT_DIR)/comparison.png
 	@echo "Plot results have been written in $(PLOT_OUTPUT_DIR)/comparison.png"
-	@echo "Done."
 
