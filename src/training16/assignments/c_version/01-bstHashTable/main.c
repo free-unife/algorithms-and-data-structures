@@ -16,7 +16,7 @@
 #define M 251
 #define KEYCHARMIN 33
 #define KEYCHARMAX 126
-#define ATTEMPTS 60
+#define ATTEMPTS 100
 #define KEYLENGTH 16
 
 static double insMiss = 0;
@@ -25,15 +25,16 @@ static double delMiss = 0;
 
 static double runningtime_get (clock_t start, clock_t end);
 static char *randomstring_new (int len);
-static double *numbersfromprobability_get (int totalOperations, double insProb,
-					   double srcProb, double delProb);
+static double *numbersfromprobability_get (int totalOperations,
+					   double insProb, double srcProb,
+					   double delProb);
 static void array_shuffle (char *array, int len);
 static bool isInsertAction (char action);
 static bool isSearchAction (char action);
 static double operations (ht hashTable, char **keys, char *actions,
 			  int totalOperations);
-static char **keys_new ( int quantity, int length );
-static void keys_delete ( int quantity, char ***keysPtr );
+static char **keys_new (int quantity, int length);
+static void keys_delete (int quantity, char ***keysPtr);
 
 /**
  * @brief Generate an array with each cell containing either 'i' or 's' or 'd'
@@ -79,8 +80,8 @@ randomstring_new (int len)
 }
 
 static double *
-numbersfromprobability_get (int totalOperations, double insProb, double srcProb,
-			    double delProb)
+numbersfromprobability_get (int totalOperations, double insProb,
+			    double srcProb, double delProb)
 {
   double *numbers;
 
@@ -203,31 +204,33 @@ operations (ht hashTable, char **keys, char *actions, int totalOperations)
   return totalTime;
 }
 
-static char **keys_new ( int quantity, int length )
+static char **
+keys_new (int quantity, int length)
 {
-    char **keys;
-    int i;
+  char **keys;
+  int i;
 
-      /* Generate a new set of keys. */
-      keys = malloc_safe (sizeof (char *) * quantity);
-      for (i = 0; i < quantity; i++)
-	keys[i] = randomstring_new (length);
+  /* Generate a new set of keys. */
+  keys = malloc_safe (sizeof (char *) * quantity);
+  for (i = 0; i < quantity; i++)
+    keys[i] = randomstring_new (length);
 
-    return keys;
+  return keys;
 }
 
-static void keys_delete ( int quantity, char ***keysPtr )
+static void
+keys_delete (int quantity, char ***keysPtr)
 {
-    int i;
+  int i;
 
-      for (i = 0; i < quantity; i++)
-      {
-    	free ((*keysPtr)[i]);
-        (*keysPtr)[i] = NULL;
-      }
+  for (i = 0; i < quantity; i++)
+    {
+      free ((*keysPtr)[i]);
+      (*keysPtr)[i] = NULL;
+    }
 
-      free (*keysPtr);
-      *keysPtr = NULL;
+  free (*keysPtr);
+  *keysPtr = NULL;
 }
 
 int
@@ -246,7 +249,8 @@ main (void)
   int totalInsElements = 0;
   double prevInsMiss = 0.0;
 
-  fprintf (stdout, "currentOperations    totalOperations    totalInsertedElements    loadFactor    list    bst\n");
+  fprintf (stdout,
+	   "currentOperations    totalOperations    totalInsertedElements    loadFactor    list    bst\n");
 
   hashTableList = HTInit (M, 'l');
   hashTableBst = HTInit (M, 'b');
@@ -255,18 +259,22 @@ main (void)
     {
       currentOperations = M * i;
 
-      keys = keys_new ( currentOperations, KEYLENGTH );
+      keys = keys_new (currentOperations, KEYLENGTH);
 
       numbers =
-	numbersfromprobability_get (currentOperations, insProb, srcProb, delProb);
+	numbersfromprobability_get (currentOperations, insProb, srcProb,
+				    delProb);
 
       insOperations = numbers[0];
       srcOperations = numbers[1];
       delOperations = numbers[2];
-      currentOperations = (int) (insOperations + srcOperations + delOperations);
+      currentOperations =
+	(int) (insOperations + srcOperations + delOperations);
       totalOperations += currentOperations;
 
-      actions = actions_get ((int) insOperations, (int) srcOperations, (int) delOperations);
+      actions =
+	actions_get ((int) insOperations, (int) srcOperations,
+		     (int) delOperations);
 
       prevInsMiss = insMiss;
 
@@ -275,14 +283,15 @@ main (void)
       bstTime = operations (hashTableBst, keys, actions, currentOperations);
 
       /* Calculate the real number of elements in the hash tables. */
-      totalInsElements += insOperations - ( insMiss - prevInsMiss );
+      totalInsElements += insOperations - (insMiss - prevInsMiss);
 
       loadFactor = (double) totalInsElements / M;
 
-      fprintf (stdout, "%d    %d    %d    %f    %f    %f\n", currentOperations
-, totalOperations, totalInsElements, loadFactor, listTime, bstTime);
+      fprintf (stdout, "%d    %d    %d    %f    %f    %f\n",
+	       currentOperations, totalOperations, totalInsElements,
+	       loadFactor, listTime, bstTime);
 
-      keys_delete ( currentOperations, &keys );
+      keys_delete (currentOperations, &keys);
 
       free (actions);
     }

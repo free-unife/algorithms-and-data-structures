@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/gnuplot
 
 #
 # Copyright © 2016 Franco Masotti <franco.masotti@student.unife.it>
@@ -8,16 +8,12 @@
 # as published by Sam Hocevar. See the LICENSE file for more details.
 #
 
+set terminal png medium
+set key outside
+set key right top
+set title "Comparison between hash table implemented with chaining LISTs and BSTs"
+set xlabel "number of operations"
+set ylabel "time (s)"
 
-path="$1"
-
-title="Comparison between hash table implemented with chaining LISTs and BSTs"
-xLabel="number of operations"
-yLabel="time (s)"
-
-col0="totalOperations"
-col1="list"
-col2="bst"
-
-../plot.sh "$path" "$title" "$xLabel" "$yLabel" "$col0" "$col1" "$col2"
+plot 'out.dat' using "totalOperations":"list" with lines, '' using "totalOperations":"bst" with lines
 
