@@ -12,10 +12,10 @@
 
 #include "globalDefines.h"
 
-#define M 251
+#define M 997
 #define KEYCHARMIN 33
 #define KEYCHARMAX 126
-#define ATTEMPTS 101
+#define ATTEMPTS 105
 #define KEYLENGTH 4
 
 /* miss variables are only referred to the list hash table, since the bst
