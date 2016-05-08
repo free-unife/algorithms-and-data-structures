@@ -12,10 +12,15 @@
 
 #include "globalDefines.h"
 
-#define M 997
+/*
+ * sum ( i = 1:ATTEMPS of ( i * CHUNK ) ) = totalOperations.
+ * ATTEMPTS = number of samples.
+ * CHUNK = initial number of operations.
+ */
+#define M 71
 #define KEYCHARMIN 33
 #define KEYCHARMAX 126
-#define ATTEMPTS 100
+#define ATTEMPTS 10
 #define CHUNK 1000
 #define KEYLENGTH 8
 
@@ -263,6 +268,7 @@ main (void)
   for (i = 1; i <= ATTEMPTS; i++)
     {
       currentOperations = i * CHUNK;
+      fprintf (stderr, "%f%%\n", ( (double) i / ATTEMPTS ) * 100 );
 
       keys = keys_new (currentOperations, KEYLENGTH);
       numbers =
