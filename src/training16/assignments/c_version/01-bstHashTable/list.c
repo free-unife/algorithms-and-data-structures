@@ -12,6 +12,10 @@
 
 #include "globalDefines.h"
 
+/* Flag that defines the type of list. */
+#define ITERATIVE_LIST
+/*#define RECURSIVE_LIST*/
+
 static node LISTSuccessor (node head);
 static node LISTPredecessor (node head);
 static node LISTNewNode (nodePtr headPtr, node prevNode, char *key,
@@ -44,12 +48,26 @@ LISTNewNode (nodePtr headPtr, node prevNode, char *key, char *value)
 static node
 LISTNonEmptyInsert (node head, char *key, char *value)
 {
+#if defined RECURSIVE_LIST
+
   if (keys_equal (key_get (head), key))
     return NULL;
   else if (!node_null (LISTSuccessor (head)))
     return (LISTNonEmptyInsert (LISTSuccessor (head), key, value));
   else
     return (LISTNewNode (&(head->ln->next), head, key, value));
+
+#elif defined ITERATIVE_LIST
+
+  while (!node_null (LISTSuccessor (head)))
+    {
+      if (keys_equal (key_get (head), key))
+	return NULL;
+      head = LISTSuccessor (head);
+    }
+  return (LISTNewNode (&(head->ln->next), head, key, value));
+
+#endif
 }
 
 node
@@ -66,17 +84,36 @@ LISTInsert (nodePtr headPtr, char *key, char *value)
 node
 LISTSearch (node head, char *key)
 {
+#if defined RECURSIVE_LIST
+
+  /* Base case: node not found. */
   if (node_null (head))
     return NULL;
   else if (keys_equal (key_get (head), key))
     return head;
   else
     return (LISTSearch (LISTSuccessor (head), key));
+
+#elif defined ITERATIVE_LIST
+
+  while (!node_null (head))
+    {
+      if (keys_equal (key_get (head), key))
+	return head;
+
+      head = LISTSuccessor (head);
+    }
+  /* Node not found. */
+  return NULL;
+
+#endif
 }
 
 static bool
 LISTNonEmptyDelete (nodePtr headPtr, node head, char *key)
 {
+#if defined RECURSIVE_LIST
+
   /*
    * Element not found.
    */
@@ -89,6 +126,23 @@ LISTNonEmptyDelete (nodePtr headPtr, node head, char *key)
   else if (!keys_equal (key, key_get (head)))
     return (LISTNonEmptyDelete
 	    (&(head->ln->next), LISTSuccessor (head), key));
+
+#elif defined ITERATIVE_LIST
+
+  while (!node_null (head) && !keys_equal (key, key_get (head)))
+    {
+      if (node_null (head))
+	return false;
+
+      headPtr = &(head->ln->next);
+      head = LISTSuccessor (head);
+    }
+
+  /* Dummy condition. */
+  if (false)
+    {
+    }
+#endif
   /*
    * The element to delete has been found.  We now have the usual cases for a
    * double linked list without a dummy node.

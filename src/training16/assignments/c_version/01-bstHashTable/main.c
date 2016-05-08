@@ -15,8 +15,9 @@
 #define M 997
 #define KEYCHARMIN 33
 #define KEYCHARMAX 126
-#define ATTEMPTS 105
-#define KEYLENGTH 4
+#define ATTEMPTS 100
+#define CHUNK 1000
+#define KEYLENGTH 8
 
 /* miss variables are only referred to the list hash table, since the bst
  * hash table would obtain the same results. */
@@ -181,17 +182,17 @@ operations (ht hashTable, char **keys, char *actions, int totalOperations)
 	  startClock = clock ();
 	  retval = HTInsert (hashTable, keys[i], keys[i]);
 	  endClock = clock ();
-	  if (retval == false && hashTable -> type == 'l' )
+	  if (retval == false && hashTable->type == 'l')
 	    insMiss++;
-      else if (retval == true && hashTable -> type == 'l')
-        insSucc++;
+	  else if (retval == true && hashTable->type == 'l')
+	    insSucc++;
 	}
       else if (isSearchAction (actions[i]))
 	{
 	  startClock = clock ();
 	  tmp = HTSearch (hashTable, keys[i]);
 	  endClock = clock ();
-	  if (node_null (tmp) && hashTable -> type == 'l')
+	  if (node_null (tmp) && hashTable->type == 'l')
 	    srcMiss++;
 	}
       else
@@ -199,7 +200,7 @@ operations (ht hashTable, char **keys, char *actions, int totalOperations)
 	  startClock = clock ();
 	  retval = HTDelete (hashTable, keys[i]);
 	  endClock = clock ();
-	  if (retval == false && hashTable -> type == 'l')
+	  if (retval == false && hashTable->type == 'l')
 	    delMiss++;
 	}
       totalTime += runningtime_get (startClock, endClock);
@@ -261,10 +262,12 @@ main (void)
 
   for (i = 1; i <= ATTEMPTS; i++)
     {
-      currentOperations = M * i;
+      currentOperations = i * CHUNK;
 
       keys = keys_new (currentOperations, KEYLENGTH);
-      numbers = numbersfromprobability_get (currentOperations, insProb, srcProb, delProb);
+      numbers =
+	numbersfromprobability_get (currentOperations, insProb, srcProb,
+				    delProb);
 
       /* Number of operations based on currentOperations variable. */
       insOperations = numbers[0];
@@ -287,7 +290,7 @@ main (void)
       /* Calculate the real number of elements in the hash tables. */
       totalInsElements += (insOperations - (insMiss - prevInsMiss));
 
-      assert ( insSucc == ( totalInsElements ));
+      assert (insSucc == totalInsElements);
 
       loadFactor = (double) totalInsElements / M;
 
