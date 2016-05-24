@@ -1,4 +1,4 @@
-/*
+/**
  * @file ht.c
  * @author Franco Masotti
  * @date 02 May 2016
@@ -12,11 +12,65 @@
 
 #include "globalDefines.h"
 
+/**
+ * @brief Get the type of hash table.
+ *
+ * @param[in] hashTable A pointer to the hash table.
+ *
+ * @retval hashTable->type 'b' = BST, 'l' = LIST.
+ */
 static char HTType (ht hashTable);
+
+/**
+ * @brief Get the number of slots of the hash table.
+ *
+ * @param[in] hashTable A pointer to the hash table.
+ *
+ * @retval hashTable->numberOfSlots
+ */
 static unsigned int HTNumOfSlots (ht hashTable);
+
+/**
+ * @brief Get the pointer corresponding to the array of slots (i.e: the array
+ * of nodePtr)
+ *
+ * @param[in] hashTable A pointer to the hash table.
+ *
+ * @retval hashTable->ptr
+ *
+ * @warning The return value can be NULL.
+ */
 static nodePtr *HTPtr (ht hashTable);
+
+/**
+ * @brief Get the slot number for a given string. This is also known as the
+ * hash function.
+ *
+ * @param[in] input A pointer to the string that needs to be hashed.
+ * @param[in] hashTable A pointer to the hash table.
+ *
+ * @retval key%HTNumOfSlots(hashTable)
+ */
 static unsigned int slotid_get (char *input, ht hashTable);
+
+/**
+ * @brief Get the first nodePtr of the slot corresponding to the input key.
+ *
+ * @param[in] hashTable A pointer to the hash table.
+ * @param[in] key A pointer to the key.
+ *
+ * @retval (HTPtr(hashTable))[slotid_get(key,hashTable)]
+ *
+ * @warning The return value can be NULL.
+ */
 static nodePtr slot_get (ht hashTable, char *key);
+
+/**
+ * @brief Delete the struct (and its members) corresponding to the input hash
+ * table.
+ *
+ * @param[in] hashTable A pointer to the memory address of the hash table.
+ */
 static void HTFreeStruct (ht * hashTablePtr);
 
 static char
@@ -93,6 +147,7 @@ HTInit (unsigned int numberOfSlots, char type)
 
   assert ((type == 'b') || (type == 'l'));
 
+  /* Set every slot to NULL. */
   for (i = 0; i < (int) numberOfSlots; i++)
     (hashTable->ptr)[i] = NULL;
 

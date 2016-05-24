@@ -16,11 +16,75 @@
 #define ITERATIVE_LIST
 /*#define RECURSIVE_LIST*/
 
+/**
+ * @brief Get the successor node of the current one.
+ *
+ * @param[in] head A pointer to the list.
+ *
+ * @retval head->ln->next A memory address corresponding to the next node.
+ *
+ * @warning The return value can be NULL.
+ */
 static node LISTSuccessor (node head);
+
+/**
+ * @brief Get the previous node of the current one.
+ *
+ * @param[in] head A pointer to the list.
+ *
+ * @retval head->ln->prev A memory address corresponding to the previous node.
+ *
+ * @warning The return value can be NULL.
+ */
 static node LISTPredecessor (node head);
+
+/**
+ * @brief Function that creates a new node with the specified values in the
+ * position pointed by headPtr.
+ *
+ * @param[in] headPtr A memory address containing the pointer to the LIST.
+ * @param[in] prevNode A pointer to the previous node of the one to be
+ * inserted.
+ * @param[in] key A pointer to the key.
+ * @param[in] key A pointer to the value.
+ *
+ * @retval *headPtr A pointer to the new node.
+ *
+ * @warning The return value can be NULL.
+ */
 static node LISTNewNode (nodePtr headPtr, node prevNode, char *key,
 			 char *value);
+
+/**
+ * @brief Function that looks for the correct position where to insert a new
+ * node.
+ *
+ * @param[in] head A pointer to the LIST.
+ * @param[in] key A pointer to the key.
+ * @param[in] value A pointer to the value.
+ *
+ * @retval BSTNewNode A pointer to the new node.
+ *
+ * @note This function is called only if the original LIST is not empty.
+ *
+ * @warning The return value can be NULL.
+ */
 static node LISTNonEmptyInsert (node head, char *key, char *value);
+
+/**
+ * @brief Function that looks (and deletes) for the correct position where to
+ * delete a specified node.
+ *
+ * @param[in] head A pointer to the LIST.
+ * @param[in] key A pointer to the key.
+ * @param[in] key A pointer to the value.
+ *
+ * @retval true The node has been deleted.
+ * @retval true The node has not deleted.
+ *
+ * @note return value is false if head is empty or the specified element was
+ * not found.
+ */
 static bool LISTNonEmptyDelete (nodePtr headPtr, node head, char *key);
 
 static node

@@ -14,39 +14,144 @@
 
 /*
  * sum ( i = 1:ATTEMPS of ( i * CHUNK ) ) = totalOperations.
- * ATTEMPTS = number of samples.
- * CHUNK = initial number of operations.
+ * ATTEMPTS = number of tests.
+ * CHUNK = initial number of samples.
  */
-#define M 71
+
+/**
+ * @brief NUmber of buckets of the hash tables.
+ */
+#define M 997
 #define KEYCHARMIN 33
 #define KEYCHARMAX 126
-#define ATTEMPTS 10
-#define CHUNK 1000
+#define ATTEMPTS 50
+#define CHUNK 800
 #define KEYLENGTH 8
+#define INSPROB 0.750
+#define SRCPROB 0.125
+#define DELPROB 0.125
 
-/* miss variables are only referred to the list hash table, since the bst
- * hash table would obtain the same results. */
-static double insMiss = 0.0;
-static double srcMiss = 0.0;
-static double delMiss = 0.0;
-static double insSucc = 0.0;
-
+/**
+ * @brief Get the delta of two clocks (i.e: the running time).
+ *
+ * @param[in] start A clock corresponding to the start time.
+ * @param[in] end A clock corresponding to the end time.
+ *
+ * @retval end-start The time difference between two clocks.
+ */
 static double runningtime_get (clock_t start, clock_t end);
+
+/**
+ * @brief Generate a random string with a specified length.
+ *
+ * @param[in] len The length of the random string.
+ *
+ * @retval str The random string.
+ *
+ * @note The domain of characters of the random string is given by KEYCHARMIN
+ * and KEYCHARMAX macros.
+ */
 static char *randomstring_new (int len);
-static double *numbersfromprobability_get (int totalOperations,
-					   double insProb, double srcProb,
-					   double delProb);
+
+/**
+ * @brief Get the number of operations of each type, given their probability.
+ *
+ * @param[in] totalOperations The overall number of operations.
+ * @param[in] insProb Probability of insertion operations.
+ * @param[in] srcProb Probability of search operations.
+ * @param[in] delProb Probability of delete operations.
+ *
+ * @retval numbers An array of three integers where: index 0 = insert
+ * operations, index 1 = search operations, index 2 = delete operations.
+ *
+ * @note Probabilities are expressed in the following domain: [0, 1].
+ *
+ * @warning sum(numbers) may be different than totalOperations due to
+ * approximations.
+ */
+static int *numbersfromprobability_get (int totalOperations,
+					double insProb, double srcProb,
+					double delProb);
+
+/**
+ * @brief Shuffle a char array of a given length using Fisher-Yates algorithm.
+ *
+ * @param[in] array The array to be shuffled.
+ * @param[in] len The length of the array.
+ */
 static void array_shuffle (char *array, int len);
+
+/**
+ * @brief Check if input corresponds to an insert action.
+ *
+ * @param[in] action A character in the following domain: {'i', 's', 'd'}.
+ *
+ * @retval true Input actions is an insert action.
+ * @retval false Input actions is not an insert action.
+ */
 static bool isInsertAction (char action);
+
+/**
+ * @brief Check if input corresponds to a search action.
+ *
+ * @param[in] action A character in the following domain: {'i', 's', 'd'}.
+ *
+ * @retval true Input actions is a search action.
+ * @retval false Input actions is not a search action.
+ */
 static bool isSearchAction (char action);
+
+/**
+ * @brief Simulate insert, search and delete operations on a hash table, and
+ * gather statistics.
+ *
+ * @param[in] ht A pointer to the hash table.
+ * @param[in] keys The array of keys.
+ * @param[in] actions The array of actions.
+ * @param[in] totalOperations The overall number of search, insert and delete
+ * operations to be done.
+ * @param[in] succIns A pointer to a variable containing the number of
+ * successful insertion operations.
+ * @param[in] succDel A pointer to a variable containing the number of
+ * successful deletion operations.
+ *
+ * @retval totalTime The running time for a series of operations on the hash
+ * table.
+ * @retval succIns The number of successful insertion operations.
+ * @retval succDel The number of successful deletion operations.
+ */
 static double operations (ht hashTable, char **keys, char *actions,
-			  int totalOperations);
+			  int totalOperations, int *succIns, int *succDel);
+
+/**
+ * @brief Generate a new array of keys.
+ *
+ * @param[in] quantity The number of keys.
+ * @param[in] length The length of each key.
+ *
+ * @retval keys The pointer to the array of keys.
+ */
 static char **keys_new (int quantity, int length);
+
+/**
+ * @brief Delete an array of keys.
+ *
+ * @param[in] quantity The number of keys.
+ */
 static void keys_delete (int quantity, char ***keysPtr);
 
 /**
- * @brief Generate an array with each cell containing either 'i' or 's' or 'd'
- * respectively for insert, search and delete operations.
+ * @brief Generate a random array corresponding to the type of operations that
+ * needs to be done.
+ *
+ * @param[in] insElements The number of insert operations.
+ * @param[in] srcElements The number of search operations.
+ * @param[in] delElements The number of delete operations.
+ *
+ * @retval actions The array of actions.
+ *
+ * @note Possible actions are {'i', 's', 'd'} respectively for insert, search
+ * and delete operations.
  */
 static char *actions_get (int insElements, int srcElements, int delElements);
 
@@ -87,22 +192,22 @@ randomstring_new (int len)
   return str;
 }
 
-static double *
+static int *
 numbersfromprobability_get (int totalOperations, double insProb,
 			    double srcProb, double delProb)
 {
-  double *numbers;
+  int *numbers;
 
   assert ((insProb + srcProb + delProb) == 1.000);
 
   numbers = malloc_safe (sizeof (int) * 3);
 
   /* Insert */
-  numbers[0] = floor (totalOperations * insProb);
+  numbers[0] = (int) floor (totalOperations * insProb);
   /* Search */
-  numbers[1] = floor (totalOperations * srcProb);
+  numbers[1] = (int) floor (totalOperations * srcProb);
   /* Delete */
-  numbers[2] = floor (totalOperations * delProb);
+  numbers[2] = (int) floor (totalOperations * delProb);
 
   return numbers;
 }
@@ -171,12 +276,12 @@ actions_get (int insElements, int srcElements, int delElements)
 }
 
 static double
-operations (ht hashTable, char **keys, char *actions, int totalOperations)
+operations (ht hashTable, char **keys, char *actions, int totalOperations, int
+	    *succIns, int *succDel)
 {
   int i;
   double totalTime;
   clock_t startClock, endClock;
-  node tmp;
   bool retval;
 
   totalTime = 0.0;
@@ -187,29 +292,27 @@ operations (ht hashTable, char **keys, char *actions, int totalOperations)
 	  startClock = clock ();
 	  retval = HTInsert (hashTable, keys[i], keys[i]);
 	  endClock = clock ();
-	  if (retval == false && hashTable->type == 'l')
-	    insMiss++;
-	  else if (retval == true && hashTable->type == 'l')
-	    insSucc++;
+	  if (retval == true)
+	    (*succIns)++;
 	}
       else if (isSearchAction (actions[i]))
 	{
 	  startClock = clock ();
-	  tmp = HTSearch (hashTable, keys[i]);
+	  HTSearch (hashTable, keys[i]);
 	  endClock = clock ();
-	  if (node_null (tmp) && hashTable->type == 'l')
-	    srcMiss++;
 	}
       else
 	{
 	  startClock = clock ();
 	  retval = HTDelete (hashTable, keys[i]);
 	  endClock = clock ();
-	  if (retval == false && hashTable->type == 'l')
-	    delMiss++;
+	  if (retval == true)
+	    (*succDel)++;
 	}
       totalTime += runningtime_get (startClock, endClock);
     }
+
+  (void) *succIns, (void) *succDel;
 
   return totalTime;
 }
@@ -246,75 +349,53 @@ keys_delete (int quantity, char ***keysPtr)
 int
 main (void)
 {
-  int i;
-  double insProb = 0.75, srcProb = 0.125, delProb = 0.125;
-  double *numbers;
-  char *actions, **keys;
-  int totalOperations = 0;
-  int currentOperations = 0;
-  double listTime, bstTime;
-  double loadFactor = 0.0;
-  int insOperations, srcOperations, delOperations;
-  int totalInsElements = 0;
-  double prevInsMiss = 0.0;
+  int i, totalOperations, *realOperations, succIns, succDel, *succInsPtr,
+    *succDelPtr, currentElementsInHashTable = 0, trash;
+  char **keys, *actions;
+  double listTime, bstTime, loadFactor;
   ht hashTableList, hashTableBst;
 
-  fprintf (stdout,
-	   "currentOperations    totalOperations    totalInsertedElements    loadFactor    list    bst\n");
-
+  succInsPtr = &succIns;
+  succDelPtr = &succDel;
   hashTableList = HTInit (M, 'l');
   hashTableBst = HTInit (M, 'b');
 
+  fprintf (stdout, "totalOperations    list    bst    loadFactor\n");
   for (i = 1; i <= ATTEMPTS; i++)
     {
-      currentOperations = i * CHUNK;
-      fprintf (stderr, "%f%%\n", ( (double) i / ATTEMPTS ) * 100 );
+      succIns = 0;
+      succDel = 0;
 
-      keys = keys_new (currentOperations, KEYLENGTH);
-      numbers =
-	numbersfromprobability_get (currentOperations, insProb, srcProb,
-				    delProb);
+      totalOperations = CHUNK * i;
+      keys = keys_new (totalOperations, KEYLENGTH);
 
-      /* Number of operations based on currentOperations variable. */
-      insOperations = numbers[0];
-      srcOperations = numbers[1];
-      delOperations = numbers[2];
-      currentOperations =
-	(int) (insOperations + srcOperations + delOperations);
-      totalOperations += currentOperations;
+      /* The sum of realOperations could be an approximation of
+       * totalOperations because of floating point probabilities that lead to
+       * non integer number of operations.
+       */
+      realOperations = numbersfromprobability_get (totalOperations, INSPROB,
+						   SRCPROB, DELPROB);
+      actions = actions_get (realOperations[0], realOperations[1],
+			     realOperations[2]);
 
-      actions =
-	actions_get ((int) insOperations, (int) srcOperations,
-		     (int) delOperations);
+      listTime = operations (hashTableList, keys, actions, totalOperations,
+			     succInsPtr, succDelPtr);
+      bstTime = operations (hashTableBst, keys, actions, totalOperations,
+			    &trash, &trash);
 
-      prevInsMiss = insMiss;
+      currentElementsInHashTable += succIns - succDel;
+      loadFactor =
+	(double) ((double) currentElementsInHashTable / (double) M);
 
-      /* Running time calculation is based on currentOperation variables. */
-      listTime = operations (hashTableList, keys, actions, currentOperations);
-      bstTime = operations (hashTableBst, keys, actions, currentOperations);
+      fprintf (stdout, "%d    %f    %f    %f\n", totalOperations,
+	       listTime, bstTime, loadFactor);
 
-      /* Calculate the real number of elements in the hash tables. */
-      totalInsElements += (insOperations - (insMiss - prevInsMiss));
-
-      assert (insSucc == totalInsElements);
-
-      loadFactor = (double) totalInsElements / M;
-
-      fprintf (stdout, "%d    %d    %d    %f    %f    %f\n",
-	       currentOperations, totalOperations, totalInsElements,
-	       loadFactor, listTime, bstTime);
-
-      keys_delete (currentOperations, &keys);
       free (actions);
+      free (realOperations);
+      keys_delete (totalOperations, &keys);
     }
-
-/*
-      HTPrint ( hashTableList );
-      HTPrint ( hashTableBst );
-*/
 
   HTClear (&hashTableList);
   HTClear (&hashTableBst);
 
-  return 0;
 }

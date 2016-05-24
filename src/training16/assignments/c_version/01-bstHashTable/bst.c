@@ -99,7 +99,7 @@ static bool BSTHasLeftOnly (node root);
 static bool BSTHasRightOnly (node root);
 
 /**
- * @brief Function that creates a new node with the specified values io the
+ * @brief Function that creates a new node with the specified values in the
  * position pointed by rootPtr.
  *
  * @param[in] rootPtr A memory address containing the pointer to the BST.

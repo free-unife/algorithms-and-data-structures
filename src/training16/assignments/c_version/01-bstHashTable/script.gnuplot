@@ -15,8 +15,8 @@ set title "Comparison between hash table implemented with chaining LISTs and BST
 set xlabel "number of operations"
 set ylabel "time (s)"
 
-plot 'out.dat' using "currentOperations":"list" with lines, '' using "currentOperations":"bst" with lines
+plot 'out.dat' using "totalOperations":"list" with lines, '' using "totalOperations":"bst" with lines
 
-#plot 'out.dat' using "currentOperations":"list" with lines
-#plot 'out.dat' using "currentOperations":"bst" with lines
+#plot 'out.dat' using "totalOperations":"list" with lines
+#plot 'out.dat' using "totalOperations":"bst" with lines
 

@@ -138,8 +138,19 @@ typedef struct listNode *lnode;
  */
 struct HashTable
 {
+  /**
+   * @brief Pointer to the array of nodePtr
+   */
   nodePtr *ptr;
+
+  /**
+   * @brief Number of slots of the hash table
+   */
   unsigned int numberOfSlots;
+
+  /**
+   * @brief 'b' or 'l' for either bsts or lists.
+   */
   char type;
 };
 
@@ -276,10 +287,16 @@ extern bool value_set (node n, char *value);
  */
 extern node node_new (char *key, char *value, char type);
 
-
-
+/**
+ * @brief Delete a generic node.
+ *
+ * @param[in] nPtr A memory address containing the pointer of the node.
+ * @param[in] type A character corresponding to the type of node to be
+ * deleted.
+ *
+ * @note type can either be 'b' or 'l', for either bsts or lists.
+ */
 extern void node_delete (nodePtr nPtr, char type);
-
 
 
 /**
@@ -366,27 +383,135 @@ extern void BSTPrint (node root);
 
 /* ========================================== */
 
+/**
+ * @brief Insert a new node in a specified LIST.
+ *
+ * @param[in] headPtr A memory address containing the pointer to the head node
+ * (BST).
+ * @param[in] key A memory address corresponding to the key.
+ * @param[in] value A memory address corresponding to the value.
+ *
+ * @retval new_node A memory address corresponding to the new node.
+ *
+ * @warning The return value can be NULL.
+ */
 extern node LISTInsert (nodePtr headPtr, char *key, char *value);
 
+/**
+ * @brief Search for a node with a given key in a specified LIST.
+ *
+ * @param[in] head A pointer to the LIST.
+ * @param[in] key A memory address corresponding to the key.
+ *
+ * @retval head A memory address corresponding to the searched node.
+ *
+ * @warning The return value can be NULL.
+ */
 extern node LISTSearch (node head, char *key);
 
+/**
+ * @brief Delete the node with the given key in a specified LIST.
+ *
+ * @param[in] head A pointer to the LIST.
+ * @param[in] key A memory address corresponding to the key.
+ *
+ * @retval true The node was deleted.
+ * @retval false The node was not deleted.
+ *
+ * @note return value is false if head is empty or the specified element was
+ * not found.
+ */
 extern bool LISTDelete (nodePtr headPtr, char *key);
 
+/**
+ * @brief Delete the LIST starting from the specified point.
+ *
+ * @param[in] head A pointer to the LIST.
+ *
+ * @retval NULL
+ *
+ * @note Usually this function is used to delete the whole list.
+ */
 extern node LISTClear (node head);
 
+/**
+ * @brief Print a LIST element by element with the same order as when they
+ * were inserted.
+ *
+ * @param[in] head A pointer to the LIST.
+ */
 extern void LISTPrint (node head);
 
 /* ========================================== */
 
+/**
+ * @brief Create a new hash table.
+ *
+ * @param[in] numberOfSlots The total number of slots of the hash table.
+ * @param[in] type A character corresponding to the type of hash table to be
+ * created.
+ *
+ * @retval hashTable A memory address corresponding to the hash table just
+ * created.
+ *
+ * @note type can either be 'b' or 'l', for either bsts or lists.
+ */
 extern ht HTInit (unsigned int numberOfSlots, char type);
 
+/**
+ * @brief Insert a new key value tuple in the specified hash table.
+ *
+ * @param[in] hashTable A memory address corresponding to the hash table.
+ * @param[in] key A memory address corresponding to the key.
+ * @param[in] value A memory address corresponding to the value.
+ *
+ * @retval true The tuple was inserted.
+ * @retval false The tuple was not inserted.
+ */
 extern bool HTInsert (ht hashTable, char *key, char *value);
 
+/**
+ * @brief Search for a node with a given key in a specified hash table.
+ *
+ * @param[in] ht A pointer to the hash table.
+ * @param[in] key A memory address corresponding to the key.
+ *
+ * @retval node A memory address corresponding to the searched node.
+ *
+ * @warning The return value can be NULL.
+ */
 extern node HTSearch (ht hashTable, char *key);
 
+/**
+ * @brief Delete the node with the given key in a specified hash table.
+ *
+ * @param[in] head A pointer to the hash table.
+ * @param[in] key A memory address corresponding to the key.
+ *
+ * @retval true The node was deleted.
+ * @retval false The node was not deleted.
+ *
+ * @note return value is false if the computed slot is empty or the specified
+ * element was not found.
+ */
 extern bool HTDelete (ht hashTable, char *key);
 
+/**
+ * @brief Delete the whole hash table.
+ *
+ * @param[in] hashTAble A memory address corresponding to the pointer of the
+ * hash table .
+ *
+ * @retval true The whole hash table has been deleted correctly.
+ * @retval false Some problem occurred while deleting a slot.
+ */
 extern bool HTClear (ht * hashTable);
 
+/**
+ * @brief Print the hash table, slot by slot, starting from slot 0 to slot
+ * M - 1.
+ *
+ * @param[in] hashTable A pointer to the hash table.
+ */
 extern void HTPrint (ht hashTable);
 #endif

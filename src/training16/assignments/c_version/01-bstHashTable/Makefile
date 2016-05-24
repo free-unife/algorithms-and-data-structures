@@ -99,7 +99,7 @@ prepareplot: main
 	@./main.out > $(PLOT_INPUT_FILE)
 
 gengnuplotscript: prepareplot
-	@../gen_gnuplot_script.sh "out.dat" "lines" "Comparison between hash table implemented with chaining LISTs and BSTs" "number of operations" "time (s)" "currentOperations" "list" "bst" > $(GNUPLOT_SCRIPT)
+	@../gen_gnuplot_script.sh "out.dat" "lines" "Comparison between hash table implemented with chaining LISTs and BSTs" "number of operations" "time (s)" "totalOperations" "list" "bst" > $(GNUPLOT_SCRIPT)
 	@chmod +x $(GNUPLOT_SCRIPT)
 
 plot: gengnuplotscript
