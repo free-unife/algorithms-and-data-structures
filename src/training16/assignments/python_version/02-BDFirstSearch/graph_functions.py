@@ -6,11 +6,46 @@ terms of the Do What The Fuck You Want To Public License, Version 2,
 as published by Sam Hocevar. See the LICENSE file for more details.
 '''
 
-''' This module implements both BFS and DFS '''
+
+class Stack( object ):
+	def __init__( self ):
+		self._lista = []
+		return
+
+	def push( self, el ):
+		self._lista.insert( 0, el )
+		return
+
+	def pop( self ):
+		return self._lista.pop( 0 )
+
+	def __iter__( self ):
+		for x in self._lista:
+			yield x
+		return
+
+
+class Queue( object ):
+	def __init__( self ):
+		self._lista = []
+		return
+
+	def enqueue( self, el ):
+		self._lista.append( el )
+		return
+
+	def dequeue( self ):
+		return self._lista.pop()
+
+	def __iter__( self ):
+		for x in self._lista:
+			yield x
+		return
+
 
 
 def BFS( G, s ):
-	Q = []
+	Q = Queue()
 	maxQueueDimension = 0
 
 	for u in G:
@@ -20,12 +55,12 @@ def BFS( G, s ):
 	
 	s.set_color( "GREY" )
 	
-	Q.append( s )
+	Q.enqueue( s )
 	if len( Q ) > maxQueueDimension:
 		maxQueueDimension = len(Q)
 
 	while len( Q ) is not 0:
-		u = Q.pop()
+		u = Q.dequeue()
 
 		for v in G.get_neighbors_of_vertex( u ):
 			if v.get_color() is "WHITE":
@@ -34,7 +69,7 @@ def BFS( G, s ):
 				v.set_d( u.get_d() + 1 )
 				v.set_pi( u )
 				
-				Q.append( v )
+				Q.enqueue( v )
 				if len(Q) > maxQueueDimension:
 					maxQueueDimension = len( Q )
 
@@ -73,7 +108,7 @@ def DFS_recursive( G ):
 	time = 0
 	return
 
-'''
+
 def DFS_iterative( G, s ):
+	
 	return maxStackDimension
-'''
