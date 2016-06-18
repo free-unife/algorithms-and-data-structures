@@ -15,8 +15,8 @@ def BFS( G, s ):
 
 	for u in G:
 		u.set_color( "WHITE" )
-		u.set_distance( float( "inf" ) )
-		u.set_parent( None )
+		u.set_d( float( "inf" ) )
+		u.set_pi( None )
 	
 	s.set_color( "GREY" )
 	
@@ -31,11 +31,8 @@ def BFS( G, s ):
 			if v.get_color() is "WHITE":
 				v.set_color( "GRAY" )
 
-				# v.d = u.d + 1
-				u_distance = u.get_distance()
-				v.set_distance( u_distance + 1 )
-
-				v.set_parent( u )
+				v.set_d( u.get_d() + 1 )
+				v.set_pi( u )
 				
 				Q.append( v )
 				if len(Q) > maxQueueDimension:
@@ -46,8 +43,37 @@ def BFS( G, s ):
 	return maxQueueDimension
 
 
+
+time = 0
+def DFS_recursive( G ):
+	
+	for u in G:
+		u.set_color( "WHITE" )
+		u.set_pi( None )
+	
+	def DepthVisit( G, u ):
+		global time
+		time = time + 1
+		u.set_d( time )
+		u.set_color( "GREY" )
+
+		for v in G.get_neighbors_of_vertex( u ):
+			if v.get_color() is "WHITE":
+				v.set_pi( u )
+				DepthVisit( G, v )
+
+			u.set_color( "BLACK" )
+			time += 1
+			u.set_f( time )
+
+	# DFS_recursive continue...
+	for u in G:
+		if u.get_color() is "WHITE":
+			DepthVisit( G, u )
+	time = 0
+	return
+
 '''
-def DFS( G, s ):
+def DFS_iterative( G, s ):
 	return maxStackDimension
 '''
-

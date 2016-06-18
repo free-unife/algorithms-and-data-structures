@@ -12,11 +12,13 @@ from double_linked_list import DoubleLinkedList
 
 
 class VertexNode( StdNode ):
-    def __init__( self, key, color="WHITE", distance=0, parent="" ):
-        self._element  = key
-        self._color    = color
-        self._distance = distance
-        self._parent   = parent
+    def __init__( self, key, color="WHITE", d=0, f=0, pi=None ):
+        self._element = key
+        self._color   = color
+        self._d       = d
+        self._f       = f
+        self._pi      = pi
+
         self._prev     = None
         self._next     = None
         return
@@ -29,12 +31,16 @@ class VertexNode( StdNode ):
         self._color = color
         return
 
-    def set_distance( self, distance ):
-        self._distance = distance
+    def set_d( self, d ):
+        self._d = d
         return
 
-    def set_parent( self, parent ):
-        self._parent = parent
+    def set_f( self, f ):
+        self._f = f
+        return
+
+    def set_pi( self, pi ):
+        self._pi = pi
         return
 
     def get_key( self ):
@@ -43,11 +49,15 @@ class VertexNode( StdNode ):
     def get_color( self ):
         return self._color
 
-    def get_distance( self ):
-        return self._distance
+    def get_d( self ):
+        return self._d
 
-    def get_parent( self ):
-        return self._parent
+    def get_f( self ):
+        return self._f
+
+    def get_pi( self ):
+        return self._pi
+
 
 
 class VertexDoubleLinkedList( DoubleLinkedList ):
@@ -68,7 +78,7 @@ class VertexDoubleLinkedList( DoubleLinkedList ):
 
 
     def insert( self, key, color="WHITE", 
-        distance=0, parent="", verbose=False ):
+        d=0, f=0, pi=None, verbose=False ):
         
         # Assert that there's not another key inside
         raiseError = False
@@ -78,7 +88,7 @@ class VertexDoubleLinkedList( DoubleLinkedList ):
             raiseError = True
         except:
             # and if nothing is found is a good thing
-            return self.insert_node_in_queue( key, color, distance, parent, verbose=verbose )
+            return self.insert_node_in_queue( key, color, d, f, pi, verbose=verbose )
         
         # but if something was found we must raise an error
         if raiseError is True:
