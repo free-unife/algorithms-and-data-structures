@@ -95,20 +95,6 @@ class VertexDoubleLinkedList( DoubleLinkedList ):
             raise ValueError( "Can't delete node that does not exists" )
         
 
-    def key_value_print( self ):
-        print("LIST elements:")
-        index = 0
-        dummy = self._dummy
-
-        a_node = dummy.get_next()
-
-        while a_node is not dummy :
-            print( a_node.get_key() , a_node.get_value() )
-            a_node = a_node.get_next()
-            index = index + 1
-        return
-
-
     def __str__( self ):
         self.key_value_print()
         return ""

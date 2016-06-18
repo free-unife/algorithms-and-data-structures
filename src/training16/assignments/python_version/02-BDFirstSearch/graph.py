@@ -40,12 +40,30 @@ class RandomGraph( object ):
 		for vertex in self._vertex_list:
 			if vertex.get_color() is "WHITE":
 				self._vertex_list.delete( vertex.get_key() )
+				self._n_vertex = self._n_vertex - 1
 		return
+	
+	
+	'''
+	NOTE: devi aggiornare la matrice di adiacenza
+	      troveresti dei vicini morti... O.o
+	      
+	neighbors_set = G.get_neighbors_of_vertex( s )
+	
+	def get_neighbors_of_vertex( self, vertex ):
+	'''
 	
 
 	def get_random_source_S( self ):
-		key = randint( 0, self._n_vertex - 1 )
-		return self._vertex_list.find_nodes( key )
+		random_index = randint( 0, self._n_vertex - 1 )
+		
+		i = 0
+		for vertex in self._vertex_list:
+			if i == random_index:
+				return vertex
+			i = i + 1
+		
+		return
 
 
 	def show_adj_matrix( self ):
