@@ -70,16 +70,21 @@ src
     │   ├── c_version
     │   │   ├── 00-hybridMergeSort
     │   │   │   └── images
-    │   │   └── 01-bstHashTable
-    │   │       └── images
+    │   │   ├── 01-bstHashTable
+    │   │   │   └── images
+    │   │   ├── 01-bstHashTable-poc
+    │   │   │   └── images
+    │   │   └── 02-graphVisits
     │   └── python_version
     │       ├── 00-hybridMergeSort
     │       │   └── images
-    │       └── 01-bstHashTable
+    │       ├── 01-bstHashTable
+    │       │   └── images
+    │       └── 02-BDFirstSearch
     └── other
         └── maxSubArray
 
-34 directories
+39 directories
 ```
 
 ##Function file structure
