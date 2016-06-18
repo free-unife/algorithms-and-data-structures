@@ -27,8 +27,8 @@ PLOT_INPUT_FILE = out.dat
 PLOT_OUTPUT_DIR = images
 GNUPLOT_SCRIPT = script.gnuplot
 
-EXECUTABLES = utils.out node.out bst.out list.out ht.out main.out
-PRG_OBJFILES = utils.o node.o bst.o list.o ht.o main.o
+EXECUTABLES = utils.out poc.out vertex.out vertexList.out
+PRG_OBJFILES = utils.o poc.o vertex.o vertexList.o
 TEST_MODULE_OBJFILE = tests.o
 TEST_MODULE_SRCFILE = tests.c
 
@@ -66,28 +66,22 @@ utils: $(TEST_MODULE_OBJFILE) utils.o
 	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(DEFFLAG) $(LIBS) -o $@.out"
 	@./validate.sh $@.out
 
-target node: override DEFFLAG = -DM_NODE_C
-node: $(TEST_MODULE_OBJFILE) utils.o node.o
+target poc: override DEFFLAG = -DM_POC_C
+poc: $(TEST_MODULE_OBJFILE) utils.o
 	@$(CC) $(CFLAGS) $(CSTANDARD) $(DEFFLAG) $(LIBS) -o $@.out $^
 	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(DEFFLAG) $(LIBS) -o $@.out"
 	@./validate.sh $@.out
 
-target bst: override DEFFLAG = -DM_BST_C
-bst: $(TEST_MODULE_OBJFILE) utils.o node.o bst.o
+target vertex: override DEFFLAG = -DM_VERTEX_C
+vertex: $(TEST_MODULE_OBJFILE) utils.o vertex.o
 	@$(CC) $(CFLAGS) $(CSTANDARD) $(DEFFLAG) $(LIBS) -o $@.out $^
 	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(DEFFLAG) $(LIBS) -o $@.out"
 	@./validate.sh $@.out
 
-target list: override DEFFLAG = -DM_LIST_C
-list: $(TEST_MODULE_OBJFILE) utils.o node.o list.o
+target vertexlist: override DEFFLAG = -DM_VERTEXLIST_C
+vertexlist: $(TEST_MODULE_OBJFILE) utils.o vertex.o vertexList.o
 	@$(CC) $(CFLAGS) $(CSTANDARD) $(DEFFLAG) $(LIBS) -o $@.out $^
 	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(DEFFLAG) $(LIBS) -o $@.out"
-	@./validate.sh $@.out
-
-target ht: override DEFFLAG = -DM_HT_C
-ht: $(TEST_MODULE_OBJFILE) utils.o node.o bst.o list.o ht.o
-	@$(CC) $(CFLAGS) $(CSTANDARD) $(DEFFLAG) $(LIBS) -o $@.out $^
-	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) -DM_HT_C -o $@.out"
 	@./validate.sh $@.out
 
 main: $(TEST_MODULE_OBJFILE) utils.o node.o bst.o list.o ht.o main.o
@@ -106,14 +100,3 @@ plot: gengnuplotscript
 	@mkdir -p $(PLOT_OUTPUT_DIR)
 	@./$(GNUPLOT_SCRIPT) > $(PLOT_OUTPUT_DIR)/plot.png
 	@echo "Plot results have been written in $(PLOT_OUTPUT_DIR)/plot.png"
-
-doxygen:
-	@doxygen doxy.conf
-
-doxygenlatex: doxygen
-	@cd latex; make pdf; mv refman.pdf ../.; cd ..
-
-cleandoxygen:
-	@rm -rf html latex refman.pdf
-
-cleanall: clean cleandoxygen
