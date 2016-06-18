@@ -13,49 +13,64 @@ from random                    import randint
 class RandomGraph( object ):
 	''' This class implements a random oriented graph G '''
 	
-	def __init__( self, n_vertex=0 ):
-		self._n_vertex = n_vertex
+	def __init__( self, n_vertex ):
+		
+		self.__n_vertex   = n_vertex
 		self._vertex_list = VertexDoubleLinkedList()
-		self._LD = self._n_vertex # leading dimension
-		self._adj_matrix = [] # this is a simple python list
+		self._LD          = self.__n_vertex # leading dimension
+		self._adj_matrix  = [] # this is a simple python list
 		# i'll use leadintng dimension to treat this as matrix
-		return
-
-
-	def generate_vertex_and_random_adj_matrix( self ):
-
+		
 		# Generating vertex and push them into DLL
-		for key in range( 0, self._n_vertex ):
+		for key in range( 0, self.__n_vertex ):
 			self._vertex_list.insert( key )
 		
 		# Generate random adj_matrix
-		for ii in range( 0, self._n_vertex ):
-			for jj in range( 0, self._n_vertex ):
-				self._adj_matrix.insert( ii * self._LD + jj, 
-					randint( 0, 1 ))
+		for ii in range( 0, self.__n_vertex ):
+			for jj in range( 0, self.__n_vertex ):
+				r = randint( 0, 150 )
+				# 10%
+				if r is 0:
+					self._adj_matrix.insert( ii * self._LD + jj, 1 )
+				# 90%
+				else:
+					self._adj_matrix.insert( ii * self._LD + jj, 0 )
+
 		return
+
 
 
 	def delete_white_vertices( self ):
+
 		for vertex in self._vertex_list:
 			if vertex.get_color() is "WHITE":
 				self._vertex_list.delete( vertex.get_key() )
-				self._n_vertex = self._n_vertex - 1
 		return
 	
 	
-	'''
-	NOTE: devi aggiornare la matrice di adiacenza
-	      troveresti dei vicini morti... O.o
-	      
-	neighbors_set = G.get_neighbors_of_vertex( s )
 	
 	def get_neighbors_of_vertex( self, vertex ):
-	'''
+		# this is the returned list
+		list_of_neighbors = []
+
+		# assert that vertex exists
+		self._vertex_list.search( vertex.get_key() )
+
+		# begin scan - iterate over column
+		vertex_key = vertex.get_key()
+		for ii in range( 0, self.__n_vertex ):
+			if self._adj_matrix[ ii * self._LD + vertex_key ] is 1:
+				neighbor = self._vertex_list.search( ii )
+				list_of_neighbors.append( neighbor )
+		
+		return list_of_neighbors
+	
 	
 
 	def get_random_source_S( self ):
-		random_index = randint( 0, self._n_vertex - 1 )
+		
+		length = self._vertex_list.length()
+		random_index = randint( 0, length - 1 )
 		
 		i = 0
 		for vertex in self._vertex_list:
@@ -67,22 +82,13 @@ class RandomGraph( object ):
 
 
 	def show_adj_matrix( self ):
-		for ii in range( 0, self._n_vertex ):
-			for jj in range( 0, self._n_vertex ):
-				print( str( self._adj_matrix[ ii * self._LD + jj ] ) 
-					+ " ", end="" )
+		
+		for ii in range( 0, self.__n_vertex ):
+			for jj in range( 0, self.__n_vertex ):
+				print( str( self._adj_matrix[ ii * self._LD + jj ] ), 
+					end=" ", flush=True)
 			print( "" )
 		return
-
-
-	def set_number_of_vertex( self, n_vertex ):
-		self._n_vertex = n_vertex
-		self._LD = self._n_vertex
-		return
-
-
-	def get_number_of_vertex( self ):
-		return self._n_vertex
 
 
 	# Iterate over Graph vertices

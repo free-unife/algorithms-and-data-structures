@@ -129,8 +129,24 @@ class DoubleLinkedList( object ):
             return True
         else:
             return False
+      
             
+    def length( self ):
+        length = 0
+        # get the dummy node
+        dummy = self._dummy
+
+        # get his successor
+        a_node = dummy.get_next()
+
+        # until the successor reach the dummy
+        while a_node is not dummy :
+            length += 1
+            a_node = a_node.get_next()
             
+        return length
+
+
     # This allows to iterate over list elements
     def __iter__( self ):
         # get the dummy node
