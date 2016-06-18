@@ -98,7 +98,7 @@ class DoubleLinkedList( object ):
     # prints all the elements inside the list
     def print_elements( self ):
         print("Printing the list elements:")
-        index = 0
+
         dummy = self._dummy
 
         a_node = dummy.get_next()
@@ -107,8 +107,10 @@ class DoubleLinkedList( object ):
             element = a_node.get_element()
             print( node.get_key() , node.get_value() )
             a_node = a_node.get_next()
-            index = index + 1
+            
         return
+
+    
 
 
     def delete_node( self, node_to_delete, verbose=False ):
@@ -128,3 +130,18 @@ class DoubleLinkedList( object ):
         else:
             return False
             
+            
+    # This allows to iterate over list elements
+    def __iter__( self ):
+        # get the dummy node
+        dummy = self._dummy
+
+        # get his successor
+        a_node = dummy.get_next()
+
+        # until the successor reach the dummy
+        while a_node is not dummy :
+            yield a_node
+            a_node = a_node.get_next()
+            
+        return

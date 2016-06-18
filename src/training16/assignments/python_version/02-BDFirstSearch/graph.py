@@ -18,7 +18,7 @@ class RandomGraph( object ):
 		self._vertex_list = VertexDoubleLinkedList()
 		self._LD = self._n_vertex # leading dimension
 		self._adj_matrix = [] # this is a simple python list
-		# i'll use leading dimension to treat this as matrix
+		# i'll use leadintng dimension to treat this as matrix
 		return
 
 
@@ -36,15 +36,12 @@ class RandomGraph( object ):
 		return
 
 
-
-	''' TODO sarebbe molto figo e pulito se potessi iterare nella DLL in questo modo '''
-	'''
-	def delete_white_vertex( self ):
+	def delete_white_vertices( self ):
 		for vertex in self._vertex_list:
-			if vertex.color == "white":
-				self._vertex_list.delete( vertex )
+			if vertex.get_color() is "WHITE":
+				self._vertex_list.delete( vertex.get_key() )
 		return
-	'''
+	
 
 	def get_random_source_S( self ):
 		key = randint( 0, self._n_vertex - 1 )
@@ -70,4 +67,10 @@ class RandomGraph( object ):
 		return self._n_vertex
 
 
-	
+	# Iterate over Graph vertices
+	def __iter__( self ):
+
+		for vertex in self._vertex_list:
+			yield vertex
+
+		return
