@@ -24,6 +24,13 @@ class Stack( object ):
 			yield x
 		return
 
+	def __repr__( self ):
+		toReturn = "[ "
+		for x in self._lista:
+			toReturn += ( str(x) + " " )
+		toReturn += "]"
+		return toReturn
+
 
 class Queue( object ):
 	def __init__( self ):
@@ -42,7 +49,12 @@ class Queue( object ):
 			yield x
 		return
 
-
+	def __repr__( self ):
+		toReturn = "[ "
+		for x in self._lista:
+			toReturn += ( str(x) + " " )
+		toReturn += "]"
+		return toReturn
 
 def BFS( G, s ):
 	Q = Queue()
