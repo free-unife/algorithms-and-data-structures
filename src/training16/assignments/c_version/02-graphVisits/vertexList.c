@@ -82,8 +82,6 @@ vertexlistnode_removeWhites (VertexListNode head)
     {
       if ((this->v)->colour == 'w')
 	{
-	  fprintf (stderr, "Remove this %p\n", (void *) this);
-
 	  if (element_null (this->prev))
 	    {
 	      head = this->next;

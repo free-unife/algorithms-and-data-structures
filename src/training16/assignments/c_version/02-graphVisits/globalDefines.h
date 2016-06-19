@@ -46,7 +46,6 @@ typedef struct GraphObject *Graph;
 struct VertexObject
 {
   unsigned int id;
-  char *name;
   char colour;
   int distance;
   struct VertexObject *parent;
@@ -62,14 +61,15 @@ struct VertexListNodeObject
 struct GraphObject
 {
   /* 1-0 values. */
-  unsigned int **adjacencyMatrix;
-  struct VertexListNodeObject *vl;
+  unsigned int matrixDimension;
+  unsigned int *adjacencyMatrix;
+  struct VertexListNodeObject *vln;
 };
 
 extern bool element_null (void *element);
 extern void *malloc_safe (size_t size);
 
-extern Vertex vertex_new (unsigned int id, char *name, char colour,
+extern Vertex vertex_new (unsigned int id, char colour,
 			  int distance, Vertex parent);
 extern void vertex_print (Vertex v);
 extern void vertex_delete (Vertex * vRef);
@@ -83,5 +83,9 @@ extern VertexListNode vertexlistnode_insert (VertexListNode head,
 					     Vertex toBeIns);
 extern VertexListNode vertexlistnode_removeWhites (VertexListNode head);
 extern void vertexlistnode_printlist (VertexListNode head);
+
+extern bool adjacencymatrix_areverticesconnected(Graph g, unsigned int src_id, unsigned int dst_id);
+extern Graph graph_new (unsigned int numberOfNodes, double vertexConnectionProbability);
+extern void graph_print (Graph g);
 
 #endif

@@ -1,9 +1,5 @@
 /*
- * @file tests.c
- * @author Franco Masotti
- * @date 02 May 2016
- * @brief Tests file.
- * @copyright Copyright © 2016 Franco Masotti <franco.masotti@student.unife.it>
+ * Copyright © 2016 Franco Masotti <franco.masotti@student.unife.it>
  *                  Danny Lessio
  * This work is free. You can redistribute it and/or modify it under the
  * terms of the Do What The Fuck You Want To Public License, Version 2,
@@ -40,13 +36,11 @@ main (void)
   assert (!element_null (first));
 
   first->id = 0;
-  first->name = "01";
   first->colour = 'w';
   first->distance = 0;
   first->parent = NULL;
 
   first->id = 1;
-  second->name = "02";
   second->colour = 'b';
   second->distance = 3;
   second->parent = first;
@@ -77,8 +71,8 @@ main (void)
 int
 main (void)
 {
-  Vertex v = vertex_new (0, "1", 'b', 3, NULL);
-  Vertex w = vertex_new (1, "2", 'b', 7, v);
+  Vertex v = vertex_new (0, 'b', 3, NULL);
+  Vertex w = vertex_new (1, 'b', 7, v);
 
   vertex_print (v);
   vertex_print (w);
@@ -94,22 +88,34 @@ main (void)
 {
 
   VertexListNode head =
-    vertexlistnode_insert (NULL, vertex_new (9, "1", 'w', 3, NULL));
+    vertexlistnode_insert (NULL, vertex_new (9, 'w', 3, NULL));
 
   assert (!element_null (head));
 
-  vertexlistnode_insert (head, vertex_new (0, "1", 'w', 9, NULL));
-  vertexlistnode_insert (head, vertex_new (0, "6", 'w', 5, NULL));
-  vertexlistnode_insert (head, vertex_new (0, "7", 'g', 2, NULL));
-  vertexlistnode_insert (head, vertex_new (0, "5", 'g', 65, NULL));
-  vertexlistnode_insert (head, vertex_new (0, "5", 'g', 653, NULL));
-  vertexlistnode_insert (head, vertex_new (0, "5", 'g', 124, NULL));
+  vertexlistnode_insert (head, vertex_new (0, 'w', 9, NULL));
+  vertexlistnode_insert (head, vertex_new (0, 'w', 5, NULL));
+  vertexlistnode_insert (head, vertex_new (0, 'g', 2, NULL));
+  vertexlistnode_insert (head, vertex_new (0, 'g', 65, NULL));
+  vertexlistnode_insert (head, vertex_new (0, 'g', 653, NULL));
+  vertexlistnode_insert (head, vertex_new (0, 'g', 124, NULL));
 
   vertexlistnode_printlist (head);
 
   head = vertexlistnode_removeWhites (head);
 
   vertexlistnode_printlist (head);
+
+  return 0;
+}
+
+#elif defined M_GRAPH_C
+int
+main (void)
+{
+
+    Graph G = graph_new (10, 0.75);
+
+    graph_print (G);
 
   return 0;
 }
