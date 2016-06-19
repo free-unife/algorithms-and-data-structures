@@ -27,8 +27,8 @@ PLOT_INPUT_FILE = out.dat
 PLOT_OUTPUT_DIR = images
 GNUPLOT_SCRIPT = script.gnuplot
 
-EXECUTABLES = utils.out poc.out vertex.out vertexList.out graph.out
-PRG_OBJFILES = utils.o poc.o vertex.o vertexList.o graph.o
+EXECUTABLES = utils.out adt.o doubleLinkedList.o graph.out
+PRG_OBJFILES = utils.o adt.o doubleLinkedList.o graph.o
 TEST_MODULE_OBJFILE = tests.o
 TEST_MODULE_SRCFILE = tests.c
 
@@ -72,20 +72,8 @@ poc: $(TEST_MODULE_OBJFILE) utils.o
 	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(DEFFLAG) $(LIBS) -o $@.out"
 	@./validate.sh $@.out
 
-target vertex: override DEFFLAG = -DM_VERTEX_C
-vertex: $(TEST_MODULE_OBJFILE) utils.o vertex.o
-	@$(CC) $(CFLAGS) $(CSTANDARD) $(DEFFLAG) $(LIBS) -o $@.out $^
-	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(DEFFLAG) $(LIBS) -o $@.out"
-	@./validate.sh $@.out
-
-target vertexlist: override DEFFLAG = -DM_VERTEXLIST_C
-vertexlist: $(TEST_MODULE_OBJFILE) utils.o vertex.o vertexList.o
-	@$(CC) $(CFLAGS) $(CSTANDARD) $(DEFFLAG) $(LIBS) -o $@.out $^
-	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(DEFFLAG) $(LIBS) -o $@.out"
-	@./validate.sh $@.out
-
 target graph: override DEFFLAG = -DM_GRAPH_C
-graph: $(TEST_MODULE_OBJFILE) utils.o vertex.o vertexList.o graph.o
+graph: $(TEST_MODULE_OBJFILE) utils.o adt.o doubleLinkedList.o graph.o
 	@$(CC) $(CFLAGS) $(CSTANDARD) $(DEFFLAG) $(LIBS) -o $@.out $^
 	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(DEFFLAG) $(LIBS) -o $@.out"
 	@./validate.sh $@.out

@@ -26,84 +26,14 @@ main (void)
 int
 main (void)
 {
-  Vertex first, second;
-  VertexListNode aNode, bNode;
   Graph G;
-
-  first = malloc_safe (sizeof (struct VertexObject));
-  assert (!element_null (first));
-  second = malloc_safe (sizeof (struct VertexObject));
-  assert (!element_null (first));
-
-  first->id = 0;
-  first->colour = 'w';
-  first->distance = 0;
-  first->parent = NULL;
-
-  first->id = 1;
-  second->colour = 'b';
-  second->distance = 3;
-  second->parent = first;
-
-  aNode = malloc_safe (sizeof (struct VertexListNodeObject));
-  assert (!element_null (aNode));
-  bNode = malloc_safe (sizeof (struct VertexListNodeObject));
-  assert (!element_null (bNode));
-
-  aNode->v = first;
-  aNode->next = bNode;
-  aNode->prev = bNode;
-
-  bNode->v = second;
-  bNode->next = aNode;
-  bNode->prev = aNode;
+  headPointer head = malloc( sizeof( nodePointer * ) );
 
   G = malloc_safe (sizeof (struct GraphObject));
   assert (!element_null (G));
 
-  G->adjacencyMatrix = NULL;
-  G->vl = aNode;
-
-  return 0;
-}
-
-#elif defined M_VERTEX_C
-int
-main (void)
-{
-  Vertex v = vertex_new (0, 'b', 3, NULL);
-  Vertex w = vertex_new (1, 'b', 7, v);
-
-  vertex_print (v);
-  vertex_print (w);
-  vertex_delete (&v);
-  assert (element_null (v));
-
-  return 0;
-}
-
-#elif defined M_VERTEXLIST_C
-int
-main (void)
-{
-
-  VertexListNode head =
-    vertexlistnode_insert (NULL, vertex_new (9, 'w', 3, NULL));
-
-  assert (!element_null (head));
-
-  vertexlistnode_insert (head, vertex_new (0, 'w', 9, NULL));
-  vertexlistnode_insert (head, vertex_new (0, 'w', 5, NULL));
-  vertexlistnode_insert (head, vertex_new (0, 'g', 2, NULL));
-  vertexlistnode_insert (head, vertex_new (0, 'g', 65, NULL));
-  vertexlistnode_insert (head, vertex_new (0, 'g', 653, NULL));
-  vertexlistnode_insert (head, vertex_new (0, 'g', 124, NULL));
-
-  vertexlistnode_printlist (head);
-
-  head = vertexlistnode_removeWhites (head);
-
-  vertexlistnode_printlist (head);
+  G->adjMatrix = NULL;
+  G->head = head;
 
   return 0;
 }
@@ -112,10 +42,18 @@ main (void)
 int
 main (void)
 {
+    unsigned int i = 0;
+    Graph G = graph_new (10, 4);
 
-    Graph G = graph_new (10, 0.75);
+    nodePointer *searchResult = searchForElement(5, G -> head);
+    nodePointer *listOfNeigh= vertexlistnode_getneighbors (G, searchResult[0]);
+
+    for (i = 0; i < G -> leadingDimension; i++)
+        fprintf (stderr, "%u\n", listOfNeigh[i] -> el);
 
     graph_print (G);
+
+/*    vertexlistnode_getneighbors (G, G -> vln -> v);*/
 
   return 0;
 }

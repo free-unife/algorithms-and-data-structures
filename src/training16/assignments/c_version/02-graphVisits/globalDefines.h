@@ -39,42 +39,91 @@
 #include <string.h>
 #include <time.h>
 
-typedef struct VertexObject *Vertex;
-typedef struct VertexListNodeObject *VertexListNode;
+#define EMPTYLIST EMPTY
+
+/* nodePointer is a pointer to struct physicalNode */
+typedef struct node *pointerToNode;
+
+/* pointerToNode is a pointer to type nodePointer */
+typedef pointerToNode *referenceToNodePointer;
+
+typedef struct node physicalNode;
+
+/* nodePointer is a pointer to struct physicalNode */
+typedef pointerToNode nodePointer;
+
+/* headPointer is a pointer to type nodePointer */
+typedef referenceToNodePointer headPointer;
+
 typedef struct GraphObject *Graph;
 
-struct VertexObject
-{
-  unsigned int id;
-  char colour;
-  int distance;
-  struct VertexObject *parent;
-};
 
-struct VertexListNodeObject
-{
-  struct VertexObject *v;
-  struct VertexListNodeObject *next;
-  struct VertexListNodeObject *prev;
+#define false 0
+#define true  1
+#define EMPTY NULL
+
+
+/* New datatype.  */
+typedef int boolean;
+typedef unsigned int element;
+
+/* This struct contains a physical node rappresentation */
+struct node {
+    struct node *next;
+
+    element el;
+    char color[10];
+    struct node *pi;
+    element d;
+    element f;
+
+    struct node *prev;
 };
 
 struct GraphObject
 {
   /* 1-0 values. */
-  unsigned int matrixDimension;
-  unsigned int *adjacencyMatrix;
-  struct VertexListNodeObject *vln;
+  unsigned int leadingDimension;
+  unsigned int *adjMatrix;
+  headPointer head;
 };
+
+boolean null( referenceToNodePointer ref );
+void cons( element el, char *color, pointerToNode pi, element d, element f, referenceToNodePointer ref );
+void tailCons( element el, char *color, pointerToNode pi, element d, element f,  referenceToNodePointer ref );
+element car( referenceToNodePointer ref );
+referenceToNodePointer cdr( referenceToNodePointer ref );
+void init( referenceToNodePointer ref );
+int length( referenceToNodePointer ref );
+void printAll( referenceToNodePointer ref );
+referenceToNodePointer freeAll( referenceToNodePointer ref );
+
+/* all this function have to consider the dummy node. */
+void initDoubleLinkedList( headPointer hp );
+int lengthDoubleLinkedList( headPointer hp );
+boolean isDoubleLinkedListEmpty( headPointer hp );
+void insertNodeInHead( element el, char *color, nodePointer pi, element d, element f, headPointer hp );
+void insertNodeInQueue( element el, char *color, nodePointer pi, element d, element f, headPointer hp );
+void printDoubleLinkedList( headPointer hp );
+element extractNodeInHead( headPointer hp );
+element extractNodeInQueue( headPointer hp );
+nodePointer *searchForElement( element toSearch, headPointer hp );
+element extractNodeInMiddle( nodePointer np );
+headPointer freeDoubleLinkedList( headPointer hp );
 
 extern bool element_null (void *element);
 extern void *malloc_safe (size_t size);
 
-extern Vertex vertex_new (unsigned int id, char colour,
-			  int distance, Vertex parent);
+extern Graph graph_new (unsigned int numberOfNodes, double vertexConnectionProbability);
+extern void graph_print (Graph g);
+extern nodePointer *vertexlistnode_getneighbors (Graph g, nodePointer vertex);
+/*extern Vertex vertex_new (unsigned int id, char colour,
+			  int distance, Vertex parent, Vertex prev, Vertex next);
+extern void vertex_edit (Vertex toEdit, unsigned int id, char colour, int distance, Vertex parent, Vertex prev, Vertex next);
 extern void vertex_print (Vertex v);
 extern void vertex_delete (Vertex * vRef);
-
-extern VertexListNode vertexlistnode_new (Vertex connectedVertex,
+*/
+/*extern VertexListNode vertexlistnode_new (Vertex connectedVertex,
 					  VertexListNode next,
 					  VertexListNode prev);
 extern void vertexlistnode_print (VertexListNode vln);
@@ -88,4 +137,22 @@ extern bool adjacencymatrix_areverticesconnected(Graph g, unsigned int src_id, u
 extern Graph graph_new (unsigned int numberOfNodes, double vertexConnectionProbability);
 extern void graph_print (Graph g);
 
+extern VertexListNode vertexlistnode_getneighbors (Graph g, Vertex v);
+*/
 #endif
+
+/*typedef struct VertexObject *Vertex;
+
+struct VertexObject
+{
+  unsigned int id;
+  char colour;
+  int distance;
+  struct VertexObject *parent;
+  struct VertexObject *prev;
+  struct VertexObject *next;
+};
+*/
+
+
+/* Function Prototypes.  */

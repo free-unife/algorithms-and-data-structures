@@ -8,18 +8,19 @@
 
 #include "globalDefines.h"
 
-static unsigned int *adjacencymatrix_new (unsigned int dimension);
-static VertexListNode vertexlistnodeset_new (unsigned int numberOfNodes);
-static void adjacencymatrix_randomize (Graph g, double vertexConnectionProbability);
+static unsigned int *adjmatrix_new (unsigned int dimension);
+/*static VertexListNode vertexlistnodeset_new (unsigned int numberOfNodes);*/
+static void adjmatrix_randomize (Graph g, double vertexConnectionProbability);
 
 /* It is a square matrix so we only need the dimension of one side. */
-static unsigned int *adjacencymatrix_new (unsigned int dimension)
+static unsigned int *adjmatrix_new (unsigned int dimension)
 {
-    unsigned int *new_adjacencymatrix = malloc_safe (dimension * dimension * sizeof (unsigned int));
+    unsigned int *new_adjMatrix = malloc_safe (dimension * dimension * sizeof (unsigned int));
 
-    return new_adjacencymatrix;
+    return new_adjMatrix;
 }
 
+#ifdef BUBBA
 /* A graph is a seet of vertices and edges. Here we generate the vertices which
  * by default are all white.
  */
@@ -34,8 +35,9 @@ static VertexListNode vertexlistnodeset_new (unsigned int numberOfNodes)
     return head;
 }
 
+#endif
 /* Only set certain elements to 1. */
-static void adjacencymatrix_randomize (Graph g, double vertexConnectionProbability)
+static void adjmatrix_randomize (Graph g, double vertexConnectionProbability)
 {
     (void) vertexConnectionProbability;
     unsigned int i, j, flag;
@@ -44,42 +46,111 @@ static void adjacencymatrix_randomize (Graph g, double vertexConnectionProbabili
   clock_gettime (CLOCK_MONOTONIC, &t1);
   srand (t1.tv_nsec);
 
-  for (i = 0; i < g->matrixDimension; i++)
-      for (j = 0; j < g->matrixDimension; j++)
+  for (i = 0; i < g->leadingDimension; i++)
+      for (j = 0; j < g->leadingDimension; j++)
       {
           /* flag is either 1 or 0. */
-          flag = (unsigned int) rand () % 2;
-
-          g->adjacencyMatrix[(i * g->matrixDimension) + j] = flag;
+          flag = (unsigned int) rand() % (unsigned int) (vertexConnectionProbability + 1);
+          if( flag == 0 ){
+           g->adjMatrix[(i * g->leadingDimension) + j] = 1;
+          }
+          else{
+           g->adjMatrix[(i * g->leadingDimension) + j] = 0;
+          }
       }
 }
 
 /* eq 0 == connected, ne 0 != connected. */
-bool adjacencymatrix_areverticesconnected(Graph g, unsigned int src_id, unsigned int dst_id)
+bool adjmatrix_areverticesconnected(Graph g, unsigned int src_id, unsigned int 
+dst_id)
 {
-    if (g->adjacencyMatrix[(src_id * g->matrixDimension) + dst_id] != 0)
+    if (g->adjMatrix[(src_id * g->leadingDimension) + dst_id] != 0)
         return true;
     else
         return false;
 }
 
+#ifdef BUBBA
+nodePointer *vertexlistnode_getneighbors (Graph g, nodePointer vertex)
+{
+    unsigned int i, j = 0;
+    nodePointer *searchRes, *list = malloc_safe (g -> leadingDimension * sizeof (nodePointer *));
+
+    /* Check if the vertex is present in the vertex list. */
+    searchRes = searchForElement (vertex -> el, g -> head);
+    assert (!element_null (searchRes[0]));
+
+    for (i = 0; i < g -> leadingDimension; i++)
+        list[i] = NULL;
+
+    for (i = 0; i < g -> leadingDimension; i++)
+    {
+        if (g ->adjMatrix [ (i * g -> leadingDimension) + vertex -> el] == 1)
+        {
+            searchRes = searchForElement (i, g -> head);
+            list[j] = searchRes[0];
+            j++;
+        }
+    }
+
+    return list;
+}
+#endif
+
+nodePointer *vertexlistnode_getneighbors (Graph g, nodePointer vertex)
+{
+    unsigned int i, j = 0;
+    nodePointer *list, *searchRes;
+    nodePointer **toReturn;
+
+    list = malloc_safe (sizeof (g -> leadingDimension) * sizeof (nodePointer));
+
+    /* Check if the vertex is present in the vertex list. */
+    searchRes = searchForElement (vertex -> el, g -> head);
+    assert (!element_null (searchRes[0]));
+
+    for (i = 0; i < g -> leadingDimension; i++)
+        list[i] = NULL;
+
+    toReturn = &list;
+
+    for (i = 0; i < g -> leadingDimension; i++)
+    {
+        if (g ->adjMatrix [ (i * g -> leadingDimension) + vertex -> el] == 1)
+        {
+            searchRes = searchForElement (i, g -> head);
+            list[j] = searchRes[0];
+            j++;
+        }
+    }
+
+    return *toReturn;
+}
+
 Graph
 graph_new (unsigned int numberOfNodes, double vertexConnectionProbability)
 {
+    unsigned int i;
+
     /* Gen graph. */
     Graph new_graph = malloc_safe (sizeof (struct GraphObject));
 
     /* Gen matrix. */
-    unsigned int *matrix = adjacencymatrix_new (numberOfNodes);
+    unsigned int *matrix =adjmatrix_new (numberOfNodes);
 
     /* Gen nodes */
-    VertexListNode head = vertexlistnodeset_new (numberOfNodes);
+    headPointer head = malloc_safe ( sizeof (nodePointer *));
+    initDoubleLinkedList (head);
 
-  new_graph -> matrixDimension = numberOfNodes;
-  new_graph -> adjacencyMatrix = matrix;
-  new_graph -> vln = head;
+    new_graph -> head = head;
 
-    adjacencymatrix_randomize (new_graph, vertexConnectionProbability);
+    for (i = 0; i < numberOfNodes; i++)
+        insertNodeInQueue (i, "WHITE", NULL, 0, 0, new_graph -> head);
+
+  new_graph -> leadingDimension = numberOfNodes;
+  new_graph ->adjMatrix = matrix;
+
+   adjmatrix_randomize (new_graph, vertexConnectionProbability);
 
   return new_graph;
 }
@@ -89,14 +160,13 @@ graph_print (Graph g)
 {
     unsigned int i, j;
 
-    fprintf (stderr, "%p\n====\n", (void *) g);
-    vertexlistnode_printlist (g -> vln);
+    printDoubleLinkedList (g -> head);
 
-    /* Print the adjacency matrix. */
-    for (i = 0; i < g -> matrixDimension; i++)
+    /* Print theadj matrix. */
+    for (i = 0; i < g -> leadingDimension; i++)
     {
-        for (j = 0; j < g -> matrixDimension; j++)
-            fprintf (stderr, "%u ", (g -> adjacencyMatrix)[(i * g -> matrixDimension) + j]);
+        for (j = 0; j < g -> leadingDimension; j++)
+            fprintf (stderr, "%u ", (g ->adjMatrix)[(i * g -> leadingDimension) + j]);
         fprintf(stderr, "\n");
     }
 
