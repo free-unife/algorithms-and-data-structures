@@ -13,8 +13,10 @@ from random                    import randint
 class RandomGraph( object ):
 	''' This class implements a random oriented graph G '''
 	
-	def __init__( self, n_vertex ):
+	def __init__( self, n_vertex, unconnected_probability=0 ):
 		
+		assert n_vertex >= 1
+
 		self.__n_vertex   = n_vertex
 		self._vertex_list = VertexDoubleLinkedList()
 		self._LD          = self.__n_vertex # leading dimension
@@ -28,11 +30,11 @@ class RandomGraph( object ):
 		# Generate random adj_matrix
 		for ii in range( 0, self.__n_vertex ):
 			for jj in range( 0, self.__n_vertex ):
-				r = randint( 0, 150 )
-				# 10%
+				r = randint( 0, unconnected_probability )
+				
 				if r is 0:
 					self._adj_matrix.insert( ii * self._LD + jj, 1 )
-				# 90%
+				
 				else:
 					self._adj_matrix.insert( ii * self._LD + jj, 0 )
 

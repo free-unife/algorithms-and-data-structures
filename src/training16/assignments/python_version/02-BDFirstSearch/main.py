@@ -1,50 +1,52 @@
 from graph import RandomGraph
 from graph_functions import BFS
-from graph_functions import DFS_recursive
-import sys
+from graph_functions import DFS_iterative
 
-G = RandomGraph( 500 )
-G.show_adj_matrix()
-sys.stdout.flush()
-
-print("fist stage:")
-for vertex in G:
-	print( vertex.get_key(), end=" color: " )
-	print( vertex.get_color() )
-
-print("\nObtaining random source S")
-s = G.get_random_source_S()
-print("S is: " + str( s.get_key() ) )
-
-max_queue = BFS( G, s )
-print("BFS ended with success. queuemax: " + str( max_queue ))
-
-print("")
-print("All vertex after BFS")
-
-for vertex in G:
-	print( vertex.get_key(), end=" color: " )
-	print( vertex.get_color() )
-
-print("\nDeleting white vertices:")
-G.delete_white_vertices()
-for vertex in G:
-	print( vertex.get_key(), end=" color: " )
-	print( vertex.get_color() )
-print("All white vertices are successfully deleted")
+# plotting module
+matplotlib_available = True
+try:
+	from matplotlib	import pyplot  as plt 
+	from matplotlib import patches as mpatches
+except ImportError:
+	matplotlib_available = False
 
 
-print("Now i reset all the vertex to white")
-for vertex in G:
-	vertex.set_color( "WHITE" )
-	print( vertex.get_key(), end=" color: " )
-	print( vertex.get_color() )
-print("\nDFS_recursive()")
 
-DFS_recursive( G )
+N_MAX = 100
+n_list = list( range( 1, N_MAX+1 ) )
+max_queue_list = []
+max_stack_list = []
 
-print("")
-print("Here's your vertex:")
-for vertex in G:
-	print( vertex.get_key(), end=" color: " )
-	print( vertex.get_color() )
+for n in n_list:
+	# Generate a random Graph      # 25% = 1   75% = 0
+	G = RandomGraph( n_vertex = n, unconnected_probability = 4 )
+	# Choose a source
+	s = G.get_random_source_S()
+	# Launch BFS to obtain a graph where all vertices are connected
+	BFS( G, s )
+	# All the vetices that are unraggiungible from s are WHITE
+	# So we delete them from G
+	G.delete_white_vertices()
+
+	# BEGIN THE TEST
+	max_queue = BFS( G, s )
+	max_queue_list.append( max_queue )
+
+	max_stack = DFS_iterative( G, s )
+	max_stack_list.append( max_stack )
+
+	print( "Done with n: ", str(n))
+
+
+# PLOT -------------------------------------------------------------
+if matplotlib_available is True:
+	
+	plt.plot( n_list, max_queue_list, 'ro' )
+	plt.plot( n_list, max_stack_list, 'bo' )
+
+	red_patch = mpatches.Patch(color='red', label='BFS max queue')
+	blue_patch = mpatches.Patch(color='blue', label='DFS max stack')
+	plt.legend(handles=[red_patch, blue_patch])
+	plt.xlabel("Number of G vertex")
+	plt.ylabel("Queue or Stack max dimensions")
+	plt.show()
