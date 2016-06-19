@@ -18,8 +18,8 @@ max_queue_list = []
 max_stack_list = []
 
 for n in n_list:
-	# Generate a random Graph
-	G = RandomGraph( n_vertex = n, unconnected_probability = 3 )
+	# Generate a random Graph      # 25% = 1   75% = 0
+	G = RandomGraph( n_vertex = n, unconnected_probability = 4 )
 	# Choose a source
 	s = G.get_random_source_S()
 	# Launch BFS to obtain a graph where all vertices are connected
@@ -34,6 +34,8 @@ for n in n_list:
 
 	max_stack = DFS_iterative( G, s )
 	max_stack_list.append( max_stack )
+
+	print( "Done with n: ", str(n))
 
 
 # PLOT -------------------------------------------------------------
