@@ -69,7 +69,7 @@ class Queue( object ):
 		return
 
 	def dequeue( self ):
-		return self._lista.pop()
+		return self._lista.pop(0)
 
 	def get_length( self ):
 		return len( self._lista )

@@ -23,10 +23,9 @@ for n in n_list:
 	# Choose a source
 	s = G.get_random_source_S()
 
-	# Set all column to 1
-	#G.set_matrix_column_to_1( s.get_key() )
 	
-	G.set_matrix_row_to_1( s.get_key() )
+	G.set_matrix_column_to_1( s.get_key() )
+	#G.set_matrix_row_to_1( s.get_key() )
 	G.show_adj_matrix()
 
 	# Launch BFS to obtain a graph where all vertices are connected
