@@ -41,6 +41,21 @@ class RandomGraph( object ):
 		return
 
 
+	def set_matrix_column_to_1( self, n_col ):
+		for ii in range( 0, self.__n_vertex ):
+			for jj in range( 0, self.__n_vertex ):
+				if jj == n_col:
+					self._adj_matrix[ ii * self._LD + jj] = 1
+		return
+		
+
+	def set_matrix_row_to_1( self, n_row ):
+		for ii in range( 0, self.__n_vertex ):
+			for jj in range( 0, self.__n_vertex ):
+				if ii == n_row:
+					self._adj_matrix[ ii * self._LD + jj] = 1
+		return
+
 
 	def delete_white_vertices( self ):
 

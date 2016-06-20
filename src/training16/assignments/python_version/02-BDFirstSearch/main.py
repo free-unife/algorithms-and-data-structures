@@ -19,9 +19,16 @@ max_stack_list = []
 
 for n in n_list:
 	# Generate a random Graph      # 25% = 1   75% = 0
-	G = RandomGraph( n_vertex = n, unconnected_probability = 4 )
+	G = RandomGraph( n_vertex = n, unconnected_probability = 100000000 )
 	# Choose a source
 	s = G.get_random_source_S()
+
+	# Set all column to 1
+	#G.set_matrix_column_to_1( s.get_key() )
+	
+	G.set_matrix_row_to_1( s.get_key() )
+	G.show_adj_matrix()
+
 	# Launch BFS to obtain a graph where all vertices are connected
 	BFS( G, s )
 	# All the vetices that are unraggiungible from s are WHITE
