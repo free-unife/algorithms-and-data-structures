@@ -1,3 +1,7 @@
+
+
+
+
 /*
  * Copyright © 2016 Franco Masotti <franco.masotti@student.unife.it>
  *                  Danny Lessio
@@ -57,16 +61,6 @@ main (void)
 /*    vertexlistnode_getneighbors (G, G -> vln -> v);*/
 
   return 0;
-}
-
-#elif defined M_QUEUESTACK_C
-int
-main (void)
-{
-    Graph G = graph_new (10, 4);
-    nodePointer source = s_getRandomSource (G);
-
-    BFS (G, source);
 }
 
 #endif

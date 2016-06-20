@@ -20,22 +20,6 @@ static unsigned int *adjmatrix_new (unsigned int dimension)
     return new_adjMatrix;
 }
 
-#ifdef BUBBA
-/* A graph is a seet of vertices and edges. Here we generate the vertices which
- * by default are all white.
- */
-static VertexListNode vertexlistnodeset_new (unsigned int numberOfNodes)
-{
-    unsigned int i;
-
-    VertexListNode head = vertexlistnode_insert (NULL, vertex_new (0, 'w', 0, NULL));
-    for (i = 1; i < numberOfNodes; i++)
-        vertexlistnode_insert (head, vertex_new (0, 'w', 0, NULL));
-
-    return head;
-}
-
-#endif
 /* Only set certain elements to 1. */
 static void adjmatrix_randomize (Graph g, double vertexConnectionProbability)
 {
@@ -70,32 +54,30 @@ dst_id)
         return false;
 }
 
-#ifdef BUBBA
-nodePointer *vertexlistnode_getneighbors (Graph g, nodePointer vertex)
+
+nodePointer *vertices_iterate (Graph g)
 {
     unsigned int i, j = 0;
-    nodePointer *searchRes, *list = malloc_safe (g -> leadingDimension * sizeof (nodePointer *));
+    nodePointer *list, *searchRes;
+    nodePointer **toReturn;
 
-    /* Check if the vertex is present in the vertex list. */
-    searchRes = searchForElement (vertex -> el, g -> head);
-    assert (!element_null (searchRes[0]));
+    list = malloc_safe (g -> leadingDimension * sizeof (nodePointer));
 
     for (i = 0; i < g -> leadingDimension; i++)
         list[i] = NULL;
 
+    toReturn = &list;
+
     for (i = 0; i < g -> leadingDimension; i++)
     {
-        if (g ->adjMatrix [ (i * g -> leadingDimension) + vertex -> el] == 1)
-        {
-            searchRes = searchForElement (i, g -> head);
-            list[j] = searchRes[0];
-            j++;
-        }
+        searchRes = searchForElement (i, g -> head);
+        list[j] = searchRes[0];
+        j++;
     }
 
-    return list;
+    return *toReturn;
 }
-#endif
+
 
 nodePointer *vertexlistnode_getneighbors (Graph g, nodePointer vertex)
 {
@@ -103,13 +85,13 @@ nodePointer *vertexlistnode_getneighbors (Graph g, nodePointer vertex)
     nodePointer *list, *searchRes;
     nodePointer **toReturn;
 
-    list = malloc_safe (sizeof (g -> leadingDimension) * sizeof (nodePointer));
+    list = malloc_safe ((g -> leadingDimension + 1) * sizeof (nodePointer));
 
     /* Check if the vertex is present in the vertex list. */
     searchRes = searchForElement (vertex -> el, g -> head);
     assert (!element_null (searchRes[0]));
 
-    for (i = 0; i < g -> leadingDimension; i++)
+    for (i = 0; i <= g -> leadingDimension; i++)
         list[i] = NULL;
 
     toReturn = &list;
@@ -171,4 +153,27 @@ graph_print (Graph g)
     }
 
     fprintf (stderr, "====\n");
+}
+
+nodePointer s_getRandomSource (Graph g)
+{
+    int i = 0, j = 0;
+    int listLen = lengthDoubleLinkedList (g -> head);
+    int id;
+    struct timespec t1;
+    nodePointer *vertexArray;
+
+    clock_gettime (CLOCK_MONOTONIC, &t1);
+    srand (t1.tv_nsec);
+
+    id = rand() % listLen;
+
+    vertexArray = vertices_iterate (g);
+    j = 0;
+    for (i = 0; i < listLen; ++i){
+        if( i == id){
+            return vertexArray[i];
+        }
+    } 
+    return NULL;
 }

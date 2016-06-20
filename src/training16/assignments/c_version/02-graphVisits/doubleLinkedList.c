@@ -185,7 +185,7 @@ nodePointer *searchForElement( element toSearch, headPointer hp )
 
     /* Initialize the array */
     if ( ( foundedNodes =
-           malloc( sizeof( lenghOfList * sizeof( nodePointer ) ) ) ) ==
+           malloc( lenghOfList * sizeof( nodePointer ) ) ) ==
          NULL )
         exit( EXIT_FAILURE );
 

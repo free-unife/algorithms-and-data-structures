@@ -117,42 +117,55 @@ extern void *malloc_safe (size_t size);
 extern Graph graph_new (unsigned int numberOfNodes, double vertexConnectionProbability);
 extern void graph_print (Graph g);
 extern nodePointer *vertexlistnode_getneighbors (Graph g, nodePointer vertex);
-/*extern Vertex vertex_new (unsigned int id, char colour,
-			  int distance, Vertex parent, Vertex prev, Vertex next);
-extern void vertex_edit (Vertex toEdit, unsigned int id, char colour, int distance, Vertex parent, Vertex prev, Vertex next);
-extern void vertex_print (Vertex v);
-extern void vertex_delete (Vertex * vRef);
-*/
-/*extern VertexListNode vertexlistnode_new (Vertex connectedVertex,
-					  VertexListNode next,
-					  VertexListNode prev);
-extern void vertexlistnode_print (VertexListNode vln);
-extern void vertexlistnode_delete (VertexListNode * vlnRef);
-extern VertexListNode vertexlistnode_insert (VertexListNode head,
-					     Vertex toBeIns);
-extern VertexListNode vertexlistnode_removeWhites (VertexListNode head);
-extern void vertexlistnode_printlist (VertexListNode head);
+extern nodePointer s_getRandomSource (Graph g);
+extern nodePointer *vertices_iterate (Graph g);
 
-extern bool adjacencymatrix_areverticesconnected(Graph g, unsigned int src_id, unsigned int dst_id);
-extern Graph graph_new (unsigned int numberOfNodes, double vertexConnectionProbability);
-extern void graph_print (Graph g);
+extern unsigned int BFS(Graph g, nodePointer source);
 
-extern VertexListNode vertexlistnode_getneighbors (Graph g, Vertex v);
-*/
+/* nodePointer is a pointer to struct physicalNode */
+typedef struct nodeSQ *pointerToNodeSQ;
+
+/* pointerToNodeSQ is a pointer to type nodePointer */
+typedef pointerToNodeSQ *referenceToNodePointerSQ;
+
+/* This struct contains a physical node rappresentation */
+struct nodeSQ {
+    struct nodeSQ *next;
+    nodePointer el;
+    struct nodeSQ *prev;
+};
+
+boolean nullSQ( referenceToNodePointerSQ ref );
+void consSQ( nodePointer el, referenceToNodePointerSQ ref );
+void tailConsSQ( nodePointer el, referenceToNodePointerSQ ref );
+nodePointer carSQ( referenceToNodePointerSQ ref );
+referenceToNodePointerSQ cdrSQ( referenceToNodePointerSQ ref );
+void initSQ( referenceToNodePointerSQ ref );
+int lengthSQ( referenceToNodePointerSQ ref );
+void printAllSQ( referenceToNodePointerSQ ref );
+referenceToNodePointerSQ freeAllSQ( referenceToNodePointerSQ ref );
+
+typedef pointerToNodeSQ nodePointerSQ;
+typedef referenceToNodePointerSQ first;
+typedef referenceToNodePointerSQ last;
+
+void insertQueue( nodePointer el, first f, last l );
+nodePointer extractQueue( first f );
+boolean isQueueEmpty( first f );
+void initQueue( first f, last l );
+void printQueue( first f );
+first freeQueue( first f );
+int lenQueue( first f );
+
+typedef pointerToNodeSQ nodePointerSQ;
+typedef referenceToNodePointerSQ stackPointer;
+
+void pushStack( nodePointer el, stackPointer sp );
+nodePointer popStack( stackPointer sp );
+boolean isStackEmpty( stackPointer sp );
+void initStack( stackPointer sp );
+void printStack( stackPointer sp );
+stackPointer freeStack( stackPointer sp );
+
 #endif
 
-/*typedef struct VertexObject *Vertex;
-
-struct VertexObject
-{
-  unsigned int id;
-  char colour;
-  int distance;
-  struct VertexObject *parent;
-  struct VertexObject *prev;
-  struct VertexObject *next;
-};
-*/
-
-
-/* Function Prototypes.  */
