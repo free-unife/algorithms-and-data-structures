@@ -41,6 +41,10 @@ class RandomGraph( object ):
 		return
 
 
+	def get_first_vertex( self):
+		return self._vertex_list.search( 0 )
+
+
 	def set_matrix_column_to_1( self, n_col ):
 		for ii in range( 0, self.__n_vertex ):
 			for jj in range( 0, self.__n_vertex ):
@@ -49,10 +53,10 @@ class RandomGraph( object ):
 		return
 		
 
-	def set_matrix_row_to_1( self, n_row ):
+	def set_matrix_sub_diag_to_1( self ):
 		for ii in range( 0, self.__n_vertex ):
 			for jj in range( 0, self.__n_vertex ):
-				if ii == n_row:
+				if ii == jj + 1:
 					self._adj_matrix[ ii * self._LD + jj] = 1
 		return
 
