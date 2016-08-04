@@ -8,6 +8,13 @@ This repository is a collection of C and Python exercises you can freely use.
 
 Fell free to contribute to this repository and enjoy :) .
 
+##Repository cloning
+Since [libncc](https://github.com/free-unife/libncc) is used as a [git submoudle](https://git-scm.com/book/en/v2/Git-Tools-Submodules) for some 
+exercises, the following command will clone everything needed:
+```
+$ git clone --recursive https://github.com/free-unife/algorithms-and-data-structures
+```
+
 ##Programming languages
 ###C
 ####Makefile
