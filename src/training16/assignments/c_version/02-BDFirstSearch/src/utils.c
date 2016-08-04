@@ -1,16 +1,13 @@
 /*
- * @file utils.c
- * @author Franco Masotti
- * @date 02 May 2016
- * @brief Header file containing exportable methods.
- * @copyright Copyright © 2016 Franco Masotti <franco.masotti@student.unife.it>
- *                  Danny Lessio
+ * utils.c
+ *
+ * Copyright © 2016 Franco Masotti <franco.masotti@student.unife.it>
  * This work is free. You can redistribute it and/or modify it under the
  * terms of the Do What The Fuck You Want To Public License, Version 2,
  * as published by Sam Hocevar. See the LICENSE file for more details.
  */
 
-#include "globalDefines.h"
+#include "utils.h"
 
 bool
 element_null (void *element)

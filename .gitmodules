@@ -1,0 +1,3 @@
+[submodule "src/training16/assignments/c_version/libncc"]
+	path = src/training16/assignments/c_version/libncc
+	url = https://github.com/free-unife/libncc
