@@ -12,6 +12,7 @@
 #include "test.h"
 #include "utils.h"
 #include "vertex.h"
+#include "bfs.h"
 
 #if defined VERTEX_C
 int
@@ -65,6 +66,38 @@ main (void)
   /* Double edges. */
   assert (!graph_setAdjacent (g, 0, 1) || !graph_setAdjacent (g, 1, 0));
 
+  graph_print (g);
+
+  graph_destroy (&g);
+  assert (element_null (g));
+
+  return 0;
+}
+
+#elif defined BFS_C
+int
+main (void)
+{
+  int i;
+  int n = 10;
+  Graph g;
+
+  graph_new (&g, n);
+  for (i = 0; i < n - 2; i++)
+    graph_setAdjacent (g, i, i + 1);
+  graph_print (g);
+
+  i = bFS (g, 0);
+
+  /* Check that all reachable vertices are really reachable. */
+  for (i = 0; i < n - 1; i++)
+    assert (vertex_getFromId (g->vertices, i)->d != INF);
+
+  graph_print (g);
+  fprintf (stderr, "Max queue length = %d\n", i);
+
+  /* Remove unrechable vertices. */
+  bFS_removeUnreachableVertices (g);
   graph_print (g);
 
   graph_destroy (&g);

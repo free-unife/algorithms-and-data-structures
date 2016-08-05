@@ -50,6 +50,9 @@ void
 vertex_print (Vertex v)
 {
   assert (!element_null (v));
-  fprintf (stderr, "%d:%s:%d:%d:%p\n",
-	   v->id, v->color, v->d, v->f, (void *) v->p);
+  fprintf (stderr, "%p:%d:%s:%d:%d:%p",
+	   (void *) v, v->id, v->color, v->d, v->f, (void *) v->p);
+  if (v->d == INF)
+    fprintf (stderr, ";UNREACHABLE");
+  fprintf (stderr, "\n");
 }

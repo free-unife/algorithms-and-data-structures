@@ -27,8 +27,8 @@ PLOT_INPUT_FILE = out.dat
 PLOT_OUTPUT_DIR = images
 GNUPLOT_SCRIPT = script.gnuplot
 
-EXECUTABLES = libncc.a vertex.out graph.out
-PRG_OBJFILES = libncc.a utils.o vertex.o graph.o
+EXECUTABLES = libncc.a vertex.out graph.out bfs.out
+PRG_OBJFILES = libncc.a utils.o vertex.o graph.o bfs.o
 TEST_MODULE_OBJFILE = test.o
 TEST_MODULE_SRCFILE = test.c
 
@@ -74,6 +74,14 @@ $(DEFFLAG) $(LIBS) -o $@.out"
 
 target graph: override DEFFLAG += -DGRAPH_C
 graph: utils.o $(TEST_MODULE_OBJFILE) vertex.o graph.o libncc.a
+	@$(CC) $(INCLUDE) $(INCLUDELIB) $(CFLAGS) $(CSTANDARD) \
+$(DEFFLAG) $(LIBS) -o $@.out $^
+	@echo "$(CC) $(INCLUDE) $(INCLUDELIB) $(CFLAGS) $(CSTANDARD) \
+$(DEFFLAG) $(LIBS) -o $@.out"
+	@./validate.sh $@.out
+
+target bfs: override DEFFLAG += -DBFS_C
+bfs: utils.o $(TEST_MODULE_OBJFILE) vertex.o graph.o bfs.o libncc.a
 	@$(CC) $(INCLUDE) $(INCLUDELIB) $(CFLAGS) $(CSTANDARD) \
 $(DEFFLAG) $(LIBS) -o $@.out $^
 	@echo "$(CC) $(INCLUDE) $(INCLUDELIB) $(CFLAGS) $(CSTANDARD) \

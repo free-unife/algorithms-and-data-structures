@@ -19,8 +19,6 @@
 #include "libncc.h"
 #include "vertex.h"
 
-#define INF INT_MAX
-
 struct GraphObject
 {
     int totalVertices;

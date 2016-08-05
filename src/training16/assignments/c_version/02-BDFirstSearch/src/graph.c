@@ -24,8 +24,7 @@ static void graph_dESTROYvERTEXlIST (Graph g);
 static bool graph_cHECKaDJACENCYvALIDITYnOToUToFbOUNDS (Graph g, Vid from,
 							Vid to);
 static bool graph_cHECKaDJACENCYvALIDITYvERTICESeXISTENCE (Graph g,
-							   Vid from,
-							   Vid to);
+							   Vid from, Vid to);
 static bool graph_cHECKaDJACENCYvALIDITYnOdOUBLEeDGES (Graph g, Vid from,
 						       Vid to);
 static bool graph_cHECKaDJACENCYvALIDITY (Graph g, Vid from, Vid to);
@@ -235,7 +234,8 @@ graph_setAdjacent (Graph g, Vid from, Vid to)
 
   if (graph_cHECKaDJACENCYvALIDITY (g, from, to))
     {
-      list_append (vertex_getFromId(g->vertices, to), &(g->adjacencies[from]));
+      list_append (vertex_getFromId (g->vertices, to),
+		   &(g->adjacencies[from]));
       return true;
     }
   else

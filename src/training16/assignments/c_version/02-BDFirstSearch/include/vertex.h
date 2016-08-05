@@ -11,10 +11,13 @@
 #define VERTEX_H
 
 #include <assert.h>
+#include <limits.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "libncc.h"
+
+#define INF INT_MAX
 
 struct VertexObject
 {
