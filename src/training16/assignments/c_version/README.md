@@ -40,6 +40,10 @@ This is the final version of 01-bstHashTable.
 - `main`
 - `plot` : plots a time comparison between list and bst operations over the 
   same input data.
+- `cleanall`
+- `doxygen` : generate html and latex documentation.
+- `doxygenlatex` : same as `doxygen` target but a pdf file of the documentation 
+  is generated.
 
 ####Exercise 01-bstHashTable-poc
 This is the first version of 01-bstHashTable.
@@ -52,8 +56,9 @@ This is the first version of 01-bstHashTable.
 - `main`
 - `plot` : plots a time comparison between list and bst operations over the 
   same input data.
-- `cleanall`
-- `doxygen` : generate html and latex documentation.
-- `doxygenlatex` : same as `doxygen` target but a pdf file of the documentation 
-  is generated.
+
+####Exercise 02-02-BDFirstSearch
+- `vertex`
+- `graph`
+
 

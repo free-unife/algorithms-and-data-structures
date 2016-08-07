@@ -13,6 +13,7 @@
 #include "utils.h"
 #include "vertex.h"
 #include "bfs.h"
+#include "dfs.h"
 
 #if defined VERTEX_C
 int
@@ -74,34 +75,44 @@ main (void)
   return 0;
 }
 
-#elif defined BFS_C
+#elif defined BFS_C || DFS_C
+static void populateGraph (Graph g);
+
+static void
+populateGraph (Graph g)
+{
+  int i;
+  int n = list_length (g->vertices);
+
+  assert (!element_null (g));
+  for (i = 0; i < n - 2; i++)
+    graph_setAdjacent (g, i, i + 1);
+}
+
 int
 main (void)
 {
-  int i;
   int n = 10;
+  int max;
   Graph g;
 
   graph_new (&g, n);
-  for (i = 0; i < n - 2; i++)
-    graph_setAdjacent (g, i, i + 1);
+  populateGraph (g);
   graph_print (g);
-
-  i = bFS (g, 0);
-
-  /* Check that all reachable vertices are really reachable. */
-  for (i = 0; i < n - 1; i++)
-    assert (vertex_getFromId (g->vertices, i)->d != INF);
-
+#if defined BFS_C
+  max = bFS (g, 0);
+#elif defined DFS_C
+  max = dFS (g, 0);
+#endif
   graph_print (g);
-  fprintf (stderr, "Max queue length = %d\n", i);
-
-  /* Remove unrechable vertices. */
-  bFS_removeUnreachableVertices (g);
-  graph_print (g);
-
   graph_destroy (&g);
   assert (element_null (g));
+
+#if defined BFS_C
+  fprintf (stderr, "Max queue length = %d\n", max);
+#elif defined DFS_C
+  fprintf (stderr, "Max stack length = %d\n", max);
+#endif
 
   return 0;
 }

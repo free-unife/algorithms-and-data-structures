@@ -25,6 +25,7 @@ bFS (Graph g, Vid sId)
   queue Q;
 
   assert (!element_null (g) && !element_null (s));
+  /* Set default values. */
   while (!list_null (vertices))
     {
       u = list_head (vertices);
@@ -66,17 +67,20 @@ bFS (Graph g, Vid sId)
   return max;
 }
 
+/*************
+
 void
 bFS_removeUnreachableVertices (Graph g)
 {
-    list vertices = g->vertices;
+  list vertices = g->vertices;
 
-    assert (!element_null(g));
-    while (!list_null (vertices))
+  assert (!element_null (g));
+  while (!list_null (vertices))
     {
-        if (list_head(vertices) -> d == INF)
-            graph_destroyVertex (g, list_head(vertices) -> id);
-        vertices = list_next (vertices);
+      if (list_head (vertices)->d == INF)
+	graph_destroyVertex (g, list_head (vertices)->id);
+      vertices = list_next (vertices);
     }
 }
 
+*************/
