@@ -1,5 +1,5 @@
 /*
- * bfs.c
+ * visit.c
  *
  * Copyright © 2016 Franco Masotti <franco.masotti@student.unife.it>
  * This work is free. You can redistribute it and/or modify it under the
@@ -11,11 +11,11 @@
 #include "libncc.h"
 #include "vertex.h"
 #include "graph.h"
-#include "bfs.h"
+#include "visit.h"
 
 /* Return maximum queue size. */
 int
-bFS (Graph g, Vid sId)
+visit_BFS (Graph g, Vid sId)
 {
   int max = 0;
   list vertices = g->vertices;
@@ -66,6 +66,71 @@ bFS (Graph g, Vid sId)
   list_destroy (&Q);
   return max;
 }
+
+/* Return maximum stack size. */
+int
+visit_DFS (Graph g)
+{
+  /* max starts from 1 because of the push operation of s. */
+  int max = 1;
+  int time = 0;
+  list *adjacencies = g->adjacencies;
+  list vertices = g->vertices;
+  list adjs;
+  Vertex s = list_head (vertices), u, v;
+  stack S;
+
+  assert (!element_null (g) && !element_null (s));
+  /* Set default values. Unreachable vertices are removed with bFS, so the d 
+   * field of the vertices must not be modified in dFS.
+   */
+  while (!list_null (vertices))
+    {
+      sprintf (list_head (vertices)->color, "%s", "WHITE");
+      list_head (vertices)->p = NULL;
+      vertices = list_next (vertices);
+    }
+
+  /* Discovering s. */
+  sprintf (s->color, "%s", "GRAY");
+  time++;
+  s->d = time;
+  stack_init (&S);
+  stack_push (s, &S);
+  /* Stack length == 1 here. */
+
+  while (!stack_null (S))
+    {
+      u = stack_pop (&S);
+      adjs = adjacencies[u->id];
+      while (!list_null (adjs))
+	{
+	  v = list_head (adjs);
+	  /* If vertex has not been visited. */
+	  if (strcmp (v->color, "WHITE") == 0)
+	    {
+	      sprintf (v->color, "%s", "GRAY");
+	      v->p = u;
+	      time++;
+	      v->d = time;
+	      stack_push (v, &S);
+
+	      if (stack_length (S) > max)
+		max = stack_length (S);
+	    }
+	  adjs = list_next (adjs);
+	}
+      sprintf (u->color, "%s", "BLACK");
+      time++;
+      u->f = time;
+    }
+  sprintf (s->color, "%s", "BLACK");
+  time++;
+  s->f = time;
+
+  return max;
+}
+
 
 /*************
 

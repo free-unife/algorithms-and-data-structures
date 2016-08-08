@@ -12,8 +12,8 @@
 #include "test.h"
 #include "utils.h"
 #include "vertex.h"
-#include "bfs.h"
-#include "dfs.h"
+#include "visit.h"
+#include "helper.h"
 
 #if defined VERTEX_C
 int
@@ -75,46 +75,77 @@ main (void)
   return 0;
 }
 
-#elif defined BFS_C || DFS_C
+#elif defined VISIT_C
 static void populateGraph (Graph g);
 
 static void
 populateGraph (Graph g)
 {
-  int i;
-  int n = list_length (g->vertices);
-
   assert (!element_null (g));
-  for (i = 0; i < n - 2; i++)
-    graph_setAdjacent (g, i, i + 1);
+
+  graph_setAdjacent (g, 0, 1);
+  graph_setAdjacent (g, 0, 2);
+  graph_setAdjacent (g, 1, 3);
+  graph_setAdjacent (g, 2, 4);
+  graph_setAdjacent (g, 2, 5);
+  graph_setAdjacent (g, 3, 1);
+  graph_setAdjacent (g, 4, 3);
+  graph_setAdjacent (g, 5, 5);
 }
 
 int
 main (void)
 {
-  int n = 10;
-  int max;
+  int n = 6;
+  int max1, max2;
+  Graph g1, g2;
+
+  graph_new (&g1, n);
+  graph_new (&g2, n);
+
+  populateGraph (g1);
+  populateGraph (g2);
+
+  graph_print (g1);
+  graph_print (g2);
+
+  max1 = visit_BFS (g1, 0);
+  max2 = visit_DFS (g2);
+
+  graph_print (g1);
+  graph_print (g2);
+
+  graph_destroy (&g1);
+  graph_destroy (&g2);
+  assert (element_null (g1));
+  assert (element_null (g2));
+
+  fprintf (stderr, "Max queue length = %d\n", max1);
+  fprintf (stderr, "Max stack length = %d\n", max2);
+
+  return 0;
+}
+
+#elif defined HELPER_C
+int
+main (void)
+{
+  int n = 20;
   Graph g;
+  /* Edge creation probability. */
+  double p = 0.1;
+  /* Source vertex. */
+  Vertex s;
 
-  graph_new (&g, n);
-  populateGraph (g);
+  helper_genRandomGraph (&g, n, p);
+  s = helper_getRandomSource (g);
+  assert (!element_null (s));
   graph_print (g);
-#if defined BFS_C
-  max = bFS (g, 0);
-#elif defined DFS_C
-  max = dFS (g, 0);
-#endif
-  graph_print (g);
+
   graph_destroy (&g);
-  assert (element_null (g));
-
-#if defined BFS_C
-  fprintf (stderr, "Max queue length = %d\n", max);
-#elif defined DFS_C
-  fprintf (stderr, "Max stack length = %d\n", max);
-#endif
 
   return 0;
 }
 
 #endif
+

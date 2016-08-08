@@ -21,11 +21,15 @@
 
 struct VertexObject
 {
+  /* Vertex id. */
   int id;
   /* No need to use free for the color field. */
   char color[10];
+  /* Distance (BFS) or discovery time (DFS). */
   int d;
+  /* Finishing time (DFS). */
   int f;
+  /* Parent node. */
   struct VertexObject *p;
 };
 

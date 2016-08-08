@@ -57,8 +57,9 @@ This is the first version of 01-bstHashTable.
 - `plot` : plots a time comparison between list and bst operations over the 
   same input data.
 
-####Exercise 02-02-BDFirstSearch
+####Exercise 02-BDFirstSearch
 - `vertex`
 - `graph`
-
+- `bfs`
+- `dfs`
 

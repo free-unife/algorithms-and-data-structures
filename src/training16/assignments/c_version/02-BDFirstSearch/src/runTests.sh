@@ -2,5 +2,5 @@
 
 { make vertex \
 && make graph \
-&& make bfs \
-&& make dfs; }
+&& make visit \
+&& make helper; }
