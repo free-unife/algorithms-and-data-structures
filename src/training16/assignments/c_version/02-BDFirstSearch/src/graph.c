@@ -111,7 +111,7 @@ graph_rEMOVEfROMaDJACENCYlISTS (Graph g, Vertex v)
       while (!list_null (adjs))
 	{
 	  if (list_head (adjs)->id == v->id)
-	    list_remove (&(adjacencies[list_head (vertices)->id]), adjs);
+	    list_remove (&(g->adjacencies[list_head (vertices)->id]), adjs);
 	  adjs = list_next (adjs);
 	}
       vertices = list_next (vertices);

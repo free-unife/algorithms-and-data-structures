@@ -19,4 +19,5 @@
 
 extern Vertex helper_getRandomSource (Graph g);
 extern void helper_genRandomGraph (Graph *gRef, int size, double edgeProb);
+extern void helper_setSourceVertexAdjToAll (Graph g, Vertex s);
 #endif

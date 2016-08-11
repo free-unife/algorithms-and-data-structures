@@ -17,19 +17,20 @@
 int
 visit_BFS (Graph g, Vid sId)
 {
-  int max = 0;
+  /* See DFS for the reason why max starts from 1. */
+  int max = 1;
   list vertices = g->vertices;
   list *adjacencies = g->adjacencies;
   list adjs;
   Vertex s = vertex_getFromId (g->vertices, sId), u, v;
   queue Q;
 
-  assert (!element_null (g) && !element_null (s));
+  assert (!element_null (g) || !element_null (s));
   /* Set default values. */
   while (!list_null (vertices))
     {
       u = list_head (vertices);
-      if (!(s->id == u->id))
+      if (u->id != s->id)
 	{
 	  sprintf (u->color, "%s", "WHITE");
 	  u->d = INF;
@@ -64,12 +65,13 @@ visit_BFS (Graph g, Vid sId)
     }
 
   list_destroy (&Q);
+
   return max;
 }
 
 /* Return maximum stack size. */
 int
-visit_DFS (Graph g)
+visit_DFS (Graph g, Vid sId)
 {
   /* max starts from 1 because of the push operation of s. */
   int max = 1;
@@ -77,10 +79,11 @@ visit_DFS (Graph g)
   list *adjacencies = g->adjacencies;
   list vertices = g->vertices;
   list adjs;
-  Vertex s = list_head (vertices), u, v;
+/*  Vertex s = list_head (vertices), u, v;*/
+  Vertex s = vertex_getFromId (g->vertices, sId), u, v;
   stack S;
 
-  assert (!element_null (g) && !element_null (s));
+  assert (!element_null (g) || !element_null (s));
   /* Set default values. Unreachable vertices are removed with bFS, so the d 
    * field of the vertices must not be modified in dFS.
    */
@@ -106,7 +109,7 @@ visit_DFS (Graph g)
       while (!list_null (adjs))
 	{
 	  v = list_head (adjs);
-	  /* If vertex has not been visited. */
+	  /* If the vertex has not been visited. */
 	  if (strcmp (v->color, "WHITE") == 0)
 	    {
 	      sprintf (v->color, "%s", "GRAY");
@@ -131,11 +134,9 @@ visit_DFS (Graph g)
   return max;
 }
 
-
-/*************
-
+/* Unreachable vertices have v->d == INF. */
 void
-bFS_removeUnreachableVertices (Graph g)
+visit_removeUnreachableVertices (Graph g)
 {
   list vertices = g->vertices;
 
@@ -147,5 +148,3 @@ bFS_removeUnreachableVertices (Graph g)
       vertices = list_next (vertices);
     }
 }
-
-*************/

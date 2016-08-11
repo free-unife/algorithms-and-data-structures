@@ -40,7 +40,7 @@ FORCE_REBUILD_OBJFILES = $(TEST_MODULE_OBJFILE)
 
 default: main
 
-all: main plotcompare
+all: main plot
 
 %.o: %.c $(DEPS)
 	@$(CC) $(CFLAGS) $(CSTANDARD) $(DEFFLAG) $(LIBS) -c -o $@ $<

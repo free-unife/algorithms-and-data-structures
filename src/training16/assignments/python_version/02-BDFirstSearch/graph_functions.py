@@ -109,7 +109,7 @@ def BFS( G, s ):
 
 		for v in G.get_neighbors_of_vertex( u ):
 			if v.get_color() is "WHITE":
-				v.set_color( "GRAY" )
+				v.set_color( "GREY" )
 
 				# v.d = u.d + 1
 				u_d = u.get_d()

@@ -1,5 +1,5 @@
 /*
- * visit.h
+ * main.h
  *
  * Copyright © 2016 Franco Masotti <franco.masotti@student.unife.it>
  * This work is free. You can redistribute it and/or modify it under the
@@ -7,15 +7,9 @@
  * as published by Sam Hocevar. See the LICENSE file for more details.
  */
 
-#if !defined VISIT_H
-#define VISIT_H
+#if !defined MAIN_H
+#define MAIN_H
 
-#include <assert.h>
-#include <stddef.h>
-#include "vertex.h"
-#include "graph.h"
+#define MAX_GRAPH_SIZE 128
 
-extern int visit_BFS (Graph g, Vid sId);
-extern int visit_DFS (Graph g, Vid sId);
-extern void visit_removeUnreachableVertices (Graph g);
 #endif

@@ -106,12 +106,18 @@ main (void)
   populateGraph (g1);
   populateGraph (g2);
 
+  visit_BFS (g1, 0);
+  visit_BFS (g2, 0);
+  graph_print (g1);
+  graph_print (g2);
+
+  visit_removeUnreachableVertices (g1);
+  visit_removeUnreachableVertices (g2);
   graph_print (g1);
   graph_print (g2);
 
   max1 = visit_BFS (g1, 0);
   max2 = visit_DFS (g2);
-
   graph_print (g1);
   graph_print (g2);
 
@@ -148,4 +154,3 @@ main (void)
 }
 
 #endif
-
