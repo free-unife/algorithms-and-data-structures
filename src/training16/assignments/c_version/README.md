@@ -60,6 +60,8 @@ This is the first version of 01-bstHashTable.
 ####Exercise 02-BDFirstSearch
 - `vertex`
 - `graph`
-- `bfs`
-- `dfs`
+- `visit`
+- `helper`
+- `main`
+- `plot`
 

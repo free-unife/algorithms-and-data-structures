@@ -13,16 +13,18 @@
 #include "graph.h"
 #include "visit.h"
 
+static int visit_dEPTHvISIT (Graph g, Vertex u, int time);
+
 /* Return maximum queue size. */
 int
-visit_BFS (Graph g, Vid sId)
+visit_BFS (Graph g, Vertex s)
 {
   /* See DFS for the reason why max starts from 1. */
   int max = 1;
   list vertices = g->vertices;
   list *adjacencies = g->adjacencies;
   list adjs;
-  Vertex s = vertex_getFromId (g->vertices, sId), u, v;
+  Vertex u, v;
   queue Q;
 
   assert (!element_null (g) || !element_null (s));
@@ -71,7 +73,7 @@ visit_BFS (Graph g, Vid sId)
 
 /* Return maximum stack size. */
 int
-visit_DFS (Graph g, Vid sId)
+visit_DFS (Graph g, Vertex s)
 {
   /* max starts from 1 because of the push operation of s. */
   int max = 1;
@@ -79,9 +81,9 @@ visit_DFS (Graph g, Vid sId)
   list *adjacencies = g->adjacencies;
   list vertices = g->vertices;
   list adjs;
-/*  Vertex s = list_head (vertices), u, v;*/
-  Vertex s = vertex_getFromId (g->vertices, sId), u, v;
+  Vertex u, v;
   stack S;
+  bool adjsToVisit;
 
   assert (!element_null (g) || !element_null (s));
   /* Set default values. Unreachable vertices are removed with bFS, so the d 
@@ -104,8 +106,9 @@ visit_DFS (Graph g, Vid sId)
 
   while (!stack_null (S))
     {
-      u = stack_pop (&S);
+      u = list_head (S);
       adjs = adjacencies[u->id];
+      adjsToVisit = true;
       while (!list_null (adjs))
 	{
 	  v = list_head (adjs);
@@ -120,16 +123,25 @@ visit_DFS (Graph g, Vid sId)
 
 	      if (stack_length (S) > max)
 		max = stack_length (S);
+
+	      break;
 	    }
+	  else
+	    {
+	      adjsToVisit = false;
+	    }
+
 	  adjs = list_next (adjs);
 	}
-      sprintf (u->color, "%s", "BLACK");
-      time++;
-      u->f = time;
+
+      if (adjsToVisit == false || list_null (adjacencies[u->id]))
+	{
+	  sprintf (u->color, "%s", "BLACK");
+	  stack_pop (&S);
+	  time++;
+	  u->f = time;
+	}
     }
-  sprintf (s->color, "%s", "BLACK");
-  time++;
-  s->f = time;
 
   return max;
 }
@@ -145,6 +157,66 @@ visit_removeUnreachableVertices (Graph g)
     {
       if (list_head (vertices)->d == INF)
 	graph_destroyVertex (g, list_head (vertices)->id);
+      vertices = list_next (vertices);
+    }
+}
+
+
+/* Other stuff */
+
+static int
+visit_dEPTHvISIT (Graph g, Vertex u, int time)
+{
+  list *adjacencies = g->adjacencies;
+  list adjs;
+  Vertex v;
+
+  time++;
+  u->d = time;
+  sprintf (u->color, "%s", "GRAY");
+
+  adjs = adjacencies[u->id];
+  while (!list_null (adjs))
+    {
+      v = list_head (adjs);
+      if (strcmp (v->color, "WHITE") == 0)
+	{
+	  v->p = u;
+	  visit_dEPTHvISIT (g, v, time);
+	}
+
+      sprintf (u->color, "%s", "BLACK");
+      time++;
+      u->f = time;
+      adjs = list_next (adjs);
+    }
+
+  return time;
+}
+
+void
+visit_DFSRecursive (Graph g)
+{
+  list vertices = g->vertices;
+  Vertex u;
+  int time;
+
+  assert (!element_null (g));
+  while (!list_null (vertices))
+    {
+      u = list_head (vertices);
+      sprintf (u->color, "%s", "WHITE");
+      u->p = NULL;
+      vertices = list_next (vertices);
+    }
+  time = 0;
+
+  vertices = g->vertices;
+  while (!list_null (vertices))
+    {
+      u = list_head (vertices);
+      if (strcmp (u->color, "WHITE") == 0)
+	time = visit_dEPTHvISIT (g, u, time);
       vertices = list_next (vertices);
     }
 }

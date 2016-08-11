@@ -52,19 +52,33 @@ helper_genRandomGraph (Graph * gRef, int size, double edgeProb)
   for (i = 0; i < size; i++)
     for (j = 0; j < size; j++)
       if (edgeProb > ((double) rand () / (double) RAND_MAX))
-    	graph_setAdjacent (*gRef, i, j);
+	graph_setAdjacent (*gRef, i, j);
 }
 
 /* Each adjs of each vertex must have s. */
 void
-helper_setSourceVertexAdjToAll (Graph g, Vertex s)
+helper_setMaxBreadth (Graph g, Vertex s)
 {
-    list vertices = g->vertices;
+  list vertices = g->vertices;
 
-    assert (!element_null(g) || !element_null(s));
-    while (!list_null (vertices))
+  assert (!element_null (g) || !element_null (s));
+  while (!list_null (vertices))
     {
-        graph_setAdjacent (g, s->id, list_head (vertices)->id);
-        vertices = list_next (vertices);
+      graph_setAdjacent (g, s->id, list_head (vertices)->id);
+      vertices = list_next (vertices);
+    }
+}
+
+void
+helper_setMaxDepth (Graph g)
+{
+  list vertices = g->vertices;
+
+  assert (!element_null (g));
+  while (!list_null (list_next (vertices)))
+    {
+      graph_setAdjacent (g, list_head (vertices)->id,
+			 list_head (list_next (vertices))->id);
+      vertices = list_next (vertices);
     }
 }

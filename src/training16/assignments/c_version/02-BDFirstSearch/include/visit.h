@@ -15,7 +15,8 @@
 #include "vertex.h"
 #include "graph.h"
 
-extern int visit_BFS (Graph g, Vid sId);
-extern int visit_DFS (Graph g, Vid sId);
+extern int visit_BFS (Graph g, Vertex s);
+extern int visit_DFS (Graph g, Vertex s);
 extern void visit_removeUnreachableVertices (Graph g);
+extern void visit_DFSRecursive (Graph g);
 #endif

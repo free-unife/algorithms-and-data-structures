@@ -98,33 +98,43 @@ main (void)
 {
   int n = 6;
   int max1, max2;
-  Graph g1, g2;
+  Graph g1, g2, g3;
 
   graph_new (&g1, n);
   graph_new (&g2, n);
+  graph_new (&g3, n);
 
   populateGraph (g1);
   populateGraph (g2);
+  populateGraph (g3);
 
-  visit_BFS (g1, 0);
-  visit_BFS (g2, 0);
-  graph_print (g1);
-  graph_print (g2);
+  visit_BFS (g1, vertex_getFromId (g1->vertices, 0));
+  visit_BFS (g2, vertex_getFromId (g2->vertices, 0));
+  visit_BFS (g3, vertex_getFromId (g3->vertices, 0));
 
   visit_removeUnreachableVertices (g1);
   visit_removeUnreachableVertices (g2);
+  visit_removeUnreachableVertices (g3);
   graph_print (g1);
   graph_print (g2);
+  graph_print (g3);
 
-  max1 = visit_BFS (g1, 0);
-  max2 = visit_DFS (g2);
+  max1 = visit_BFS (g1, vertex_getFromId (g1->vertices, 0));
   graph_print (g1);
-  graph_print (g2);
-
   graph_destroy (&g1);
+
+  max2 = visit_DFS (g2, vertex_getFromId (g2->vertices, 0));
+  populateGraph (g3);
+  visit_DFSRecursive (g3);
+  fprintf (stderr, "\n\n\n-----------------\n\n\n");
+  graph_print (g2);
+  graph_print (g3);
+
   graph_destroy (&g2);
+  graph_destroy (&g3);
   assert (element_null (g1));
   assert (element_null (g2));
+  assert (element_null (g3));
 
   fprintf (stderr, "Max queue length = %d\n", max1);
   fprintf (stderr, "Max stack length = %d\n", max2);
@@ -145,6 +155,8 @@ main (void)
 
   helper_genRandomGraph (&g, n, p);
   s = helper_getRandomSource (g);
+  helper_setMaxBreadth (g, s);
+  helper_setMaxDepth (g);
   assert (!element_null (s));
   graph_print (g);
 
