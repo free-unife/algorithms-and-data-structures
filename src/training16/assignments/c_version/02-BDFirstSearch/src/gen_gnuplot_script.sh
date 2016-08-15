@@ -1,1 +1,0 @@
-../../gen_gnuplot_script.sh

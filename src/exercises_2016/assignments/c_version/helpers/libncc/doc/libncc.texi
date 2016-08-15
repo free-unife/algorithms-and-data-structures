@@ -1,0 +1,275 @@
+\input texinfo
+@settitle libncc Manual
+
+@copying
+Copyright @copyright{} 2016 Franco Masotti @email{franco.masotti@@student.unife.it}
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+@end copying
+
+@titlepage
+@title libncc Documentation
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+@end titlepage
+
+@c Output the table of the contents at the beginning.
+@contents
+
+@ifnottex
+@node Top
+@top libncc
+
+This manual is for libncc.
+@end ifnottex
+
+@menu
+* Description::    A brief description of what this is all about.
+* API Description::    A thorough description of the API.
+* Usage::    How to use the library in you program.
+@end menu
+
+@node Description
+@chapter Description
+@section About
+libncc is a static C library which provides data structures and operations to 
+handle:
+@itemize @bullet
+@item
+lists
+
+@item
+stacks
+
+@item
+queues
+
+@end itemize
+It is based on the four LISPs' list functions:
+@itemize @bullet
+@item
+null
+
+@item
+car
+
+@item
+cons
+
+@item
+cdr
+
+@end itemize
+
+@section Internals
+@subsection Directories
+
+@itemize @bullet
+@item
+@file{/src/private} contains basic operations and @acronym{CDT, Concrete Data 
+Types}.
+
+@item
+@file{/src/adt} contains functions that provide higher lever operations. These 
+operations are called @acronym{ADT, Abstract Data Types}.
+
+@item
+@file{/src/public} contains operations visible to the end user. These 
+operations are called @acronym{API , Application Programming Interface}.
+
+@end itemize
+
+
+@subsection Test modules
+All test modules are collected in the @file{/src/test.c} file. You can run all 
+the test modules with @command{cd src && ./runTests.sh} or by calling the 
+@file{src/Makefile} targets manually.
+
+Whenever a test module is compiled, this is automatically checked for errors 
+thanks to the @file{src/validate.sh} script.
+
+To auto-indent all C files, you can simply @command{cd src && make indent}.
+
+@subsection C Flags
+
+This library is written using the ISO C99 standard.
+Compilation flags follow:
+
+@option{-g -Wall -Wextra -Wpedantic -Werror -march=native -O0 -lrt -std=c99}
+
+@subsection Indent Flags
+
+GNU indentation options have been used:
+
+@option{-nbad -bap -nbc -bbo -bl -bli2 -bls -ncdb -nce -cp1 -cs -di2 -ndj -nfc1-nfca -hnl -i2 -ip5 -lp -pcs -psl -nsc -nsob}
+
+
+@node API Description
+@chapter API Description
+
+Everything described in this chapter can be found in @file{/include/libncc.h}.
+
+@section Variable Definitions
+
+@deftp {typedef} _node list
+@end deftp
+
+@deftp {typedef} _node stack
+@end deftp
+
+@deftp {typedef} _node queue
+@end deftp
+
+
+@section Function Descriptions
+@subsection Functional operations
+
+@deftypefn{List} bool list_null @ (list @var{l})
+Check if a list is @code{NULL}.
+@end deftypefn
+
+@deftypefn{List} element list_head @ (list @var{l})
+Extracts the first element of the list.
+@end deftypefn
+
+@deftypefn{List} list list_next @ (list @var{l})
+Gets the pointer of the next node of a list.
+@end deftypefn
+
+@deftypefn{List} int list_length @ (list @var{l})
+Returns the length of a list.
+@end deftypefn
+
+@deftypefn{List,Stack,Queue} bool list_same @ (list @var{l1}, list @var{l2})
+Checks if the @code{element} part of two @code{_node} objects are equal.
+@end deftypefn
+
+@deftypefn{List,Stack,Queue} bool list_equal @ (list @var{l1}, list @var{l2})
+Checks if the two @code{_node} object sets are equal.
+@end deftypefn
+
+@deftypefn{Stack} bool stack_null @ (stack @var{s})
+Checks if a stack is @code{NULL}.
+@end deftypefn
+
+@deftypefn{Stack} int stack_length @ (stack @var{s})
+Computes the number of elements in the stack.
+@end deftypefn
+
+@deftypefn{Queue} bool queue_null @ (queue @var{q})
+Checks if a queue is @code{NULL}.
+@end deftypefn
+
+@deftypefn{Queue} int queue_length @ (queue @var{q})
+Computes the number of elements in the queue.
+@end deftypefn
+
+
+@subsection Non-functional operations
+
+@deftypefn{List} void list_init @ (list * @var{lRef})
+Sets the input list to @code{NULL}.
+@end deftypefn
+
+@deftypefn{List} void list_append @ (element e, list * @var{lRef})
+Adds an element to the tail of the list.
+@end deftypefn
+
+@deftypefn{List} void list_prepend @ (element e, list * @var{lRef})
+Adds an element to the head of the list.
+@end deftypefn
+
+@deftypefn{List,Stack,Queue} void list_remove @ (list * @var{head}, list @var{toRemove})
+Removes a specified element from a @code{_node} object set.
+@end deftypefn
+
+@deftypefn{List,Stack,Queue} void list_destroy @ (list * @var{lRef})
+Destroy a @code{_node} object set from the specified statring point.
+@end deftypefn
+
+@deftypefn{Stack} void stack_init @ (stack * @var{sRef})
+Sets the input stack to @code{NULL}.
+@end deftypefn
+
+@deftypefn{Stack} element stack_pop @ (stack * @var{sRef})
+Gets the first element and frees its corresponding @code{_node} object of the 
+stack.
+@end deftypefn
+
+@deftypefn{Stack} void stack_push @ (element @var{e}, stack * @var{sRef})
+Inserts a new element in the the stack.
+@end deftypefn
+
+@deftypefn{Queue} void queue_init @ (queue * @var{qRef})
+Sets the input queue to @code{NULL}.
+@end deftypefn
+
+@deftypefn{Queue} element queue_dequeue @ (queue * @var{qRef})
+Removes the tail element from the queue.
+@end deftypefn
+
+@deftypefn{Queue} void queue_enqueue @ (element @var{e}, queue * @var{qRef})
+Adds an element from the queue.
+@end deftypefn
+
+
+@node Usage
+@chapter Usage
+@section Example
+
+@verbatiminclude example.h
+
+@verbatiminclude example.c
+
+
+@section Building and Linking
+@subsection Building
+
+To build the static library into the @file{libncc.a} file you should use the 
+@file{Makefile}
+
+@command{make libncc TYPE=@var{native C type}}
+
+For example if you want to use @code{int *} as elements your command should be:
+
+@command{make libncc TYPE=@var{int}}
+
+Another example: if you want to link @code{struct @var{something} *}, somewhere 
+in you code, you should have a definition of that structure
+
+@code{struct @var{something} @{ ... @};}
+
+However, you cannot run the following because the structure definition remains 
+unkown:
+
+@command{make libncc TYPE="@var{struct\ something}"}
+
+Anyway, you can use structures in the linking phase.
+
+@subsection Linking
+
+To link the library you can either run the following command or modify the 
+example @file{Makefile} directly. A possible command could be:
+
+@command{gcc -o example.out example.c libncc.a}
+
+As an example, you can run @command{make example}, which uses the 
+@option{TYPE="struct\ example"} option.
+
+@verbatiminclude Makefile.example
+
+This is possible thanks to opaque structure definition. It only works if you 
+compile and link the library and you program simultaneously@footnote{Due to 
+visibility problems you must put the @file{libncc.a} file directive at the end 
+of the target, as shown in the example.}.
+
+If you want to do a simpler linking, you must edit the library directly, just 
+like what has been done for the test modules. For more information see 
+@file{/include/list_base.h} and @file{/include/test_struct.h}.
+
+
+@bye
+
