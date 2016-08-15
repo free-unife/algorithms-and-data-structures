@@ -43,8 +43,8 @@ although the number of total operations in the last iteration is the same for
 both cases (40000). For the second case infact the load factor is much 
 more higher, thus generating much slower and pretty useless outputs.
 
-[Raw data](https://raw.githubusercontent.com/free-unife/algorithms-and-data-structures/master/src/training16/assignments/c_version/01-bstHashTable/out.dat)
+[Raw data](https://raw.githubusercontent.com/free-unife/algorithms-and-data-structures/master/src/exercises_2016/assignments/c_version/01-bstHashTable/out.dat)
 
-![comparison](https://raw.githubusercontent.com/free-unife/algorithms-and-data-structures/master/src/training16/assignments/c_version/01-bstHashTable/images/plot.png)
-![list](https://raw.githubusercontent.com/free-unife/algorithms-and-data-structures/master/src/training16/assignments/c_version/01-bstHashTable/images/list.png)
-![bst](https://raw.githubusercontent.com/free-unife/algorithms-and-data-structures/master/src/training16/assignments/c_version/01-bstHashTable/images/bst.png)
+![comparison](https://raw.githubusercontent.com/free-unife/algorithms-and-data-structures/master/src/exercises_2016/assignments/c_version/01-bstHashTable/images/plot.png)
+![list](https://raw.githubusercontent.com/free-unife/algorithms-and-data-structures/master/src/exercises_2016/assignments/c_version/01-bstHashTable/images/list.png)
+![bst](https://raw.githubusercontent.com/free-unife/algorithms-and-data-structures/master/src/exercises_2016/assignments/c_version/01-bstHashTable/images/bst.png)
