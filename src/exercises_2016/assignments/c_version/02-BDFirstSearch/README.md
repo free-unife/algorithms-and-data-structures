@@ -17,7 +17,7 @@ We can test an approximation of these two cases with respectively
 `helper_setMaxBreadth` and `helper_setMaxDepth`.
 
 The following image is refered to the first case.
-[Raw data](https://raw.githubusercontent.com/free-unife/algorithms-and-data-structures/master/src/training16/assignments/c_version/02-BDFirstSearch/src/images/plot.png)
+[raw](https://raw.githubusercontent.com/free-unife/algorithms-and-data-structures/master/src/exercises_2016/assignments/c_version/02-BDFirstSearch/src/images/plot.png)
 
 A summary of the main operations follow:
 0. for i in 0 to n
