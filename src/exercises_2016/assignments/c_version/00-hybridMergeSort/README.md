@@ -9,7 +9,7 @@
 
 ##Comparison between Hybrid and Merge Sort
 
-![findk.png](https://raw.githubusercontent.com/free-unife/algorithms-and-data-structures/master/src/training16/assignments/c_version/00-hybridMergeSort/src/images/findk.png)
+![findk.png](https://raw.githubusercontent.com/free-unife/algorithms-and-data-structures/master/src/exercises_2016/assignments/c_version/00-hybridMergeSort/src/images/findk.png)
 
 - The following picture represents a comparison between merge sort and hybrid 
   merge sort in terms of the value of K. Tests have been made with a 
@@ -22,5 +22,5 @@
 - As you can see the best performances of hybridSort are for K between about 
   20 and 80. 
 
-![comparison.png](https://raw.githubusercontent.com/free-unife/algorithms-and-data-structures/master/src/training16/assignments/c_version/00-hybridMergeSort/src/images/comparison.png)
+![comparison.png](https://raw.githubusercontent.com/free-unife/algorithms-and-data-structures/master/src/exercises_2016/assignments/c_version/00-hybridMergeSort/src/images/comparison.png)
 
