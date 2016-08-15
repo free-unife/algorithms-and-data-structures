@@ -17,16 +17,17 @@ We can test an approximation of these two cases with respectively
 `helper_setMaxBreadth` and `helper_setMaxDepth`.
 
 The following image is refered to the first case.
-[Raw data](https://raw.githubusercontent.com/free-unife/algorithms-and-data-structures/master/src/training16/assignments/c_version/02-BDFirstSearch/src/images/plot.png)
+![raw](https://raw.githubusercontent.com/free-unife/algorithms-and-data-structures/master/src/exercises_2016/assignments/c_version/02-BDFirstSearch/src/images/plot.png)
 
 A summary of the main operations follow:
-0. for i in 0 to n
-1. Generation of a random graph `g` of size i.
-2. Selection of a random source `s`.
-3. Call of `helper_setMaxBreadth` or `helper_setMaxDepth` in order to achieve 
-one of the possible extreme cases.
-4. Unreachable vertices are marked by calling BFS on `g` from `s`.
-5. Unreachable vertices are removed.
-6. DFS and BFS are called and their return values, representing respectively 
-the maximum stack ad queue usage, are catched.
-7. `g` is destroyed.
+
+1. for i in 0 to n
+2. Generation of a random graph `g` of size i.
+3. Selection of a random source `s`.
+4. Call of `helper_setMaxBreadth` or `helper_setMaxDepth` in order to achieve 
+   one of the possible extreme cases.
+5. Unreachable vertices are marked by calling BFS on `g` from `s`.
+6. Unreachable vertices are removed.
+7. DFS and BFS are called and their return values, representing respectively 
+   the maximum stack ad queue usage, are catched.
+8. `g` is destroyed.
