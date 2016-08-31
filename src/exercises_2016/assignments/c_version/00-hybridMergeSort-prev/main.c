@@ -21,10 +21,9 @@ main (void)
 
   for (attempt = 0; attempt < ATTEMPTS; attempt++)
     {
-      initArray (&array);
-
       for (k = MIN_K; k <= MAX_K; k++)
 	{
+      initArray (&array);
 	  initArray (&arrayHybridSort);
 	  initArray (&arrayMergeSort);
 
@@ -59,6 +58,7 @@ main (void)
 
 	  free (arrayMergeSort);
 	  free (arrayHybridSort);
+      free (array);
 
 	  /*
 	   * Print the results so that gnuplot can catch and use them. 
@@ -66,7 +66,6 @@ main (void)
 	  fprintf (stdout, "%d    %d    %d    %f    %f\n", attempt, k,
 		   COMPARISON_SIZE, mergeSortTime, hybridSortTime);
 	}
-      free (array);
     }
 
   return 0;

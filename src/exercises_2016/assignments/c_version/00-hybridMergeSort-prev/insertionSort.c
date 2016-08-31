@@ -13,14 +13,17 @@ insertionSort (int *array, int startInd, int endInd)
   int j;
   int i, key;
 
-  for (j = startInd + 1; j <= endInd; j++)
+  for (j = startInd + 1; le (j, endInd); j++)
+/*  for (j = startInd + 1; (j <= endInd); j++)*/
     {
       key = array[j];
       i = j - 1;
 
-      while (i >= startInd && array[i] > key)
+      while (ge (i, startInd) && gt (el (array, i), key))
+/*      while (i >= startInd && array[i] > key)*/
 	{
-	  array[i + 1] = array[i];
+	  array[i + 1] = el (array, i);
+/*	  array[i + 1] = array [i];*/
 	  i--;
 	}
       array[i + 1] = key;

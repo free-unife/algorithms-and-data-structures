@@ -8,19 +8,16 @@
 #include "globalDefines.h"
 
 void
-hybridSort (int *array, int p, int r, int k)
+mergeSort (int *array, int p, int r)
 {
   int q;
 
-  /* When the input array size is less than k we, have the base case
-   * that executes insertion sort. */
-  if (r - p <= k)
-    insertionSort (array, p, r);
-  else if (p < r)
+  if (lt (p, r))
+/*  if (p < r)*/
     {
       q = (p + r) / 2;
-      hybridSort (array, p, q, k);
-      hybridSort (array, q + 1, r, k);
+      mergeSort (array, p, q);
+      mergeSort (array, q + 1, r);
       merge (array, p, q, r);
     }
 }

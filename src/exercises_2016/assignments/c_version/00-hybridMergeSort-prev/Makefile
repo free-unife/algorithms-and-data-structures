@@ -39,7 +39,7 @@ TEST_MODULE_SRCFILE = tests.c
 # This also enables us to force the TEST_MODULE_OBJFILE target.
 .PHONY: default all clean indent $(EXECUTABLES) $(TEST_MODULE_OBJFILE)
 
-default: main
+default: plotcompare
 
 all: main plotcompare
 
@@ -101,6 +101,7 @@ main: $(PRG_OBJFILES)
 	@$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) $(DEFFLAG) -o $@.out $^
 	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(LIBS) $(DEFFLAG) -o $@.out"
 
+target prepareplotfindk: override DEFFLAG = -DM_FINDK_C
 prepareplotfindk: findk
 	@echo "Plotting..."
 	@./findk.out > $(PLOT_INPUT_FILE_FINDK)
@@ -119,7 +120,7 @@ prepareplotcompare: main
 	@./main.out > $(PLOT_INPUT_FILE_COMPARE)
 
 gengnuplotscriptcompare: prepareplotcompare
-	@../gen_gnuplot_script.sh $(PLOT_INPUT_FILE_COMPARE) "points pointtype 5 pointsize 1" "Comparison between hybrid sort and merge sort related to K" "K" "time (s)" "K" "mergeSortTime" "hybridSortTime"> $(GNUPLOT_SCRIPT_COMPARE)
+	@./gen_gnuplot_script.sh $(PLOT_INPUT_FILE_COMPARE) "points pointtype 5 pointsize 1" "Comparison between hybrid sort and merge sort related to K" "K" "time (s)" "K" "mergeSortTime" "hybridSortTime"> $(GNUPLOT_SCRIPT_COMPARE)
 	@chmod +x $(GNUPLOT_SCRIPT_COMPARE)
 
 plotcompare: gengnuplotscriptcompare

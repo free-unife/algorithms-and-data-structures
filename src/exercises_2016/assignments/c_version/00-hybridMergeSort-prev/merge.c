@@ -29,27 +29,35 @@ merge (int *array, int p, int q, int r)
       exit (EXIT_FAILURE);
     }
 
-  for (i = 0; i < n1; i++)
-    L[i] = array [p + i];
+  for (i = 0; lt (i, n1); i++)
+/*  for (i = 0; i < n1; i++)*/
+    L[i] = el (array, p + i);
+/*    L[i] = array [p + i];*/
 
-  for (j = 0; j < n2; j++)
-    R[j] = array [q + 1 + j];
+  for (j = 0; lt (j, n2); j++)
+/*  for (j = 0; j < n2; j++)*/
+    R[j] = el (array, q + 1 + j);
+/*    R[j] = array [q + 1 + j];*/
 
   L[n1] = INF;
   R[n2] = INF;
 
   i = 0;
   j = 0;
-  for (k = p; k <= r; k++)
+  for (k = p; le (k, r); k++)
+/*  for (k = p; k <= r; k++)*/
     {
-      if (L[i] <= R [j])
+      if (le (el (L, i), el (R, j)))
+/*      if (L[i] <= R [j])*/
 	{
 	  array[k] = el (L, i);
+/*	  array[k] = L [i];*/
 	  i++;
 	}
       else
 	{
 	  array[k] = el (R, j);
+/*	  array[k] = R [j];*/
 	  j++;
 	}
     }
