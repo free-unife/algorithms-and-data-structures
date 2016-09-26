@@ -28,10 +28,10 @@ $ make [TARGET]
   The value of K is determined by the intersection between the two curves.
 - `plotextra` : plots a comparison between merge sort and hybrid sort 
   for K = {15, 20, 35}.
-- `plotcompare` : plots a comparison between merge sort and hybrid sort.
+- `plotcompare` : plots a comparison between merge sort and hybrid sort
+  using an increasing array size, and with a fixed K.
 
 ####01-bstHashTable
-This is the final version of 01-bstHashTable.
 - `utils`
 - `node`
 - `bst`
@@ -51,5 +51,5 @@ This is the final version of 01-bstHashTable.
 - `visit`
 - `helper`
 - `main`
-- `plot`
+- `plot` : COmpare BFS and DFS algorithms.
 

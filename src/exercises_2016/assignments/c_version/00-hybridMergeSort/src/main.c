@@ -24,34 +24,37 @@ main (void)
   fprintf (stdout, "%s    %s    %s    %s    %s\n", "attempt", "K",
 	   "arraySize", "mergeSortTime", "hybridSortTime");
 
-  for (attempt = 0; attempt < ATTEMPTS; attempt++)
+    /* Set k == 43*/
+    k = 43;
+
+  /* Test for different array sizes. */
+  for (attempt = 0; attempt <= COMPARISON_SIZE; attempt++)
     {
       array = malloc_safe (COMPARISON_SIZE * sizeof (int));
 
-      for (k = MIN_K; k <= MAX_K; k++)
-	{
-	  arrayHybridSort = malloc_safe (COMPARISON_SIZE * sizeof (int));
-	  arrayMergeSort = malloc_safe (COMPARISON_SIZE * sizeof (int));
+    /* We have decided that k was 43 */
+	  arrayHybridSort = malloc_safe (attempt * sizeof (int));
+	  arrayMergeSort = malloc_safe (attempt * sizeof (int));
 
-	  helper_genRandomArray (array, COMPARISON_SIZE);
+	  helper_genRandomArray (array, attempt);
 
 	  /*
 	   * Get copies of the original array. 
 	   */
-	  helper_arrayCopy (arrayMergeSort, array, COMPARISON_SIZE);
-	  helper_arrayCopy (arrayHybridSort, array, COMPARISON_SIZE);
+	  helper_arrayCopy (arrayMergeSort, array, attempt);
+	  helper_arrayCopy (arrayHybridSort, array, attempt);
 	  assert (helper_arraysEqual
-		  (array, arrayMergeSort, COMPARISON_SIZE));
+		  (array, arrayMergeSort, attempt));
 	  assert (helper_arraysEqual
-		  (array, arrayHybridSort, COMPARISON_SIZE));
+		  (array, arrayHybridSort, attempt));
 
 	  start = clock ();
-	  sort_mergeSort (arrayMergeSort, 0, COMPARISON_SIZE - 1);
+	  sort_mergeSort (arrayMergeSort, 0, attempt - 1);
 	  end = clock ();
 	  mergeSortTime = helper_getRunningTime (start, end);
 
 	  start = clock ();
-	  sort_hybrid (arrayHybridSort, 0, COMPARISON_SIZE - 1, k);
+	  sort_hybrid (arrayHybridSort, 0, attempt - 1, k);
 	  end = clock ();
 	  hybridSortTime = helper_getRunningTime (start, end);
 
@@ -59,9 +62,9 @@ main (void)
 	   * Check if the arrays are sorted. 
 	   */
 	  assert (helper_arraysEqual
-		  (arrayMergeSort, arrayHybridSort, COMPARISON_SIZE));
-	  assert (helper_arraySorted (arrayMergeSort, COMPARISON_SIZE));
-	  assert (helper_arraySorted (arrayHybridSort, COMPARISON_SIZE));
+		  (arrayMergeSort, arrayHybridSort, attempt));
+	  assert (helper_arraySorted (arrayMergeSort, attempt));
+	  assert (helper_arraySorted (arrayHybridSort, attempt));
 
 	  free (arrayMergeSort);
 	  free (arrayHybridSort);
@@ -70,8 +73,7 @@ main (void)
 	   * Print the results so that gnuplot can catch and use them. 
 	   */
 	  fprintf (stdout, "%d    %d    %d    %f    %f\n", attempt, k,
-		   COMPARISON_SIZE, mergeSortTime, hybridSortTime);
-	}
+		   attempt, mergeSortTime, hybridSortTime);
       free (array);
     }
 

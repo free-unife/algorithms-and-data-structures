@@ -1,1 +1,0 @@
-../helpers/validate.sh

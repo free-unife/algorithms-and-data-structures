@@ -128,8 +128,9 @@ prepareplotcompare: main
 gengnuplotscriptcompare: prepareplotcompare
 	@./gen_gnuplot_script.sh $(PLOT_INPUT_FILE_COMPARE) \
 "points pointtype 5 pointsize 1" \
-"Comparison between hybrid sort and merge sort related to K" \
-"K" "time (s)" "K" "mergeSortTime" "hybridSortTime" \
+"Comparison between hybrid sort and merge sort related to the array size, \
+using a fixed K" \
+"arraySize" "time (s)" "arraySize" "mergeSortTime" "hybridSortTime" \
 > $(GNUPLOT_SCRIPT_COMPARE)
 	@chmod +x $(GNUPLOT_SCRIPT_COMPARE)
 
